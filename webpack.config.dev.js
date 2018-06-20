@@ -1,22 +1,46 @@
 "use strict"
 
 // ...
-const webpack = require("webpack")
+const
+    HtmlWebpackPlugin = require("html-webpack-plugin"),
+    path = require("path"),
+    fs = require("fs")
+
+
+// ...
+const
+    appDirectory = fs.realpathSync(process.cwd()),
+    publicPath = "/"
+
 
 // ...
 module.exports = {
 
     mode: "development",
 
+    entry: [
+        require.resolve("webpack/hot/dev-server"),
+        path.resolve(appDirectory, "src/index.js"),
+    ],
+
+    output: {
+        filename: "static/js/bundle.js",
+        chunkFilename: "static/js/[name].chunk.js",
+        publicPath,
+    },
+
+    devServer: {
+        compress: true,
+        contentBase: "public/",
+        overlay: true,
+        publicPath,
+        watchContentBase: true,
+    },
+
     plugins: [
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                compress: true,
-                contentBase: "public/",
-                hot: true,
-                overlay: true,
-                watchContentBase: true,
-            },
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: path.resolve(appDirectory, "public/index.html"),
         }),
     ],
 
