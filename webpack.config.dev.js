@@ -32,6 +32,8 @@ module.exports = {
     devServer: {
         compress: true,
         contentBase: "public/",
+        disableHostCheck: true,
+        host: "0.0.0.0",
         overlay: true,
         publicPath,
         watchContentBase: true,
