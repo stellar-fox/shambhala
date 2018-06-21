@@ -4,11 +4,7 @@
 const
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     path = require("path"),
-    fs = require("fs")
-
-
-// ...
-const
+    fs = require("fs"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicPath = "/"
 
