@@ -14,13 +14,15 @@ module.exports = {
 
     mode: "development",
 
-    entry: [
-        require.resolve("webpack/hot/dev-server"),
-        path.resolve(appDirectory, "src/index.js"),
-    ],
+    entry: {
+        main: [
+            require.resolve("webpack/hot/dev-server"),
+            path.resolve(appDirectory, "src/index.js"),
+        ],
+    },
 
     output: {
-        filename: "static/js/bundle.js",
+        filename: "static/js/[name].bundle.js",
         chunkFilename: "static/js/[name].chunk.js",
         publicPath,
     },
