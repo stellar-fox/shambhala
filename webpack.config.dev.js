@@ -34,6 +34,7 @@ module.exports = {
         contentBase: "public/",
         disableHostCheck: true,
         host: "0.0.0.0",
+        https: true,
         overlay: true,
         publicPath,
         watchContentBase: true,
