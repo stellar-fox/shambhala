@@ -11,7 +11,8 @@
     ],
     "dependencies": {
         "@babel/runtime": "^7.0.0-beta.51",
-        "@xcmats/js-toolbox": "^0.3.7"
+        "@xcmats/js-toolbox": "^0.3.7",
+        "localforage": "^1.7.2"
     },
     "description": "Mystery.",
     "devDependencies": {
