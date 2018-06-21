@@ -1,0 +1,19 @@
+html, body {
+    margin: 0; padding: 0;
+    font-family: sans-serif;
+    background-color: rgb(6, 22, 41);
+    color: rgb(244, 176, 4);
+    font-size: 16px;
+}
+
+.logo { animation: logo-spin infinite 16s linear; }
+
+@keyframes logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+#toy {
+    font-size: 32px;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+}
