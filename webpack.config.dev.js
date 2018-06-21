@@ -35,8 +35,13 @@ module.exports = {
         disableHostCheck: true,
         host: "0.0.0.0",
         https: true,
+        index: "index.html",
+        open: true,
         overlay: true,
+        port: 8080,
+        public: "localhost:8080",
         publicPath,
+        useLocalIp: true,
         watchContentBase: true,
     },
 
