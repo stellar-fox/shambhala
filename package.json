@@ -51,7 +51,7 @@
         "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./doc/",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run doc",
-        "start": "webpack-dev-server --config=webpack.config.dev.js --hot --inline",
+        "start": "webpack-dev-server --config=webpack.config.dev.js",
         "test": "npm run lint && echo \"Warning: no tests specified (yet)\""
     },
     "version": "0.0.1"

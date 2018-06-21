@@ -2,6 +2,7 @@
 
 // ...
 const
+    webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     path = require("path"),
     fs = require("fs"),
@@ -35,8 +36,10 @@ module.exports = {
         contentBase: "public/",
         disableHostCheck: true,
         host: "0.0.0.0",
+        hot: true,
         https: true,
         index: "index.html",
+        inline: true,
         open: true,
         overlay: true,
         port: 8080,
@@ -47,6 +50,7 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             chunks: ["main",],
             filename: "index.html",
