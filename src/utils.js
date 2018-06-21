@@ -8,6 +8,7 @@
 
 
 
+import forage from "localforage"
 import {
     randomInt,
     shuffle,
@@ -38,7 +39,7 @@ export const drawEmojis = ((emojis) =>
 
 
 /**
- * Asynchronously load libraries.
+ * (Not only) asynchronously load libraries.
  *
  * @function dynamicImportLibs
  * @returns {Object}
@@ -51,6 +52,8 @@ export const dynamicImportLibs = async () => {
         import("./utils"),
     ])
     return {
+        forage,   // can't be imported dynamically
         toolbox, utils,
+        process,  // eslint-disable-line
     }
 }

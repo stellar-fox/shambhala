@@ -39,9 +39,6 @@ asyncRepeat(
 
 
 // expose 's' dev. namespace
-if (isObject(window)) {
-    (async () => { window.s = {
-        ...await dynamicImportLibs(),
-        process, // eslint-disable-line
-    }})()
-}
+if (isObject(window)) (
+    async () => { window.s = await dynamicImportLibs() }
+)()
