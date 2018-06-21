@@ -19,11 +19,14 @@ module.exports = {
             require.resolve("webpack/hot/dev-server"),
             path.resolve(appDirectory, "src/index.js"),
         ],
+        sw: [
+            path.resolve(appDirectory, "src/index.sw.js"),
+        ],
     },
 
     output: {
-        filename: "static/js/[name].bundle.js",
-        chunkFilename: "static/js/[name].chunk.js",
+        filename: "static/[name].bundle.js",
+        chunkFilename: "static/[name].chunk.js",
         publicPath,
     },
 
@@ -45,7 +48,10 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
+            chunks: ["main",],
+            filename: "index.html",
             inject: true,
+            hash: true,
             template: path.resolve(appDirectory, "public/index.html"),
         }),
     ],
