@@ -15,17 +15,22 @@ import {
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
-import { register as registerShambhala } from "./shambhala"
 import {
+    console,
     drawEmojis,
     dynamicImportLibs,
 } from "./utils"
+import { register as registerShambhala } from "./shambhala"
 
 
+
+
+// console logger
+const print = console("🐧")
 
 
 // greet
-console.info("Hi there... 🌴")
+print.info("Hi there! 🌴")
 
 
 // do something...
@@ -39,13 +44,11 @@ asyncRepeat(
 )
 
 
-// expose 's' dev. namespace
+// expose `s` dev. namespace
 if (isObject(window)) (
     async () => { window.s = await dynamicImportLibs() }
 )()
 
 
-
-
 // juice
-registerShambhala()
+registerShambhala(print)
