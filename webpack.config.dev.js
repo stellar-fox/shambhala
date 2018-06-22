@@ -17,18 +17,18 @@ module.exports = {
     mode: "development",
 
     entry: {
-        main: [
+        "static/main": [
             require.resolve("webpack/hot/dev-server"),
             path.resolve(appDirectory, "src/index.js"),
         ],
-        sw: [
+        "sw": [
             path.resolve(appDirectory, "src/index.sw.js"),
         ],
     },
 
     output: {
-        filename: "static/[name].bundle.js",
-        chunkFilename: "static/[name].chunk.js",
+        filename: "[name].bundle.js",
+        chunkFilename: "[name].chunk.js",
         publicPath,
         globalObject: "self",
     },
@@ -39,10 +39,10 @@ module.exports = {
         disableHostCheck: true,
         host: "0.0.0.0",
         hot: true,
-        https: true,
+        https: false,
         index: "index.html",
         inline: true,
-        open: true,
+        open: false,
         overlay: true,
         port: 8080,
         public: "localhost:8080",
@@ -54,7 +54,7 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            chunks: ["main",],
+            chunks: ["static/main",],
             filename: "index.html",
             inject: true,
             hash: true,
