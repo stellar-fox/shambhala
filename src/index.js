@@ -26,36 +26,39 @@ import { register as registerShambhala } from "./shambhala"
 
 
 
-// console logger
-const logger = console("🐧")
+// gentle start
+window.addEventListener("load", async () => {
+
+    // console logger
+    const logger = console("🐧")
 
 
-// greet
-logger.info("Hi there! 🌴")
+    // greet
+    logger.info("Hi there! 🌴")
 
 
-// do something...
-const toy = document.getElementById("toy")
-asyncRepeat(async () => {
-    toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
-    await delay(timeUnit.second * 0.8)
-}, () => true)
+    // do something on screen ...
+    const toy = document.getElementById("toy")
+    asyncRepeat(async () => {
+        toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
+        await delay(timeUnit.second * 0.8)
+    }, () => true)
 
 
-// expose `s` dev. namespace
-if (isObject(window)) (async () => {
-    window.s = await dynamicImportLibs()
-})()
+    // expose `s` dev. namespace
+    if (isObject(window)) {
+        window.s = await dynamicImportLibs()
+    }
 
 
-// fresh juice
-registerShambhala(logger)
-    .then((pageIsControlled) => {
-        if (!pageIsControlled) {
+    // fresh juice
+    try {
+        if (! await registerShambhala(logger)) {
             logger.warn("Reloading...")
             timeout(() => history.go("/"))
         }
-    })
-    .catch((e) =>
+    } catch (e) {
         logger.error("Registration failed: ", e)
-    )
+    }
+
+})
