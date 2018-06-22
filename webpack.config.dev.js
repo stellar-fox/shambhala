@@ -29,6 +29,7 @@ module.exports = {
     output: {
         filename: "[name].bundle.js",
         chunkFilename: "[name].chunk.js",
+        sourceMapFilename: "[name].map",
         publicPath,
         globalObject: "self",
     },
@@ -50,6 +51,8 @@ module.exports = {
         useLocalIp: true,
         watchContentBase: true,
     },
+
+    devtool: "source-map",
 
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
