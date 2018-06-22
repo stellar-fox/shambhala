@@ -15,6 +15,7 @@ import {
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
+import { register as registerShambhala } from "./shambhala"
 import {
     drawEmojis,
     dynamicImportLibs,
@@ -42,3 +43,9 @@ asyncRepeat(
 if (isObject(window)) (
     async () => { window.s = await dynamicImportLibs() }
 )()
+
+
+
+
+// juice
+registerShambhala()

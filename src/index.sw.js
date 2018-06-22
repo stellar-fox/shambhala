@@ -8,5 +8,12 @@
 
 
 
-// greet
-console.info("We're in! 👽")
+/* global WorkerGlobalScope */
+
+
+
+
+// greet (FF only)
+if (WorkerGlobalScope) {
+    WorkerGlobalScope.console.info("We're in! 👽")
+}

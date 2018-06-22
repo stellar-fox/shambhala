@@ -46,14 +46,15 @@ export const drawEmojis = ((emojis) =>
  */
 export const dynamicImportLibs = async () => {
     let [
-        toolbox, utils,
+        toolbox, utils, shambhala,
     ] = await Promise.all([
         import("@xcmats/js-toolbox"),
         import("./utils"),
+        import("./shambhala"),
     ])
     return {
         forage,   // can't be imported dynamically
-        toolbox, utils,
         process,  // eslint-disable-line
+        toolbox, utils, shambhala,
     }
 }
