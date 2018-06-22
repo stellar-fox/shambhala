@@ -10,9 +10,35 @@
 
 import forage from "localforage"
 import {
+    access,
+    dict,
+    partial,
+    quote,
     randomInt,
     shuffle,
 } from "@xcmats/js-toolbox"
+
+
+
+
+/**
+ * Safe version of (window/self).console object.
+ *
+ * @function console
+ * @param {String} context
+ * @returns {Object}
+ */
+export const console = (context = "main") => {
+    const
+        methods = ["log", "info", "warn", "error",],
+        c = access(
+            self, ["console",],
+            dict(methods.map((m) => [m, () => null,]))
+        )
+    return dict(methods.map((m) =>
+        [m, partial(c[m])(quote(context, "[]")),]
+    ))
+}
 
 
 
