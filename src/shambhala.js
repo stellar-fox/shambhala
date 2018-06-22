@@ -19,6 +19,8 @@ import { console } from "./utils"
  * Register shambhala service worker.
  *
  * @function register
+ * @param {Object} [logger=console.noop]
+ * @returns {Undefined}
  */
 export const register = (logger = console.noop) => {
     if ("serviceWorker" in navigator) {
@@ -34,9 +36,7 @@ export const register = (logger = console.noop) => {
                         })
                     }
                 })
-                .catch((e) =>
-                    logger.warn("Registration failed: ", e)
-                )
+                .catch((e) => logger.warn("Registration failed: ", e))
         })
     }
 }

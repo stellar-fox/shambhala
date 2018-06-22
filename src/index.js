@@ -35,13 +35,10 @@ print.info("Hi there! 🌴")
 
 // do something...
 const toy = document.getElementById("toy")
-asyncRepeat(
-    async () => {
-        toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
-        await delay(timeUnit.second * 0.8)
-    },
-    () => true
-)
+asyncRepeat(async () => {
+    toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
+    await delay(timeUnit.second * 0.8)
+}, () => true)
 
 
 // expose `s` dev. namespace
