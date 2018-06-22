@@ -39,9 +39,12 @@ self.addEventListener("install", (installEvent) => {
 
 
 // handle "activate" event
-self.addEventListener("activate", (_activateEvent) => {
-    self.clients.claim()
-    logger.info("Activated, I am.")
+self.addEventListener("activate", (activateEvent) => {
+    logger.info("<activate>", "Activating myself...")
+    activateEvent.waitUntil((async () => {
+        await self.clients.claim()
+        logger.info("<activate>", "Activated, I am.")
+    })())
 })
 
 
