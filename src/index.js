@@ -45,9 +45,9 @@ asyncRepeat(
 
 
 // expose `s` dev. namespace
-if (isObject(window)) (
-    async () => { window.s = await dynamicImportLibs() }
-)()
+if (isObject(window)) (async () => {
+    window.s = await dynamicImportLibs()
+})()
 
 
 // juice

@@ -20,7 +20,7 @@ import { console } from "./utils"
  *
  * @function register
  */
-export const register = (logger = console()) => {
+export const register = (logger = console.noop) => {
     if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
             logger.info("Registering shambhalian service worker...")

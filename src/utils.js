@@ -28,17 +28,18 @@ import {
  * @param {String} context
  * @returns {Object}
  */
-export const console = (context = "main") => {
-    const
+export const console = (() => {
+    let
         methods = ["log", "info", "warn", "error",],
-        c = access(
-            self, ["console",],
-            dict(methods.map((m) => [m, () => null,]))
-        )
-    return dict(methods.map((m) =>
-        [m, partial(c[m])(quote(context, "[]")),]
-    ))
-}
+        noop = dict(methods.map((m) => [m, () => null,])),
+        c = (context = "main") => (
+            (con) => dict(methods.map(
+                (m) => [m, partial(con[m])(quote(context, "[]")),]
+            ))
+        )(access(self, ["console",], noop))
+    c.noop = noop
+    return c
+})()
 
 
 
