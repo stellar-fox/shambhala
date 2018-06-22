@@ -8,6 +8,7 @@
 
 
 
+import { timeout } from "@xcmats/js-toolbox"
 import { serviceWorkerFilename } from "./env"
 import { console } from "./utils"
 
@@ -25,9 +26,14 @@ export const register = (logger = console()) => {
             logger.info("Registering shambhalian service worker...")
             navigator.serviceWorker
                 .register(serviceWorkerFilename)
-                .then((r) =>
+                .then((r) => {
                     logger.info("Registration successful: ", r.scope)
-                )
+                    if (!navigator.serviceWorker.controller) {
+                        timeout(() => {
+                            window.document.location = "/"
+                        })
+                    }
+                })
                 .catch((e) =>
                     logger.warn("Registration failed: ", e)
                 )
