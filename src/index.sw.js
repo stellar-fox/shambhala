@@ -8,15 +8,15 @@
 
 
 
-/* global WorkerGlobalScope */
+// /* global WorkerGlobalScope */
 
 
 
 
 // greet (FF only)
 if (
-    typeof WorkerGlobalScope !== "undefined"  &&
-    typeof WorkerGlobalScope.console !== "undefined"
+    typeof self !== "undefined"  &&
+    typeof self.console !== "undefined"
 ) {
-    WorkerGlobalScope.console.info("We're in! 👽")
+    self.console.info("We're in! 👽")
 }
