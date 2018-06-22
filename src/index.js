@@ -13,6 +13,7 @@ import {
     delay,
     isObject,
     randomInt,
+    timeout,
     timeUnit,
 } from "@xcmats/js-toolbox"
 import {
@@ -47,5 +48,14 @@ if (isObject(window)) (async () => {
 })()
 
 
-// juice
+// fresh juice
 registerShambhala(logger)
+    .then((pageIsControlled) => {
+        if (!pageIsControlled) {
+            logger.warn("Reloading...")
+            timeout(() => history.go("/"))
+        }
+    })
+    .catch((e) =>
+        logger.error("Registration failed: ", e)
+    )
