@@ -16,6 +16,7 @@
     },
     "description": "Mystery.",
     "devDependencies": {
+        "axios": "^0.18.0",
         "babel-eslint": "^8.2.3",
         "eslint": "^4.19.1",
         "html-webpack-plugin": "^3.2.0",
