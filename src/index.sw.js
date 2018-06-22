@@ -14,6 +14,9 @@
 
 
 // greet (FF only)
-if (WorkerGlobalScope) {
+if (
+    typeof WorkerGlobalScope !== "undefined"  &&
+    typeof WorkerGlobalScope.console !== "undefined"
+) {
     WorkerGlobalScope.console.info("We're in! 👽")
 }

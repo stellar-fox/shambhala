@@ -30,6 +30,7 @@ module.exports = {
         filename: "static/[name].bundle.js",
         chunkFilename: "static/[name].chunk.js",
         publicPath,
+        globalObject: "this",
     },
 
     devServer: {
