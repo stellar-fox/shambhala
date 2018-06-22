@@ -26,11 +26,11 @@ import { register as registerShambhala } from "./shambhala"
 
 
 // console logger
-const print = console("🐧")
+const logger = console("🐧")
 
 
 // greet
-print.info("Hi there! 🌴")
+logger.info("Hi there! 🌴")
 
 
 // do something...
@@ -48,4 +48,4 @@ if (isObject(window)) (async () => {
 
 
 // juice
-registerShambhala(print)
+registerShambhala(logger)

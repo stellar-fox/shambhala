@@ -19,20 +19,20 @@ import {
 
 
 // console logger
-const print = console("👽")
+const logger = console("👽")
 
 
 // greet
-print.info("Honored to see you, I am. Hmmmmmm. 🍄")
+logger.info("Honored to see you, I am. Hmmmmmm. 🍄")
 
 
 // handle "install" event
 self.addEventListener("install", (installEvent) => {
-    print.info("<install>", "Installing myself...")
+    logger.info("<install>", "Installing myself...")
     self.skipWaiting()
     installEvent.waitUntil((async () => {
         await delay(2 * timeUnit.second)
-        print.info("<install>", "Finished, I have.")
+        logger.info("<install>", "Finished, I have.")
         // throw new Error("Simulated failure")
     })())
 })
@@ -41,38 +41,38 @@ self.addEventListener("install", (installEvent) => {
 // handle "activate" event
 self.addEventListener("activate", (_activateEvent) => {
     self.clients.claim()
-    print.info("Activated, I am.")
+    logger.info("Activated, I am.")
 })
 
 
 // handle "online" event
 self.addEventListener("online", () => {
-    print.info("Online now, I become.")
+    logger.info("Online now, I become.")
 })
 
 
 // handle "offline" event
 self.addEventListener("offline", () => {
-    print.info("Offline now, I become.")
+    logger.info("Offline now, I become.")
 })
 
 
 // handle "error" event
 self.addEventListener("error", (e) => {
-    print.info("Terrible thing happened:", e)
+    logger.info("Terrible thing happened:", e)
 })
 
 
 // listen to "fetch" events
 self.addEventListener("fetch", (e) => {
     if (e.request.url.endsWith(api.spell)) {
-        print.info("Spoken the right words, you have.")
+        logger.info("Spoken the right words, you have.")
         e.respondWith(new Response(
             JSON.stringify({ message: "We're in! 👻", }),
             { status: 200, }
         ))
     } else {
-        print.info(e.request.method, e.request.url)
+        logger.info(e.request.method, e.request.url)
         e.respondWith(fetch(e.request))
     }
 })
