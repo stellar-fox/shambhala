@@ -13,6 +13,7 @@ import {
     partial,
     quote,
     timeout,
+    timeUnit,
     toBool,
 } from "@xcmats/js-toolbox"
 import { serviceWorkerFilename } from "./env"
@@ -104,7 +105,10 @@ export const register = (logger = console.noop) => {
             // for `old` service workers force a page control check
             .then((version) =>
                 version === "old" ?
-                    timeout(partial(pageControlCheck)(logger)) :
+                    timeout(
+                        partial(pageControlCheck)(logger),
+                        0.2 * timeUnit.second
+                    ) :
                     true
             )
 
