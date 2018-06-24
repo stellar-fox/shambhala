@@ -15,6 +15,13 @@ export const serviceWorkerFilename = "sw.bundle.js"
 
 
 // ...
+export const apiPrefix = "shambhalanians/"
+
+
+
+
+// ...
 export const api = {
-    spell: "shambhalanians/are.you.there?",
+    spell: apiPrefix + "are.you.there",
+    give: apiPrefix + "give.me.something",
 }

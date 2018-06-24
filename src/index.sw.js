@@ -8,10 +8,16 @@
 
 
 
-import { api } from "./env"
+import {
+    api,
+    apiPrefix,
+} from "./env"
 import { console } from "./utils"
 import {
+    choose,
     delay,
+    emptyString,
+    head,
     timeUnit,
 } from "@xcmats/js-toolbox"
 
@@ -22,8 +28,12 @@ import {
 const logger = console("👽")
 
 
+
+
 // greet
 logger.info("Honored to see you, I am. Hmmmmmm. 🍄")
+
+
 
 
 // handle "install" event
@@ -38,6 +48,8 @@ self.addEventListener("install", (installEvent) => {
 })
 
 
+
+
 // handle "activate" event
 self.addEventListener("activate", (activateEvent) => {
     logger.info("<activate>", "Activating myself...")
@@ -48,10 +60,14 @@ self.addEventListener("activate", (activateEvent) => {
 })
 
 
+
+
 // handle "online" event
 self.addEventListener("online", () => {
     logger.info("Online now, I become.")
 })
+
+
 
 
 // handle "offline" event
@@ -60,22 +76,44 @@ self.addEventListener("offline", () => {
 })
 
 
+
+
 // handle "error" event
 self.addEventListener("error", (e) => {
     logger.info("Terrible thing happened:", e)
 })
 
 
+
+
 // listen to "fetch" events
-self.addEventListener("fetch", (e) => {
-    if (e.request.url.endsWith(api.spell)) {
-        logger.info("Spoken the right words, you have.")
-        e.respondWith(new Response(
-            JSON.stringify({ message: "We're in! 👻", }),
-            { status: 200, }
-        ))
-    } else {
+self.addEventListener("fetch", (e) => choose(
+    apiPrefix + head(e.request.url.match(/[^/]*$/)), {
+
+        [api.spell]: () => {
+            logger.info("Spoken the right words, you have.")
+            e.respondWith(new Response(
+                JSON.stringify({ message: "We're in! 👻", }),
+                { status: 200, }
+            ))
+        },
+
+        [api.give]: () => {
+            e.respondWith(new Response([
+                "<html>",
+                "    <head>",
+                "        <title>Pure</title>",
+                "    </head>",
+                "    <body>",
+                "        Kingdom",
+                "    </body>",
+                "</html>",
+            ].join(emptyString()), { status: 200, }))
+        },
+    },
+
+    () => {
         logger.info(e.request.method, e.request.url)
         e.respondWith(fetch(e.request))
     }
-})
+))
