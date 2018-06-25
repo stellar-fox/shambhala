@@ -45,7 +45,7 @@ export const pageControlCheck = (logger = console.noop) => {
  * @async
  * @function register
  * @param {Object} [logger=console.noop]
- * @returns {Undefined}
+ * @returns {Promise.<Boolean>}
  */
 export const register = (logger = console.noop) => {
 
@@ -111,6 +111,35 @@ export const register = (logger = console.noop) => {
                     ) :
                     true
             )
+
+    } else {
+
+        logger.error("Oops... Your browser doesn't support service workers.")
+
+        return Promise.reject(new Error("Service workers not supported."))
+
+    }
+
+}
+
+
+
+
+/**
+ * Unegister shambhala service worker.
+ *
+ * @async
+ * @function unregister
+ * @param {Object} [logger=console.noop]
+ * @returns {Promise.<Boolean>}
+ */
+export const unregister = (logger = console.noop) => {
+
+    // simple capability check
+    if ("serviceWorker" in navigator) {
+
+        return navigator.serviceWorker.getRegistration("/")
+            .then((registration) => registration.unregister())
 
     } else {
 
