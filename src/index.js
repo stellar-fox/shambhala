@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
     try {
         if (! await registerShambhala(logger)) {
             logger.warn("Reloading...")
-            timeout(() => history.go("/"))
+            timeout(() => window.location.reload())
         }
     } catch (e) {
         logger.error("Registration failed: ", e)
