@@ -15,6 +15,12 @@ export const serviceWorkerFilename = "sw.bundle.js"
 
 
 // ...
+export const apiDomain = "https://radiant.spirits/"
+
+
+
+
+// ...
 export const apiPrefix = "shambhalanians/"
 
 
