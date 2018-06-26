@@ -9,6 +9,12 @@
 
 
 // ...
+export const registrationPath = "/"
+
+
+
+
+// ...
 export const serviceWorkerFilename = "sw.bundle.js"
 
 

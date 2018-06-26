@@ -18,6 +18,7 @@ import {
 } from "@xcmats/js-toolbox"
 import {
     api,
+    registrationPath,
     serviceWorkerFilename,
 } from "./env"
 import { console } from "./utils"
@@ -66,7 +67,7 @@ export const register = (logger = console.noop) => {
 
         // try to register a service worker
         return navigator.serviceWorker
-            .register(serviceWorkerFilename)
+            .register(registrationPath + serviceWorkerFilename)
 
             .then((registration) => {
                 let
@@ -84,7 +85,7 @@ export const register = (logger = console.noop) => {
 
                 // if worker is in `waiting` or `active` state
                 // it means it is not newly registered
-                if (!workerState.includes("installing")) resolve("old")
+                if (!workerState.includes("installing")) { resolve("old") }
 
                 // in any case, watch for a service worker update event
                 registration.addEventListener("updatefound", (e) => {
@@ -141,7 +142,7 @@ export const unregister = (logger = console.noop) => {
     // simple capability check
     if ("serviceWorker" in navigator) {
 
-        return navigator.serviceWorker.getRegistration("/")
+        return navigator.serviceWorker.getRegistration(registrationPath)
             .then((registration) => registration.unregister())
             .then(() =>
                 pageControlCheck(logger)  ?
