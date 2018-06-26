@@ -13,7 +13,6 @@ import {
     delay,
     isObject,
     randomInt,
-    timeout,
     timeUnit,
 } from "@xcmats/js-toolbox"
 import {
@@ -21,7 +20,6 @@ import {
     drawEmojis,
     dynamicImportLibs,
 } from "./utils"
-import { register as registerShambhala } from "./shambhala"
 
 
 
@@ -48,17 +46,6 @@ window.addEventListener("load", async () => {
     // expose `s` dev. namespace
     if (isObject(window)) {
         window.s = await dynamicImportLibs()
-    }
-
-
-    // fresh juice
-    try {
-        if (! await registerShambhala(logger)) {
-            logger.warn("Reloading...")
-            timeout(() => window.location.reload())
-        }
-    } catch (e) {
-        logger.error("Registration failed: ", e)
     }
 
 })

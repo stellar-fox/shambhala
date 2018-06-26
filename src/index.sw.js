@@ -93,10 +93,14 @@ self.addEventListener("fetch", (e) => choose(
         // "ping-pong"
         [api.spell]: () => {
             logger.info("Spoken the right words, you have.")
-            e.respondWith(new Response(
-                JSON.stringify({ message: "We're in! 👻", }),
-                { status: 200, }
-            ))
+            e.respondWith(new Response(JSON.stringify({
+                message: "We're in! 👻",
+            }), {
+                status: 200,
+                headers: {
+                    "content-type": "application/json; charset=utf-8",
+                },
+            }))
         },
 
         // markup-response-test

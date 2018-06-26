@@ -15,13 +15,13 @@ export const registrationPath = "/"
 
 
 // ...
-export const serviceWorkerFilename = "sw.bundle.js"
+export const serviceWorkerFilename = "shambhala.sw.bundle.js"
 
 
 
 
 // ...
-export const apiDomain = "https://radiant.spirits/"
+export const apiDomain = "http://secrets.localhost:8080/"
 
 
 

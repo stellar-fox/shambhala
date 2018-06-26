@@ -21,7 +21,11 @@ module.exports = {
             require.resolve("webpack/hot/dev-server"),
             path.resolve(appDirectory, "src/index.js"),
         ],
-        "sw": [
+        "static/shambhala.main": [
+            require.resolve("webpack/hot/dev-server"),
+            path.resolve(appDirectory, "src/index.shambhala.js"),
+        ],
+        "shambhala.sw": [
             path.resolve(appDirectory, "src/index.sw.js"),
         ],
     },
@@ -61,7 +65,18 @@ module.exports = {
             filename: "index.html",
             inject: true,
             hash: true,
-            template: path.resolve(appDirectory, "public/index.html"),
+            template: path.resolve(
+                appDirectory, "public/index.html"
+            ),
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ["static/shambhala.main",],
+            filename: "shambhala.html",
+            inject: true,
+            hash: true,
+            template: path.resolve(
+                appDirectory, "public/index.shambhala.html"
+            ),
         }),
     ],
 

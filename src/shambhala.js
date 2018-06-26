@@ -9,6 +9,7 @@
 
 
 import {
+    access,
     handleException,
     partial,
     quote,
@@ -47,11 +48,11 @@ export const pageControlCheck = (logger = console.noop) => {
  * Register shambhala service worker.
  *
  * @async
- * @function register
+ * @function registerServiceWorker
  * @param {Object} [logger=console.noop]
  * @returns {Promise.<Boolean>}
  */
-export const register = (logger = console.noop) => {
+export const registerServiceWorker = (logger = console.noop) => {
 
     // simple capability check
     if ("serviceWorker" in navigator) {
@@ -133,17 +134,19 @@ export const register = (logger = console.noop) => {
  * Unegister shambhala service worker.
  *
  * @async
- * @function unregister
+ * @function unregisterServiceWorker
  * @param {Object} [logger=console.noop]
  * @returns {Promise.<Boolean>}
  */
-export const unregister = (logger = console.noop) => {
+export const unregisterServiceWorker = (logger = console.noop) => {
 
     // simple capability check
     if ("serviceWorker" in navigator) {
 
         return navigator.serviceWorker.getRegistration(registrationPath)
-            .then((registration) => registration.unregister())
+            .then((registration) =>
+                access(registration, "unregister", () => null)()
+            )
             .then(() =>
                 pageControlCheck(logger)  ?
                     window.fetch(api.release)  :
