@@ -9,29 +9,23 @@
 
 
 import {
-    api,
-    apiPrefix,
-    defaultDelay,
-} from "./env"
-import { console } from "./utils"
-import {
     choose,
     delay,
     emptyString,
     head,
 } from "@xcmats/js-toolbox"
+import { console } from "./utils"
+import {
+    api,
+    apiPrefix,
+    defaultDelay,
+} from "./env"
 
 
 
 
 // console logger
 const logger = console("👽")
-
-
-
-
-// greet
-logger.info("Honored to see you, I am. Hmmmmmm. 🍄")
 
 
 
