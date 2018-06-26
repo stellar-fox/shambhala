@@ -11,6 +11,7 @@
 import {
     access,
     handleException,
+    head,
     partial,
     quote,
     timeout,
@@ -21,6 +22,8 @@ import {
     api,
     registrationPath,
     serviceWorkerFilename,
+    serviceWorkerDomain,
+    serviceWorkerIframe,
 } from "./env"
 import { console } from "./utils"
 
@@ -161,4 +164,25 @@ export const unregisterServiceWorker = (logger = console.noop) => {
 
     }
 
+}
+
+
+
+
+/**
+ * Embed <iframe> element with shambhala application.
+ *
+ * @async
+ * @function embed
+ * @returns {Promise.<Boolea>}
+ */
+export const embed = () => {
+    let iframe = document.createElement("iframe")
+
+    iframe.src = serviceWorkerDomain + serviceWorkerIframe
+    iframe.style.display = "none"
+
+    head(document.getElementsByTagName("body")).appendChild(iframe)
+
+    return Promise.resolve(true)
 }

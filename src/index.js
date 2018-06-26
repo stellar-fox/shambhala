@@ -15,6 +15,7 @@ import {
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
+import { embed } from "./shambhala"
 import {
     console,
     drawEmojis,
@@ -47,5 +48,9 @@ window.addEventListener("load", async () => {
     if (isObject(window)) {
         window.s = await dynamicImportLibs()
     }
+
+
+    // instantiate shambhala
+    embed()
 
 })

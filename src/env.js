@@ -9,6 +9,18 @@
 
 
 // ...
+export const serviceWorkerDomain = "http://secrets.localhost:8080/"
+
+
+
+
+// ...
+export const serviceWorkerIframe = "shambhala.html"
+
+
+
+
+// ...
 export const registrationPath = "/"
 
 
@@ -16,12 +28,6 @@ export const registrationPath = "/"
 
 // ...
 export const serviceWorkerFilename = "shambhala.sw.bundle.js"
-
-
-
-
-// ...
-export const apiDomain = "http://secrets.localhost:8080/"
 
 
 
