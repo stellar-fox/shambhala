@@ -8,8 +8,14 @@
 
 
 
-import { timeout } from "@xcmats/js-toolbox"
-import { registerServiceWorker } from "./shambhala"
+import {
+    choose,
+    timeout
+} from "@xcmats/js-toolbox"
+import {
+    registerServiceWorker,
+    unregisterServiceWorker,
+} from "./shambhala"
 import { console } from "./utils"
 import { mainDomain } from "./env"
 
@@ -66,7 +72,20 @@ window.addEventListener("message", (e) => {
     // don't get fooled by potential messages from others
     if (e.origin !== mainDomain) { return }
 
+
     // ...
     logger.info("Root said:", e.data)
+
+
+    // undertake appropriate action
+    choose(e.data, {
+
+        // unregister service worker
+        "unregister": async () => {
+            await unregisterServiceWorker(logger)
+        },
+
+    })
+
 
 })
