@@ -122,14 +122,14 @@ self.addEventListener("fetch", (e) => choose(
         // force clients reload after unregister
         [api.release]: () => {
             logger.info("Bye!")
-            e.respondWith(
-                self.clients.matchAll()
-                    .then((clients) => clients.map(c =>
-                        c.url  &&  "navigate" in c  ?
-                            c.navigate(c.url)  :  null
-                    ))
-                    .then(() => new Response(null, { status: 200, }))
-            )
+            self.clients.matchAll()
+                .then((clients) => clients.map(c =>
+                    c.url  &&  "navigate" in c  ?
+                        c.navigate(c.url)  :  null
+                ))
+                .then(() => e.respondWith(
+                    new Response(null, { status: 200, })
+                ))
         },
 
     },

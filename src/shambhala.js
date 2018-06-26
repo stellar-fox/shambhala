@@ -9,7 +9,7 @@
 
 
 import {
-    access,
+    delay,
     handleException,
     head,
     partial,
@@ -148,12 +148,13 @@ export const unregisterServiceWorker = (logger = console.noop) => {
 
         return navigator.serviceWorker.getRegistration(registrationPath)
             .then((registration) =>
-                access(registration, "unregister", () => null)()
+                registration  &&  "unregister" in registration  ?
+                    registration.unregister()  :  null
             )
+            .then(() => delay(defaultDelay))
             .then(() =>
                 pageControlCheck(logger)  ?
-                    window.fetch(api.release)  :
-                    null
+                    window.fetch(api.release)  :  null
             )
 
     } else {
