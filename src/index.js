@@ -21,16 +21,19 @@ import {
     drawEmojis,
     dynamicImportLibs,
 } from "./utils"
+import { serviceWorkerDomain } from "./env"
+
+
+
+
+// console logger
+const logger = console("🐧")
 
 
 
 
 // gentle start
 window.addEventListener("load", async () => {
-
-    // console logger
-    const logger = console("🐧")
-
 
     // greet
     logger.info("Hi there! 🌴")
@@ -44,13 +47,30 @@ window.addEventListener("load", async () => {
     }, () => true)
 
 
+    // instantiate shambhala
+    let shambhala = await embed()
+
+
     // expose `s` dev. namespace
     if (isObject(window)) {
-        window.s = await dynamicImportLibs()
+        window.s = {
+            ...await dynamicImportLibs(),
+            shambhala,
+        }
     }
 
+})
 
-    // instantiate shambhala
-    embed()
+
+
+
+// listen to messages coming from shambhala
+window.addEventListener("message", (e) => {
+
+    // don't get fooled by potential messages from others
+    if (e.origin !== serviceWorkerDomain) { return }
+
+    // ...
+    logger.info("Shambhala said:", e.data)
 
 })

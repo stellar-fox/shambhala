@@ -9,8 +9,15 @@
 
 
 import { timeout } from "@xcmats/js-toolbox"
-import { console } from "./utils"
 import { registerServiceWorker } from "./shambhala"
+import { console } from "./utils"
+import { mainDomain } from "./env"
+
+
+
+
+// console logger
+const logger = console("🤖")
 
 
 
@@ -18,26 +25,48 @@ import { registerServiceWorker } from "./shambhala"
 // gentle start
 window.addEventListener("load", async () => {
 
-    // console logger
-    const logger = console("🤖")
+    // if there is no parent - there is nothing to do
+    if (window.parent === window) {
+        logger.warn("Have you lost something here?")
+        window.location.replace(mainDomain)
+        return null
+    }
 
 
     // greet
-    logger.info("Hi there! 🌴")
+    logger.info("Boom! 💥")
 
 
-    // register service worker
+    // do stuff
     try {
+
+        // register service worker
         if (! await registerServiceWorker(logger)) {
             logger.warn("Reloading...")
             timeout(() => window.location.reload())
+        } else {
+
+            // say "hello" over cross-origin communication channel
+            window.parent.postMessage("Hello!", mainDomain)
+
         }
+
     } catch (e) {
         logger.error("Registration failed: ", e)
     }
 
+})
 
-    // respond to postMessage events
+
+
+
+// listen to messages coming from parent (the root)
+window.addEventListener("message", (e) => {
+
+    // don't get fooled by potential messages from others
+    if (e.origin !== mainDomain) { return }
+
     // ...
+    logger.info("Root said:", e.data)
 
 })
