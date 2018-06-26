@@ -15,17 +15,17 @@ import {
     partial,
     quote,
     timeout,
-    timeUnit,
     toBool,
 } from "@xcmats/js-toolbox"
+import { console } from "./utils"
 import {
     api,
+    defaultDelay,
     registrationPath,
     serviceWorkerFilename,
     serviceWorkerDomain,
     serviceWorkerIframe,
 } from "./env"
-import { console } from "./utils"
 
 
 
@@ -115,7 +115,7 @@ export const registerServiceWorker = (logger = console.noop) => {
                 version === "old" ?
                     timeout(
                         partial(pageControlCheck)(logger),
-                        0.2 * timeUnit.second
+                        defaultDelay
                     ) :
                     true
             )
@@ -184,5 +184,5 @@ export const embed = () => {
 
     head(document.getElementsByTagName("body")).appendChild(iframe)
 
-    return timeout(() => iframe.contentWindow, 0.2 * timeUnit.second)
+    return timeout(() => iframe.contentWindow, defaultDelay)
 }

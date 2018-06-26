@@ -11,6 +11,7 @@
 import {
     api,
     apiPrefix,
+    defaultDelay,
 } from "./env"
 import { console } from "./utils"
 import {
@@ -18,7 +19,6 @@ import {
     delay,
     emptyString,
     head,
-    timeUnit,
 } from "@xcmats/js-toolbox"
 
 
@@ -41,9 +41,8 @@ self.addEventListener("install", (installEvent) => {
     logger.info("<install>", "Installing myself...")
     self.skipWaiting()
     installEvent.waitUntil((async () => {
-        await delay(2 * timeUnit.second)
+        await delay(defaultDelay)
         logger.info("<install>", "Finished, I have.")
-        // throw new Error("Simulated failure")
     })())
 })
 

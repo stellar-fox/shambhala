@@ -8,14 +8,31 @@
 
 
 
-// ...
-export const serviceWorkerDomain = "http://secrets.localhost:8080/"
+import { timeUnit } from "@xcmats/js-toolbox"
 
 
 
 
 // ...
-export const serviceWorkerIframe = "shambhala.html"
+export const defaultDelay = 0.2 * timeUnit.second
+
+
+
+
+// ...
+export const mainDomain = "http://localhost:8080"
+
+
+
+
+// ...
+export const serviceWorkerDomain = "http://secrets.localhost:8080"
+
+
+
+
+// ...
+export const serviceWorkerIframe = "/shambhala.html"
 
 
 
