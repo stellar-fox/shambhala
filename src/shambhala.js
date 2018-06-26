@@ -174,7 +174,7 @@ export const unregisterServiceWorker = (logger = console.noop) => {
  *
  * @async
  * @function embed
- * @returns {Promise.<Boolea>}
+ * @returns {Promise.<Object>}
  */
 export const embed = () => {
     let iframe = document.createElement("iframe")
@@ -184,5 +184,5 @@ export const embed = () => {
 
     head(document.getElementsByTagName("body")).appendChild(iframe)
 
-    return Promise.resolve(true)
+    return timeout(() => iframe.contentWindow, 0.2 * timeUnit.second)
 }
