@@ -90,6 +90,7 @@ self.addEventListener("error", (e) => {
 self.addEventListener("fetch", (e) => choose(
     apiPrefix + head(e.request.url.match(/[^/]*$/)), {
 
+        // "ping-pong"
         [api.spell]: () => {
             logger.info("Spoken the right words, you have.")
             e.respondWith(new Response(
@@ -98,6 +99,7 @@ self.addEventListener("fetch", (e) => choose(
             ))
         },
 
+        // markup-response-test
         [api.give]: () => {
             logger.info(e.request.method, e.request.url)
             e.respondWith(new Response([
@@ -119,6 +121,20 @@ self.addEventListener("fetch", (e) => choose(
                 },
             }))
         },
+
+        // force clients reload after unregister
+        [api.release]: () => {
+            logger.info("Bye!")
+            e.repondWith(
+                self.clients.matchAll()
+                    .then((clients) => clients.map(c =>
+                        c.url  &&  "navigate" in c  ?
+                            c.navigate(c.url)  :  null
+                    ))
+                    .then(() => new Response(null, { status: 200, }))
+            )
+        },
+
     },
 
     () => {

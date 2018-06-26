@@ -28,6 +28,7 @@ export const apiPrefix = "shambhalanians/"
 
 // ...
 export const api = {
+    release: apiPrefix + "release",
     spell: apiPrefix + "are.you.there",
     give: apiPrefix + "give.me.something",
 }

@@ -16,7 +16,10 @@ import {
     timeUnit,
     toBool,
 } from "@xcmats/js-toolbox"
-import { serviceWorkerFilename } from "./env"
+import {
+    api,
+    serviceWorkerFilename,
+} from "./env"
 import { console } from "./utils"
 
 
@@ -140,6 +143,11 @@ export const unregister = (logger = console.noop) => {
 
         return navigator.serviceWorker.getRegistration("/")
             .then((registration) => registration.unregister())
+            .then(() =>
+                pageControlCheck(logger)  ?
+                    window.fetch(api.release)  :
+                    null
+            )
 
     } else {
 
