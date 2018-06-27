@@ -11,7 +11,7 @@
 import {
     choose,
     delay,
-    emptyString,
+    // emptyString,
     head,
 } from "@xcmats/js-toolbox"
 import { console } from "./utils"
@@ -97,27 +97,27 @@ self.addEventListener("fetch", (e) => choose(
         },
 
         // markup-response-test
-        [api.give]: () => {
-            logger.info(e.request.method, e.request.url)
-            e.respondWith(new Response([
-                "<html>",
-                "    <head>",
-                "        <title>Pure</title>",
-                "    </head>",
-                "    <body>",
-                "        <div>Kingdom</div>",
-                "        <script>",
-                "            window.shambhaliansecret = 'oh my, oh my';",
-                "        </script>",
-                "    </body>",
-                "</html>",
-            ].join(emptyString()), {
-                status: 200,
-                headers: {
-                    "content-type": "text/html; charset=utf-8",
-                },
-            }))
-        },
+        // [api.give]: () => {
+        //     logger.info(e.request.method, e.request.url)
+        //     e.respondWith(new Response([
+        //         "<html>",
+        //         "    <head>",
+        //         "        <title>Pure</title>",
+        //         "    </head>",
+        //         "    <body>",
+        //         "        <div>Kingdom</div>",
+        //         "        <script>",
+        //         "            window.shambhaliansecret = 'oh my, oh my';",
+        //         "        </script>",
+        //         "    </body>",
+        //         "</html>",
+        //     ].join(emptyString()), {
+        //         status: 200,
+        //         headers: {
+        //             "content-type": "text/html; charset=utf-8",
+        //         },
+        //     }))
+        // },
 
         // force clients reload after unregister
         [api.release]: () => {
