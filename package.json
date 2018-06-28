@@ -17,12 +17,12 @@
     "description": "Mystery.",
     "devDependencies": {
         "axios": "^0.18.0",
-        "babel-eslint": "^8.2.3",
-        "eslint": "^4.19.1",
+        "babel-eslint": "^8.2.5",
+        "eslint": "^5.0.1",
         "html-webpack-plugin": "^3.2.0",
         "jsdoc": "^3.5.5",
         "rimraf": "^2.6.2",
-        "webpack": "^4.12.0",
+        "webpack": "^4.12.2",
         "webpack-cli": "^3.0.8",
         "webpack-dev-server": "^3.1.4"
     },
