@@ -17,17 +17,12 @@ module.exports = {
     mode: "development",
 
     entry: {
-        "static/main": [
-            require.resolve("webpack/hot/dev-server"),
+        "static/main":
             path.resolve(appDirectory, "src/index.js"),
-        ],
-        "static/shambhala.main": [
-            require.resolve("webpack/hot/dev-server"),
+        "static/shambhala.main":
             path.resolve(appDirectory, "src/index.shambhala.js"),
-        ],
-        "shambhala.sw": [
+        "shambhala.sw":
             path.resolve(appDirectory, "src/index.sw.js"),
-        ],
     },
 
     output: {
