@@ -73,11 +73,12 @@ export const drawEmojis = ((emojis) =>
  */
 export const dynamicImportLibs = async () => {
     let [
-        axios, env, redshift, toolbox, utils, lib,
+        axios, env, redshift, stellar, toolbox, utils, lib,
     ] = await Promise.all([
         import("axios"),
         import("./env"),
         import("@stellar-fox/redshift"),
+        import("stellar-base"),
         import("@xcmats/js-toolbox"),
         import("./utils"),
         import("./shambhala"),
@@ -89,6 +90,7 @@ export const dynamicImportLibs = async () => {
         lib,
         process,  // eslint-disable-line
         redshift,
+        stellar,
         toolbox,
         utils,
     }
