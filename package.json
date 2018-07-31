@@ -10,7 +10,7 @@
         }
     ],
     "dependencies": {
-        "@babel/runtime": "^7.0.0-beta.54",
+        "@babel/runtime": "^7.0.0-beta.55",
         "@stellar-fox/redshift": "^0.2.0",
         "@xcmats/js-toolbox": "^0.3.8",
         "localforage": "^1.7.2",
