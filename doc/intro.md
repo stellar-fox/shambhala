@@ -108,43 +108,45 @@ III. Units
 
 * `KEYPAIR` - _StellarSDK.Keypair_ object
 * `PASSPHRASE` - up to 100 characters long, alphanumeric word
-* `G-MNEMONIC` - _genesis_ 24 word mnemonic + optional `PASSPHRASE`,
-    stored by user (in a form of e.g. _paper wallet_) and known only to him
-* `G-PUBLIC` - user account number, Stellar public key (G...),
-    derived from `G-MNEMONIC`
-* `GKP` - _genesis_ `KEYPAIR`, derived from `G-MNEMONIC`,
+* `G_MNEMONIC` - _genesis_ 24 word mnemonic + optional `PASSPHRASE`,
+    stored by _user_ (in a form of e.g. _paper wallet_)
+    and known only to him/her
+* `G_PUBLIC` - user account number, stellar public key (G...),
+    derived from `G_MNEMONIC`
+* `GKP` - _genesis_ `KEYPAIR`, derived from `G_MNEMONIC`,
     **created maximum once** during onboarding process to sign appropriate
     _setOptions_ transaction
-* `C-SECRET` - _client_ secret, Stellar private key (S...)
-* `C-PUBLIC` - _client_ public key (G...)
-* `CKP` - _client_ `KEYPAIR`, derived from `C-SECRET`
-* `S-SECRET` - _server_ secret, Stellar private key (S...)
-* `S-PUBLIC` - _server_ public key (G...)
+* `C_SECRET` - _client_ secret, stellar private key (S...)
+* `C_PUBLIC` - _client_ public key (G...)
+* `CKP` - _client_ `KEYPAIR`, derived from `C_SECRET`
+* `S_SECRET` - _server_ secret, stellar private key (S...)
+* `S_PUBLIC` - _server_ public key (G...)
 * `SKP` - _server_ `KEYPAIR`
-* `C-SALT`, `SALT-FOR-S` - random, hex-encoded sha256 strings,
+* `C_SALT`, `SALT_FOR_S` - random, hex-encoded SHA256 strings,
     generated using [CSPRNG], stored using [Web Storage]
-* `PIN` - minimum 5-digits secret (alphanumeric as option),
-* `S-KEY` - [key][crypto-key] derived from `PIN` and `SALT-FOR-S`,
-    used to encrypt/decrypt `EncSKP`,
-* `SALT-FOR-C` - random, hex-encoded SHA256 string, generated using [CSPRNG],
-    not stored anywhere in plain form,
-* `C-PASSPHRASE` - [passphrase][crypto-passphrase] derived from `S-KEY` and `SALT-FOR-C`
-* `C-KEY` - [key][crypto-key] derived from `C-PASSPHRASE` and `C-SALT`,
-    used to encrypt/decrypt `EncCKP`
-* `EncCKP` - `C-SECRET` encrypted using `C-KEY`, stored using [Web Storage]
-* `EncSKP` - (`S-SECRET` + `SALT-FOR-C`) encrypted with `S-KEY`,
-        stored on _server_,
-* `TX-PAYLOAD` - _TransactionSignaturePayload_ [XDR] (as defined in _StelarSDK_)
-* `C-SIGNATURE` - `TX-PAYLOAD` signed with `CKP`
-* `S-SIGNATURE` - `TX-PAYLOAD` signed with `SKP`
+* `PIN` - minimum 5-digits secret (alphanumeric as option)
+* `S_KEY` - [key][crypto-key] derived from `PIN` and `SALT_FOR_S`,
+    used to encrypt/decrypt `ENC_SKP`
+* `SALT_FOR_C` - random, hex-encoded SHA256 string, generated using [CSPRNG],
+    not stored anywhere in plain form
+* `C_PASSPHRASE` - [passphrase][crypto-passphrase] derived
+    from `S_KEY` and `SALT_FOR_C`
+* `C_KEY` - [key][crypto-key] derived from `C_PASSPHRASE` and `C_SALT`,
+    used to encrypt/decrypt `ENC_CKP`
+* `ENC_CKP` - `C_SECRET` encrypted using `C_KEY`, stored using [Web Storage]
+* `ENC_SKP` - (`S_SECRET` + `SALT_FOR_C`) encrypted with `S_KEY`,
+        stored on _server_
+* `TX_PAYLOAD` - _TransactionSignaturePayload_ [XDR] (as defined in _StelarSDK_)
+* `C_SIGNATURE` - `TX_PAYLOAD` signed with `CKP`
+* `S_SIGNATURE` - `TX_PAYLOAD` signed with `SKP`
 
 <br />
 
 
 
 
-IV. Shambhala onboarding process (draft)
-------------------------------------------
+IV. Shambhala onboarding process _(draft)_
+--------------------------------------------
 
 ### 1. Initial state
 
@@ -154,80 +156,90 @@ IV. Shambhala onboarding process (draft)
 
 * _client_:
 
-    - no stored `G-PUBLIC`
-    - no stored `EncCKP`
-    - no stored `C-SALT`
-    - no stored `SALT-FOR-S`
+    - no stored `G_PUBLIC`
+    - no stored `ENC_CKP`
+    - no stored `C_SALT`
+    - no stored `SALT_FOR_S`
 
 * _server_:
 
-    - no stored `G-PUBLIC`
-    - no stored `EncSKP`
+    - no stored `G_PUBLIC`
+    - no stored `ENC_SKP`
     - no stored `account-funded-by-sfox` flag
 
 
 
 
-### 2. **[Variant A]** Account creation
+### 2. **[Variant A]** - Account creation
 
 _User_ doesn't have an account on _[stellar] network_.
 
 * _client_:
 
-    - generate `G-MNEMONIC` and present it to the _user_:
+    - generate `G_MNEMONIC` and present it to the _user_:
 
-        > `G-MNEMONIC` = redshift.genMnemonic()
+        ```javascript
+        G_MNEMONIC = redshift.genMnemonic()
+        ```
 
     - ask _user_ to create `PASSPHRASE` (can be empty)
 
     - **[!!]** create `GKP` (_path 0_):
 
-        > `GKP` = redshift.hexSeed(`G-MNEMONIC`)...keypair()
+        ```javascript
+        GKP = redshift.hexSeed(G_MNEMONIC)...keypair()
+        ```
 
-    - destroy `G-MNEMONIC`
+    - destroy `G_MNEMONIC`
 
-    - extract `G-PUBLIC`, store it, and send it to the _server_:
+    - extract `G_PUBLIC`, store it, and send it to the _server_:
 
-        > `G-PUBLIC` = `GKP`.publicKey()
+        ```javascript
+        G_PUBLIC = GKP.publicKey()
+        ```
 
     - request funding from the _server_
 
 
 * _server_:
 
-    - receive `G-PUBLIC` from _client_
+    - receive `G_PUBLIC` from _client_
 
-    - store `G-PUBLIC`
+    - store `G_PUBLIC`
 
-    - fund `G-PUBLIC` with minimal needed amount
+    - fund `G_PUBLIC` with minimal needed amount
         (_friendbot_ on _test-net_, _sfox service_ on _public-net_)
 
-    - store information that `G-PUBLIC` was funded by sfox:
+    - store information that `G_PUBLIC` was funded by sfox:
 
-        > `account-funded-by-sfox` = `true`
+        ```javascript
+        account-funded-by-sfox = true
+        ```
 
 
 
 
-### 3. **[Variant B]** Account association
+### 3. **[Variant B]** - Account association
 
 _User_ already has a _[stellar] network_ account with funds.
 
 * _client_:
 
-    - ask _user_ to provide `G-PUBLIC`
+    - ask _user_ to provide `G_PUBLIC`
 
-    - send `G-PUBLIC` to the _server_
+    - send `G_PUBLIC` to the _server_
 
 * _server_:
 
-    - receive `G-PUBLIC` from _client_
+    - receive `G_PUBLIC` from _client_
 
-    - store `G-PUBLIC`
+    - store `G_PUBLIC`
 
-    - store information that`G-PUBLIC` wasn't funded by sfox:
+    - store information that`G_PUBLIC` wasn't funded by sfox:
 
-        > `account-funded-by-sfox` = `false`
+        ```javascript
+        account-funded-by-sfox = false
+        ```
 
 
 
@@ -236,78 +248,102 @@ _User_ already has a _[stellar] network_ account with funds.
 
 * _client_:
 
-    - generate and store `SALT-FOR-S`:
+    - generate and store `SALT_FOR_S`:
 
-        > `SALT-FOR-S` = genRandomSHA256()
+        ```javascript
+        SALT_FOR_S = genRandomSHA256()
+        ```
 
     -  ask _user_ to provide `PIN`
         (should be double-checked by two input fields)
 
-    - compute `S-KEY`:
+    - compute `S_KEY`:
 
-        > `S-KEY` = genKey(`PIN`, `SALT-FOR-S`)
+        ```javascript
+        S_KEY = genKey(PIN, SALT_FOR_S)
+        ```
 
-    - send `S-KEY` to the _server_
+    - send `S_KEY` to the _server_
 
-    - destroy `PIN` and `S-KEY`
+    - destroy `PIN` and `S_KEY`
 
 
 * _server_:
 
-    - receive `S-KEY` from _client_
+    - receive `S_KEY` from _client_
 
-    - generate `S-SECRET`:
+    - generate `S_SECRET`:
 
-        > `S-SECRET` = StellarSDK.Keypair.random().secret()
+        ```javascript
+        S_SECRET = StellarSDK.Keypair.random().secret()
+        ```
 
-    - generate `SALT-FOR-C`:
+    - generate `SALT_FOR_C`:
 
-        > `SALT-FOR-C` = genRandomSHA256()
+        ```javascript
+        SALT_FOR_C = genRandomSHA256()
+        ```
 
-    - compute and store `EncSKP`:
+    - compute and store `ENC_SKP`:
 
-        > `EncSKP` = encrypt(`S-SECRET` + `SALT-FOR-C`, `S-KEY`)
+        ```javascript
+        ENC_SKP = encrypt(S_SECRET + SALT_FOR_C, S_KEY)
+        ```
 
-    - compute `C-PASSPHRASE`:
+    - compute `C_PASSPHRASE`:
 
-        > `C-PASSPHRASE` = genKey(`S-KEY`, `SALT-FOR-C`)
+        ```javascript
+        C_PASSPHRASE = genKey(S_KEY, SALT_FOR_C)
+        ```
 
-    - extract `S-PUBLIC` from `S-SECRET`:
+    - extract `S_PUBLIC` from `S_SECRET`:
 
-        > `S-PUBLIC` = StellarSDK.Keypair.fromSecret(`S-SECRET`).publicKey()
+        ```javascript
+        S_PUBLIC = StellarSDK.Keypair.fromSecret(S_SECRET).publicKey()
+        ```
 
-    - send `C-PASSPHRASE` and `S-PUBLIC` to _client_
+    - send `C_PASSPHRASE` and `S_PUBLIC` to _client_
 
-    - destroy `S-KEY`, `S-SECRET`, `SALT-FOR-C` and `C-PASSPHRASE`
+    - destroy `S_KEY`, `S_SECRET`, `SALT_FOR_C` and `C_PASSPHRASE`
 
 
 * _client_:
 
-    - receive `C-PASSPHRASE` and `S-PUBLIC` from the _server_
+    - receive `C_PASSPHRASE` and `S_PUBLIC` from the _server_
 
-    - generate and store `C-SALT`:
+    - generate and store `C_SALT`:
 
-        > `C-SALT` = genRandomSHA256(),
+        ```javascript
+        C_SALT = genRandomSHA256()
+        ```
 
-    - compute `C-KEY`:
+    - compute `C_KEY`:
 
-        > `C-KEY` = genKey(`C-PASSPHRASE`, `C-SALT`)
+        ```javascript
+        C_KEY = genKey(C_PASSPHRASE, C_SALT)
+        ```
 
-    - generate `C-SECRET`:
+    - generate `C_SECRET`:
 
-        > `C-SECRET` = StellarSDK.Keypair.random().secret()
+        ```javascript
+        C_SECRET = StellarSDK.Keypair.random().secret()
+        ```
 
-    - compute and store `EncCKP`:
+    - compute and store `ENC_CKP`:
 
-        > `EncCKP` = encrypt(`C-SECRET`, `C-KEY`)
+        ```javascript
+        ENC_CKP = encrypt(C_SECRET, C_KEY)
+        ```
 
-    - extract `C-PUBLIC` from `C-SECRET`:
+    - extract `C_PUBLIC` from `C_SECRET`:
 
-        > `C-PUBLIC` = StellarSDK.Keypair.fromSecret(`C-SECRET`).publicKey()
+        ```javascript
+        C_PUBLIC = StellarSDK.Keypair.fromSecret(C_SECRET).publicKey()
+        ```
 
-    - destroy `C-PASSPHRASE`, `C-KEY`, `C-SECRET`
+    - destroy `C_PASSPHRASE`, `C_KEY`, `C_SECRET`
 
-    - present `C-PUBLIC` and `S-PUBLIC` to the _user_
+    - present `C_PUBLIC` and `S_PUBLIC` to the _user_
 
 
 
@@ -316,41 +352,41 @@ _User_ already has a _[stellar] network_ account with funds.
 
 * _user_:
 
-    - know his/her `G-MNEMONIC` and optional `PASSPHRASE`
+    - know his/her `G_MNEMONIC` and optional `PASSPHRASE`
     - know his/her `PIN`
-    - is aware of `C-PUBLIC` and `S-PUBLIC`
+    - is aware of `C_PUBLIC` and `S_PUBLIC`
 
 * _client_:
 
-    - `G-PUBLIC` is present in storage
-    - `EncCKP` is present in storage
-    - `C-SALT` is present in storage
-    - `SALT-FOR-S` is present in storage
+    - `G_PUBLIC` is present in storage
+    - `ENC_CKP` is present in storage
+    - `C_SALT` is present in storage
+    - `SALT_FOR_S` is present in storage
 
 * _server_:
 
-    - `G-PUBLIC` is present in storage
-    - `EncSKP` is present in storage
+    - `G_PUBLIC` is present in storage
+    - `ENC_SKP` is present in storage
     - `account-funded-by-sfox` flag is present in storage
 
 
 
 
-### 6. **[Variant A]** Keys association
+### 6. **[Variant A]** - Keys association
 
 * _client_:
 
     - **[!!]** `GKP` is present in memory (_NOT_ in the persistent storage),
-        as it was created in step two of Account creation.
+        as it was created in step two of **Account creation**.
 
-    - `G-PUBLIC`, `C-PUBLIC` and `S-PUBLIC` are present in memory
+    - `G_PUBLIC`, `C_PUBLIC` and `S_PUBLIC` are present in memory
 
     - construct `StellarSDK.Transaction` with an appropriate
         _setOptions_ operation:
 
-        - `G-PUBLIC`, `C-PUBLIC`, `S-PUBLIC` _weights_
+        - `G_PUBLIC`, `C_PUBLIC`, `S_PUBLIC` _weights_
         - appropriate tresholds
-        - `C-PUBLIC` and `S-PUBLIC` allowed for _multi-sig_
+        - `C_PUBLIC` and `S_PUBLIC` allowed for _multi-sig_
 
     - sign the transaction with `GKP`
 
@@ -364,22 +400,22 @@ _User_ already has a _[stellar] network_ account with funds.
 
 
 
-### 7. **[Variant B]** Keys association
+### 7. **[Variant B]** - Keys association
 
 * _client_:
 
     - `GKP` is not present in memory
 
-    - `G-PUBLIC`, `C-PUBLIC` and `S-PUBLIC` are present in memory
+    - `G_PUBLIC`, `C_PUBLIC` and `S_PUBLIC` are present in memory
 
     - construct `StellarSDK.Transaction` with an appropriate
-        `setOptions` operation:
+        _setOptions_ operation:
 
-        - `G-PUBLIC`, `C-PUBLIC`, `S-PUBLIC` _weights_
+        - `G_PUBLIC`, `C_PUBLIC`, `S_PUBLIC` _weights_
         - appropriate tresholds
-        - `C-PUBLIC` and `S-PUBLIC` allowed for _multi-sig_
+        - `C_PUBLIC` and `S_PUBLIC` allowed for _multi-sig_
 
-    - present `TX-PAYLOAD` to the _user_
+    - present `TX_PAYLOAD` to the _user_
 
     - if _user_ has [LedgerHQ], let him sign the transaction with it
         and send the signed transaction to the network
@@ -389,7 +425,7 @@ _User_ already has a _[stellar] network_ account with funds.
 
 * _user_:
 
-    - use computed `TX-PAYLOAD`, verify it, sign and send
+    - use computed `TX_PAYLOAD`, verify it, sign and send
         to network (with the usage of [LedgerHQ] and/or [Stellar Laboratory])
 
 <br />
@@ -397,28 +433,28 @@ _User_ already has a _[stellar] network_ account with funds.
 
 
 
-V. Shambhala transaction signing process (draft)
---------------------------------------------------
+V. Shambhala transaction signing process _(draft)_
+----------------------------------------------------
 
 1. Initial state
 
 * _user_:
 
     - know his/her `PIN`
-    - has already associated `C-PUBLIC` and `S-PUBLIC`
+    - has already associated `C_PUBLIC` and `S_PUBLIC`
         to his/her account in the process of onboarding
 
 * _client_:
 
-    - `G-PUBLIC` present in storage
-    - `EncCKP` present in storage
-    - `C-SALT` present in storage
-    - `SALT-FOR-S` present in storage
+    - `G_PUBLIC` present in storage
+    - `ENC_CKP` present in storage
+    - `C_SALT` present in storage
+    - `SALT_FOR_S` present in storage
 
 * _server_:
 
-    - `G-PUBLIC` present in storage
-    - `EncSKP` present in storage
+    - `G_PUBLIC` present in storage
+    - `ENC_SKP` present in storage
     - `account-funded-by-sfox` flag present in storage
 
 
@@ -428,7 +464,7 @@ V. Shambhala transaction signing process (draft)
 
 * _client_:
 
-    - decode `TX-PAYLOAD` and present to the _user_:
+    - decode `TX_PAYLOAD` and present to the _user_:
 
         - source account identifier
         - transaction fee
@@ -446,74 +482,92 @@ V. Shambhala transaction signing process (draft)
 
     - ask _user_ to provide `PIN`
 
-    - compute `S-KEY`:
+    - compute `S_KEY`:
 
-        > `S-KEY` = genKey(`PIN`, `SALT-FOR-S`)
+        ```javascript
+        S_KEY = genKey(PIN, SALT_FOR_S)
+        ```
 
-    - send `S-KEY` and `TX-PAYLOAD` to the _server_
+    - send `S_KEY` and `TX_PAYLOAD` to the _server_
 
-    - destroy `PIN` and `S-KEY`
+    - destroy `PIN` and `S_KEY`
 
 
 * _server_:
 
-    - receive `S-KEY` and `TX-PAYLOAD` from _client_
+    - receive `S_KEY` and `TX_PAYLOAD` from _client_
 
-    - extract `S-SECRET` and `SALT-FOR-C` by decrypting `EncSKP`:
+    - extract `S_SECRET` and `SALT_FOR_C` by decrypting `ENC_SKP`:
 
-        > `S-SECRET` + `SALT-FOR-C` = decrypt(`EncSKP`, `S-KEY`)
+        ```javascript
+        S_SECRET + SALT_FOR_C = decrypt(ENC_SKP, S_KEY)
+        ```
 
-    - if extraction has failed it means that received `S-KEY` is invalid,
+    - if extraction has failed it means that received `S_KEY` is invalid,
         so potential data breach occured on _client_ side or simply
         _user_ made a typo in `KEY`. In such scenario next steps
-        are impossible, so the procedure has to be interrupted, _failure
+        are impossible, so the procedure has to be aborted, _failure
         counter_ has to be increased and _client_ has to be notified. Security
         precautions can be implemented in this step, for example after
-        3 failed attempts communication with this _client_ can be suspended
+        `3` failed attempts communication with this _client_ can be suspended
         for a longer period of time, etc.
 
     - generate `SKP`:
 
-        > `SKP` = StellarSDK.Keypair.fromSecret(`S-SECRET`)
+        ```javascript
+        SKP = StellarSDK.Keypair.fromSecret(S_SECRET)
+        ```
 
-    - compute `S-SIGNATURE` by singing `TX-PAYLOAD` with `SKP`:
+    - compute `S_SIGNATURE` by singing `TX_PAYLOAD` with `SKP`:
 
-        > `S-SIGNATURE` = signTSB(`TX-PAYLOAD`, `SKP`)
+        ```javascript
+        S_SIGNATURE = signTSB(TX_PAYLOAD, SKP)
+        ```
 
-    - destroy `SKP` and `S-SECRET`
+    - destroy `SKP` and `S_SECRET`
 
-    - compute `C-PASSPHRASE`:
+    - compute `C_PASSPHRASE`:
 
-        > `C-PASSPHRASE` = genKey(`S-KEY`, `SALT-FOR-C`)
+        ```javascript
+        C_PASSPHRASE = genKey(S_KEY, SALT_FOR_C)
+        ```
 
-    - send `C-PASSPHRASE` and `S-SIGNATURE` to _client_
+    - send `C_PASSPHRASE` and `S_SIGNATURE` to _client_
 
-    - destroy `S-KEY`, `SALT-FOR-C`, `C-PASSPHRASE`
+    - destroy `S_KEY`, `SALT_FOR_C`, `C_PASSPHRASE`
 
 
 * _client_:
 
-    - receive `C-PASSPHRASE` and `S-SIGNATURE` from the _server_
+    - receive `C_PASSPHRASE` and `S_SIGNATURE` from the _server_
 
-    - compute `C-KEY`:
+    - compute `C_KEY`:
 
-        > `C-KEY` = genKey(`C-PASSPHRASE`, `C-SALT`)
+        ```javascript
+        C_KEY = genKey(C_PASSPHRASE, C_SALT)
+        ```
 
-    - extract `C-SECRET` by decrypting `EncCKP`:
+    - extract `C_SECRET` by decrypting `ENC_CKP`:
 
-        > `C-SECRET` = decrypt(`EncCKP`, `C-KEY`)
+        ```javascript
+        C_SECRET = decrypt(ENC_CKP, C_KEY)
+        ```
 
     - generate `CKP`:
 
-        `CKP` = StellarSDK.Keypair.fromSecret(`C-SECRET`)
+        ```javascript
+        CKP = StellarSDK.Keypair.fromSecret(C_SECRET)
+        ```
 
-    - compute `C-SIGNATURE` by singing `TX-PAYLOAD` with `CKP`:
+    - compute `C_SIGNATURE` by singing `TX_PAYLOAD` with `CKP`:
 
-         > `C-SIGNATURE` = signTSB(`TX-PAYLOAD`, `CKP`)
+        ```javascript
+         C_SIGNATURE = signTSB(TX_PAYLOAD, CKP)
+         ```
 
-    - destroy `CKP`, `C-SECRET`, `C-PASSPHRASE` and `C-KEY`
+    - destroy `CKP`, `C_SECRET`, `C_PASSPHRASE` and `C_KEY`
 
-    - send `S-SIGNATURE` and `C-SIGNATURE` to the host application
+    - send `S_SIGNATURE` and `C_SIGNATURE` to the host application
 
 <br />
 
@@ -543,16 +597,16 @@ VI Notes
     - _secret keys_ of both `CKP` and `SKP` are never leaving their
         environments (that is [Web Storage] in case of `CKP` and server-side
         database in case of `SKP`)
-    - _user_ **knows** `PIN` and **has** `SALT-FOR-S`, which are the two
-        neccessary ingredients to derive `S-KEY` needed to decrypt `SKP`,
+    - _user_ **knows** `PIN` and **has** `SALT_FOR_S`, which are the two
+        neccessary ingredients to derive `S_KEY` needed to decrypt `SKP`,
         so in case of server-side database breach `SKP` is safe,
     - decryption of `CKP` depends on _user_ **knowledge** (`PIN`) and,
         amongs other things, on element stored in **encrypted form** on server
-        (`SALT-FOR-C`), so in case of client-side storage breach `CKP` is safe
+        (`SALT_FOR_C`), so in case of client-side storage breach `CKP` is safe
     - if _user_ will loose a device with stored `CKP` or forget a `PIN` or
         simply want to cancel using _shambhala transaction-signing scheme_,
         his/her funds on _[stellar] network_ are safe, because he/she
-        **knows** `G-MNEMONIC` with `PASSPHRASE` from which the **master key**
+        **knows** `G_MNEMONIC` with `PASSPHRASE` from which the **master key**
         can be derived
 
 * Strong emphasis has to be put on all security considerations related to
