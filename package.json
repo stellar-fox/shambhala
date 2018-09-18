@@ -49,10 +49,10 @@
         "url": "git+https://github.com/stellar-fox/shambhala.git"
     },
     "scripts": {
-        "clean:doc": "rimraf ./doc",
+        "clean:jsdoc": "rimraf ./jsdoc",
         "clean:modules": "rimraf node_modules",
-        "doc": "npm run clean:doc && npm run jsdoc",
-        "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./doc/",
+        "jsdoc": "npm run clean:jsdoc && npm run buildJsdoc",
+        "buildJsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./jsdoc/",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run doc",
         "start": "webpack-dev-server --config=webpack.config.dev.js",
