@@ -16,15 +16,34 @@ import sjcl from "sjcl"
 
 
 /**
- * SHA256 hex-encoded string computed from a CSPRNG-generated output.
+ * Symmetric AES-256 decryption.
+ * It'll throw an exception if given key is wrong.
  *
- * @function genRandomSHA256
+ * @function decrypt
+ * @param {String} ciphertext A content to decrypt.
+ * @param {String} key
  * @returns {String}
  */
-export const genRandomSHA256 = () =>
-    sjcl.codec.hex.fromBits(
-        sjcl.hash.sha256.hash(sjcl.random.randomWords(32, 8))
-    )
+export const decrypt = (ciphertext, key) => {
+    let decipher = crypto.createDecipher("aes256", key)
+    return decipher.update(ciphertext, "hex", "utf8") + decipher.final("utf8")
+}
+
+
+
+
+/**
+ * Symmetric AES-256 encryption.
+ *
+ * @function encrypt
+ * @param {String} secret A content to encrypt.
+ * @param {String} key
+ * @returns {String}
+ */
+export const encrypt = (secret, key) => {
+    let cipher = crypto.createCipher("aes256", key)
+    return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
+}
 
 
 
@@ -47,31 +66,12 @@ export const genKey = (pass, salt = emptyString(), count = 2**16) =>
 
 
 /**
- * Symmetric AES-256 encryption.
+ * SHA256 hex-encoded string computed from a CSPRNG-generated output.
  *
- * @function encrypt
- * @param {String} secret A content to encrypt.
- * @param {String} key
+ * @function genRandomSHA256
  * @returns {String}
  */
-export const encrypt = (secret, key) => {
-    let cipher = crypto.createCipher("aes256", key)
-    return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
-}
-
-
-
-
-/**
- * Symmetric AES-256 decryption.
- * It'll throw an exception if given key is wrong.
- *
- * @function decrypt
- * @param {String} ciphertext A content to decrypt.
- * @param {String} key
- * @returns {String}
- */
-export const decrypt = (ciphertext, key) => {
-    let decipher = crypto.createDecipher("aes256", key)
-    return decipher.update(ciphertext, "hex", "utf8") + decipher.final("utf8")
-}
+export const genRandomSHA256 = () =>
+    sjcl.codec.hex.fromBits(
+        sjcl.hash.sha256.hash(sjcl.random.randomWords(32, 8))
+    )
