@@ -165,7 +165,7 @@ IV. Shambhala onboarding process _(draft)_
 
     - no stored `G_PUBLIC`
     - no stored `ENC_SKP`
-    - no stored `account-funded-by-sfox` flag
+    - no stored `account_funded_by_sfox` flag
 
 
 
@@ -213,7 +213,7 @@ _User_ doesn't have an account on _[stellar] network_.
     - store information that `G_PUBLIC` was funded by sfox:
 
         ```javascript
-        account-funded-by-sfox = true
+        account_funded_by_sfox = true
         ```
 
 
@@ -238,7 +238,7 @@ _User_ already has a _[stellar] network_ account with funds.
     - store information that`G_PUBLIC` wasn't funded by sfox:
 
         ```javascript
-        account-funded-by-sfox = false
+        account_funded_by_sfox = false
         ```
 
 
@@ -367,7 +367,7 @@ _User_ already has a _[stellar] network_ account with funds.
 
     - `G_PUBLIC` is present in storage
     - `ENC_SKP` is present in storage
-    - `account-funded-by-sfox` flag is present in storage
+    - `account_funded_by_sfox` flag is present in storage
 
 
 
@@ -455,7 +455,7 @@ V. Shambhala transaction signing process _(draft)_
 
     - `G_PUBLIC` present in storage
     - `ENC_SKP` present in storage
-    - `account-funded-by-sfox` flag present in storage
+    - `account_funded_by_sfox` flag present in storage
 
 
 
