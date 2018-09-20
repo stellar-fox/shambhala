@@ -7,11 +7,16 @@
 
 
 
+import express, {
+    json,
+    urlencoded,
+} from "express"
+
+
+
 
 // ...
 const
-    express = require("express"),
-    bodyParser = require("body-parser"),
     app = express(),
     port = 8081
 
@@ -19,10 +24,9 @@ const
 
 
 // ...
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true, }))
+app.use(json())
+app.use(urlencoded({ extended: true, }))
 app.use(function (_req, res, next) {
-    express.json()
     res.header("X-Powered-By", "shambhala.server")
     next()
 })
@@ -34,7 +38,8 @@ app.use(function (_req, res, next) {
 app.get(
     "/api/v1/",
     (_req, res) =>
-        res.status(200)
+        res
+            .status(200)
             .send({
                 message: "shambhala - REST API",
                 version: 1,

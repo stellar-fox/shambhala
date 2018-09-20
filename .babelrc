@@ -1,0 +1,15 @@
+{
+    "env": {
+        "commonjs": {
+            "comments": false,
+            "plugins": [
+            ],
+            "presets": [
+                ["@babel/preset-env", {
+                    "modules": "commonjs",
+                    "shippedProposals": true
+                }]
+            ]
+        }
+    }
+}
