@@ -16,7 +16,7 @@
         "express": "^4.16.3",
         "localforage": "^1.7.2",
         "sjcl": "^1.0.7",
-        "stellar-sdk": "^0.10.3"
+        "stellar-sdk": "^0.11.0"
     },
     "description": "Mystery.",
     "devDependencies": {
