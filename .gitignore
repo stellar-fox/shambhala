@@ -3,3 +3,6 @@
 
 # auto-generated documentation
 /jsdoc
+
+# backend credentials file
+/backend.src/credentials.js
