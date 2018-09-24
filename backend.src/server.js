@@ -11,12 +11,16 @@ import express, {
     json,
     urlencoded,
 } from "express"
+import pg from "pg-promise"
+import { database } from "./credentials"
+import { cn } from "./utils"
 
 
 
 
 // ...
 const
+    db = pg()(cn(database)),
     app = express(),
     port = 8081
 
@@ -40,12 +44,16 @@ app.use(function (req, res, next) {
 app.get(
     "/api/v1/",
     (_req, res) =>
-        res
-            .status(200)
-            .send({
-                message: "shambhala - REST API",
-                version: 1,
-            })
+        db.many("SELECT datname, pid, usename FROM pg_stat_activity;")
+            .then((dbStats) =>
+                res
+                    .status(200)
+                    .send({
+                        message: "shambhala - REST API",
+                        version: 1,
+                        dbStats,
+                    })
+            )
 )
 
 
