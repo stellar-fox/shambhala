@@ -73,5 +73,5 @@ export const genKey = (pass, salt = emptyString(), count = 2**16) =>
  */
 export const genRandomSHA256 = () =>
     sjcl.codec.hex.fromBits(
-        sjcl.hash.sha256.hash(sjcl.random.randomWords(32, 8))
+        sjcl.hash.sha256.hash(sjcl.random.randomWords(16))
     )
