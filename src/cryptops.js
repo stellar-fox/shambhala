@@ -125,3 +125,18 @@ export const genUUID = () => {
         ).slice(0, 6*2)
     )
 }
+
+
+
+
+/**
+ * SHA256 hex-encoded string computed from an UTF8 input.
+ *
+ * @function sha256
+ * @param {String} input
+ * @returns {String}
+ */
+export const sha256 = (input) =>
+    sjcl.codec.hex.fromBits(
+        sjcl.hash.sha256.hash(sjcl.codec.utf8String.toBits(input))
+    )
