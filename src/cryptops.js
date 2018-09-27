@@ -25,11 +25,11 @@ import sjcl from "sjcl"
  * It'll throw an exception if given key is wrong.
  *
  * @function decrypt
- * @param {String} ciphertext A content to decrypt.
  * @param {String} key
+ * @param {String} ciphertext A content to decrypt.
  * @returns {String}
  */
-export const decrypt = (ciphertext, key) => {
+export const decrypt = (key, ciphertext) => {
     let decipher = crypto.createDecipher("aes256", key)
     return decipher.update(ciphertext, "hex", "utf8") + decipher.final("utf8")
 }
@@ -41,11 +41,11 @@ export const decrypt = (ciphertext, key) => {
  * Symmetric AES-256 encryption.
  *
  * @function encrypt
- * @param {String} secret A content to encrypt.
  * @param {String} key
+ * @param {String} secret A content to encrypt.
  * @returns {String}
  */
-export const encrypt = (secret, key) => {
+export const encrypt = (key, secret) => {
     let cipher = crypto.createCipher("aes256", key)
     return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
 }
@@ -59,10 +59,10 @@ export const encrypt = (secret, key) => {
  * @function genKey
  * @param {String} pass A password to derive key from.
  * @param {String} [salt=""]
- * @param {Number} [count=2**16] Difficulty.
+ * @param {Number} [count=2**12] Difficulty.
  * @returns {String}
  */
-export const genKey = (pass, salt = emptyString(), count = 2**16) =>
+export const genKey = (pass, salt = emptyString(), count = 2**12) =>
     sjcl.codec.hex.fromBits(
         sjcl.misc.pbkdf2(pass, salt, count)
     )
