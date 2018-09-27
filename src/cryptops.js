@@ -94,7 +94,7 @@ export const genRandomSHA256 = () =>
  * @returns {String}
  */
 export const genUUID = () => {
-    let rd = Date.now().toString(16).split("").reverse()
+    let rd = Date.now().toString(16).split(emptyString()).reverse()
     return (
         // 48 bits (6 bytes): timestamp - miliseconds since epoch
         range(6*2)
@@ -104,7 +104,7 @@ export const genUUID = () => {
                         [rd[i],].concat(acc) :
                         [0,].concat(acc),
                 []
-            ).join("")
+            ).join(emptyString())
     ) + (
         // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
         sjcl.codec.hex.fromBits(
@@ -140,3 +140,20 @@ export const sha256 = (input) =>
     sjcl.codec.hex.fromBits(
         sjcl.hash.sha256.hash(sjcl.codec.utf8String.toBits(input))
     )
+
+
+
+
+/**
+ * Extract 'timestamp', 'user agent id' and 'random' component
+ * from given 'uuid', which was generated using genUUID().
+ *
+ * @function uuidDecode
+ * @param {String} uuid
+ * @returns {Object}
+ */
+export const uuidDecode = (uuid) => ({
+    timestamp: new Date(parseInt(uuid.slice(0, 6*2), 16)),
+    uaId: uuid.slice(6*2, 6*2 + 4*2),
+    rnd: uuid.slice(10*2, 10*2 + 6*2),
+})
