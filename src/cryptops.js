@@ -9,8 +9,13 @@
 
 
 import {
+    b64dec,
+    b64enc,
+    bytesToHex,
+    compose,
     emptyString,
     handleException,
+    hexToBytes,
     isBrowser,
     range,
 } from "@xcmats/js-toolbox"
@@ -21,12 +26,25 @@ import sjcl from "sjcl"
 
 
 /**
+ * Covert a given b64-encoded string to the hex-encoded string
+ * (a point-free implementation).
+ *
+ * @function b64ToHex
+ * @param {String} input
+ * @returns {String}
+ */
+export const b64ToHex = compose(bytesToHex, b64dec)
+
+
+
+
+/**
  * Symmetric AES-256 decryption.
  * It'll throw an exception if given key is wrong.
  *
  * @function decrypt
  * @param {String} key
- * @param {String} ciphertext A content to decrypt.
+ * @param {String} ciphertext A hex-encoded content to decrypt.
  * @returns {String}
  */
 export const decrypt = (key, ciphertext) => {
@@ -130,7 +148,20 @@ export const genUUID = () => {
 
 
 /**
- * SHA256 hex-encoded string computed from an UTF8 input.
+ * Covert a given hex-encoded string to the b64-encoded string
+ * (a point-free implementation).
+ *
+ * @function hexToB64
+ * @param {String} input
+ * @returns {String}
+ */
+export const hexToB64 = compose(b64enc, hexToBytes)
+
+
+
+
+/**
+ * SHA256 hex-encoded string computed from an utf8 input.
  *
  * @function sha256
  * @param {String} input
