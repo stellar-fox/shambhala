@@ -74,7 +74,7 @@ export const drawEmojis = ((emojis) =>
 export const dynamicImportLibs = async () => {
     let [
         axios, crypto, cryptops, env, nacl, redshift,
-        sjcl, stellar, toolbox, txops, utils, lib,
+        sjcl, stellar, toolbox, txops, utils, scrypt, lib,
     ] = await Promise.all([
         import("axios"),
         import("crypto-browserify"),
@@ -87,6 +87,7 @@ export const dynamicImportLibs = async () => {
         import("@xcmats/js-toolbox"),
         import("./txops"),
         import("./utils"),
+        import("scrypt-js"),
         import("./shambhala"),
     ])
     return {
@@ -104,5 +105,6 @@ export const dynamicImportLibs = async () => {
         toolbox,
         txops,
         utils,
+        scrypt: scrypt.default,
     }
 }
