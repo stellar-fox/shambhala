@@ -10,14 +10,19 @@
 
 import {
     codec,
-    compose,
+    func,
     handleException,
     isBrowser,
     range,
     string,
 } from "@xcmats/js-toolbox"
 import crypto from "crypto-browserify"
-import sjcl from "sjcl"
+import {
+    codec as sjclCodec,
+    hash as sjclHash,
+    misc as sjclMisc,
+    random as sjclRandom,
+} from "sjcl"
 
 
 
@@ -30,7 +35,7 @@ import sjcl from "sjcl"
  * @param {String} input
  * @returns {String}
  */
-export const b64ToHex = compose(codec.bytesToHex, codec.b64dec)
+export const b64ToHex = func.compose(codec.bytesToHex, codec.b64dec)
 
 
 
@@ -78,8 +83,8 @@ export const encrypt = (key, secret) => {
  * @returns {String}
  */
 export const genKey = (pass, salt = string.empty(), count = 2**12) =>
-    sjcl.codec.hex.fromBits(
-        sjcl.misc.pbkdf2(pass, salt, count)
+    sjclCodec.hex.fromBits(
+        sjclMisc.pbkdf2(pass, salt, count)
     )
 
 
@@ -92,8 +97,8 @@ export const genKey = (pass, salt = string.empty(), count = 2**12) =>
  * @returns {String}
  */
 export const genRandomSHA256 = () =>
-    sjcl.codec.hex.fromBits(
-        sjcl.hash.sha256.hash(sjcl.random.randomWords(16))
+    sjclCodec.hex.fromBits(
+        sjclHash.sha256.hash(sjclRandom.randomWords(16))
     )
 
 
@@ -122,9 +127,9 @@ export const genUUID = () => {
             ).join(string.empty())
     ) + (
         // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-        sjcl.codec.hex.fromBits(
-            sjcl.hash.sha256.hash(
-                sjcl.codec.utf8String.toBits(
+        sjclCodec.hex.fromBits(
+            sjclHash.sha256.hash(
+                sjclCodec.utf8String.toBits(
                     handleException(
                         () => isBrowser() ?
                             navigator.userAgent :
@@ -135,8 +140,8 @@ export const genUUID = () => {
         ).slice(0, 4*2)
     ) + (
         // 48 random bits (6 bytes)
-        sjcl.codec.hex.fromBits(
-            sjcl.random.randomWords(2)
+        sjclCodec.hex.fromBits(
+            sjclRandom.randomWords(2)
         ).slice(0, 6*2)
     )
 }
@@ -152,7 +157,7 @@ export const genUUID = () => {
  * @param {String} input
  * @returns {String}
  */
-export const hexToB64 = compose(codec.b64enc, codec.hexToBytes)
+export const hexToB64 = func.compose(codec.b64enc, codec.hexToBytes)
 
 
 
@@ -165,8 +170,8 @@ export const hexToB64 = compose(codec.b64enc, codec.hexToBytes)
  * @returns {String}
  */
 export const sha256 = (input) =>
-    sjcl.codec.hex.fromBits(
-        sjcl.hash.sha256.hash(sjcl.codec.utf8String.toBits(input))
+    sjclCodec.hex.fromBits(
+        sjclHash.sha256.hash(sjclCodec.utf8String.toBits(input))
     )
 
 
