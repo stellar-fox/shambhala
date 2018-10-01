@@ -10,7 +10,7 @@
 
 import StellarSDK from "stellar-sdk"
 import {
-    bytesToString,
+    codec,
     choose,
     handleException,
     isString,
@@ -53,7 +53,9 @@ export const inspectTSB = (tsbXDR) => {
                             "text": (val) =>
                                 isString(val) ?
                                     StellarSDK.Memo.text(val) :
-                                    StellarSDK.Memo.text(bytesToString(val)),
+                                    StellarSDK.Memo.text(
+                                        codec.bytesToString(val)
+                                    ),
                             "hash": (val) =>
                                 StellarSDK.Memo.hash(val),
                             "retHash": (val) =>

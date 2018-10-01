@@ -9,15 +9,12 @@
 
 
 import {
-    b64dec,
-    b64enc,
-    bytesToHex,
+    codec,
     compose,
-    emptyString,
     handleException,
-    hexToBytes,
     isBrowser,
     range,
+    string,
 } from "@xcmats/js-toolbox"
 import crypto from "crypto-browserify"
 import sjcl from "sjcl"
@@ -33,7 +30,7 @@ import sjcl from "sjcl"
  * @param {String} input
  * @returns {String}
  */
-export const b64ToHex = compose(bytesToHex, b64dec)
+export const b64ToHex = compose(codec.bytesToHex, codec.b64dec)
 
 
 
@@ -80,7 +77,7 @@ export const encrypt = (key, secret) => {
  * @param {Number} [count=2**12] Difficulty.
  * @returns {String}
  */
-export const genKey = (pass, salt = emptyString(), count = 2**12) =>
+export const genKey = (pass, salt = string.empty(), count = 2**12) =>
     sjcl.codec.hex.fromBits(
         sjcl.misc.pbkdf2(pass, salt, count)
     )
@@ -112,7 +109,7 @@ export const genRandomSHA256 = () =>
  * @returns {String}
  */
 export const genUUID = () => {
-    let rd = Date.now().toString(16).split(emptyString()).reverse()
+    let rd = Date.now().toString(16).split(string.empty()).reverse()
     return (
         // 48 bits (6 bytes): timestamp - miliseconds since epoch
         range(6*2)
@@ -122,7 +119,7 @@ export const genUUID = () => {
                         [rd[i],].concat(acc) :
                         [0,].concat(acc),
                 []
-            ).join(emptyString())
+            ).join(string.empty())
     ) + (
         // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
         sjcl.codec.hex.fromBits(
@@ -155,7 +152,7 @@ export const genUUID = () => {
  * @param {String} input
  * @returns {String}
  */
-export const hexToB64 = compose(b64enc, hexToBytes)
+export const hexToB64 = compose(codec.b64enc, codec.hexToBytes)
 
 
 
