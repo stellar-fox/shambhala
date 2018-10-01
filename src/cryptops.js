@@ -163,16 +163,20 @@ export const hexToB64 = func.compose(codec.b64enc, codec.hexToBytes)
 
 
 /**
- * SHA256 hex-encoded string computed from an utf8 input.
+ * Compute a sha256 hash from a given input.
+ * Uses sjcl's sha256 implementation.
  *
  * @function sha256
- * @param {String} input
- * @returns {String}
+ * @param {Uint8Array} input
+ * @returns {Uint8Array}
  */
-export const sha256 = (input) =>
-    sjclCodec.hex.fromBits(
-        sjclHash.sha256.hash(sjclCodec.utf8String.toBits(input))
-    )
+export const sha256 = func.compose(
+    codec.hexToBytes,
+    sjclCodec.hex.fromBits,
+    sjclHash.sha256.hash,
+    sjclCodec.hex.toBits,
+    codec.bytesToHex,
+)
 
 
 
