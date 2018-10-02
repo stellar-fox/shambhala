@@ -141,22 +141,21 @@ export const genUUID = () => codec.hexToBytes(
     codec.bytesToHex(timestamp()) +
 
     // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-    func.compose(
-        sjclCodec.hex.fromBits,
-        sjclHash.sha256.hash,
-        sjclCodec.utf8String.toBits
-    )(
-        handleException(
-            () => isBrowser() ?
-                navigator.userAgent :
-                "non-browser-env"
-        )
-    ).slice(0, 4*2) +
+    codec.bytesToHex(
+        func.compose(
+            sha256,
+            codec.stringToBytes
+        )(
+            handleException(
+                () => isBrowser() ?
+                    navigator.userAgent :
+                    "non-browser-env"
+            )
+        ).slice(0, 4)
+    ) +
 
     // 48 random bits (6 bytes)
-    sjclCodec.hex.fromBits(
-        sjclRandom.randomWords(2)
-    ).slice(0, 6*2)
+    codec.bytesToHex(random(6))
 
 )
 
@@ -171,13 +170,11 @@ export const genUUID = () => codec.hexToBytes(
  * @param {Uint8Array} uuid
  * @returns {Object}
  */
-export const uuidDecode = (uuid) => (
-    (hexUuid) => ({
-        timestamp: new Date(parseInt(hexUuid.slice(0, 6*2), 16)),
-        uaId: hexUuid.slice(6*2, 6*2 + 4*2),
-        rnd: hexUuid.slice(10*2, 10*2 + 6*2),
-    })
-)(codec.bytesToHex(uuid))
+export const uuidDecode = (uuid) => ({
+    timestamp: new Date(parseInt(codec.bytesToHex(uuid.slice(0, 6)), 16)),
+    uaId: codec.bytesToHex(uuid.slice(6, 6 + 4)),
+    rnd: codec.bytesToHex(uuid.slice(10, 10 + 6)),
+})
 
 
 
