@@ -25,20 +25,53 @@ import {
 } from "sjcl"
 import {
     hash as naclHash,
+    randomBytes as naclRandomBytes,
 } from "tweetnacl"
 
 
 
 
 /**
- * Covert a given b64-encoded string to the hex-encoded string
- * (a point-free implementation).
+ * Retrieve 'n' random bytes from CSPRNG pool.
+ * Alias for tweetnacl.randomBytes.
  *
- * @function b64ToHex
- * @param {String} input
- * @returns {String}
+ * @function random
+ * @param {Number} n
+ * @returns {Uint8Array}
  */
-export const b64ToHex = func.compose(codec.bytesToHex, codec.b64dec)
+export const random = naclRandomBytes
+
+
+
+
+/**
+ * Compute a sha256 hash from a given input.
+ * Uses sjcl's sha256 implementation.
+ *
+ * @function sha256
+ * @param {Uint8Array} input
+ * @returns {Uint8Array}
+ */
+export const sha256 = func.compose(
+    codec.hexToBytes,
+    sjclCodec.hex.fromBits,
+    sjclHash.sha256.hash,
+    sjclCodec.hex.toBits,
+    codec.bytesToHex,
+)
+
+
+
+
+/**
+ * Compute a sha512 hash from a given input.
+ * Uses tweetnacl's sha512 implementation.
+ *
+ * @function sha512
+ * @param {Uint8Array} input
+ * @returns {Uint8Array}
+ */
+export const sha512 = naclHash
 
 
 
@@ -172,6 +205,19 @@ export const uuidDecode = (uuid) => (
 
 
 /**
+ * Covert a given b64-encoded string to the hex-encoded string
+ * (a point-free implementation).
+ *
+ * @function b64ToHex
+ * @param {String} input
+ * @returns {String}
+ */
+export const b64ToHex = func.compose(codec.bytesToHex, codec.b64dec)
+
+
+
+
+/**
  * Covert a given hex-encoded string to the b64-encoded string
  * (a point-free implementation).
  *
@@ -180,35 +226,3 @@ export const uuidDecode = (uuid) => (
  * @returns {String}
  */
 export const hexToB64 = func.compose(codec.b64enc, codec.hexToBytes)
-
-
-
-
-/**
- * Compute a sha256 hash from a given input.
- * Uses sjcl's sha256 implementation.
- *
- * @function sha256
- * @param {Uint8Array} input
- * @returns {Uint8Array}
- */
-export const sha256 = func.compose(
-    codec.hexToBytes,
-    sjclCodec.hex.fromBits,
-    sjclHash.sha256.hash,
-    sjclCodec.hex.toBits,
-    codec.bytesToHex,
-)
-
-
-
-
-/**
- * Compute a sha512 hash from a given input.
- * Uses tweetnacl's sha512 implementation.
- *
- * @function sha512
- * @param {Uint8Array} input
- * @returns {Uint8Array}
- */
-export const sha512 = naclHash
