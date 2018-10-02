@@ -98,6 +98,17 @@ export const sha512 = naclHash
 
 
 /**
+ * Generate 32-byte value. Can be used as salt.
+ *
+ * @function salt
+ * @returns {Uint8Array}
+ */
+export const salt = () => sha256(random(256))
+
+
+
+
+/**
  * Password-based key-derivation.
  * Uses pbkdf2 implemented in sjcl.
  *
