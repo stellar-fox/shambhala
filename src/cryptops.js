@@ -210,12 +210,12 @@ export const uuidDecode = (uuid) => ({
 
 
 /**
- * Generate nonce suitable to use with encrypt/decrypt functions.
+ * Generate nonce suitable to use with salsaEncrypt/salsaDecrypt functions.
  *
- * @function nonce
+ * @function salsaNonce
  * @returns {Uint8Array}
  */
-export const nonce = () => concatBytes(
+export const salsaNonce = () => concatBytes(
     timestamp(),
     random(naclSecretbox.nonceLength - 6)
 )
@@ -224,33 +224,50 @@ export const nonce = () => concatBytes(
 
 
 /**
- * Symmetric AES-256 decryption.
- * It'll throw an exception if given key is wrong.
+ * Generate nonce suitable to use with aesEncrypt/aesDecrypt functions.
  *
- * @function decrypt
- * @param {String} key
- * @param {String} ciphertext A hex-encoded content to decrypt.
- * @returns {String}
+ * @function aesNonce
+ * @returns {Uint8Array}
  */
-export const decrypt = (key, ciphertext) => {
-    let decipher = crypto.createDecipher("aes256", key)
-    return decipher.update(ciphertext, "hex", "utf8") + decipher.final("utf8")
+export const aesNonce = () => random(16)
+
+
+
+
+/**
+ * Symmetric AES-256 encryption in counter mode (CTR).
+ * Uses crypto-browserify implementation.
+ *
+ * @function aesEncrypt
+ * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} secret A content to encrypt.
+ * @returns {Uint8Array}
+ */
+export const aesEncrypt = (key, secret) => {
+    let iv = aesNonce(),
+        cipher = crypto.createCipheriv("aes-256-ctr", key, iv)
+    return concatBytes(iv, cipher.update(secret), cipher.final())
 }
 
 
 
 
 /**
- * Symmetric AES-256 encryption.
+ * Symmetric AES-256 decryption in counter mode (CTR).
+ * Uses crypto-browserify implementation.
  *
- * @function encrypt
- * @param {String} key
- * @param {String} secret A content to encrypt.
- * @returns {String}
+ * @function aesDecrypt
+ * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} ciphertext A content to decrypt.
+ * @returns {Uint8Array}
  */
-export const encrypt = (key, secret) => {
-    let cipher = crypto.createCipher("aes256", key)
-    return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
+export const aesDecrypt = (key, ciphertext) => {
+    let iv = ciphertext.slice(0, 16),
+        decipher = crypto.createDecipheriv("aes-256-ctr", key, iv)
+    return concatBytes(
+        decipher.update(ciphertext.slice(16)),
+        decipher.final()
+    )
 }
 
 
