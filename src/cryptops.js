@@ -26,6 +26,7 @@ import {
 import {
     hash as naclHash,
     randomBytes as naclRandomBytes,
+    secretbox as naclSecretbox,
 } from "tweetnacl"
 
 
@@ -161,7 +162,6 @@ export const genUUID = () => concatBytes(
     timestamp(),
 
     // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-
     func.compose(
         sha256,
         codec.stringToBytes
@@ -194,6 +194,20 @@ export const uuidDecode = (uuid) => ({
     uaId: codec.bytesToHex(uuid.slice(6, 6 + 4)),
     rnd: codec.bytesToHex(uuid.slice(10, 10 + 6)),
 })
+
+
+
+
+/**
+ * Generate nonce suitable to use with encrypt/decrypt functions.
+ *
+ * @function nonce
+ * @returns {Uint8Array}
+ */
+export const nonce = () => concatBytes(
+    timestamp(),
+    random(naclSecretbox.nonceLength - 6)
+)
 
 
 
