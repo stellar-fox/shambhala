@@ -224,6 +224,42 @@ export const salsaNonce = () => concatBytes(
 
 
 /**
+ * Symmetric xsalsa20-poly1305 encryption.
+ * Uses tweetnacl-js implementation.
+ *
+ * @function salsaEncrypt
+ * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} message A content to encrypt.
+ * @returns {Uint8Array}
+ */
+export const salsaEncrypt = (key, message) => {
+    let iv = salsaNonce()
+    return concatBytes(iv, naclSecretbox(message, iv, key))
+}
+
+
+
+
+/**
+ * Symmetric xsalsa20-poly1305 decryption.
+ * Uses tweetnacl-js implementation.
+ *
+ * @function salsaDecrypt
+ * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} ciphertext A content to decrypt.
+ * @returns {(Uint8Array|null)}
+ */
+export const salsaDecrypt = (key, ciphertext) => {
+    let iv = ciphertext.slice(0, naclSecretbox.nonceLength)
+    return naclSecretbox.open(
+        ciphertext.slice(naclSecretbox.nonceLength), iv, key
+    )
+}
+
+
+
+
+/**
  * Generate nonce suitable to use with aesEncrypt/aesDecrypt functions.
  *
  * @function aesNonce
@@ -240,13 +276,13 @@ export const aesNonce = () => random(16)
  *
  * @function aesEncrypt
  * @param {Uint8Array} key Encryption key.
- * @param {Uint8Array} secret A content to encrypt.
+ * @param {Uint8Array} message A content to encrypt.
  * @returns {Uint8Array}
  */
-export const aesEncrypt = (key, secret) => {
+export const aesEncrypt = (key, message) => {
     let iv = aesNonce(),
         cipher = crypto.createCipheriv("aes-256-ctr", key, iv)
-    return concatBytes(iv, cipher.update(secret), cipher.final())
+    return concatBytes(iv, cipher.update(message), cipher.final())
 }
 
 
