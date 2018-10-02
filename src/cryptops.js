@@ -82,13 +82,13 @@ export const sha512 = naclHash
  *
  * @function genKey
  * @param {String} [pass=string.empty()] A password to derive key from.
- * @param {Uint8Array} [salt=Uint8Array.from(range(32).map(_ => 0))]
+ * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {Number} [count=2**12] Difficulty.
  * @returns {Uint8Array}
  */
 export const genKey = (
     pass = string.empty(),
-    salt = Uint8Array.from(range(32).map(_ => 0)),
+    salt = (new Uint8Array(32)).fill(0),
     count = 2**12
 ) => func.compose(
     codec.hexToBytes,
@@ -100,6 +100,84 @@ export const genKey = (
         count
     )
 )
+
+
+
+
+/**
+ * Generate 48 bits (6 bytes) timestamp - miliseconds since epoch
+ *
+ * @function timestamp
+ * @returns {Uint8Array}
+ */
+export const timestamp = () => (
+    (rd) => codec.hexToBytes(
+        range(6*2)
+            .reduce(
+                (acc, _el, i) =>
+                    i < rd.length ?
+                        [rd[i],].concat(acc) :
+                        [0,].concat(acc),
+                []
+            ).join(string.empty())
+    )
+)(Date.now().toString(16).split(string.empty()).reverse())
+
+
+
+
+/**
+ * Generate 128 bits UUID. Comprised of:
+ * - 48 bits of miliseconds since epoch
+ * - 32 bits of truncated SHA256 sum of userAgent string
+ * - 48 random bits
+ *
+ * @function genUUID
+ * @returns {Uint8Array}
+ */
+export const genUUID = () => codec.hexToBytes(
+
+    // 48 bits (6 bytes): timestamp - miliseconds since epoch
+    codec.bytesToHex(timestamp()) +
+
+    // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
+    func.compose(
+        sjclCodec.hex.fromBits,
+        sjclHash.sha256.hash,
+        sjclCodec.utf8String.toBits
+    )(
+        handleException(
+            () => isBrowser() ?
+                navigator.userAgent :
+                "non-browser-env"
+        )
+    ).slice(0, 4*2) +
+
+    // 48 random bits (6 bytes)
+    sjclCodec.hex.fromBits(
+        sjclRandom.randomWords(2)
+    ).slice(0, 6*2)
+
+)
+
+
+
+
+/**
+ * Extract 'timestamp', 'user agent id' and 'random' component
+ * from given 'uuid', which was generated using genUUID().
+ *
+ * @function uuidDecode
+ * @param {Uint8Array} uuid
+ * @returns {Object}
+ */
+export const uuidDecode = (uuid) => (
+    (hexUuid) => ({
+        timestamp: new Date(parseInt(hexUuid.slice(0, 6*2), 16)),
+        uaId: hexUuid.slice(6*2, 6*2 + 4*2),
+        rnd: hexUuid.slice(10*2, 10*2 + 6*2),
+    })
+)(codec.bytesToHex(uuid))
 
 
 
@@ -133,84 +211,6 @@ export const encrypt = (key, secret) => {
     let cipher = crypto.createCipher("aes256", key)
     return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
 }
-
-
-
-
-/**
- * SHA256 hex-encoded string computed from a CSPRNG-generated output.
- *
- * @function genRandomSHA256
- * @returns {String}
- */
-export const genRandomSHA256 = () =>
-    sjclCodec.hex.fromBits(
-        sjclHash.sha256.hash(sjclRandom.randomWords(16))
-    )
-
-
-
-
-/**
- * Generate 128 bits UUID. Comprised of:
- * - 48 bits of miliseconds since epoch
- * - 32 bits of truncated SHA256 sum of userAgent string
- * - 48 random bits
- *
- * @function genUUID
- * @returns {Uint8Array}
- */
-export const genUUID = () => {
-    let rd = Date.now().toString(16).split(string.empty()).reverse()
-    return codec.hexToBytes((
-        // 48 bits (6 bytes): timestamp - miliseconds since epoch
-        range(6*2)
-            .reduce(
-                (acc, _el, i) =>
-                    i < rd.length ?
-                        [rd[i],].concat(acc) :
-                        [0,].concat(acc),
-                []
-            ).join(string.empty())
-    ) + (
-        // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-        func.compose(
-            sjclCodec.hex.fromBits,
-            sjclHash.sha256.hash,
-            sjclCodec.utf8String.toBits
-        )(
-            handleException(
-                () => isBrowser() ?
-                    navigator.userAgent :
-                    "non-browser-env"
-            )
-        ).slice(0, 4*2)
-    ) + (
-        // 48 random bits (6 bytes)
-        sjclCodec.hex.fromBits(
-            sjclRandom.randomWords(2)
-        ).slice(0, 6*2)
-    ))
-}
-
-
-
-
-/**
- * Extract 'timestamp', 'user agent id' and 'random' component
- * from given 'uuid', which was generated using genUUID().
- *
- * @function uuidDecode
- * @param {Uint8Array} uuid
- * @returns {Object}
- */
-export const uuidDecode = (uuid) => (
-    (hexUuid) => ({
-        timestamp: new Date(parseInt(hexUuid.slice(0, 6*2), 16)),
-        uaId: hexUuid.slice(6*2, 6*2 + 4*2),
-        rnd: hexUuid.slice(10*2, 10*2 + 6*2),
-    })
-)(codec.bytesToHex(uuid))
 
 
 
