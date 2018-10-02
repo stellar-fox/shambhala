@@ -82,13 +82,13 @@ export const sha512 = naclHash
  *
  * @function genKey
  * @param {String} [pass=string.empty()] A password to derive key from.
- * @param {Uint8Array} [salt=Uint8Array.from([])]
+ * @param {Uint8Array} [salt=Uint8Array.from(range(32).map(_ => 0))]
  * @param {Number} [count=2**12] Difficulty.
  * @returns {Uint8Array}
  */
 export const genKey = (
     pass = string.empty(),
-    salt = Uint8Array.from([]),
+    salt = Uint8Array.from(range(32).map(_ => 0)),
     count = 2**12
 ) => func.compose(
     codec.hexToBytes,
