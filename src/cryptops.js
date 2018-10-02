@@ -77,6 +77,34 @@ export const sha512 = naclHash
 
 
 /**
+ * Password-based key-derivation.
+ * Uses pbkdf2 implemented in sjcl.
+ *
+ * @function genKey
+ * @param {String} [pass=string.empty()] A password to derive key from.
+ * @param {Uint8Array} [salt=Uint8Array.from([])]
+ * @param {Number} [count=2**12] Difficulty.
+ * @returns {Uint8Array}
+ */
+export const genKey = (
+    pass = string.empty(),
+    salt = Uint8Array.from([]),
+    count = 2**12
+) => func.compose(
+    codec.hexToBytes,
+    sjclCodec.hex.fromBits
+)(
+    sjclMisc.pbkdf2(
+        sjclCodec.utf8String.toBits(pass),
+        func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(salt),
+        count
+    )
+)
+
+
+
+
+/**
  * Symmetric AES-256 decryption.
  * It'll throw an exception if given key is wrong.
  *
@@ -105,23 +133,6 @@ export const encrypt = (key, secret) => {
     let cipher = crypto.createCipher("aes256", key)
     return cipher.update(secret, "utf8", "hex") + cipher.final("hex")
 }
-
-
-
-
-/**
- * Password-based key-derivation.
- *
- * @function genKey
- * @param {String} pass A password to derive key from.
- * @param {String} [salt=""]
- * @param {Number} [count=2**12] Difficulty.
- * @returns {String}
- */
-export const genKey = (pass, salt = string.empty(), count = 2**12) =>
-    sjclCodec.hex.fromBits(
-        sjclMisc.pbkdf2(pass, salt, count)
-    )
 
 
 
