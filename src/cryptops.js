@@ -23,6 +23,9 @@ import {
     misc as sjclMisc,
     random as sjclRandom,
 } from "sjcl"
+import {
+    hash as naclHash,
+} from "tweetnacl"
 
 
 
@@ -177,6 +180,19 @@ export const sha256 = func.compose(
     sjclCodec.hex.toBits,
     codec.bytesToHex,
 )
+
+
+
+
+/**
+ * Compute a sha512 hash from a given input.
+ * Uses tweetnacl's sha512 implementation.
+ *
+ * @function sha512
+ * @param {Uint8Array} input
+ * @returns {Uint8Array}
+ */
+export const sha512 = naclHash
 
 
 
