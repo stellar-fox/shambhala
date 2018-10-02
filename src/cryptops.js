@@ -114,11 +114,11 @@ export const genRandomSHA256 = () =>
  * - 48 random bits
  *
  * @function genUUID
- * @returns {String}
+ * @returns {Uint8Array}
  */
 export const genUUID = () => {
     let rd = Date.now().toString(16).split(string.empty()).reverse()
-    return (
+    return codec.hexToBytes((
         // 48 bits (6 bytes): timestamp - miliseconds since epoch
         range(6*2)
             .reduce(
@@ -130,15 +130,15 @@ export const genUUID = () => {
             ).join(string.empty())
     ) + (
         // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-        sjclCodec.hex.fromBits(
-            sjclHash.sha256.hash(
-                sjclCodec.utf8String.toBits(
-                    handleException(
-                        () => isBrowser() ?
-                            navigator.userAgent :
-                            "non-browser-env"
-                    )
-                )
+        func.compose(
+            sjclCodec.hex.fromBits,
+            sjclHash.sha256.hash,
+            sjclCodec.utf8String.toBits
+        )(
+            handleException(
+                () => isBrowser() ?
+                    navigator.userAgent :
+                    "non-browser-env"
             )
         ).slice(0, 4*2)
     ) + (
@@ -146,8 +146,27 @@ export const genUUID = () => {
         sjclCodec.hex.fromBits(
             sjclRandom.randomWords(2)
         ).slice(0, 6*2)
-    )
+    ))
 }
+
+
+
+
+/**
+ * Extract 'timestamp', 'user agent id' and 'random' component
+ * from given 'uuid', which was generated using genUUID().
+ *
+ * @function uuidDecode
+ * @param {Uint8Array} uuid
+ * @returns {Object}
+ */
+export const uuidDecode = (uuid) => (
+    (hexUuid) => ({
+        timestamp: new Date(parseInt(hexUuid.slice(0, 6*2), 16)),
+        uaId: hexUuid.slice(6*2, 6*2 + 4*2),
+        rnd: hexUuid.slice(10*2, 10*2 + 6*2),
+    })
+)(codec.bytesToHex(uuid))
 
 
 
@@ -193,20 +212,3 @@ export const sha256 = func.compose(
  * @returns {Uint8Array}
  */
 export const sha512 = naclHash
-
-
-
-
-/**
- * Extract 'timestamp', 'user agent id' and 'random' component
- * from given 'uuid', which was generated using genUUID().
- *
- * @function uuidDecode
- * @param {String} uuid
- * @returns {Object}
- */
-export const uuidDecode = (uuid) => ({
-    timestamp: new Date(parseInt(uuid.slice(0, 6*2), 16)),
-    uaId: uuid.slice(6*2, 6*2 + 4*2),
-    rnd: uuid.slice(10*2, 10*2 + 6*2),
-})
