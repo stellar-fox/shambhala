@@ -13,6 +13,7 @@ import {
     func,
     handleException,
     isBrowser,
+    math,
     range,
     string,
 } from "@xcmats/js-toolbox"
@@ -21,12 +22,31 @@ import {
     codec as sjclCodec,
     hash as sjclHash,
     misc as sjclMisc,
-    random as sjclRandom,
 } from "sjcl"
 import {
     hash as naclHash,
     randomBytes as naclRandomBytes,
 } from "tweetnacl"
+
+
+
+
+/**
+ * Concatenate contents of given byte arrays (Uint8Array) into new
+ * byte array (Uint8Array).
+ *
+ * @function concatBytes
+ * @param {...Uint8Array} u8as
+ * @return {Uint8Array}
+ */
+export const concatBytes = (...u8as) => {
+    let result = new Uint8Array(math.sum(u8as.map((u8a) => u8a.length)))
+    u8as.reduce((pointer, u8a) => {
+        result.set(u8a, pointer)
+        return pointer + u8a.length
+    }, 0)
+    return result
+}
 
 
 
@@ -135,27 +155,26 @@ export const timestamp = () => (
  * @function genUUID
  * @returns {Uint8Array}
  */
-export const genUUID = () => codec.hexToBytes(
+export const genUUID = () => concatBytes(
 
     // 48 bits (6 bytes): timestamp - miliseconds since epoch
-    codec.bytesToHex(timestamp()) +
+    timestamp(),
 
     // 32 bits (4 bytes): truncated SHA256 sum of userAgent string
-    codec.bytesToHex(
-        func.compose(
-            sha256,
-            codec.stringToBytes
-        )(
-            handleException(
-                () => isBrowser() ?
-                    navigator.userAgent :
-                    "non-browser-env"
-            )
-        ).slice(0, 4)
-    ) +
+
+    func.compose(
+        sha256,
+        codec.stringToBytes
+    )(
+        handleException(
+            () => isBrowser() ?
+                navigator.userAgent :
+                "non-browser-env"
+        )
+    ).slice(0, 4),
 
     // 48 random bits (6 bytes)
-    codec.bytesToHex(random(6))
+    random(6)
 
 )
 
