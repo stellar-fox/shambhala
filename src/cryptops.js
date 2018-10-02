@@ -85,25 +85,12 @@ export const sha256 = func.compose(
 
 
 /**
- * Compute a sha512 hash from a given input.
- * Uses tweetnacl's sha512 implementation.
- *
- * @function sha512
- * @param {Uint8Array} input
- * @returns {Uint8Array}
- */
-export const sha512 = naclHash
-
-
-
-
-/**
  * Generate 32-byte value. Can be used as salt.
  *
- * @function salt
+ * @function salt32
  * @returns {Uint8Array}
  */
-export const salt = () => sha256(random(256))
+export const salt32 = () => sha256(random(128))
 
 
 
@@ -132,6 +119,30 @@ export const genKey = (
         count
     )
 )
+
+
+
+
+/**
+ * Compute a sha512 hash from a given input.
+ * Uses tweetnacl's sha512 implementation.
+ *
+ * @function sha512
+ * @param {Uint8Array} input
+ * @returns {Uint8Array}
+ */
+export const sha512 = naclHash
+
+
+
+
+/**
+ * Generate 64-byte value. Can be used as salt.
+ *
+ * @function salt64
+ * @returns {Uint8Array}
+ */
+export const salt64 = () => sha512(random(256))
 
 
 
