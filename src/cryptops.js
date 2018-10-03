@@ -13,11 +13,11 @@ import {
     func,
     handleException,
     isBrowser,
-    math,
     range,
     string,
 } from "@xcmats/js-toolbox"
 import crypto from "crypto-browserify"
+import scrypt from "scrypt-js"
 import {
     codec as sjclCodec,
     hash as sjclHash,
@@ -33,28 +33,8 @@ import {
 
 
 /**
- * Concatenate contents of given byte arrays (Uint8Array) into new
- * byte array (Uint8Array).
- *
- * @function concatBytes
- * @param {...Uint8Array} u8as
- * @return {Uint8Array}
- */
-export const concatBytes = (...u8as) => {
-    let result = new Uint8Array(math.sum(u8as.map((u8a) => u8a.length)))
-    u8as.reduce((pointer, u8a) => {
-        result.set(u8a, pointer)
-        return pointer + u8a.length
-    }, 0)
-    return result
-}
-
-
-
-
-/**
  * Retrieve 'n' random bytes from CSPRNG pool.
- * Alias for tweetnacl.randomBytes.
+ * Alias for `tweetnacl.randomBytes()`.
  *
  * @function random
  * @param {Number} n
@@ -66,8 +46,8 @@ export const random = naclRandomBytes
 
 
 /**
- * Compute a sha256 hash from a given input.
- * Uses sjcl's sha256 implementation.
+ * Compute a `sha256` hash from a given input.
+ * Uses `bitwiseshiftleft/sjcl`'s `sha256` implementation.
  *
  * @function sha256
  * @param {Uint8Array} input
@@ -97,10 +77,10 @@ export const salt32 = () => sha256(random(128))
 
 /**
  * Password-based key-derivation.
- * Uses pbkdf2 implemented in sjcl.
+ * Uses `pbkdf2` implemented in `bitwiseshiftleft/sjcl`.
  *
  * @function genKey
- * @param {Uint8Array} [pass=Uint8Array.from([]) A password to derive key from.
+ * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key from.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {Number} [count=2**12] Difficulty.
  * @returns {Uint8Array}
@@ -124,8 +104,8 @@ export const genKey = (
 
 
 /**
- * Compute a sha512 hash from a given input.
- * Uses tweetnacl's sha512 implementation.
+ * Compute a `sha512` hash from a given input.
+ * Uses `dchest/tweetnacl-js`'s `sha512` implementation.
  *
  * @function sha512
  * @param {Uint8Array} input
@@ -143,6 +123,51 @@ export const sha512 = naclHash
  * @returns {Uint8Array}
  */
 export const salt64 = () => sha512(random(256))
+
+
+
+
+/**
+ * Password-based key-derivation.
+ * Uses `scrypt` implemented in `ricmoo/scrypt-js`.
+ *
+ * @async
+ * @function deriveKey
+ * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key from.
+ * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
+ * @param {Number} [count=2**12] Difficulty.
+ * @param {Number} [blockSize=8]
+ * @param {Number} [parallelization=1]
+ * @param {Number} [derivedKeySize=64] Difficulty.
+ * @param {Function} [progressCallback=()=>false]
+ * @returns {Promise.<Uint8Array>}
+ */
+export const deriveKey = (
+    pass = Uint8Array.from([]),
+    salt = (new Uint8Array(64)).fill(0),
+    count = 2**16,
+    blockSize = 8,
+    parallelization = 1,
+    derivedKeySize = 64,
+    progressCallback = (_p) => false
+) => {
+    let
+        resolve = null, reject = null,
+        promise = new Promise((res, rej) => { resolve = res; reject = rej })
+
+    scrypt(
+        pass, salt,
+        count, blockSize, parallelization, derivedKeySize,
+        (error, progress, key) => {
+            if (error) return reject(error)
+            if (key) return resolve(key)
+            if (progress) return progressCallback(progress)
+            return false
+        }
+    )
+
+    return promise
+}
 
 
 
@@ -178,7 +203,7 @@ export const timestamp = () => (
  * @function genUUID
  * @returns {Uint8Array}
  */
-export const genUUID = () => concatBytes(
+export const genUUID = () => codec.concatBytes(
 
     // 48 bits (6 bytes): timestamp - miliseconds since epoch
     timestamp(),
@@ -204,8 +229,8 @@ export const genUUID = () => concatBytes(
 
 
 /**
- * Extract 'timestamp', 'user agent id' and 'random' component
- * from given 'uuid', which was generated using genUUID().
+ * Extract `timestamp`, `user agent id` and `random` component
+ * from given `uuid`, which was generated using `genUUID()`.
  *
  * @function uuidDecode
  * @param {Uint8Array} uuid
@@ -226,7 +251,7 @@ export const uuidDecode = (uuid) => ({
  * @function salsaNonce
  * @returns {Uint8Array}
  */
-export const salsaNonce = () => concatBytes(
+export const salsaNonce = () => codec.concatBytes(
     timestamp(),
     random(naclSecretbox.nonceLength - 6)
 )
@@ -235,8 +260,8 @@ export const salsaNonce = () => concatBytes(
 
 
 /**
- * Symmetric xsalsa20-poly1305 encryption.
- * Uses tweetnacl-js implementation.
+ * Symmetric `xsalsa20-poly1305` encryption.
+ * Uses `dchest/tweetnacl-js` implementation.
  *
  * @function salsaEncrypt
  * @param {Uint8Array} key Encryption key.
@@ -245,15 +270,15 @@ export const salsaNonce = () => concatBytes(
  */
 export const salsaEncrypt = (key, message) => {
     let iv = salsaNonce()
-    return concatBytes(iv, naclSecretbox(message, iv, key))
+    return codec.concatBytes(iv, naclSecretbox(message, iv, key))
 }
 
 
 
 
 /**
- * Symmetric xsalsa20-poly1305 decryption.
- * Uses tweetnacl-js implementation.
+ * Symmetric `xsalsa20-poly1305` decryption.
+ * Uses `dchest/tweetnacl-js` implementation.
  *
  * @function salsaDecrypt
  * @param {Uint8Array} key Encryption key.
@@ -282,8 +307,8 @@ export const aesNonce = () => random(16)
 
 
 /**
- * Symmetric AES-256 encryption in counter mode (CTR).
- * Uses crypto-browserify implementation.
+ * Symmetric `aes256` encryption in counter mode (CTR).
+ * Uses `crypto-browserify` implementation.
  *
  * @function aesEncrypt
  * @param {Uint8Array} key Encryption key.
@@ -293,15 +318,15 @@ export const aesNonce = () => random(16)
 export const aesEncrypt = (key, message) => {
     let iv = aesNonce(),
         cipher = crypto.createCipheriv("aes-256-ctr", key, iv)
-    return concatBytes(iv, cipher.update(message), cipher.final())
+    return codec.concatBytes(iv, cipher.update(message), cipher.final())
 }
 
 
 
 
 /**
- * Symmetric AES-256 decryption in counter mode (CTR).
- * Uses crypto-browserify implementation.
+ * Symmetric `aes256` decryption in counter mode (CTR).
+ * Uses `crypto-browserify` implementation.
  *
  * @function aesDecrypt
  * @param {Uint8Array} key Encryption key.
@@ -311,34 +336,8 @@ export const aesEncrypt = (key, message) => {
 export const aesDecrypt = (key, ciphertext) => {
     let iv = ciphertext.slice(0, 16),
         decipher = crypto.createDecipheriv("aes-256-ctr", key, iv)
-    return concatBytes(
+    return codec.concatBytes(
         decipher.update(ciphertext.slice(16)),
         decipher.final()
     )
 }
-
-
-
-
-/**
- * Covert a given b64-encoded string to the hex-encoded string
- * (a point-free implementation).
- *
- * @function b64ToHex
- * @param {String} input
- * @returns {String}
- */
-export const b64ToHex = func.compose(codec.bytesToHex, codec.b64dec)
-
-
-
-
-/**
- * Covert a given hex-encoded string to the b64-encoded string
- * (a point-free implementation).
- *
- * @function hexToB64
- * @param {String} input
- * @returns {String}
- */
-export const hexToB64 = func.compose(codec.b64enc, codec.hexToBytes)
