@@ -1,7 +1,7 @@
 /**
  * Stellar transaction-related operations (library).
  *
- * @module @stellar-fox/shambhala
+ * @module txops
  * @license Apache-2.0
  */
 
@@ -9,18 +9,18 @@
 
 
 import {
+    codec,
+    choose,
+    handleException,
+    isString,
+} from "@xcmats/js-toolbox"
+import {
     hash as stellarHash,
     Memo,
     Operation,
     StrKey,
     xdr,
 } from "stellar-sdk"
-import {
-    codec,
-    choose,
-    handleException,
-    isString,
-} from "@xcmats/js-toolbox"
 
 
 

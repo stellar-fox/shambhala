@@ -1,7 +1,7 @@
 /**
  * Crypto-related operations (library).
  *
- * @module @stellar-fox/shambhala
+ * @module cryptops
  * @license Apache-2.0
  */
 
