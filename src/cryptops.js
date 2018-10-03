@@ -356,8 +356,8 @@ export const aesDecrypt = (key, ciphertext) => {
  * Needed constants for encrypt/decrypt functions.
  */
 export const encdec = Object.freeze({
-    MAGIC: "DAB0",
-    VERSION: "0001",
+    MAGIC: "0xDAB0",
+    VERSION: "0x0001",
 })
 
 
@@ -444,14 +444,13 @@ export const decrypt = (key, ciphertext) => {
 
     if (key.length !== 64) throw new RangeError("Key must be 512 bits long.")
 
-    if (
-        codec.bytesToHex(
-            ciphertext.slice(0, 2)
-        ) !== encdec.MAGIC.toLowerCase()  ||
-        codec.bytesToHex(
-            ciphertext.slice(2, 4)
-        ) !== encdec.VERSION.toLowerCase()
-    ) throw new Error("Magic byte or version mismatch.")
+    if (!codec.compareBytes(
+        codec.concatBytes(
+            codec.hexToBytes(encdec.MAGIC),
+            codec.hexToBytes(encdec.VERSION)
+        ),
+        ciphertext.slice(0, 4)
+    )) throw new Error("Magic byte or version mismatch.")
 
     return func.compose(
         func.partial(salsaDecrypt)(key.slice(0, 32)),
