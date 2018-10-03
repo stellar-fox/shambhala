@@ -100,13 +100,13 @@ export const salt32 = () => sha256(random(128))
  * Uses pbkdf2 implemented in sjcl.
  *
  * @function genKey
- * @param {String} [pass=string.empty()] A password to derive key from.
+ * @param {Uint8Array} [pass=Uint8Array.from([]) A password to derive key from.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {Number} [count=2**12] Difficulty.
  * @returns {Uint8Array}
  */
 export const genKey = (
-    pass = string.empty(),
+    pass = Uint8Array.from([]),
     salt = (new Uint8Array(32)).fill(0),
     count = 2**12
 ) => func.compose(
@@ -114,7 +114,7 @@ export const genKey = (
     sjclCodec.hex.fromBits
 )(
     sjclMisc.pbkdf2(
-        sjclCodec.utf8String.toBits(pass),
+        func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(pass),
         func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(salt),
         count
     )
