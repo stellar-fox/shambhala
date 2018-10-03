@@ -166,7 +166,7 @@ export const deriveKey = (
         count, blockSize, parallelization, derivedKeySize,
         (error, progress, key) => {
             if (error) return reject(error)
-            if (key) return resolve(key)
+            if (key) return resolve(Uint8Array.from(key))
             if (progress) return progressCallback(progress)
             return false
         }
