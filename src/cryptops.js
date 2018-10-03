@@ -128,6 +128,14 @@ export const salt64 = () => sha512(random(256))
 
 
 /**
+ * @typedef {Object} KeyDerivationOptions
+ * @property {Number} [count=2**12] Difficulty.
+ * @property {Number} [blockSize=8]
+ * @property {Number} [parallelization=1]
+ * @property {Number} [derivedKeySize=64] Difficulty.
+ * @property {Function} [progressCallback=()=>false]
+ */
+/**
  * Password-based key-derivation.
  * Uses `scrypt` implemented in `ricmoo/scrypt-js`.
  *
@@ -135,21 +143,19 @@ export const salt64 = () => sha512(random(256))
  * @function deriveKey
  * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key from.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
- * @param {Number} [count=2**12] Difficulty.
- * @param {Number} [blockSize=8]
- * @param {Number} [parallelization=1]
- * @param {Number} [derivedKeySize=64] Difficulty.
- * @param {Function} [progressCallback=()=>false]
+ * @param {KeyDerivationOptions} [opts={}]
  * @returns {Promise.<Uint8Array>}
  */
 export const deriveKey = (
     pass = Uint8Array.from([]),
     salt = (new Uint8Array(64)).fill(0),
-    count = 2**16,
-    blockSize = 8,
-    parallelization = 1,
-    derivedKeySize = 64,
-    progressCallback = (_p) => false
+    {
+        count = 2**16,
+        blockSize = 8,
+        parallelization = 1,
+        derivedKeySize = 64,
+        progressCallback = (_p) => false,
+    } = {}
 ) => {
     let
         resolve = null, reject = null,
