@@ -15,6 +15,7 @@ import {
     isBrowser,
     range,
     string,
+    type,
 } from "@xcmats/js-toolbox"
 import crypto from "crypto-browserify"
 import scrypt from "scrypt-js"
@@ -80,7 +81,7 @@ export const salt32 = () => sha256(random(128))
  * Uses `pbkdf2` implemented in `bitwiseshiftleft/sjcl`.
  *
  * @function genKey
- * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key from.
+ * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {Number} [count=2**12] Difficulty.
  * @returns {Uint8Array}
@@ -141,7 +142,7 @@ export const salt64 = () => sha512(random(256))
  *
  * @async
  * @function deriveKey
- * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key from.
+ * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {KeyDerivationOptions} [opts={}]
  * @returns {Promise.<Uint8Array>}
@@ -272,7 +273,7 @@ export const salsaNonce = () => codec.concatBytes(
  * @function salsaEncrypt
  * @param {Uint8Array} key Encryption key.
  * @param {Uint8Array} message A content to encrypt.
- * @returns {Uint8Array}
+ * @returns {Uint8Array} Initialization Vector concatenated with Ciphertext.
  */
 export const salsaEncrypt = (key, message) => {
     let iv = salsaNonce()
@@ -287,9 +288,9 @@ export const salsaEncrypt = (key, message) => {
  * Uses `dchest/tweetnacl-js` implementation.
  *
  * @function salsaDecrypt
- * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} key Decryption key.
  * @param {Uint8Array} ciphertext A content to decrypt.
- * @returns {(Uint8Array|null)}
+ * @returns {(Uint8Array|null)} Decrypted message or null.
  */
 export const salsaDecrypt = (key, ciphertext) => {
     let iv = ciphertext.slice(0, naclSecretbox.nonceLength)
@@ -319,7 +320,7 @@ export const aesNonce = () => random(16)
  * @function aesEncrypt
  * @param {Uint8Array} key Encryption key.
  * @param {Uint8Array} message A content to encrypt.
- * @returns {Uint8Array}
+ * @returns {Uint8Array} Initialization Vector concatenated with Ciphertext.
  */
 export const aesEncrypt = (key, message) => {
     let iv = aesNonce(),
@@ -335,9 +336,9 @@ export const aesEncrypt = (key, message) => {
  * Uses `crypto-browserify` implementation.
  *
  * @function aesDecrypt
- * @param {Uint8Array} key Encryption key.
+ * @param {Uint8Array} key Decryption key.
  * @param {Uint8Array} ciphertext A content to decrypt.
- * @returns {Uint8Array}
+ * @returns {Uint8Array} Decrypted message.
  */
 export const aesDecrypt = (key, ciphertext) => {
     let iv = ciphertext.slice(0, 16),
@@ -347,3 +348,114 @@ export const aesDecrypt = (key, ciphertext) => {
         decipher.final()
     )
 }
+
+
+
+
+/**
+ * Needed constants for encrypt/decrypt functions.
+ */
+export const encdec = Object.freeze({
+    MAGIC: "DAB0",
+    VERSION: "0001",
+})
+
+
+
+
+/**
+ * Double-cipher (`salsa`/`aes`) encryption with `poly1305` MAC.
+ * Uses `dchest/tweetnacl-js` "secretbox" for `xsalsa20-poly1305`
+ * and `crypto-browserify` for `aes-256-ctr` encryption.
+ * Inspired by `keybase.io/triplesec`.
+ *
+ * Algorithm:
+ *
+ * 1. `salsaNonce` is created
+ * 2. `message` is being encrypted with `xsalsa20`
+ *     using first 32 bytes of `key` and `salsaNonce`
+ *     producing `[salsaNonce + salsaCiphertext]`
+ * 3. `aesNonce` is created
+ * 4. `[salsaNonce + salsaCiphertext]` is being encrypted with `aes-256-ctr`
+ *     using last 32 bytes of `key` and `aesNonce`
+ *     producing `[aesNonce + aesCiphertext]`
+ * 5. [`encdec.MAGIC` + `encdec.VERSION` + `aesNonce` + `aesCiphertext`]
+ *    is returned as Uint8Array result
+ *
+ * @function encrypt
+ * @param {Uint8Array} key 512 bits (64 bytes) encryption key.
+ * @param {Uint8Array} message A content to encrypt.
+ * @returns {Uint8Array} [MAGIC] + [VERSION] + [AES IV] + [Ciphertext].
+ */
+export const encrypt = (key, message) => {
+    if (
+        !type.isNumber(key.BYTES_PER_ELEMENT)  ||
+        !type.isNumber(message.BYTES_PER_ELEMENT)  ||
+        key.BYTES_PER_ELEMENT !== 1  ||
+        message.BYTES_PER_ELEMENT !== 1
+    ) throw new TypeError("Arguments must be of Uint8Array type.")
+
+    if (key.length !== 64) throw new RangeError("Key must be 512 bits long.")
+
+    return codec.concatBytes(
+        codec.hexToBytes(encdec.MAGIC),
+        codec.hexToBytes(encdec.VERSION),
+        func.compose(
+            func.partial(aesEncrypt)(key.slice(32)),
+            func.partial(salsaEncrypt)(key.slice(0, 32))
+        )(message)
+    )
+}
+Object.freeze(Object.assign(encrypt, encdec))
+
+
+
+
+/**
+ * Double-cipher (`salsa`/`aes`) decryption with `poly1305` MAC.
+ * Uses `dchest/tweetnacl-js` "secretbox" for `xsalsa20-poly1305`
+ * and `crypto-browserify` for `aes-256-ctr` decryption.
+ * Inspired by `keybase.io/triplesec`.
+ *
+ * Algorithm:
+ *
+ * 1. [`encdec.MAGIC` + `encdec.VERSION`] part of `ciphertext` is checked
+ * 2. `[salsaNonce + salsaCiphertext]` is being decrypted with `aes-256-ctr`
+ *     using last 32 bytes of `key` and `aesNonce`
+ *     from `[aesNonce + aesCiphertext]` part of `ciphertext`
+ * 3. `message` is being decrypted with `xsalsa20`
+ *     using first 32 bytes of `key` and `salsaNonce`
+ *     from `[salsaNonce + salsaCiphertext]`
+ * 4. If salsa-decryption succeeded then `message` is returned,
+ *     otherwise `null`.
+ *
+ * @function decrypt
+ * @param {Uint8Array} key 512 bits (64 bytes) decryption key.
+ * @param {Uint8Array} message A content to encrypt.
+ * @returns {Uint8Array} [MAGIC] + [VERSION] + [AES IV] + [Ciphertext].
+ */
+export const decrypt = (key, ciphertext) => {
+    if (
+        !type.isNumber(key.BYTES_PER_ELEMENT)  ||
+        !type.isNumber(ciphertext.BYTES_PER_ELEMENT)  ||
+        key.BYTES_PER_ELEMENT !== 1  ||
+        ciphertext.BYTES_PER_ELEMENT !== 1
+    ) throw new TypeError("Arguments must be of Uint8Array type.")
+
+    if (key.length !== 64) throw new RangeError("Key must be 512 bits long.")
+
+    if (
+        codec.bytesToHex(
+            ciphertext.slice(0, 2)
+        ) !== encdec.MAGIC.toLowerCase()  ||
+        codec.bytesToHex(
+            ciphertext.slice(2, 4)
+        ) !== encdec.VERSION.toLowerCase()
+    ) throw new Error("Magic byte or version mismatch.")
+
+    return func.compose(
+        func.partial(salsaDecrypt)(key.slice(0, 32)),
+        func.partial(aesDecrypt)(key.slice(32))
+    )(ciphertext.slice(4))
+}
+Object.freeze(Object.assign(decrypt, encdec))
