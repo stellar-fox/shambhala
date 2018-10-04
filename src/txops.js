@@ -55,12 +55,12 @@ export const inspectTSB = (tsbXDR) => {
         memo: handleException(
             () => ((memo) => choose(
                 memo.arm(), {
-                    "id": (val) => Memo.id(val.toString()),
-                    "text": (val) => isString(val) ?
+                    id: (val) => Memo.id(val.toString()),
+                    text: (val) => isString(val) ?
                         Memo.text(val) :
                         Memo.text(codec.bytesToString(val)),
-                    "hash": (val) => Memo.hash(val),
-                    "retHash": (val) => Memo.return(val),
+                    hash: (val) => Memo.hash(val),
+                    retHash: (val) => Memo.return(val),
                 },
                 (_) => Memo.none(),
                 [memo.value(),]
