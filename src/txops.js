@@ -83,9 +83,9 @@ export const inspectTSB = (tsbXDR) => {
  * Return `DecoratedSignature` (XDR).
  *
  * @function signTSB
- * @param {Uint8Array} tsbXDR XDR-encoded `TransactionSignatureBase`
  * @param {Object} kp StellarSDK.Keypair object
+ * @param {Uint8Array} tsbXDR XDR-encoded `TransactionSignatureBase`
  * @returns {Uint8Array} XDR-encoded `DecoratedSignature`
  */
-export const signTSB = (tsbXDR, kp) =>
+export const signTSB = (kp, tsbXDR) =>
     kp.signDecorated(stellarHash(tsbXDR)).toXDR()
