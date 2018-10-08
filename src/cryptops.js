@@ -412,7 +412,7 @@ Object.freeze(Object.assign(encrypt, encdec))
 
 
 /**
- * Double-cipher (`salsa`/`aes`) decryption with `poly1305` MAC.
+ * Double-cipher (`aes`/`salsa`) decryption with `poly1305` MAC.
  * Uses `dchest/tweetnacl-js` "secretbox" for `xsalsa20-poly1305`
  * and `crypto-browserify` for `aes-256-ctr` decryption.
  * Inspired by `keybase.io/triplesec`.
