@@ -23,6 +23,8 @@ import {
 } from "./utils"
 import { serviceWorkerDomain } from "./env"
 
+import "../public/index.css"
+
 
 
 

@@ -33,6 +33,12 @@ module.exports = {
         globalObject: "self",
     },
 
+    module: {
+        rules: [
+            { test: /\.css$/, use: ["style-loader", "css-loader",], },
+        ],
+    },
+
     devServer: {
         compress: true,
         contentBase: "public/",
