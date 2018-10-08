@@ -19,6 +19,8 @@ import {
 import { console } from "./utils"
 import { mainDomain } from "./env"
 
+import "../public/index.css"
+
 
 
 
