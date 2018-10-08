@@ -66,8 +66,9 @@ module.exports = {
             filename: "index.html",
             inject: true,
             hash: true,
+            title: "Shambhala - playground",
             template: path.resolve(
-                appDirectory, "public/index.html"
+                appDirectory, "./public/index.html"
             ),
         }),
         new HtmlWebpackPlugin({
@@ -75,8 +76,9 @@ module.exports = {
             filename: "shambhala.html",
             inject: true,
             hash: true,
+            title: "Shambhala",
             template: path.resolve(
-                appDirectory, "public/index.shambhala.html"
+                appDirectory, "./public/index.shambhala.html"
             ),
         }),
     ],
