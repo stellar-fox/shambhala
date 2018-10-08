@@ -26,9 +26,9 @@ module.exports = {
     },
 
     output: {
-        filename: "[name].bundle.js",
-        chunkFilename: "[name].chunk.js",
-        sourceMapFilename: "[name].map",
+        filename: "[name].[hash].bundle.js",
+        chunkFilename: "[name].[hash].chunk.js",
+        sourceMapFilename: "[name].[hash].map",
         publicPath,
         globalObject: "self",
     },
