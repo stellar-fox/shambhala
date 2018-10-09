@@ -7,6 +7,7 @@
 const
     webpack = require("webpack"),
     express = require("express"),
+    chalk = require("chalk"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     path = require("path"),
     fs = require("fs"),
@@ -64,17 +65,26 @@ module.exports = {
 
     devServer: {
         before: function (app) {
-            // simple logger
-            // app.use(function (req, _res, next) {
-            //     console.log(req.method, req.url)
-            //     next()
-            // })
-
             // static-files server
             app.use(
                 path.join(publicPath, publicDirectory),
                 express.static(path.join(appDirectory, publicDirectory))
             )
+
+            // info
+            console.log(
+                chalk.gray(" [info]") + ":",
+                "Static output is served from",
+                chalk.bold.blue(publicDirectory),
+                "as",
+                chalk.bold.blue(path.join(publicPath, publicDirectory))
+            )
+
+            // simple logger
+            // app.use(function (req, _res, next) {
+            //     console.log(req.method, req.url)
+            //     next()
+            // })
         },
         compress: true,
         disableHostCheck: true,
