@@ -13,12 +13,12 @@ import {
     delay,
     head,
 } from "@xcmats/js-toolbox"
-import { console } from "./utils"
+import { console } from "./lib/utils"
 import {
     api,
     apiPrefix,
     defaultDelay,
-} from "./env"
+} from "./config/env"
 
 
 

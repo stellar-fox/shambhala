@@ -25,7 +25,7 @@ import {
     serviceWorkerFilename,
     serviceWorkerDomain,
     serviceWorkerIframe,
-} from "./env"
+} from "../config/env"
 
 
 

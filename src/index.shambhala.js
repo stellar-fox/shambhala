@@ -15,9 +15,9 @@ import {
 import {
     registerServiceWorker,
     unregisterServiceWorker,
-} from "./shambhala"
-import { console } from "./utils"
-import { mainDomain } from "./env"
+} from "./lib/shambhala.sw"
+import { console } from "./lib/utils"
+import { mainDomain } from "./config/env"
 
 import "../public/index.css"
 

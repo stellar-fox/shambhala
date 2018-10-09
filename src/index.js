@@ -15,13 +15,13 @@ import {
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
-import { embed } from "./shambhala"
+import { embed } from "./lib/shambhala.sw"
 import {
     console,
     drawEmojis,
     dynamicImportLibs,
-} from "./utils"
-import { serviceWorkerDomain } from "./env"
+} from "./lib/utils"
+import { serviceWorkerDomain } from "./config/env"
 
 import "../public/index.css"
 
