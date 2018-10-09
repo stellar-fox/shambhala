@@ -67,7 +67,8 @@
     "homepage": "https://github.com/stellar-fox/shambhala",
     "keywords": [
         "javascript",
-        "library"
+        "library",
+        "secrets"
     ],
     "license": "Apache-2.0",
     "name": "@stellar-fox/shambhala",
@@ -82,13 +83,15 @@
     },
     "scripts": {
         "apiServer": "node ./backend.dist/server.js",
-        "buildApiServer": "cross-env BABEL_ENV=commonjs babel ./backend.src/ -d ./backend.dist/",
+        "build": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.prod.js",
+        "build:apiServer": "cross-env BABEL_ENV=commonjs babel ./backend.src/ -d ./backend.dist/",
+        "build:jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./jsdoc/",
+        "clean": "rimraf ./dist",
         "clean:apiServer": "rimraf ./backend.dist",
         "clean:jsdoc": "rimraf ./jsdoc",
         "clean:modules": "rimraf ./node_modules",
         "devApiServer": "nodemon --watch ./backend.src/ ./backend.src/server.js --exec \"cross-env BABEL_ENV=commonjs babel-node --inspect\"",
-        "jsdoc": "npm run clean:jsdoc && npm run buildJsdoc",
-        "buildJsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./jsdoc/",
+        "jsdoc": "npm run clean:jsdoc && npm run build:jsdoc",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run doc",
         "start": "webpack-dev-server --config=webpack.config.dev.js",
