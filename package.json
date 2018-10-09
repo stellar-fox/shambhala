@@ -71,6 +71,7 @@
     "license": "Apache-2.0",
     "name": "@stellar-fox/shambhala",
     "private": true,
+    "publicPath": "/shambhala/",
     "publishConfig": {
         "access": "public"
     },

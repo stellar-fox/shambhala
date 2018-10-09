@@ -12,7 +12,9 @@ const
     fs = require("fs"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",
-    publicPath = "/shambhala/"
+    publicPath = JSON.parse(
+        fs.readFileSync("./package.json", "utf-8")
+    ).publicPath
 
 
 
@@ -24,12 +26,15 @@ module.exports = {
 
 
     entry: {
-        "static/main":
-            path.resolve(appDirectory, "src/index.js"),
-        "static/shambhala.main":
-            path.resolve(appDirectory, "src/index.shambhala.js"),
-        "shambhala.sw":
-            path.resolve(appDirectory, "src/index.sw.js"),
+        "static/main": path.resolve(
+            appDirectory, "src/index.js"
+        ),
+        "static/shambhala.main": path.resolve(
+            appDirectory, "src/index.shambhala.js"
+        ),
+        "shambhala.sw": path.resolve(
+            appDirectory, "src/index.sw.js"
+        ),
     },
 
 
@@ -92,7 +97,9 @@ module.exports = {
 
 
     plugins: [
+
         new webpack.HotModuleReplacementPlugin(),
+
         new HtmlWebpackPlugin({
             chunks: ["static/main",],
             filename: "index.html",
@@ -104,6 +111,7 @@ module.exports = {
                 appDirectory, "./public/index.html"
             ),
         }),
+
         new HtmlWebpackPlugin({
             chunks: ["static/shambhala.main",],
             filename: "shambhala.html",
@@ -115,6 +123,7 @@ module.exports = {
                 appDirectory, "./public/index.shambhala.html"
             ),
         }),
+
     ],
 
 }
