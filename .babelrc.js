@@ -1,5 +1,5 @@
 // used babel-plugins array
-var plugins = [
+var commonPlugins = [
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-transform-arrow-functions",
@@ -29,7 +29,7 @@ module.exports = function (api) {
             // shambhala-frontend environment (dev.)
             "development": {
                 "comments": false,
-                "plugins": plugins,
+                "plugins": commonPlugins,
                 "presets": [
                     [
                         "@babel/preset-env",
@@ -47,7 +47,9 @@ module.exports = function (api) {
             // shambhala-backend environment (devApiServer and production)
             "commonjs": {
                 "comments": false,
-                "plugins": plugins,
+                "plugins": commonPlugins.concat([
+                    "@babel/plugin-transform-modules-commonjs"
+                ]),
                 "presets": [
                     [
                         "@babel/preset-env",
