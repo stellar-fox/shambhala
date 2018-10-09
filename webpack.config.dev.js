@@ -1,20 +1,27 @@
 "use strict"
 
 
+
+
 // ...
 const
     webpack = require("webpack"),
+    express = require("express"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     path = require("path"),
     fs = require("fs"),
     appDirectory = fs.realpathSync(process.cwd()),
-    publicPath = "/"
+    publicDirectory = "public/",
+    publicPath = "/shambhala/"
+
+
 
 
 // ...
 module.exports = {
 
     mode: "development",
+
 
     entry: {
         "static/main":
@@ -25,6 +32,7 @@ module.exports = {
             path.resolve(appDirectory, "src/index.sw.js"),
     },
 
+
     output: {
         filename: "[name].[hash].bundle.js",
         chunkFilename: "[name].[hash].chunk.js",
@@ -32,6 +40,7 @@ module.exports = {
         publicPath,
         globalObject: "self",
     },
+
 
     module: {
         rules: [
@@ -47,9 +56,22 @@ module.exports = {
         ],
     },
 
+
     devServer: {
+        before: function (app) {
+            // simple logger
+            // app.use(function (req, _res, next) {
+            //     console.log(req.method, req.url)
+            //     next()
+            // })
+
+            // static-files server
+            app.use(
+                path.join(publicPath, publicDirectory),
+                express.static(path.join(appDirectory, publicDirectory))
+            )
+        },
         compress: true,
-        contentBase: "public/",
         disableHostCheck: true,
         host: "0.0.0.0",
         hot: true,
@@ -65,7 +87,9 @@ module.exports = {
         watchContentBase: true,
     },
 
+
     devtool: "source-map",
+
 
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
@@ -74,6 +98,7 @@ module.exports = {
             filename: "index.html",
             inject: true,
             hash: true,
+            realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - playground",
             template: path.resolve(
                 appDirectory, "./public/index.html"
@@ -84,6 +109,7 @@ module.exports = {
             filename: "shambhala.html",
             inject: true,
             hash: true,
+            realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala",
             template: path.resolve(
                 appDirectory, "./public/index.shambhala.html"

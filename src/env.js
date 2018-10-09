@@ -20,13 +20,13 @@ export const defaultDelay = 0.2 * timeUnit.second
 
 
 // ...
-export const mainDomain = "http://localhost:8080"
+export const mainDomain = "https://localhost"
 
 
 
 
 // ...
-export const serviceWorkerDomain = "http://secrets.localhost:8080"
+export const serviceWorkerDomain = "https://secrets.localhost"
 
 
 
@@ -38,7 +38,7 @@ export const serviceWorkerIframe = "/shambhala.html"
 
 
 // ...
-export const registrationPath = "/"
+export const registrationPath = "/shambhala/"
 
 
 
