@@ -6,3 +6,6 @@
 
 # backend credentials file
 /backend.src/credentials.js
+
+# builds
+/dist
