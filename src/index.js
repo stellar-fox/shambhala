@@ -11,6 +11,7 @@
 import {
     asyncRepeat,
     delay,
+    devEnv,
     isObject,
     randomInt,
     timeUnit,
@@ -54,7 +55,7 @@ window.addEventListener("load", async () => {
 
 
     // expose `s` dev. namespace
-    if (isObject(window)) {
+    if (devEnv()  &&  isObject(window)) {
         window.s = {
             ...await dynamicImportLibs(),
             shambhala,

@@ -1,5 +1,9 @@
-var
+"use strict";
 
+
+
+
+var
     // used babel-plugins array
     commonPlugins = [
         "@babel/plugin-proposal-object-rest-spread",
