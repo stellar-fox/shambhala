@@ -15,11 +15,11 @@ import {
 import {
     registerServiceWorker,
     unregisterServiceWorker,
-} from "./lib/shambhala.sw"
-import { console } from "./lib/utils"
-import { mainDomain } from "./config/env"
+} from "../lib/shambhala.sw"
+import { console } from "../lib/utils"
+import { mainDomain } from "../config/env"
 
-import "../public/index.css"
+import "../../public/index.css"
 
 
 

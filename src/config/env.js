@@ -1,5 +1,6 @@
 /**
- * Shambhala (environment variables).
+ * Shambhala.
+ * Environment variables.
  *
  * @module @stellar-fox/shambhala
  * @license Apache-2.0

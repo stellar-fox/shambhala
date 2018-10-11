@@ -31,10 +31,10 @@ module.exports = {
             appDirectory, "src/host/index.js"
         ),
         "static/shambhala.main": path.resolve(
-            appDirectory, "src/index.shambhala.js"
+            appDirectory, "src/client/index.js"
         ),
         "shambhala.sw": path.resolve(
-            appDirectory, "src/index.sw.js"
+            appDirectory, "src/client/index.sw.js"
         ),
     },
 
@@ -52,12 +52,12 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader",],
+                use: ["style-loader", "css-loader"],
             },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: ["babel-loader",],
+                use: ["babel-loader"],
             },
         ],
     },
@@ -112,7 +112,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/main",],
+            chunks: ["static/main"],
             filename: "index.html",
             inject: true,
             hash: true,
@@ -124,7 +124,7 @@ module.exports = {
         }),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/shambhala.main",],
+            chunks: ["static/shambhala.main"],
             filename: "shambhala.html",
             inject: true,
             hash: true,
