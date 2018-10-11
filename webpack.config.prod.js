@@ -25,10 +25,10 @@ module.exports = {
 
 
     entry: {
-        "static/main": path.resolve(
+        "static/host": path.resolve(
             appDirectory, "src/host/index.js"
         ),
-        "static/shambhala.main": path.resolve(
+        "static/client": path.resolve(
             appDirectory, "src/client/index.js"
         ),
         "shambhala.sw": path.resolve(
@@ -74,7 +74,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/main"],
+            chunks: ["static/host"],
             filename: "index.html",
             inject: true,
             hash: true,
@@ -86,14 +86,14 @@ module.exports = {
         }),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/shambhala.main"],
+            chunks: ["static/client"],
             filename: "shambhala.html",
             inject: true,
             hash: true,
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala",
             template: path.resolve(
-                appDirectory, "./public/index.shambhala.html"
+                appDirectory, "./src/client/index.html"
             ),
         }),
 

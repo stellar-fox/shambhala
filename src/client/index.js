@@ -19,7 +19,7 @@ import {
 import { console } from "../lib/utils"
 import { mainDomain } from "../config/env"
 
-import "../../public/index.css"
+import "./index.css"
 
 
 
@@ -68,7 +68,7 @@ window.addEventListener("load", async () => {
 
 
 
-// listen to messages coming from parent (the root)
+// listen to the messages coming from parent (the root)
 window.addEventListener("message", (e) => {
 
     // don't get fooled by potential messages from others
@@ -79,11 +79,11 @@ window.addEventListener("message", (e) => {
     logger.info("Root said:", e.data)
 
 
-    // undertake appropriate action
+    // undertake an appropriate action
     choose(e.data, {
 
         // unregister service worker
-        "unregister": async () => {
+        unregister: async () => {
             await unregisterServiceWorker(logger)
         },
 
