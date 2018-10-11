@@ -87,9 +87,11 @@
     "scripts": {
         "apiServer": "node ./dist.server/server.bundle.js",
         "build": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.prod.js",
+        "build:all": "npm run build && npm run build:apiServer && npm run build:jsdoc",
         "build:apiServer": "cross-env BABEL_ENV=commonjs webpack -p --config=webpack.config.server.js",
         "build:jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./jsdoc/",
         "clean": "rimraf ./dist",
+        "clean:all": "npm run clean && npm run clean:apiServer && npm run clean:jsdoc",
         "clean:apiServer": "rimraf ./dist.server",
         "clean:jsdoc": "rimraf ./jsdoc",
         "clean:modules": "rimraf ./node_modules",

@@ -71,8 +71,6 @@ module.exports = {
             "process.env.BABEL_ENV": JSON.stringify("production"),
         }),
 
-        new webpack.HotModuleReplacementPlugin(),
-
         new HtmlWebpackPlugin({
             chunks: ["static/host"],
             filename: "index.html",
