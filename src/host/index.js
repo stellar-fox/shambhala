@@ -1,5 +1,6 @@
 /**
- * Shambhala (dev-playground).
+ * Shambhala.
+ * Host application (playground).
  *
  * @module @stellar-fox/shambhala
  * @license Apache-2.0
@@ -16,15 +17,15 @@ import {
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
-import { embed } from "./lib/shambhala.sw"
+import { embed } from "../lib/shambhala.sw"
 import {
     console,
     drawEmojis,
-} from "./lib/utils"
-import { dynamicImportLibs } from "./lib/dynamic.import"
-import { serviceWorkerDomain } from "./config/env"
+} from "../lib/utils"
+import { dynamicImportLibs } from "../lib/dynamic.import"
+import { serviceWorkerDomain } from "../config/env"
 
-import "../public/index.css"
+import "../../public/index.css"
 
 
 

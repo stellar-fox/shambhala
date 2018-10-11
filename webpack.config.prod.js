@@ -26,7 +26,7 @@ module.exports = {
 
     entry: {
         "static/main": path.resolve(
-            appDirectory, "src/index.js"
+            appDirectory, "src/host/index.js"
         ),
         "static/shambhala.main": path.resolve(
             appDirectory, "src/index.shambhala.js"

@@ -28,7 +28,7 @@ module.exports = {
 
     entry: {
         "static/main": path.resolve(
-            appDirectory, "src/index.js"
+            appDirectory, "src/host/index.js"
         ),
         "static/shambhala.main": path.resolve(
             appDirectory, "src/index.shambhala.js"
@@ -72,6 +72,7 @@ module.exports = {
             )
 
             // info
+            // eslint-disable-next-line no-console
             console.log(
                 chalk.gray(" [info]") + ":",
                 "Static output is served from",
