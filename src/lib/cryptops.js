@@ -133,7 +133,7 @@ export const salt64 = () => sha512(random(256))
  * @property {Number} [count=2**12] Difficulty.
  * @property {Number} [blockSize=8]
  * @property {Number} [parallelization=1]
- * @property {Number} [derivedKeySize=64] Difficulty.
+ * @property {Number} [derivedKeySize=64]
  * @property {Function} [progressCallback=()=>false]
  */
 /**
