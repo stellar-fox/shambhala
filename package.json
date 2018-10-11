@@ -11,6 +11,7 @@
     ],
     "dependencies": {
         "@stellar-fox/redshift": "^0.3.1",
+        "@types/stellar-sdk": "^0.10.2",
         "@xcmats/js-toolbox": "^0.6.6",
         "axios": "^0.18.0",
         "bip39": "^2.5.0",
