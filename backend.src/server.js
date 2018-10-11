@@ -29,7 +29,7 @@ const
 
 // ...
 app.use(json())
-app.use(urlencoded({ extended: true, }))
+app.use(urlencoded({ extended: true }))
 app.use(function (req, res, next) {
     // eslint-disable-next-line no-console
     console.log(req.method, req.url)
