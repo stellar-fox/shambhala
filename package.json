@@ -60,7 +60,8 @@
         "style-loader": "^0.23.1",
         "webpack": "^4.20.2",
         "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.9"
+        "webpack-dev-server": "^3.1.9",
+        "webpack-node-externals": "^1.7.2"
     },
     "engines": {
         "node": ">=6.0.0",
@@ -84,12 +85,12 @@
         "url": "git+https://github.com/stellar-fox/shambhala.git"
     },
     "scripts": {
-        "apiServer": "node ./backend.dist/server.js",
+        "apiServer": "node ./dist.server/server.bundle.js",
         "build": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.prod.js",
-        "build:apiServer": "cross-env BABEL_ENV=commonjs babel ./backend.src/ -d ./backend.dist/",
+        "build:apiServer": "cross-env BABEL_ENV=commonjs webpack -p --config=webpack.config.server.js",
         "build:jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md ./src/ -d ./jsdoc/",
         "clean": "rimraf ./dist",
-        "clean:apiServer": "rimraf ./backend.dist",
+        "clean:apiServer": "rimraf ./dist.server",
         "clean:jsdoc": "rimraf ./jsdoc",
         "clean:modules": "rimraf ./node_modules",
         "devApiServer": "nodemon --watch ./src/ ./src/server/index.js --exec \"cross-env BABEL_ENV=commonjs babel-node --inspect\"",
