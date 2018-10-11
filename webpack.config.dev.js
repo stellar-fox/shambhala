@@ -71,6 +71,15 @@ module.exports = {
                 express.static(path.join(appDirectory, publicDirectory))
             )
 
+            // redirect
+            app.get("/", (_req, res, next) => {
+                if (publicPath !== "/") {
+                    res.redirect(publicPath)
+                } else {
+                    next()
+                }
+            })
+
             // info
             // eslint-disable-next-line no-console
             console.log(
@@ -82,10 +91,11 @@ module.exports = {
             )
 
             // simple logger
-            // app.use(function (req, _res, next) {
-            //     console.log(req.method, req.url)
-            //     next()
-            // })
+            app.use((req, _res, next) => {
+                // eslint-disable-next-line no-console
+                console.log(chalk.gray(req.method), req.url)
+                next()
+            })
         },
         compress: true,
         disableHostCheck: true,
@@ -97,7 +107,7 @@ module.exports = {
         open: false,
         overlay: true,
         port: 8080,
-        public: "https://localhost/shambhala",
+        public: "https://localhost",
         publicPath,
         useLocalIp: true,
         watchContentBase: true,
