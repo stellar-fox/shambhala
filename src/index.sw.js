@@ -104,7 +104,7 @@ self.addEventListener("fetch", (e) => choose(
                         c.navigate(c.url)  :  null
                 ))
                 .then(() => e.respondWith(
-                    new Response(null, { status: 200, })
+                    new Response(null, { status: 200 })
                 ))
         },
 

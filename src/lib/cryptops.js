@@ -59,7 +59,7 @@ export const sha256 = func.compose(
     sjclCodec.hex.fromBits,
     sjclHash.sha256.hash,
     sjclCodec.hex.toBits,
-    codec.bytesToHex,
+    codec.bytesToHex
 )
 
 
@@ -191,8 +191,8 @@ export const timestamp = () => (
             .reduce(
                 (acc, _el, i) =>
                     i < rd.length ?
-                        [rd[i],].concat(acc) :
-                        [0,].concat(acc),
+                        [rd[i]].concat(acc) :
+                        [0].concat(acc),
                 []
             ).join(string.empty())
     )

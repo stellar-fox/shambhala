@@ -81,7 +81,7 @@ export const registerServiceWorker = (logger = console.noop) => {
                 logger.info("Registration scope: ", registration.scope)
 
                 // tell the current state of a worker
-                let workerState = ["installing", "waiting", "active",]
+                let workerState = ["installing", "waiting", "active"]
                     .filter((state) => toBool(registration[state]))
                 workerState.forEach((state) =>
                     logger.info(quote(state, "<>"), "worker present")

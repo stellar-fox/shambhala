@@ -63,7 +63,7 @@ export const inspectTSB = (tsbXDR) => {
                     retHash: (val) => Memo.return(val),
                 },
                 (_) => Memo.none(),
-                [memo.value(),]
+                [memo.value()]
             ))(tx.memo()),
             () => Memo.none()
         ),

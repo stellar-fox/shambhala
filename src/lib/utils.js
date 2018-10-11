@@ -30,13 +30,13 @@ import {
  */
 export const console = (() => {
     let
-        methods = ["log", "info", "warn", "error",],
-        noop = dict(methods.map((m) => [m, () => null,])),
+        methods = ["log", "info", "warn", "error"],
+        noop = dict(methods.map((m) => [m, () => null])),
         c = (context = "main") => (
             (con) => dict(methods.map(
-                (m) => [m, partial(con[m])(quote(context, "[]")),]
+                (m) => [m, partial(con[m])(quote(context, "[]"))]
             ))
-        )(access(self, ["console",], noop))
+        )(access(self, ["console"], noop))
     c.noop = noop
     return c
 })()
