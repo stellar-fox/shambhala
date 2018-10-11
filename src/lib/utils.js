@@ -1,7 +1,8 @@
 /**
- * Shambhala (utilities).
+ * Shambhala.
+ * Utilities.
  *
- * @module @stellar-fox/shambhala
+ * @module utils
  * @license Apache-2.0
  */
 
@@ -21,7 +22,7 @@ import {
 
 
 /**
- * Construct database connstring.
+ * Construct database "connstring".
  * `postgres://user:pass@host:port/db`
  *
  * @function cn

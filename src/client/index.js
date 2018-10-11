@@ -1,7 +1,8 @@
 /**
- * Shambhala (iframe).
+ * Shambhala.
+ * Client application (frontend).
  *
- * @module @stellar-fox/shambhala
+ * @module shambhala-client-app
  * @license Apache-2.0
  */
 

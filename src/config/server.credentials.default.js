@@ -1,7 +1,6 @@
 /**
  * Shambhala backend - credentials.
  *
- * @module @stellar-fox/shambhala
  * @license Apache-2.0
  */
 

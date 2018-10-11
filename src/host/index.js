@@ -2,7 +2,7 @@
  * Shambhala.
  * Host application (playground).
  *
- * @module @stellar-fox/shambhala
+ * @module shambhala-host-app
  * @license Apache-2.0
  */
 

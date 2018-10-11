@@ -1,7 +1,8 @@
 /**
- * Shambhala backend server.
+ * Shambhala.
+ * Backend server.
  *
- * @module @stellar-fox/shambhala
+ * @module shambhala-server-app
  * @license Apache-2.0
  */
 

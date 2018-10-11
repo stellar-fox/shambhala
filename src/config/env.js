@@ -2,7 +2,7 @@
  * Shambhala.
  * Environment variables.
  *
- * @module @stellar-fox/shambhala
+ * @module env
  * @license Apache-2.0
  */
 

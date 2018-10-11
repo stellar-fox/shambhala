@@ -1,7 +1,8 @@
 /**
- * Shambhala (library).
+ * Shambhala.
+ * Service-worker library.
  *
- * @module @stellar-fox/shambhala
+ * @module shambhala-sw
  * @license Apache-2.0
  */
 
@@ -171,7 +172,7 @@ export const unregisterServiceWorker = (logger = console.noop) => {
 
 
 /**
- * Embed <iframe> element with shambhala application.
+ * Embed an `<iframe>` element with shambhala application.
  *
  * @async
  * @function embed

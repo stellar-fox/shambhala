@@ -1,7 +1,7 @@
 /**
  * Shambhala (service worker).
  *
- * @module @stellar-fox/shambhala
+ * @module shambhala-sw-app
  * @license Apache-2.0
  */
 

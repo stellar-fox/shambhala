@@ -1,7 +1,8 @@
 /**
- * Shambhala (libs for browser's console playground).
+ * Shambhala.
+ * Libs for browser's console playground.
  *
- * @module @stellar-fox/shambhala
+ * @module dynamic-import
  * @license Apache-2.0
  */
 
