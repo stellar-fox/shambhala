@@ -79,9 +79,9 @@ module.exports = {
             inject: true,
             hash: true,
             realPublicPath: path.join(publicPath, publicDirectory),
-            title: "Shambhala - playground",
+            title: "Shambhala - host",
             template: path.resolve(
-                appDirectory, "./public/index.html"
+                appDirectory, "./src/host/index.html"
             ),
         }),
 
