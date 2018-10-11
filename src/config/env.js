@@ -9,6 +9,7 @@
 
 
 
+import { publicPath } from "../../package.json"
 import { timeUnit } from "@xcmats/js-toolbox"
 
 
@@ -33,13 +34,13 @@ export const serviceWorkerDomain = "https://secrets.localhost"
 
 
 // ...
-export const serviceWorkerIframe = "/shambhala.html"
+export const serviceWorkerIframe = publicPath + "shambhala.html"
 
 
 
 
 // ...
-export const registrationPath = "/shambhala/"
+export const registrationPath = publicPath
 
 
 
@@ -60,5 +61,4 @@ export const apiPrefix = "shambhalanians/"
 export const api = {
     release: apiPrefix + "release",
     spell: apiPrefix + "are.you.there",
-    // give: apiPrefix + "give.me.something",
 }

@@ -40,9 +40,9 @@ module.exports = {
 
 
     output: {
-        filename: "[name].[hash].bundle.js",
-        chunkFilename: "[name].[hash].chunk.js",
-        sourceMapFilename: "[name].[hash].map",
+        filename: "[name].bundle.js",
+        chunkFilename: "[name].chunk.js",
+        sourceMapFilename: "[name].map",
         publicPath,
         globalObject: "self",
     },
