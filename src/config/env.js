@@ -15,6 +15,30 @@ import { timeUnit } from "@xcmats/js-toolbox"
 
 
 
+/**
+ * @constant hostDomain Domain of the host application.
+ */
+export const hostDomain = "https://localhost"
+
+
+
+
+/**
+ * @constant clientDomain Domain of the `client` application.
+ */
+export const clientDomain = "https://secrets.localhost"
+
+
+
+
+/**
+ * @constant registrationPath Path prefix
+ */
+export const registrationPath = publicPath
+
+
+
+
 // ...
 export const defaultDelay = 0.2 * timeUnit.second
 
@@ -22,25 +46,7 @@ export const defaultDelay = 0.2 * timeUnit.second
 
 
 // ...
-export const mainDomain = "https://localhost"
-
-
-
-
-// ...
-export const serviceWorkerDomain = "https://secrets.localhost"
-
-
-
-
-// ...
 export const serviceWorkerIframe = publicPath + "shambhala.html"
-
-
-
-
-// ...
-export const registrationPath = publicPath
 
 
 

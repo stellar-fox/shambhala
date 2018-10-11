@@ -2,6 +2,8 @@
  * Shambhala.
  * Service-worker library.
  *
+ * OBSOLETE.
+ *
  * @module shambhala-sw
  * @license Apache-2.0
  */
@@ -24,7 +26,7 @@ import {
     defaultDelay,
     registrationPath,
     serviceWorkerFilename,
-    serviceWorkerDomain,
+    clientDomain,
     serviceWorkerIframe,
 } from "../config/env"
 
@@ -181,7 +183,7 @@ export const unregisterServiceWorker = (logger = console.noop) => {
 export const embed = () => {
     let iframe = document.createElement("iframe")
 
-    iframe.src = serviceWorkerDomain + serviceWorkerIframe
+    iframe.src = clientDomain + serviceWorkerIframe
     iframe.style.display = "none"
 
     head(document.getElementsByTagName("body")).appendChild(iframe)

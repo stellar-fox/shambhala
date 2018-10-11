@@ -11,19 +11,22 @@
 
 import {
     asyncRepeat,
+    choose,
     delay,
     devEnv,
     isObject,
     randomInt,
     timeUnit,
 } from "@xcmats/js-toolbox"
-import { embed } from "../lib/shambhala.sw"
 import {
     console,
     drawEmojis,
 } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
-import { serviceWorkerDomain } from "../config/env"
+import {
+    clientDomain,
+    registrationPath,
+} from "../config/env"
 
 import "./index.css"
 
@@ -51,17 +54,23 @@ window.addEventListener("load", async () => {
     }, () => true)
 
 
-    // instantiate shambhala
-    let shambhala = await embed()
-
-
     // expose `s` dev. namespace
     if (devEnv()  &&  isObject(window)) {
         window.s = {
             ...await dynamicImportLibs(),
-            shambhala,
         }
     }
+
+
+    // do stuff
+
+    // ...
+    window.client = window.open(
+        clientDomain + registrationPath + "shambhala.html",
+        "shambhala-client"
+    )
+
+
 
 })
 
@@ -72,9 +81,19 @@ window.addEventListener("load", async () => {
 window.addEventListener("message", (e) => {
 
     // don't get fooled by potential messages from others
-    if (e.origin !== serviceWorkerDomain) { return }
+    if (e.origin !== clientDomain) { return }
 
     // ...
     logger.info("Shambhala said:", e.data)
+
+    // undertake some action
+    choose(e.data, {
+
+        // ...
+        "Ping!": () => {
+            window.client.postMessage("Hey, ho!", clientDomain)
+        },
+
+    })
 
 })

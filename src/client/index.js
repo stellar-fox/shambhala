@@ -11,14 +11,9 @@
 
 import {
     choose,
-    timeout
 } from "@xcmats/js-toolbox"
-import {
-    registerServiceWorker,
-    unregisterServiceWorker,
-} from "../lib/shambhala.sw"
 import { console } from "../lib/utils"
-import { mainDomain } from "../config/env"
+import { hostDomain } from "../config/env"
 
 import "./index.css"
 
@@ -35,11 +30,11 @@ const logger = console("🤖")
 window.addEventListener("load", async () => {
 
     // if there is no parent - there is nothing to do
-    if (window.parent === window) {
-        logger.warn("Have you lost something here?")
-        window.location.replace(mainDomain)
-        return null
-    }
+    // if (window.parent === window) {
+    //     logger.warn("Have you lost something here?")
+    //     window.location.replace(hostDomain)
+    //     return null
+    // }
 
 
     // greet
@@ -47,21 +42,15 @@ window.addEventListener("load", async () => {
 
 
     // do stuff
-    try {
 
-        // register service worker
-        if (! await registerServiceWorker(logger)) {
-            logger.warn("Reloading...")
-            timeout(() => window.location.reload())
-        } else {
+    // ...
 
-            // say "hello" over cross-origin communication channel
-            window.parent.postMessage("Hello!", mainDomain)
 
-        }
-
-    } catch (e) {
-        logger.error("Registration failed: ", e)
+    // say "hello" over cross-origin communication channel
+    if (window.opener) {
+        window.opener.postMessage("Ping!", hostDomain)
+    } else {
+        logger.info("No parent!")
     }
 
 })
@@ -73,19 +62,19 @@ window.addEventListener("load", async () => {
 window.addEventListener("message", (e) => {
 
     // don't get fooled by potential messages from others
-    if (e.origin !== mainDomain) { return }
+    if (e.origin !== hostDomain) { return }
 
 
     // ...
     logger.info("Root said:", e.data)
 
 
-    // undertake an appropriate action
+    // undertake some action
     choose(e.data, {
 
-        // unregister service worker
-        unregister: async () => {
-            await unregisterServiceWorker(logger)
+        // ...
+        "Hey, ho!": () => {
+            window.opener.postMessage("I hear ya!", hostDomain)
         },
 
     })
