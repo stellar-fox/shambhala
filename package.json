@@ -92,7 +92,7 @@
         "clean:apiServer": "rimraf ./backend.dist",
         "clean:jsdoc": "rimraf ./jsdoc",
         "clean:modules": "rimraf ./node_modules",
-        "devApiServer": "nodemon --watch ./backend.src/ ./backend.src/server.js --exec \"cross-env BABEL_ENV=commonjs babel-node --inspect\"",
+        "devApiServer": "nodemon --watch ./src/ ./src/server/index.js --exec \"cross-env BABEL_ENV=commonjs babel-node --inspect\"",
         "jsdoc": "npm run clean:jsdoc && npm run build:jsdoc",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run doc",

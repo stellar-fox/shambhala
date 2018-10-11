@@ -12,8 +12,8 @@ import express, {
     urlencoded,
 } from "express"
 import pg from "pg-promise"
-import { database } from "./credentials"
-import { cn } from "./utils"
+import { database } from "../config/server.credentials"
+import { cn } from "../lib/utils"
 
 
 

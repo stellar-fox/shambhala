@@ -20,8 +20,8 @@ import { embed } from "./lib/shambhala.sw"
 import {
     console,
     drawEmojis,
-    dynamicImportLibs,
 } from "./lib/utils"
+import { dynamicImportLibs } from "./lib/dynamic.import"
 import { serviceWorkerDomain } from "./config/env"
 
 import "../public/index.css"

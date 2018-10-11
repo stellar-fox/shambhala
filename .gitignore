@@ -5,7 +5,7 @@
 /jsdoc
 
 # backend credentials file
-/backend.src/credentials.js
+/src/config/server.credentials.js
 
 # builds
 /dist
