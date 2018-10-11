@@ -97,7 +97,7 @@ module.exports = {
         open: false,
         overlay: true,
         port: 8080,
-        public: "localhost:8080",
+        public: "https://localhost/shambhala",
         publicPath,
         useLocalIp: true,
         watchContentBase: true,
