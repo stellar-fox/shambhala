@@ -74,7 +74,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/main",],
+            chunks: ["static/main"],
             filename: "index.html",
             inject: true,
             hash: true,
