@@ -39,6 +39,14 @@ export const registrationPath = publicPath
 
 
 
+/**
+ * @constant restApiPrefix Where to send xhr queries?
+ */
+export const restApiPrefix = "api/v1/"
+
+
+
+
 // ...
 export const defaultDelay = 0.2 * timeUnit.second
 

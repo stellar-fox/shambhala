@@ -12,8 +12,14 @@
 import {
     choose,
 } from "@xcmats/js-toolbox"
+import axios from "axios"
 import { console } from "../lib/utils"
-import { hostDomain } from "../config/env"
+import {
+    clientDomain,
+    hostDomain,
+    registrationPath,
+    restApiPrefix,
+} from "../config/env"
 
 import "./index.css"
 
@@ -26,16 +32,21 @@ const logger = console("🤖")
 
 
 
+// ...
+const backend = clientDomain + registrationPath + restApiPrefix
+
+
+
+
 // gentle start
 window.addEventListener("load", async () => {
 
     // if there is no parent - there is nothing to do
-    // if (window.parent === window) {
-    //     logger.warn("Have you lost something here?")
-    //     window.location.replace(hostDomain)
-    //     return null
-    // }
-
+    if (!window.opener) {
+        logger.error("What are you looking for?")
+        // window.location.replace(hostDomain)
+        // return null
+    }
 
     // greet
     logger.info("Boom! 💥")
@@ -48,7 +59,10 @@ window.addEventListener("load", async () => {
 
     // say "hello" over cross-origin communication channel
     if (window.opener) {
-        window.opener.postMessage("Ping!", hostDomain)
+        window.opener.postMessage(
+            JSON.stringify({ message: "Ping!"}),
+            hostDomain
+        )
     } else {
         logger.info("No parent!")
     }
@@ -64,17 +78,30 @@ window.addEventListener("message", (e) => {
     // don't get fooled by potential messages from others
     if (e.origin !== hostDomain) { return }
 
+    // packet of data
+    let packet = JSON.parse(e.data)
 
     // ...
-    logger.info("Root said:", e.data)
-
+    logger.info("Root has spoken:", packet)
 
     // undertake some action
-    choose(e.data, {
+    choose(packet.message, {
 
         // ...
-        "Hey, ho!": () => {
-            window.opener.postMessage("I hear ya!", hostDomain)
+        "Hey, ho!": async () => {
+
+            logger.info("getting data...")
+            let resp = await axios.get(backend)
+            logger.info("got:", resp)
+
+            window.opener.postMessage(
+                JSON.stringify({
+                    message: "I hear ya!",
+                    payload: resp.data,
+                }),
+                hostDomain
+            )
+            logger.info("data sent to root...")
         },
 
     })

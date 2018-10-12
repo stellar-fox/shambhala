@@ -83,17 +83,29 @@ window.addEventListener("message", (e) => {
     // don't get fooled by potential messages from others
     if (e.origin !== clientDomain) { return }
 
-    // ...
-    logger.info("Shambhala said:", e.data)
+    // packet of data
+    let packet = JSON.parse(e.data)
 
     // undertake some action
-    choose(e.data, {
+    choose(packet.message, {
 
         // ...
         "Ping!": () => {
-            window.client.postMessage("Hey, ho!", clientDomain)
+            logger.info("Shambhala is live and kickin' :)")
+            window.client.postMessage(
+                JSON.stringify({ message: "Hey, ho!" }),
+                clientDomain
+            )
         },
 
-    })
+        // ...
+        "I hear ya!": () => {
+            logger.info(
+                "That's the data from shambhala:",
+                packet.payload
+            )
+        },
+
+    }, () => logger.info("Shambhala send this:", packet))
 
 })
