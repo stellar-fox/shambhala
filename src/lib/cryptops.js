@@ -144,7 +144,7 @@ export const salt64 = () => sha512(random(256))
  * @function deriveKey
  * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
- * @param {KeyDerivationOptions} [opts={}]
+ * @param {KeyDerivationOptions} [opts={}] @see KeyDerivationOptions
  * @returns {Promise.<Uint8Array>}
  */
 export const deriveKey = (
@@ -354,6 +354,8 @@ export const aesDecrypt = (key, ciphertext) => {
 
 /**
  * Needed constants for encrypt/decrypt functions.
+ *
+ * @constant encdec
  */
 export const encdec = Object.freeze({
     MAGIC: "0xDAB0",
