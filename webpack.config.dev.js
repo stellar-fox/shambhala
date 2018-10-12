@@ -65,13 +65,23 @@ module.exports = {
 
     devServer: {
         before: function (app) {
+            // CORS (just for the development)
+            app.use((_req, res, next) => {
+                res.header("Access-Control-Allow-Origin", "*")
+                res.header(
+                    "Access-Control-Allow-Headers",
+                    "Origin, X-Requested-With, Content-Type, Accept"
+                )
+                next()
+            })
+
             // static-files server
             app.use(
                 path.join(publicPath, publicDirectory),
                 express.static(path.join(appDirectory, publicDirectory))
             )
 
-            // redirect
+            // redirect when accessing "/" but publicPath is different
             app.get("/", (_req, res, next) => {
                 if (publicPath !== "/") {
                     res.redirect(publicPath)
