@@ -76,8 +76,8 @@ window.addEventListener("load", async () => {
 
 
 
-// listen to messages coming from shambhala
-window.addEventListener("message", (e) => {
+// ...
+const shambhalaPacketReceiver = (e) => {
 
     // don't get fooled by potential messages from others
     if (e.origin !== clientDomain) { return }
@@ -107,4 +107,8 @@ window.addEventListener("message", (e) => {
 
     }, () => logger.info("Shambhala send this:", packet))
 
-})
+}
+
+
+// listen to messages coming from shambhala
+window.addEventListener("message", shambhalaPacketReceiver)
