@@ -10,9 +10,8 @@
 
 
 import {
-    asyncRepeat,
+    async,
     choose,
-    delay,
     devEnv,
     isObject,
     randomInt,
@@ -48,9 +47,9 @@ window.addEventListener("load", async () => {
 
     // do something on screen ...
     const toy = document.getElementById("toy")
-    asyncRepeat(async () => {
+    async.repeat(async () => {
         toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
-        await delay(timeUnit.second * 0.8)
+        await async.delay(timeUnit.second * 0.8)
     }, () => true)
 
 
