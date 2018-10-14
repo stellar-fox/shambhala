@@ -13,6 +13,7 @@ import express, {
     urlencoded,
 } from "express"
 import pg from "pg-promise"
+import chalk from "chalk"
 import { database } from "../config/server.credentials"
 import { cn } from "../lib/utils"
 
@@ -31,10 +32,18 @@ const
 // ...
 app.use(json())
 app.use(urlencoded({ extended: true }))
-app.use(function (req, res, next) {
-    // eslint-disable-next-line no-console
-    console.log(req.method, req.url)
+app.use(function (_req, res, next) {
     res.header("X-Powered-By", "shambhala.server")
+    next()
+})
+
+
+
+
+// simple logger
+app.use((req, _res, next) => {
+    // eslint-disable-next-line no-console
+    console.log(chalk.gray(req.method), req.url)
     next()
 })
 
