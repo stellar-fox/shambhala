@@ -13,7 +13,6 @@ import {
     func,
     handleException,
     isBrowser,
-    range,
     string,
     type,
 } from "@xcmats/js-toolbox"
@@ -185,18 +184,10 @@ export const deriveKey = (
  * @function timestamp
  * @returns {Uint8Array}
  */
-export const timestamp = () => (
-    (rd) => codec.hexToBytes(
-        range(6*2)
-            .reduce(
-                (acc, _el, i) =>
-                    i < rd.length ?
-                        [rd[i]].concat(acc) :
-                        [0].concat(acc),
-                []
-            ).join(string.empty())
-    )
-)(Date.now().toString(16).split(string.empty()).reverse())
+export const timestamp = () => func.compose(
+    codec.hexToBytes,
+    string.padLeft
+)(Date.now().toString(16), 6*2, "0")
 
 
 
