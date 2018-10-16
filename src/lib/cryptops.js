@@ -156,24 +156,20 @@ export const deriveKey = (
         derivedKeySize = 64,
         progressCallback = (_p) => false,
     } = {}
-) => {
-    let
-        resolve = null, reject = null,
-        promise = new Promise((res, rej) => { resolve = res; reject = rej })
-
-    scrypt(
-        pass, salt,
-        count, blockSize, parallelization, derivedKeySize,
-        (error, progress, key) => {
-            if (error) return reject(error)
-            if (key) return resolve(Uint8Array.from(key))
-            if (progress) return progressCallback(progress)
-            return false
-        }
+) =>
+    new Promise(
+        (resolve, reject) =>
+            scrypt(
+                pass, salt,
+                count, blockSize, parallelization, derivedKeySize,
+                (error, progress, key) => {
+                    if (error) return reject(error)
+                    if (key) return resolve(Uint8Array.from(key))
+                    if (progress) return progressCallback(progress)
+                    return false
+                }
+            )
     )
-
-    return promise
-}
 
 
 
