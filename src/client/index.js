@@ -21,6 +21,7 @@ import {
     registrationPath,
     restApiPrefix,
 } from "../config/env"
+import * as message from "../lib/messages"
 
 import "./index.css"
 
@@ -57,11 +58,10 @@ window.addEventListener("load", async () => {
 
     // ...
 
-
     // say "hello" over cross-origin communication channel
     if (window.opener) {
         window.opener.postMessage(
-            JSON.stringify({ message: "Ping!"}),
+            JSON.stringify({ message: message.READY }),
             hostDomain
         )
     } else {

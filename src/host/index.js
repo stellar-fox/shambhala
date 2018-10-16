@@ -12,7 +12,6 @@
 
 import {
     async,
-    choose,
     devEnv,
     isObject,
     randomInt,
@@ -27,6 +26,7 @@ import {
     clientDomain,
     registrationPath,
 } from "../config/env"
+import Shambhala from "../lib/shambhala.client"
 
 import "./index.css"
 
@@ -63,53 +63,11 @@ window.addEventListener("load", async () => {
 
 
     // do stuff
-
-    // ...
-    window.client = window.open(
-        clientDomain + registrationPath + "shambhala.html",
-        "shambhala-client"
+    let shambhala = new Shambhala(
+        clientDomain + registrationPath + "shambhala.html"
     )
-
-
+    logger.info("Trying...")
+    let G_PUBLIC = await shambhala.generateAccount()
+    logger.info("Got it:", G_PUBLIC)
 
 })
-
-
-
-
-// ...
-const shambhalaPacketReceiver = (e) => {
-
-    // don't get fooled by potential messages from others
-    if (e.origin !== clientDomain) { return }
-
-    // packet of data
-    let packet = JSON.parse(e.data)
-
-    // undertake some action
-    choose(packet.message, {
-
-        // ...
-        "Ping!": () => {
-            logger.info("Shambhala is live and kickin' :)")
-            window.client.postMessage(
-                JSON.stringify({ message: "Hey, ho!" }),
-                clientDomain
-            )
-        },
-
-        // ...
-        "I hear ya!": () => {
-            logger.info(
-                "That's the data from shambhala:",
-                packet.payload
-            )
-        },
-
-    }, () => logger.info("Shambhala send this:", packet))
-
-}
-
-
-// listen to messages coming from shambhala
-window.addEventListener("message", shambhalaPacketReceiver)
