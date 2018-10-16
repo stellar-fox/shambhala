@@ -342,9 +342,10 @@ export const aesDecrypt = (key, ciphertext) => {
 /**
  * Needed constants for encrypt/decrypt functions.
  *
+ * @private
  * @constant encdec
  */
-export const encdec = Object.freeze({
+const encdec = Object.freeze({
     MAGIC: "0xDAB0",
     VERSION: "0x0001",
 })
