@@ -1,5 +1,6 @@
 /**
  * Shambhala.
+ *
  * Backend server.
  *
  * @module shambhala-server-app

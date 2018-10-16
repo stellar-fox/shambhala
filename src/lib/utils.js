@@ -1,6 +1,7 @@
 /**
  * Shambhala.
- * Utilities.
+ *
+ * Various utilities.
  *
  * @module utils
  * @license Apache-2.0

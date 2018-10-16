@@ -1,5 +1,6 @@
 /**
  * Shambhala.
+ *
  * Client application (frontend).
  *
  * @module shambhala-client-app

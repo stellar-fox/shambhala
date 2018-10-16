@@ -1,5 +1,6 @@
 /**
  * Shambhala.
+ *
  * Host application (playground).
  *
  * @module shambhala-host-app

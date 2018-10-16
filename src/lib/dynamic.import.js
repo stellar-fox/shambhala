@@ -1,5 +1,6 @@
 /**
  * Shambhala.
+ *
  * Libs for browser's console playground.
  *
  * @module dynamic-import

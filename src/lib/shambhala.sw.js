@@ -1,5 +1,6 @@
 /**
  * Shambhala.
+ *
  * Service-worker library.
  *
  * OBSOLETE.
