@@ -9,6 +9,7 @@
 
 
 
+
 import express, {
     json,
     urlencoded,
@@ -33,7 +34,7 @@ const
 // ...
 app.use(json())
 app.use(urlencoded({ extended: true }))
-app.use(function (_req, res, next) {
+app.use((_req, res, next) => {
     res.header("X-Powered-By", "shambhala.server")
     next()
 })
@@ -51,7 +52,7 @@ app.use((req, _res, next) => {
 
 
 
-// ...
+// "hello world" route
 app.get(
     "/api/v1/",
     (_req, res) =>
