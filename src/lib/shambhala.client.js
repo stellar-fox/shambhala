@@ -10,7 +10,81 @@
 
 
 
-import { codec } from "@xcmats/js-toolbox"
+import {
+    choose,
+    codec,
+    handleException,
+    //string,
+    type,
+} from "@xcmats/js-toolbox"
+import * as message from "./messages"
+
+
+
+
+/**
+ * Private store.
+ *
+ * @private
+ * @constant _store
+ */
+const _store = {}
+
+
+
+
+/**
+ * ...
+ */
+class MessageHandler {
+
+    constructor (store) {
+        this.store = store
+        this.handlers = {}
+    }
+
+
+    /**
+     * ...
+     */
+    handle = (m, handler) => {
+        this.handlers[m] = (p) => {
+            delete this.handlers[m]
+            handler(p)
+        }
+    }
+
+
+    /**
+     * ...
+     */
+    eventProcessor = (e) => {
+
+        // don't get fooled by potential messages from others
+        if (e.origin !== this.store.url.origin) { return }
+
+        // parse the packet of data
+        let packet = handleException(
+            () => JSON.parse(e.data),
+            (ex) => ({
+                message: message.ERROR,
+                payload: e,
+                exception: ex,
+            })
+        )
+
+        // undertake action
+        choose(
+            packet.message,
+            this.handlers,
+            // eslint-disable-next-line no-console
+            (p) => console.info("Shambhala sent this:", p),
+            [packet]
+        )
+
+    }
+
+}
 
 
 
@@ -25,10 +99,42 @@ import { codec } from "@xcmats/js-toolbox"
 export default class Shambhala {
 
     constructor (url, opts = {}) {
-        this.url = url
-        if (opts.token) { this.token = opts.token }
-        else { this.token = null }
+        if (!_store.url) { _store.url = new URL(url) }
+        if (!_store.token) {
+            if (opts.token) { _store.token = opts.token }
+            else { _store.token = null }
+        }
+        if (!_store.messageHandler) {
+            _store.messageHandler = new MessageHandler(_store)
+            window.addEventListener(
+                "message",
+                _store.messageHandler.eventProcessor
+            )
+        }
     }
+
+
+    /**
+     * ...
+     */
+    generateRandomWindowName = () =>
+        "shambhala-client-" //+ string.random(6)
+
+
+    /**
+     * ...
+     */
+    _openShambhala = () =>
+        new Promise((resolve, _reject) => {
+            if (!type.isString(_store.windowName)) {
+                _store.windowName = this.generateRandomWindowName()
+            }
+            _store.client = window.open(
+                _store.url.href,
+                _store.windowName
+            )
+            _store.messageHandler.handle(message.READY, resolve)
+        })
 
 
     /**
@@ -77,7 +183,16 @@ export default class Shambhala {
      * @memberof module:shambhala-client~Shambhala
      * @returns {Promise.<String>}
      */
-    generateAccount = () => Promise.resolve("NOT IMPLEMENTED")
+    generateAccount = async () => {
+        await this._openShambhala()
+
+        _store.client.postMessage(
+            JSON.stringify({ message: "Hey, ho!" }),
+            _store.url.origin
+        )
+
+        return "NOT IMPLEMENTED"
+    }
 
 
     /**
