@@ -126,7 +126,7 @@ export default class Shambhala {
         await this._openShambhala()
 
         _store.client.postMessage(
-            JSON.stringify({ message: "Hey, ho!" }),
+            JSON.stringify({ message: message.PING }),
             _store.url.origin
         )
 

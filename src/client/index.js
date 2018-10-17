@@ -10,11 +10,9 @@
 
 
 
-import {
-    choose,
-} from "@xcmats/js-toolbox"
 import axios from "axios"
 import { console } from "../lib/utils"
+import MessageHandler from "../lib/message.handler"
 import {
     clientDomain,
     hostDomain,
@@ -24,6 +22,17 @@ import {
 import * as message from "../lib/messages"
 
 import "./index.css"
+
+
+
+
+/**
+ * Private store.
+ *
+ * @private
+ * @constant _store
+ */
+const _store = {}
 
 
 
@@ -57,6 +66,28 @@ window.addEventListener("load", async () => {
     // do stuff
 
     // ...
+    _store.messageHandler = new MessageHandler(_store)
+    _store.url = new URL(hostDomain)
+
+    // ...
+    _store.messageHandler.handle(message.PING, async (p) => {
+
+        // ...
+        logger.info("Root has spoken:", p)
+
+        logger.info("getting data...")
+        let resp = await axios.get(backend)
+        logger.info("got:", resp)
+
+        window.opener.postMessage(
+            JSON.stringify({
+                message: message.PONG,
+                payload: resp.data,
+            }),
+            hostDomain
+        )
+        logger.info("data sent to root...")
+    }, true)
 
     // say "hello" over cross-origin communication channel
     if (window.opener) {
@@ -67,45 +98,5 @@ window.addEventListener("load", async () => {
     } else {
         logger.info("No parent!")
     }
-
-})
-
-
-
-
-// listen to the messages coming from parent (the root)
-window.addEventListener("message", (e) => {
-
-    // don't get fooled by potential messages from others
-    if (e.origin !== hostDomain) { return }
-
-    // packet of data
-    let packet = JSON.parse(e.data)
-
-    // ...
-    logger.info("Root has spoken:", packet)
-
-    // undertake some action
-    choose(packet.message, {
-
-        // ...
-        "Hey, ho!": async () => {
-
-            logger.info("getting data...")
-            let resp = await axios.get(backend)
-            logger.info("got:", resp)
-
-            window.opener.postMessage(
-                JSON.stringify({
-                    message: "I hear ya!",
-                    payload: resp.data,
-                }),
-                hostDomain
-            )
-            logger.info("data sent to root...")
-        },
-
-    })
-
 
 })
