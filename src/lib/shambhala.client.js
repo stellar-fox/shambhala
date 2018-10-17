@@ -117,7 +117,7 @@ export default class Shambhala {
     /**
      * ...
      */
-    generateRandomWindowName = () =>
+    _generateRandomWindowName = () =>
         "shambhala-client-" //+ string.random(6)
 
 
@@ -127,7 +127,7 @@ export default class Shambhala {
     _openShambhala = () =>
         new Promise((resolve, _reject) => {
             if (!type.isString(_store.windowName)) {
-                _store.windowName = this.generateRandomWindowName()
+                _store.windowName = this._generateRandomWindowName()
             }
             _store.client = window.open(
                 _store.url.href,
