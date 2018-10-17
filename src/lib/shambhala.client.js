@@ -146,7 +146,7 @@ export default class Shambhala {
      * @memberof module:shambhala-client~Shambhala
      * @returns {Promise.<String>}
      */
-    getLibVersion = () => Promise.resolve("NOT IMPLEMENTED")
+    getLibVersion = () => Promise.reject("NOT IMPLEMENTED")
 
 
     /**
@@ -158,7 +158,7 @@ export default class Shambhala {
      * @memberof module:shambhala-client~Shambhala
      * @returns {Promise.<String>}
      */
-    getVersion = () => Promise.resolve("NOT IMPLEMENTED")
+    getVersion = () => Promise.reject("NOT IMPLEMENTED")
 
 
     /**
@@ -171,7 +171,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Array>}
      */
-    getPublicKeys = (_accountId) => Promise.resolve(["NOT IMPLEMENTED"])
+    getPublicKeys = (_accountId) => Promise.reject(["NOT IMPLEMENTED"])
 
 
     /**
@@ -205,7 +205,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<String>}
      */
-    associateAccount = (_accountId) => Promise.resolve("NOT IMPLEMENTED")
+    associateAccount = (_accountId) => Promise.reject("NOT IMPLEMENTED")
 
 
     /**
@@ -219,7 +219,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Array>}
      */
-    generateSigningKeys = (_accountId) => Promise.resolve(["NOT IMPLEMENTED"])
+    generateSigningKeys = (_accountId) => Promise.reject(["NOT IMPLEMENTED"])
 
 
     /**
@@ -235,7 +235,7 @@ export default class Shambhala {
      * @returns {Promise.<Uint8Array>}
      */
     generateSignedKeyAssocTX = (_accountId) =>
-        Promise.resolve(codec.stringToBytes("NOT IMPLEMENTED"))
+        Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
 
 
     /**
@@ -251,7 +251,7 @@ export default class Shambhala {
      * @returns {Promise.<Uint8Array>}
      */
     generateKeyAssocTX = (_accountId) =>
-        Promise.resolve(codec.stringToBytes("NOT IMPLEMENTED"))
+        Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
 
 
     /**
@@ -282,5 +282,5 @@ export default class Shambhala {
      * @returns {Promise.<Array>}
      */
     signTransaction = (_accountId, _transaction) =>
-        Promise.resolve([codec.stringToBytes("NOT IMPLEMENTED")])
+        Promise.reject([codec.stringToBytes("NOT IMPLEMENTED")])
 }
