@@ -59,35 +59,41 @@ window.addEventListener("load", async () => {
         // return null
     }
 
+
     // greet
     logger.info("Boom! 💥")
 
 
-    // do stuff
-
-    // ...
+    // instantiate message handler
     _store.messageHandler = new MessageHandler(_store)
     _store.url = new URL(hostDomain)
 
-    // ...
-    _store.messageHandler.handle(message.PING, async (p) => {
 
-        // ...
-        logger.info("Root has spoken:", p)
+    // assign some action to "PING" message
+    _store.messageHandler.handle(
+        message.PING,
+        async (p) => {
 
-        logger.info("getting data...")
-        let resp = await axios.get(backend)
-        logger.info("got:", resp)
+            // ...
+            logger.info("Root has spoken:", p)
 
-        window.opener.postMessage(
-            JSON.stringify({
-                message: message.PONG,
-                payload: resp.data,
-            }),
-            hostDomain
-        )
-        logger.info("data sent to root...")
-    }, true)
+            logger.info("getting data...")
+            let resp = await axios.get(backend)
+            logger.info("got:", resp)
+
+            window.opener.postMessage(
+                JSON.stringify({
+                    message: message.PONG,
+                    payload: resp.data,
+                }),
+                hostDomain
+            )
+            logger.info("data sent to root...")
+
+        },
+        true
+    )
+
 
     // say "hello" over cross-origin communication channel
     if (window.opener) {
