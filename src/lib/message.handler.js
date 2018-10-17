@@ -37,11 +37,14 @@ export default class MessageHandler {
     /**
      * ...
      */
-    handle = (m, handler) => {
-        this.handlers[m] = (p) => {
-            delete this.handlers[m]
-            handler(p)
-        }
+    handle = (m, handler, persistent = false) => {
+        this.handlers[m] =
+            persistent ?
+                handler :
+                (p) => {
+                    delete this.handlers[m]
+                    handler(p)
+                }
     }
 
 
@@ -68,7 +71,7 @@ export default class MessageHandler {
             packet.message,
             this.handlers,
             // eslint-disable-next-line no-console
-            (p) => console.info("Shambhala sent this:", p),
+            (p) => console.info("Received:", p, "from", e.origin),
             [packet]
         )
 
