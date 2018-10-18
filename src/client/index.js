@@ -11,8 +11,14 @@
 
 
 import axios from "axios"
-import { console } from "../lib/utils"
+import * as redshift from "@stellar-fox/redshift"
+import * as cryptops from "../lib/cryptops"
+import {
+    func,
+    string,
+} from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
+import { console } from "../lib/utils"
 import {
     clientDomain,
     hostDomain,
@@ -75,6 +81,46 @@ window.addEventListener("load", async () => {
             )
 
             logger.info("data sent to root...")
+
+        }
+    )
+
+
+    // account generation
+    messageHandler.handle(
+        message.GENERATE_ACCOUNT,
+        async () => {
+
+            logger.info("Account generation requested.")
+
+            // "genesis" mnemonic
+            // has to be presented to the user
+            let G_MNEMONIC = redshift.genMnemonic()
+
+            // passphrase - will be read from user
+            let PASSPHRASE = string.random(10)
+
+            // "genesis" key pair generation
+            let GKP = func.compose(
+                redshift.keypair,
+                redshift.hexSeed
+            )(G_MNEMONIC, PASSPHRASE)
+
+            // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
+            G_MNEMONIC = null
+            PASSPHRASE = null
+
+            // user's new public account
+            let G_PUBLIC = GKP.publicKey()
+
+            // user's new unique identifier
+            let C_UUID = cryptops.genUUID()
+
+            // confirm account creation to the host application
+            messageHandler.postMessage(
+                message.GENERATE_ACCOUNT,
+                { ok: true, G_PUBLIC }
+            )
 
         }
     )

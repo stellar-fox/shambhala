@@ -134,8 +134,13 @@ export default class Shambhala {
      */
     generateAccount = async () => {
         await this._openShambhala()
-        _store.messageHandler.postMessage(message.PING)
-        return _store.messageHandler.receiveMessage(message.PONG)
+        _store.messageHandler.postMessage(message.GENERATE_ACCOUNT)
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.GENERATE_ACCOUNT)
+        )
+        if (data.payload.ok) return data.payload.G_PUBLIC
+        else throw new Error(data.payload.error)
     }
 
 
