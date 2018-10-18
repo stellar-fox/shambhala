@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 
     // instantiate message handler
     const messageHandler = new MessageHandler(hostDomain)
-    messageHandler.addRecipient(window.opener, "root")
+    messageHandler.setRecipient(window.opener, "root")
 
 
     // assign some action to "PING" message

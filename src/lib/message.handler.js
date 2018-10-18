@@ -39,7 +39,7 @@ export default class MessageHandler {
     /**
      * ...
      */
-    addRecipient = (recipient, windowName) => {
+    setRecipient = (recipient, windowName) => {
         this.recipient = recipient
         this.windowName = windowName
     }

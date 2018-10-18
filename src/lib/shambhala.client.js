@@ -74,7 +74,7 @@ export default class Shambhala {
             _store.url.href,
             _store.windowName
         )
-        _store.messageHandler.addRecipient(
+        _store.messageHandler.setRecipient(
             _store.client,
             _store.windowName
         )
