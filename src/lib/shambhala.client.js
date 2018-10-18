@@ -11,10 +11,12 @@
 
 
 import {
+    async,
     codec,
     //string,
     type,
 } from "@xcmats/js-toolbox"
+import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
 
@@ -64,10 +66,13 @@ export default class Shambhala {
      * ...
      */
     _openShambhala = () =>
-        new Promise((resolve, _reject) => {
+        new Promise((resolve, reject) => {
+            let cancelTimeout = null
             if (!type.isString(_store.windowName)) {
                 _store.windowName = this._generateRandomWindowName()
             }
+
+            // open shambhala window
             _store.client = window.open(
                 _store.url.href,
                 _store.windowName
@@ -76,7 +81,22 @@ export default class Shambhala {
                 _store.client,
                 _store.windowName
             )
-            _store.messageHandler.handle(message.READY, resolve)
+
+            // watchdog timer
+            async.timeout(
+                () => reject("Window opening time exceeded"),
+                maximumWindowOpeningTime,
+                (cancel) => { cancelTimeout = cancel }
+            ).catch()
+
+            // wait for 'message.READY' and resolve
+            _store.messageHandler.handle(
+                message.READY,
+                () => {
+                    cancelTimeout()
+                    resolve()
+                }
+            )
         })
 
 

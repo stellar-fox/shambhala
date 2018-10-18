@@ -48,6 +48,14 @@ export const restApiPrefix = "api/v1/"
 
 
 
+/**
+ * @constant maximumWindowOpeningTime ...
+ */
+export const maximumWindowOpeningTime = 10 * timeUnit.second
+
+
+
+
 // ...
 export const defaultDelay = 0.2 * timeUnit.second
 
