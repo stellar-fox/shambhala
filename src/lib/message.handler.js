@@ -11,10 +11,12 @@
 
 
 import {
+    async,
     choose,
     handleException,
 } from "@xcmats/js-toolbox"
 import * as message from "./messages"
+import { defaultMessageTimeout } from "../config/env"
 
 
 
@@ -57,24 +59,46 @@ export default class MessageHandler {
     /**
      * ...
      */
-    handle = (message, handler, persistent = false) => {
+    handle = (message, handler, volatile = false) => {
         this.handlers[message] =
-            persistent ?
-                handler :
+            volatile ?
                 (p) => {
                     delete this.handlers[message]
                     handler(p)
-                }
+                } :
+                handler
     }
 
 
     /**
      * ...
      */
-    receiveMessage = (message) =>
-        new Promise((resolve) =>
-            this.handle(message, resolve)
-        )
+    unhandle = (message) => { delete this.handlers[message] }
+
+
+    /**
+     * ...
+     */
+    receiveMessage = (message, timeout = defaultMessageTimeout) =>
+        new Promise((resolve, reject) => {
+            let cancelTimeout = null
+
+            // watchdog timer
+            async.timeout(
+                () => {
+                    this.unhandle(message)
+                    reject("receiveMessage: timeout exceeded")
+                },
+                timeout,
+                (cancel) => { cancelTimeout = cancel }
+            ).catch()
+
+            // wait for message and resolve
+            this.handle(message, (data) => {
+                cancelTimeout()
+                resolve(data)
+            }, true)
+        })
 
 
     /**

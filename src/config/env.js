@@ -49,6 +49,14 @@ export const restApiPrefix = "api/v1/"
 
 
 /**
+ * @constant defaultMessageTimeout ...
+ */
+export const defaultMessageTimeout = 3 * timeUnit.second
+
+
+
+
+/**
  * @constant maximumWindowOpeningTime ...
  */
 export const maximumWindowOpeningTime = 10 * timeUnit.second

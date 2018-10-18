@@ -76,8 +76,7 @@ window.addEventListener("load", async () => {
 
             logger.info("data sent to root...")
 
-        },
-        true
+        }
     )
 
 

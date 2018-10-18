@@ -11,9 +11,8 @@
 
 
 import {
-    async,
     codec,
-    //string,
+    // string,
     type,
 } from "@xcmats/js-toolbox"
 import { maximumWindowOpeningTime } from "../config/env"
@@ -59,45 +58,32 @@ export default class Shambhala {
      * ...
      */
     _generateRandomWindowName = () =>
-        "shambhala-client-" //+ string.random(6)
+        "shambhala-client-" // + string.random(6)
 
 
     /**
      * ...
      */
-    _openShambhala = () =>
-        new Promise((resolve, reject) => {
-            let cancelTimeout = null
-            if (!type.isString(_store.windowName)) {
-                _store.windowName = this._generateRandomWindowName()
-            }
+    _openShambhala = () => {
+        if (!type.isString(_store.windowName)) {
+            _store.windowName = this._generateRandomWindowName()
+        }
 
-            // open shambhala window
-            _store.client = window.open(
-                _store.url.href,
-                _store.windowName
-            )
-            _store.messageHandler.addRecipient(
-                _store.client,
-                _store.windowName
-            )
+        // open shambhala window
+        _store.client = window.open(
+            _store.url.href,
+            _store.windowName
+        )
+        _store.messageHandler.addRecipient(
+            _store.client,
+            _store.windowName
+        )
 
-            // watchdog timer
-            async.timeout(
-                () => reject("Window opening time exceeded"),
-                maximumWindowOpeningTime,
-                (cancel) => { cancelTimeout = cancel }
-            ).catch()
-
-            // wait for 'message.READY' and resolve
-            _store.messageHandler.handle(
-                message.READY,
-                () => {
-                    cancelTimeout()
-                    resolve()
-                }
-            )
-        })
+        // wait for 'message.READY' and resolve
+        return _store.messageHandler.receiveMessage(
+            message.READY, maximumWindowOpeningTime
+        )
+    }
 
 
     /**
