@@ -48,7 +48,7 @@ export default class Shambhala {
             else { _store.token = null }
         }
         if (!_store.messageHandler) {
-            _store.messageHandler = new MessageHandler(_store)
+            _store.messageHandler = new MessageHandler(_store.url.origin)
         }
     }
 

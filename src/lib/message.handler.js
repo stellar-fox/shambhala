@@ -24,8 +24,8 @@ import * as message from "./messages"
  */
 export default class MessageHandler {
 
-    constructor (store) {
-        this.store = store
+    constructor (origin) {
+        this.origin = origin
         this.handlers = {}
         window.addEventListener(
             "message",
@@ -54,7 +54,7 @@ export default class MessageHandler {
     eventProcessor = (e) => {
 
         // don't get fooled by potential messages from others
-        if (e.origin !== this.store.url.origin) { return }
+        if (e.origin !== this.origin) { return }
 
         // parse the packet of data
         let packet = handleException(

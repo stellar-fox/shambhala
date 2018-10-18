@@ -26,17 +26,6 @@ import "./index.css"
 
 
 
-/**
- * Private store.
- *
- * @private
- * @constant _store
- */
-const _store = {}
-
-
-
-
 // console logger
 const logger = console("🤖")
 
@@ -56,7 +45,7 @@ window.addEventListener("load", async () => {
     if (!window.opener) {
         logger.error("What are you looking for?")
         // window.location.replace(hostDomain)
-        // return null
+        return null
     }
 
 
@@ -65,12 +54,12 @@ window.addEventListener("load", async () => {
 
 
     // instantiate message handler
-    _store.messageHandler = new MessageHandler(_store)
-    _store.url = new URL(hostDomain)
+    const messageHandler = new MessageHandler(hostDomain)
+    // _store.url = new URL(hostDomain)
 
 
     // assign some action to "PING" message
-    _store.messageHandler.handle(
+    messageHandler.handle(
         message.PING,
         async (p) => {
 
@@ -95,14 +84,10 @@ window.addEventListener("load", async () => {
     )
 
 
-    // say "hello" over cross-origin communication channel
-    if (window.opener) {
-        window.opener.postMessage(
-            JSON.stringify({ message: message.READY }),
-            hostDomain
-        )
-    } else {
-        logger.info("No parent!")
-    }
+    // report readiness
+    window.opener.postMessage(
+        JSON.stringify({ message: message.READY }),
+        hostDomain
+    )
 
 })
