@@ -18,6 +18,8 @@ import pg from "pg-promise"
 import chalk from "chalk"
 import { database } from "../config/server.credentials"
 import { cn } from "../lib/utils"
+import * as message from "../lib/messages"
+import { restApiPrefix } from "../config/env"
 
 
 
@@ -54,18 +56,33 @@ app.use((req, _res, next) => {
 
 // "hello world" route
 app.get(
-    "/api/v1/",
+    "/" + restApiPrefix,
     (_req, res) =>
         db.many("SELECT datname, pid, usename FROM pg_stat_activity;")
             .then((dbStats) =>
-                res
-                    .status(200)
+                res.status(200)
                     .send({
                         message: "shambhala - REST API",
                         version: 1,
                         dbStats,
                     })
             )
+)
+
+
+
+
+// "generate account" route
+app.post(
+    "/" + restApiPrefix + message.GENERATE_ACCOUNT,
+    (req, res) => {
+        // eslint-disable-next-line no-console
+        console.log("    G_PUBLIC:", req.body.G_PUBLIC)
+        // eslint-disable-next-line no-console
+        console.log("    C_UUID:", req.body.C_UUID)
+        res.status(200)
+            .send({ ok: true })
+    }
 )
 
 
