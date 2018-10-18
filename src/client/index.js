@@ -84,6 +84,7 @@ window.addEventListener("load", async () => {
 
         }
     )
+    // -------------------------------------------
 
 
     // account generation
@@ -122,8 +123,11 @@ window.addEventListener("load", async () => {
                 { ok: true, G_PUBLIC }
             )
 
+            logger.info("Account succesfully generated.")
+
         }
     )
+    // -------------------------------------------
 
 
     // report readiness
