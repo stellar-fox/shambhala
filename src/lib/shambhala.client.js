@@ -149,7 +149,7 @@ export default class Shambhala {
     generateAccount = async () => {
         await this._openShambhala()
         _store.messageHandler.postMessage(message.PING)
-        return "NOT IMPLEMENTED"
+        return _store.messageHandler.receiveMessage(message.PONG)
     }
 
 

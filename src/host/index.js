@@ -66,8 +66,15 @@ window.addEventListener("load", async () => {
     let shambhala = new Shambhala(
         clientDomain + registrationPath + "shambhala.html"
     )
+
     logger.info("Trying...")
     let G_PUBLIC = await shambhala.generateAccount()
+    logger.info("Got it:", G_PUBLIC)
+
+    await async.delay(timeUnit.second)
+
+    logger.info("Trying again...")
+    G_PUBLIC = await shambhala.generateAccount()
     logger.info("Got it:", G_PUBLIC)
 
 })

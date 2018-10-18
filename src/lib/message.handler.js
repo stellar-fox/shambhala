@@ -57,15 +57,24 @@ export default class MessageHandler {
     /**
      * ...
      */
-    handle = (m, handler, persistent = false) => {
-        this.handlers[m] =
+    handle = (message, handler, persistent = false) => {
+        this.handlers[message] =
             persistent ?
                 handler :
                 (p) => {
-                    delete this.handlers[m]
+                    delete this.handlers[message]
                     handler(p)
                 }
     }
+
+
+    /**
+     * ...
+     */
+    receiveMessage = (message) =>
+        new Promise((resolve) =>
+            this.handle(message, resolve)
+        )
 
 
     /**
