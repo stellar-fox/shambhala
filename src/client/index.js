@@ -14,6 +14,8 @@ import axios from "axios"
 import * as redshift from "@stellar-fox/redshift"
 import * as cryptops from "../lib/cryptops"
 import {
+    access,
+    codec,
     func,
     string,
 } from "@xcmats/js-toolbox"
@@ -111,20 +113,42 @@ window.addEventListener("load", async () => {
             G_MNEMONIC = null
             PASSPHRASE = null
 
-            // user's new public account
+            // extract user's new public account
             let G_PUBLIC = GKP.publicKey()
 
-            // user's new unique identifier
+            // generate user's new unique identifier
             let C_UUID = cryptops.genUUID()
 
-            // confirm account creation to the host application
-            messageHandler.postMessage(
-                message.GENERATE_ACCOUNT,
-                { ok: true, G_PUBLIC }
+            // send G_PUBLIC and C_UUID to the server
+            let serverResponse = await axios.post(
+                backend + message.GENERATE_ACCOUNT,
+                {
+                    G_PUBLIC,
+                    C_UUID: codec.b64enc(C_UUID),
+                }
             )
 
-            logger.info("Account succesfully generated.")
+            if (access(serverResponse, ["data", "ok"], false)) {
 
+                // confirm account creation to the host application
+                messageHandler.postMessage(
+                    message.GENERATE_ACCOUNT,
+                    { ok: true, G_PUBLIC }
+                )
+
+                logger.info("Account succesfully generated.")
+
+            } else {
+
+                // unfortunately - error occured
+                messageHandler.postMessage(
+                    message.GENERATE_ACCOUNT,
+                    { error: serverResponse }
+                )
+
+                logger.info("Account generation failure.")
+
+            }
         }
     )
     // -------------------------------------------
