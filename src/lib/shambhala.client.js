@@ -140,7 +140,7 @@ export default class Shambhala {
                 .receiveMessage(message.GENERATE_ACCOUNT)
         )
         if (data.payload.ok) return data.payload.G_PUBLIC
-        else throw new Error(data.payload.error)
+        else throw data.payload.error
     }
 
 

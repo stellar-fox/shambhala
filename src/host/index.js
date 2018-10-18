@@ -67,14 +67,18 @@ window.addEventListener("load", async () => {
         clientDomain + registrationPath + "shambhala.html"
     )
 
-    logger.info("Trying...")
-    let G_PUBLIC = await shambhala.generateAccount()
-    logger.info("Got it:", G_PUBLIC)
+    try {
+        logger.info("Trying...")
+        let G_PUBLIC = await shambhala.generateAccount()
+        logger.info("Got it:", G_PUBLIC)
 
-    await async.delay(timeUnit.second)
+        await async.delay(timeUnit.second)
 
-    logger.info("Trying again...")
-    G_PUBLIC = await shambhala.generateAccount()
-    logger.info("Got it:", G_PUBLIC)
+        logger.info("Trying again...")
+        G_PUBLIC = await shambhala.generateAccount()
+        logger.info("Got it:", G_PUBLIC)
+    } catch (ex) {
+        logger.info("Whoops...", ex)
+    }
 
 })
