@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 
     // instantiate message handler
     const messageHandler = new MessageHandler(hostDomain)
-    // _store.url = new URL(hostDomain)
+    messageHandler.addRecipient(window.opener, "root")
 
 
     // assign some action to "PING" message
@@ -63,20 +63,17 @@ window.addEventListener("load", async () => {
         message.PING,
         async (p) => {
 
-            // ...
             logger.info("Root has spoken:", p)
 
             logger.info("getting data...")
             let resp = await axios.get(backend)
             logger.info("got:", resp)
 
-            window.opener.postMessage(
-                JSON.stringify({
-                    message: message.PONG,
-                    payload: resp.data,
-                }),
-                hostDomain
+            messageHandler.postMessage(
+                message.PONG,
+                resp.data
             )
+
             logger.info("data sent to root...")
 
         },
@@ -85,9 +82,6 @@ window.addEventListener("load", async () => {
 
 
     // report readiness
-    window.opener.postMessage(
-        JSON.stringify({ message: message.READY }),
-        hostDomain
-    )
+    messageHandler.postMessage(message.READY)
 
 })

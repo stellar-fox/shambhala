@@ -37,6 +37,26 @@ export default class MessageHandler {
     /**
      * ...
      */
+    addRecipient = (recipient, windowName) => {
+        this.recipient = recipient
+        this.windowName = windowName
+    }
+
+
+    /**
+     * ...
+     */
+    postMessage = (message, payload = {}) => {
+        this.recipient.postMessage(
+            JSON.stringify({ message, payload }),
+            this.origin
+        )
+    }
+
+
+    /**
+     * ...
+     */
     handle = (m, handler, persistent = false) => {
         this.handlers[m] =
             persistent ?

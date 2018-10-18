@@ -46,7 +46,7 @@ window.addEventListener("load", async () => {
     logger.info("Hi there! 🌴")
 
 
-    // do something on screen ...
+    // do something...
     const toy = document.getElementById("toy")
     async.repeat(async () => {
         toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(" ")
@@ -62,7 +62,7 @@ window.addEventListener("load", async () => {
     }
 
 
-    // do stuff
+    // do meaningful stuff
     let shambhala = new Shambhala(
         clientDomain + registrationPath + "shambhala.html"
     )

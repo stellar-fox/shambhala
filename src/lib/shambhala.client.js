@@ -72,6 +72,10 @@ export default class Shambhala {
                 _store.url.href,
                 _store.windowName
             )
+            _store.messageHandler.addRecipient(
+                _store.client,
+                _store.windowName
+            )
             _store.messageHandler.handle(message.READY, resolve)
         })
 
@@ -124,12 +128,7 @@ export default class Shambhala {
      */
     generateAccount = async () => {
         await this._openShambhala()
-
-        _store.client.postMessage(
-            JSON.stringify({ message: message.PING }),
-            _store.url.origin
-        )
-
+        _store.messageHandler.postMessage(message.PING)
         return "NOT IMPLEMENTED"
     }
 
