@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Simple message-handling library.
+ * Simple message handling.
  *
  * @module message-handler
  * @license Apache-2.0
@@ -96,5 +96,15 @@ export default class MessageHandler {
         )
 
     }
+
+
+    /**
+     * ...
+     */
+    remove = () =>
+        window.removeEventListener(
+            "message",
+            this.eventProcessor
+        )
 
 }
