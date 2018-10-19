@@ -10,18 +10,19 @@
 
 
 
+import { join } from "path"
 import express, {
     json,
     urlencoded,
 } from "express"
 import pg from "pg-promise"
 import chalk from "chalk"
+import { cn } from "../lib/utils"
+import * as message from "../lib/messages"
 import {
     database,
     tables,
 } from "../config/server.credentials"
-import { cn } from "../lib/utils"
-import * as message from "../lib/messages"
 import { restApiPrefix } from "../config/env"
 
 
@@ -31,12 +32,24 @@ import { restApiPrefix } from "../config/env"
 const
     db = pg()(cn(database)),
     app = express(),
-    port = 8081
+    port = 8081,
+
+    // QueryFiles linking helper with memoization
+    sql = ((qfs) =>
+        (file) => {
+            if (!(file in qfs)) {
+                qfs[file] = new pg.QueryFile(
+                    join(__dirname, file), { minify: true }
+                )
+            }
+            return qfs[file]
+        }
+    )({})
 
 
 
 
-// ...
+// basic express.js server config
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use((_req, res, next) => {
@@ -61,7 +74,7 @@ app.use((req, _res, next) => {
 app.get(
     "/" + restApiPrefix,
     (_req, res) =>
-        db.many("SELECT datname, pid, usename FROM pg_stat_activity;")
+        db.many(sql("./pg_stats.sql"))
             .then((dbStats) =>
                 res.status(200)
                     .send({
@@ -87,8 +100,7 @@ app.post(
 
         try {
             await db.none(
-                "INSERT INTO $<key_table:name> (g_public, c_uuid) " +
-                "VALUES ($<G_PUBLIC>, $<C_UUID>);", {
+                sql("./generate_account.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC: req.body.G_PUBLIC,
                     C_UUID: req.body.C_UUID,
