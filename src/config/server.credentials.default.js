@@ -15,3 +15,11 @@ export const database = {
     port: "5432",
     db: "db",
 }
+
+
+
+
+// ...
+export const tables = {
+    key_table: "key_v1",
+}

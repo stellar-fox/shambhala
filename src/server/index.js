@@ -16,7 +16,10 @@ import express, {
 } from "express"
 import pg from "pg-promise"
 import chalk from "chalk"
-import { database } from "../config/server.credentials"
+import {
+    database,
+    tables,
+} from "../config/server.credentials"
 import { cn } from "../lib/utils"
 import * as message from "../lib/messages"
 import { restApiPrefix } from "../config/env"
@@ -84,8 +87,9 @@ app.post(
 
         try {
             await db.none(
-                "INSERT INTO key_v1 (g_public, c_uuid) " +
+                "INSERT INTO $<key_table:name> (g_public, c_uuid) " +
                 "VALUES ($<G_PUBLIC>, $<C_UUID>);", {
+                    key_table: tables.key_table,
                     G_PUBLIC: req.body.G_PUBLIC,
                     C_UUID: req.body.C_UUID,
                 })
@@ -94,6 +98,8 @@ app.post(
         } catch (ex) {
             res.status(500)
                 .send({ error: ex })
+            // eslint-disable-next-line no-console
+            console.log(ex)
         }
     }
 )
