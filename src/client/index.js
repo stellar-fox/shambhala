@@ -208,6 +208,33 @@ window.addEventListener("load", async () => {
 
 
 
+    // signing keys generation --------------------------------------
+    messageHandler.handle(
+        message.GENERATE_SIGNING_KEYS,
+        async () => {
+
+            logger.info("Signing keys generation requested.")
+
+
+
+            // report error
+            messageHandler.postMessage(
+                message.GENERATE_SIGNING_KEYS,
+                { error: "NOT IMPLEMENTED YET" }
+            )
+
+            logger.info(
+                "Signing keys generation failure.",
+                "NOT IMPLEMENTED"
+            )
+
+        }
+    )
+    // --------------------------------------------------------------
+
+
+
+
     // report readiness
     messageHandler.postMessage(message.READY)
 

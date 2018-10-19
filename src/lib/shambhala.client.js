@@ -159,16 +159,25 @@ export default class Shambhala {
 
     /**
      * Generate set of signing keys for a given `account id`.
-     * Returns array with `C_PUBLIC` and `S_PUBLIC`.
+     * Returns object with `C_PUBLIC` and `S_PUBLIC`.
      *
      * @async
      * @instance
      * @method generateSigningKeys
      * @memberof module:shambhala-client~Shambhala
      * @param {String} accountId
-     * @returns {Promise.<Array>}
+     * @returns {Promise.<Object>}
      */
-    generateSigningKeys = (_accountId) => Promise.reject(["NOT IMPLEMENTED"])
+    generateSigningKeys = async (_accountId) => {
+        await this._openShambhala()
+        _store.messageHandler.postMessage(message.GENERATE_SIGNING_KEYS)
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.GENERATE_SIGNING_KEYS)
+        )
+        if (data.payload.ok) return data.payload.keys
+        else throw new Error(data.payload.error)
+    }
 
 
     /**
