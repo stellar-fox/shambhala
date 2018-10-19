@@ -68,13 +68,39 @@ window.addEventListener("load", async () => {
     )
 
     try {
-        logger.info("Trying...")
+
+        // Onboarding - [Variant A]
+
+        logger.info("Requesting account generation...")
         let G_PUBLIC = await shambhala.generateAccount()
         logger.info("Got it:", G_PUBLIC)
 
         await async.delay(timeUnit.second)
 
-        logger.info("Not trying again.")
+        logger.info("Requesting initial funds...")
+        ;((x) => (x))(G_PUBLIC)  // no-op
+        await async.delay(0.5 * timeUnit.second)
+        logger.info("Done.")
+
+        await async.delay(timeUnit.second)
+
+        logger.info("Requesting signing keys generation...")
+        let keys = await shambhala.generateSigningKeys(G_PUBLIC)
+        logger.info("Got them.", keys)
+
+        await async.delay(timeUnit.second)
+
+        logger.info("Receiving transaction associating keys with account...")
+        let tx = shambhala.generateSignedKeyAssocTX(G_PUBLIC)
+        logger.info("It came.")
+
+        await async.delay(timeUnit.second)
+
+        logger.info("Sending transaction to the stellar network.")
+        ;((x) => (x))(tx)  // no-op
+        await async.delay(0.5 * timeUnit.second)
+        logger.info("Sent.")
+
     } catch (ex) {
         logger.info("Whoops...", ex)
     }
