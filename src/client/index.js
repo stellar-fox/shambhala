@@ -124,7 +124,7 @@ window.addEventListener("load", async () => {
                 backend + message.GENERATE_ACCOUNT,
                 {
                     G_PUBLIC,
-                    C_UUID: codec.b64enc(C_UUID),
+                    C_UUID: codec.bytesToHex(C_UUID),
                 }
             )
 
