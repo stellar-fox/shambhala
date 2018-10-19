@@ -11,6 +11,7 @@
 
 
 import axios from "axios"
+import forage from "localforage"
 import * as redshift from "@stellar-fox/redshift"
 import * as cryptops from "../lib/cryptops"
 import {
@@ -19,6 +20,7 @@ import {
     func,
     handleRejection,
     string,
+    toBool,
 } from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
 import { console } from "../lib/utils"
@@ -42,6 +44,12 @@ const
 
     // backend url
     backend = clientDomain + registrationPath + restApiPrefix
+
+
+
+
+// local memory, volatile context/store
+let context = {}
 
 
 
@@ -108,7 +116,7 @@ window.addEventListener("load", async () => {
             let PASSPHRASE = string.random(10)
 
             // "genesis" key pair generation
-            let GKP = func.compose(
+            context.GKP = func.compose(
                 redshift.keypair,
                 redshift.hexSeed
             )(G_MNEMONIC, PASSPHRASE)
@@ -118,23 +126,48 @@ window.addEventListener("load", async () => {
             PASSPHRASE = null
 
             // extract user's new public account
-            let G_PUBLIC = GKP.publicKey()
+            let G_PUBLIC = context.GKP.publicKey()
 
             // generate user's new unique identifier
-            let C_UUID = cryptops.genUUID()
+            let C_UUID = codec.bytesToHex(cryptops.genUUID())
+
+            // store G_PUBLIC and C_UUID in local storage
+            let localResponse = await handleRejection(
+                async () => {
+                    await forage.setItem(G_PUBLIC, { G_PUBLIC, C_UUID })
+                    return { ok: true }
+                },
+                async (ex) => ({ error: ex })
+            )
+
+            // something went wrong - data is not stored locally
+            if (!toBool(localResponse.ok)) {
+
+                // report error
+                messageHandler.postMessage(
+                    message.GENERATE_ACCOUNT,
+                    { error: "client:[failure]" }
+                )
+
+                logger.info(
+                    "Account generation failure.",
+                    localResponse.error
+                )
+
+                // don't do anything else
+                return
+            }
 
             // send G_PUBLIC and C_UUID to the server
             let serverResponse = await handleRejection(
                 async () => await axios.post(
                     backend + message.GENERATE_ACCOUNT,
-                    {
-                        G_PUBLIC,
-                        C_UUID: codec.bytesToHex(C_UUID),
-                    }
+                    { G_PUBLIC, C_UUID }
                 ),
                 async (ex) => ex.response
             )
 
+            // all went smooth
             if (
                 serverResponse.status === 201  &&
                 access(serverResponse, ["data", "ok"], false)
@@ -148,9 +181,15 @@ window.addEventListener("load", async () => {
 
                 logger.info("Account succesfully generated.")
 
+            // unfortunately - an error occured
             } else {
 
-                // unfortunately - error occured
+                // rollback all locally saved data (ignore any errors)
+                await handleRejection(
+                    async () => await forage.removeItem(G_PUBLIC)
+                )
+
+                // report error
                 messageHandler.postMessage(
                     message.GENERATE_ACCOUNT,
                     { error: `server:[${serverResponse.status}]` }
