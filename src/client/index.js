@@ -35,14 +35,13 @@ import "./index.css"
 
 
 
-// console logger
-const logger = console("🤖")
-
-
-
-
 // ...
-const backend = clientDomain + registrationPath + restApiPrefix
+const
+    // console logger
+    logger = console("🤖"),
+
+    // backend url
+    backend = clientDomain + registrationPath + restApiPrefix
 
 
 
@@ -67,7 +66,9 @@ window.addEventListener("load", async () => {
     messageHandler.setRecipient(window.opener, "root")
 
 
-    // assign some action to "PING" message
+
+
+    // PING-PONG ----------------------------------------------------
     messageHandler.handle(
         message.PING,
         async (p) => {
@@ -87,10 +88,12 @@ window.addEventListener("load", async () => {
 
         }
     )
-    // -------------------------------------------
+    // --------------------------------------------------------------
 
 
-    // account generation
+
+
+    // account generation -------------------------------------------
     messageHandler.handle(
         message.GENERATE_ACCOUNT,
         async () => {
@@ -161,7 +164,9 @@ window.addEventListener("load", async () => {
             }
         }
     )
-    // -------------------------------------------
+    // --------------------------------------------------------------
+
+
 
 
     // report readiness

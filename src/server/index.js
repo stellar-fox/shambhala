@@ -70,7 +70,7 @@ app.use((req, _res, next) => {
 
 
 
-// "hello world" route
+// "hello world" route ------------------------------------
 app.get(
     "/" + restApiPrefix,
     (_req, res) =>
@@ -84,12 +84,12 @@ app.get(
                     })
             )
 )
-// -------------------------------------------
+// --------------------------------------------------------
 
 
 
 
-// "generate account" route
+// "generate account" route -------------------------------
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
     async (req, res) => {
@@ -115,7 +115,7 @@ app.post(
         }
     }
 )
-// -------------------------------------------
+// --------------------------------------------------------
 
 
 
