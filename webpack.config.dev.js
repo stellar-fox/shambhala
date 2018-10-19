@@ -34,7 +34,7 @@ module.exports = {
             appDirectory, "src/client/index.js"
         ),
         "shambhala.sw": path.resolve(
-            appDirectory, "src/client/index.sw.js"
+            appDirectory, "src/client/index.sw.obsolete.js"
         ),
     },
 

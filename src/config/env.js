@@ -64,6 +64,11 @@ export const maximumWindowOpeningTime = 10 * timeUnit.second
 
 
 
+// OBSOLETE below -----------------------------------------------------------
+
+
+
+
 // ...
 export const defaultDelay = 0.2 * timeUnit.second
 

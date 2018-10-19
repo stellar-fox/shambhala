@@ -1,12 +1,16 @@
 /**
  * Shambhala (service worker).
  *
+ * OBSOLETE.
+ *
  * @module shambhala-sw-app
  * @license Apache-2.0
  */
 
 
 
+
+// OBSOLETE below -----------------------------------------------------------
 
 import {
     choose,
