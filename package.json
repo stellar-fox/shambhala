@@ -101,7 +101,7 @@
         "jsdoc": "npm run clean:jsdoc && npm run build:jsdoc",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run build:all",
-        "start": "webpack-dev-server --config=webpack.config.dev.js",
+        "start": "webpack-dev-server --no-inline --config=webpack.config.dev.js",
         "test": "npm run lint && echo \"Warning: no tests specified (yet)\""
     },
     "version": "0.0.1"

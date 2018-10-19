@@ -9,7 +9,7 @@ const
     path = require("path"),
     express = require("express"),
     chalk = require("chalk"),
-    webpack = require("webpack"),
+    // webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",
@@ -110,7 +110,7 @@ module.exports = {
         compress: true,
         disableHostCheck: true,
         host: "0.0.0.0",
-        hot: true,
+        hot: false,  // HMR
         https: false,
         index: "index.html",
         inline: true,
@@ -129,7 +129,7 @@ module.exports = {
 
     plugins: [
 
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
 
         new HtmlWebpackPlugin({
             chunks: ["static/host"],
