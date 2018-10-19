@@ -17,6 +17,7 @@ import {
     access,
     codec,
     func,
+    handleRejection,
     string,
 } from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
@@ -120,15 +121,21 @@ window.addEventListener("load", async () => {
             let C_UUID = cryptops.genUUID()
 
             // send G_PUBLIC and C_UUID to the server
-            let serverResponse = await axios.post(
-                backend + message.GENERATE_ACCOUNT,
-                {
-                    G_PUBLIC,
-                    C_UUID: codec.bytesToHex(C_UUID),
-                }
+            let serverResponse = await handleRejection(
+                async () => await axios.post(
+                    backend + message.GENERATE_ACCOUNT,
+                    {
+                        G_PUBLIC,
+                        C_UUID: codec.bytesToHex(C_UUID),
+                    }
+                ),
+                async (ex) => ex.response
             )
 
-            if (access(serverResponse, ["data", "ok"], false)) {
+            if (
+                serverResponse.status === 201  &&
+                access(serverResponse, ["data", "ok"], false)
+            ) {
 
                 // confirm account creation to the host application
                 messageHandler.postMessage(
@@ -143,7 +150,7 @@ window.addEventListener("load", async () => {
                 // unfortunately - error occured
                 messageHandler.postMessage(
                     message.GENERATE_ACCOUNT,
-                    { error: serverResponse }
+                    { error: `server:[${serverResponse.status}]` }
                 )
 
                 logger.info("Account generation failure.")

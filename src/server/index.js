@@ -79,8 +79,8 @@ app.post(
         // eslint-disable-next-line no-console
         console.log("    G_PUBLIC:", req.body.G_PUBLIC)
         // eslint-disable-next-line no-console
-        console.log("    C_UUID:", req.body.C_UUID)
-        res.status(200)
+        console.log("      C_UUID:", req.body.C_UUID)
+        res.status(201)
             .send({ ok: true })
     }
 )
