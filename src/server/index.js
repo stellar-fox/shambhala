@@ -68,6 +68,7 @@ app.get(
                     })
             )
 )
+// -------------------------------------------
 
 
 
@@ -75,15 +76,28 @@ app.get(
 // "generate account" route
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
-    (req, res) => {
+    async (req, res) => {
         // eslint-disable-next-line no-console
         console.log("    G_PUBLIC:", req.body.G_PUBLIC)
         // eslint-disable-next-line no-console
         console.log("      C_UUID:", req.body.C_UUID)
-        res.status(201)
-            .send({ ok: true })
+
+        try {
+            await db.none(
+                "INSERT INTO key_v1 (g_public, c_uuid) " +
+                "VALUES ($<G_PUBLIC>, $<C_UUID>);", {
+                    G_PUBLIC: req.body.G_PUBLIC,
+                    C_UUID: req.body.C_UUID,
+                })
+            res.status(201)
+                .send({ ok: true })
+        } catch (ex) {
+            res.status(500)
+                .send({ error: ex })
+        }
     }
 )
+// -------------------------------------------
 
 
 

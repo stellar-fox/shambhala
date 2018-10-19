@@ -153,7 +153,10 @@ window.addEventListener("load", async () => {
                     { error: `server:[${serverResponse.status}]` }
                 )
 
-                logger.info("Account generation failure.")
+                logger.info(
+                    "Account generation failure.",
+                    serverResponse.data.error
+                )
 
             }
         }

@@ -74,9 +74,7 @@ window.addEventListener("load", async () => {
 
         await async.delay(timeUnit.second)
 
-        logger.info("Trying again...")
-        G_PUBLIC = await shambhala.generateAccount()
-        logger.info("Got it:", G_PUBLIC)
+        logger.info("Not trying again.")
     } catch (ex) {
         logger.info("Whoops...", ex)
     }
