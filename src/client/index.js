@@ -14,6 +14,7 @@ import axios from "axios"
 import forage from "localforage"
 import * as redshift from "@stellar-fox/redshift"
 import * as cryptops from "../lib/cryptops"
+import { Keypair } from "stellar-sdk"
 import {
     access,
     codec,
@@ -179,7 +180,10 @@ window.addEventListener("load", async () => {
                     { ok: true, G_PUBLIC }
                 )
 
-                logger.info("Account succesfully generated.")
+                logger.info(
+                    "Account succesfully generated:",
+                    G_PUBLIC
+                )
 
             // unfortunately - an error occured
             } else {
@@ -211,9 +215,16 @@ window.addEventListener("load", async () => {
     // signing keys generation --------------------------------------
     messageHandler.handle(
         message.GENERATE_SIGNING_KEYS,
-        async () => {
+        async (p) => {
 
-            logger.info("Signing keys generation requested.")
+            let G_PUBLIC = Keypair.fromPublicKey(p.G_PUBLIC).publicKey()
+
+            logger.info(
+                "Signing keys generation requested for:",
+                G_PUBLIC
+            )
+
+
 
 
 

@@ -36,6 +36,8 @@ export default class MessageHandler {
     }
 
 
+
+
     /**
      * ...
      */
@@ -43,6 +45,8 @@ export default class MessageHandler {
         this.recipient = recipient
         this.windowName = windowName
     }
+
+
 
 
     /**
@@ -56,18 +60,22 @@ export default class MessageHandler {
     }
 
 
+
+
     /**
      * ...
      */
     handle = (message, handler, volatile = false) => {
         this.handlers[message] =
             volatile ?
-                (p) => {
+                (payload) => {
                     delete this.handlers[message]
-                    handler(p)
+                    handler(payload)
                 } :
                 handler
     }
+
+
 
 
     /**
@@ -76,29 +84,49 @@ export default class MessageHandler {
     unhandle = (message) => { delete this.handlers[message] }
 
 
+
+
     /**
      * ...
      */
     receiveMessage = (message, timeout = defaultMessageTimeout) =>
         new Promise((resolve, reject) => {
-            let cancelTimeout = null
 
-            // watchdog timer
+            // "watchdog" timer
             async.timeout(
+
+                // unregister message handler and reject promise when...
                 () => {
                     this.unhandle(message)
                     reject("receiveMessage: timeout exceeded")
                 },
+
+                // ... `timeout` miliseconds has passed ...
                 timeout,
-                (cancel) => { cancelTimeout = cancel }
+
+                // ... but immediately execute following function,
+                // passing "timeout canceller" - a function, that
+                // when invoked, will cancel the timeout
+                (cancelTimeout) => {
+
+                    // wait for message and when it'll arrive
+                    // cancel the timeout and resolve promise
+                    this.handle(message, (payload) => {
+                        cancelTimeout()
+                        resolve(payload)
+                    }, true)
+
+                }
+
+            // catch the exception - `async.timeout` throws when
+            // cancelled, but here it's the "positive scenario";
+            // timeout has been cancelled means that message was
+            // received and handled
             ).catch()
 
-            // wait for message and resolve
-            this.handle(message, (data) => {
-                cancelTimeout()
-                resolve(data)
-            }, true)
         })
+
+
 
 
     /**
@@ -125,10 +153,12 @@ export default class MessageHandler {
             this.handlers,
             // eslint-disable-next-line no-console
             (p) => console.info("Received:", p, "from", e.origin),
-            [packet]
+            [packet.payload]
         )
 
     }
+
+
 
 
     /**

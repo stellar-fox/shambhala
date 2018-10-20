@@ -139,8 +139,8 @@ export default class Shambhala {
             _store.messageHandler
                 .receiveMessage(message.GENERATE_ACCOUNT)
         )
-        if (data.payload.ok) return data.payload.G_PUBLIC
-        else throw new Error(data.payload.error)
+        if (data.ok) return data.G_PUBLIC
+        else throw new Error(data.error)
     }
 
 
@@ -168,15 +168,18 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Object>}
      */
-    generateSigningKeys = async (_accountId) => {
+    generateSigningKeys = async (accountId) => {
         await this._openShambhala()
-        _store.messageHandler.postMessage(message.GENERATE_SIGNING_KEYS)
+        _store.messageHandler.postMessage(
+            message.GENERATE_SIGNING_KEYS,
+            { G_PUBLIC: accountId }
+        )
         let data = await (
             _store.messageHandler
                 .receiveMessage(message.GENERATE_SIGNING_KEYS)
         )
-        if (data.payload.ok) return data.payload.keys
-        else throw new Error(data.payload.error)
+        if (data.ok) return data.keys
+        else throw new Error(data.error)
     }
 
 
