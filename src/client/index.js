@@ -150,7 +150,7 @@ window.addEventListener("load", async () => {
                     { error: "client:[failure]" }
                 )
 
-                logger.info(
+                logger.error(
                     "Account generation failure.",
                     localResponse.error
                 )
@@ -199,7 +199,7 @@ window.addEventListener("load", async () => {
                     { error: `server:[${serverResponse.status}]` }
                 )
 
-                logger.info(
+                logger.error(
                     "Account generation failure.",
                     serverResponse.data.error
                 )
@@ -217,12 +217,33 @@ window.addEventListener("load", async () => {
         message.GENERATE_SIGNING_KEYS,
         async (p) => {
 
-            let G_PUBLIC = Keypair.fromPublicKey(p.G_PUBLIC).publicKey()
+            let G_PUBLIC = null, C_UUID = null
 
-            logger.info(
-                "Signing keys generation requested for:",
-                G_PUBLIC
-            )
+            logger.info("Signing keys generation requested.")
+
+            // validate received G_PUBLIC
+            // and check if it has been associated before
+            try {
+
+                Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
+                ({ G_PUBLIC, C_UUID } = await forage.getItem(p.G_PUBLIC))
+
+            } catch (_) {
+
+                // report error
+                messageHandler.postMessage(
+                    message.GENERATE_SIGNING_KEYS,
+                    { error: "client:[invalid or not associated G_PUBLIC]" }
+                )
+
+                logger.error("Invalid or not associated G_PUBLIC received.")
+
+                // don't do anything else
+                return
+            }
+
+            logger.info(G_PUBLIC, C_UUID)
+
 
 
 
@@ -234,7 +255,7 @@ window.addEventListener("load", async () => {
                 { error: "NOT IMPLEMENTED YET" }
             )
 
-            logger.info(
+            logger.error(
                 "Signing keys generation failure.",
                 "NOT IMPLEMENTED"
             )
