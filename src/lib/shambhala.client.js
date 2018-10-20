@@ -54,15 +54,32 @@ export default class Shambhala {
     }
 
 
+
+
     /**
      * ...
+     *
+     * @instance
+     * @private
+     * @method _generateRandomWindowName
+     * @memberof module:shambhala-client~Shambhala
+     * @returns {Promise.<String>}
      */
     _generateRandomWindowName = () =>
         "shambhala-client-" // + string.random(6)
 
 
+
+
     /**
-     * ...
+     * Handle shambhala target window opening.
+     *
+     * @async
+     * @instance
+     * @private
+     * @method _openShambhala
+     * @memberof module:shambhala-client~Shambhala
+     * @returns {Promise.<String>}
      */
     _openShambhala = () => {
         if (!type.isString(_store.windowName)) {
@@ -86,6 +103,8 @@ export default class Shambhala {
     }
 
 
+
+
     /**
      * Get library version.
      *
@@ -96,6 +115,8 @@ export default class Shambhala {
      * @returns {Promise.<String>}
      */
     getLibVersion = () => Promise.reject("NOT IMPLEMENTED")
+
+
 
 
     /**
@@ -110,6 +131,8 @@ export default class Shambhala {
     getVersion = () => Promise.reject("NOT IMPLEMENTED")
 
 
+
+
     /**
      * Get associated `public keys` for a given `account id`.
      *
@@ -121,6 +144,8 @@ export default class Shambhala {
      * @returns {Promise.<Array>}
      */
     getPublicKeys = (_accountId) => Promise.reject(["NOT IMPLEMENTED"])
+
+
 
 
     /**
@@ -144,6 +169,8 @@ export default class Shambhala {
     }
 
 
+
+
     /**
      * Associate account. Returns an `account id` (`G_PUBLIC`).
      *
@@ -155,6 +182,8 @@ export default class Shambhala {
      * @returns {Promise.<String>}
      */
     associateAccount = (_accountId) => Promise.reject("NOT IMPLEMENTED")
+
+
 
 
     /**
@@ -183,6 +212,8 @@ export default class Shambhala {
     }
 
 
+
+
     /**
      * Generate **signed** key association transaction, ready to be submitted
      * to the _stellar network_. If such transaction can't be generated
@@ -197,6 +228,8 @@ export default class Shambhala {
      */
     generateSignedKeyAssocTX = (_accountId) =>
         Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
+
+
 
 
     /**
@@ -215,6 +248,8 @@ export default class Shambhala {
         Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
 
 
+
+
     /**
      * Returns `true` if transaction can be signed
      * on behalf of an `account id`, `false` otherwise.
@@ -227,6 +262,8 @@ export default class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     canSignFor = (_accountId) => Promise.resolve(false)
+
+
 
 
     /**
