@@ -22,7 +22,10 @@ import { defaultMessageTimeout } from "../config/env"
 
 
 /**
- * ...
+ * In-browser cross-origin message passing.
+ *
+ * @class MessageHandler
+ * @param {String} origin origin URI of the target window
  */
 export default class MessageHandler {
 
@@ -30,8 +33,7 @@ export default class MessageHandler {
         this.origin = origin
         this.handlers = {}
         window.addEventListener(
-            "message",
-            this.eventProcessor
+            "message", this._eventProcessor
         )
     }
 
@@ -39,7 +41,13 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Set retails of target window (recipient).
+     *
+     * @instance
+     * @method setRecipient
+     * @memberof module:message-handler~MessageHandler
+     * @param {Object} recipient
+     * @param {String} windowName
      */
     setRecipient = (recipient, windowName) => {
         this.recipient = recipient
@@ -50,7 +58,13 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Send message with an optional payload to the recipient.
+     *
+     * @instance
+     * @method postMessage
+     * @memberof module:message-handler~MessageHandler
+     * @param {String} message
+     * @param {Object} [payload]
      */
     postMessage = (message, payload = {}) => {
         this.recipient.postMessage(
@@ -63,7 +77,16 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Register message handler for a specified message.
+     *
+     * @instance
+     * @method handle
+     * @memberof module:message-handler~MessageHandler
+     * @param {String} message
+     * @param {Function} handler
+     * @param {Boolean} [volatile] if set to true then
+     *     handler will be automatically deregistered
+     *     after one message
      */
     handle = (message, handler, volatile = false) => {
         this.handlers[message] =
@@ -79,7 +102,12 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Unregister message handler for a specified message.
+     *
+     * @instance
+     * @method unhandle
+     * @memberof module:message-handler~MessageHandler
+     * @param {String} message
      */
     unhandle = (message) => { delete this.handlers[message] }
 
@@ -87,7 +115,16 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Receive one specified message with payload.
+     * Guarded by watchdog timer - rejects if timeout reached.
+     *
+     * @async
+     * @instance
+     * @method receiveMessage
+     * @memberof module:message-handler~MessageHandler
+     * @param {String} message
+     * @param {Number} [timeout]
+     * @returns {Promise.<Object>}
      */
     receiveMessage = (message, timeout = defaultMessageTimeout) =>
         new Promise((resolve, reject) => {
@@ -95,7 +132,7 @@ export default class MessageHandler {
             // "watchdog" timer
             async.timeout(
 
-                // unregister message handler and reject promise when...
+                // remove message handler and reject promise when...
                 () => {
                     this.unhandle(message)
                     reject("receiveMessage: timeout exceeded")
@@ -130,9 +167,17 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Event parser and dispatcher. Not to be called directly.
+     * Registered as "message" event listener to `window` object
+     * in constructor.
+     *
+     * @instance
+     * @private
+     * @method _eventProcessor
+     * @memberof module:message-handler~MessageHandler
+     * @param {Object} e
      */
-    eventProcessor = (e) => {
+    _eventProcessor = (e) => {
 
         // don't get fooled by potential messages from others
         if (e.origin !== this.origin) { return }
@@ -162,12 +207,15 @@ export default class MessageHandler {
 
 
     /**
-     * ...
+     * Deregister message parsing and dispatching from `window` object.
+     *
+     * @instance
+     * @method remove
+     * @memberof module:message-handler~MessageHandler
      */
     remove = () =>
         window.removeEventListener(
-            "message",
-            this.eventProcessor
+            "message", this._eventProcessor
         )
 
 }
