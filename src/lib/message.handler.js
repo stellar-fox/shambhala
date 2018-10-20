@@ -33,7 +33,7 @@ export default class MessageHandler {
         this.origin = origin
         this.handlers = {}
         window.addEventListener(
-            "message", this._eventProcessor
+            "message", this._messageProcessor
         )
     }
 
@@ -41,7 +41,7 @@ export default class MessageHandler {
 
 
     /**
-     * Set retails of target window (recipient).
+     * Set details of target window (recipient).
      *
      * @instance
      * @method setRecipient
@@ -84,9 +84,9 @@ export default class MessageHandler {
      * @memberof module:message-handler~MessageHandler
      * @param {String} message
      * @param {Function} handler
-     * @param {Boolean} [volatile] if set to true then
+     * @param {Boolean} [volatile] If set to true then
      *     handler will be automatically deregistered
-     *     after one message
+     *     after one message.
      */
     handle = (message, handler, volatile = false) => {
         this.handlers[message] =
@@ -157,7 +157,7 @@ export default class MessageHandler {
 
             // catch the exception - `async.timeout` throws when
             // cancelled, but here it's the "positive scenario";
-            // timeout has been cancelled means that message was
+            // if timeout has been cancelled then message was
             // received and handled
             ).catch()
 
@@ -173,11 +173,11 @@ export default class MessageHandler {
      *
      * @instance
      * @private
-     * @method _eventProcessor
+     * @method _messageProcessor
      * @memberof module:message-handler~MessageHandler
      * @param {Object} e
      */
-    _eventProcessor = (e) => {
+    _messageProcessor = (e) => {
 
         // don't get fooled by potential messages from others
         if (e.origin !== this.origin) { return }
@@ -215,7 +215,7 @@ export default class MessageHandler {
      */
     remove = () =>
         window.removeEventListener(
-            "message", this._eventProcessor
+            "message", this._messageProcessor
         )
 
 }
