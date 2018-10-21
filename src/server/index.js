@@ -21,7 +21,10 @@ import {
     codec,
     string,
 } from "@xcmats/js-toolbox"
-import { cn } from "../lib/utils"
+import {
+    cn,
+    consoleWrapper,
+} from "../lib/utils"
 import * as message from "../lib/messages"
 import {
     database,
@@ -34,7 +37,13 @@ import { restApiPrefix } from "../config/env"
 
 // ...
 const
+    // console logger
+    logger = consoleWrapper("🏢"),
+
+    // postgresql connection
     db = pg()(cn(database)),
+
+    // http server
     app = express(),
     port = 8081,
 
@@ -97,26 +106,30 @@ app.get(
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
     async (req, res) => {
-        // eslint-disable-next-line no-console
-        console.log("    G_PUBLIC:", req.body.G_PUBLIC)
-        // eslint-disable-next-line no-console
-        console.log("      C_UUID:", req.body.C_UUID)
+
+        logger.info("    G_PUBLIC:", req.body.G_PUBLIC)
+        logger.info("      C_UUID:", req.body.C_UUID)
 
         try {
+
             await db.none(
                 sql("./generate_account.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC: req.body.G_PUBLIC,
                     C_UUID: req.body.C_UUID,
                 })
+
             res.status(201)
                 .send({ ok: true })
+
         } catch (ex) {
+
             res.status(500)
                 .send({ error: ex })
-            // eslint-disable-next-line no-console
-            console.log(ex)
+            logger.error(ex)
+
         }
+
     }
 )
 // --------------------------------------------------------
@@ -132,22 +145,23 @@ app.post(
         let { G_PUBLIC, C_UUID } = req.body
         let S_KEY = codec.b64dec(req.body.S_KEY)
 
-        // eslint-disable-next-line no-console
-        console.log("    G_PUBLIC:", string.shorten(G_PUBLIC, 11))
-        // eslint-disable-next-line no-console
-        console.log("      C_UUID:", string.shorten(C_UUID, 7))
-        // eslint-disable-next-line no-console
-        console.log("       S_KEY:", string.shorten(req.body.S_KEY, 21))
+        logger.info("    G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        logger.info("      C_UUID:", string.shorten(C_UUID, 7))
+        logger.info("       S_KEY:", string.shorten(req.body.S_KEY, 21))
 
         try {
+
             res.status(201)
                 .send({ ok: true })
+
         } catch (ex) {
+
             res.status(500)
                 .send({ error: ex })
-            // eslint-disable-next-line no-console
-            console.log(ex)
+            logger.error(ex)
+
         }
+
     }
 )
 // --------------------------------------------------------
@@ -158,6 +172,5 @@ app.post(
 // ...
 app.listen(
     port,
-    // eslint-disable-next-line no-console
-    () => console.log(`shambhala.serv::${port}`)
+    () => logger.info(`shambhala.serv::${port}`)
 )
