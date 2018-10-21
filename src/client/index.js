@@ -113,7 +113,7 @@ window.addEventListener("load", async () => {
             // has to be presented to the user
             let G_MNEMONIC = redshift.genMnemonic()
 
-            // passphrase - will be read from user
+            // passphrase - will be read from the user
             let PASSPHRASE = string.random(10)
 
             // "genesis" key pair generation
@@ -243,6 +243,19 @@ window.addEventListener("load", async () => {
             }
 
             logger.info(G_PUBLIC, C_UUID)
+
+            // generate user-specific SALT
+            let SALT = cryptops.salt64()
+
+            // PIN - will be read from the user
+            let PIN = string.random(5, string.digits())
+
+            // compute S_KEY
+            let S_KEY = await cryptops.deriveKey(
+                codec.stringToBytes(PIN), SALT
+            )
+
+
 
 
 
