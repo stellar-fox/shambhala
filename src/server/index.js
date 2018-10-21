@@ -107,23 +107,27 @@ app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
     async (req, res) => {
 
-        logger.info("    G_PUBLIC:", req.body.G_PUBLIC)
-        logger.info("      C_UUID:", req.body.C_UUID)
+        let { G_PUBLIC, C_UUID } = req.body
+
+        logger.info("    G_PUBLIC:", G_PUBLIC)
+        logger.info("      C_UUID:", C_UUID)
 
         try {
 
+            // store G_PUBLIC and C_UUID
             await db.none(
                 sql("./generate_account.sql"), {
                     key_table: tables.key_table,
-                    G_PUBLIC: req.body.G_PUBLIC,
-                    C_UUID: req.body.C_UUID,
+                    G_PUBLIC, C_UUID,
                 })
 
+            // all went smooth
             res.status(201)
                 .send({ ok: true })
 
         } catch (ex) {
 
+            // unfortunately - error occured
             res.status(500)
                 .send({ error: ex })
             logger.error(ex)
