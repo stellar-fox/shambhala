@@ -267,7 +267,31 @@ window.addEventListener("load", async () => {
                 async (ex) => ex.response
             )
 
+            // all went smooth
+            if (
+                serverResponse.status === 201  &&
+                access(serverResponse, ["data", "ok"], false)
+            ) {
 
+                // ...
+
+            // unfortunately - an error occured
+            } else {
+
+                // report error
+                messageHandler.postMessage(
+                    message.GENERATE_SIGNING_KEYS,
+                    { error: `server:[${serverResponse.status}]` }
+                )
+
+                logger.error(
+                    "Signing keys generation failure.",
+                    serverResponse.data.error
+                )
+
+                return
+
+            }
 
 
 
