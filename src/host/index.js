@@ -18,7 +18,7 @@ import {
     timeUnit,
 } from "@xcmats/js-toolbox"
 import {
-    console,
+    consoleWrapper,
     drawEmojis,
 } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
@@ -34,7 +34,7 @@ import "./index.css"
 
 
 // console logger
-const logger = console("🐧")
+const logger = consoleWrapper("💻")
 
 
 

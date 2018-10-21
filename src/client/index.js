@@ -24,7 +24,7 @@ import {
     toBool,
 } from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
-import { console } from "../lib/utils"
+import { consoleWrapper } from "../lib/utils"
 import {
     clientDomain,
     hostDomain,
@@ -41,7 +41,7 @@ import "./index.css"
 // ...
 const
     // console logger
-    logger = console("🤖"),
+    logger = consoleWrapper("🎭"),
 
     // backend url
     backend = clientDomain + registrationPath + restApiPrefix

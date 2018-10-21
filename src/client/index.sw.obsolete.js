@@ -17,7 +17,7 @@ import {
     delay,
     head,
 } from "@xcmats/js-toolbox"
-import { console } from "../lib/utils"
+import { consoleWrapper } from "../lib/utils"
 import {
     api,
     apiPrefix,
@@ -28,7 +28,7 @@ import {
 
 
 // console logger
-const logger = console("👽")
+const logger = consoleWrapper("👽")
 
 
 

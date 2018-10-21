@@ -13,6 +13,7 @@
 import {
     access,
     dict,
+    isBrowser,
     partial,
     quote,
     randomInt,
@@ -43,11 +44,11 @@ export const cn = (c) => {
 /**
  * Safe version of (window/self).console object.
  *
- * @function console
+ * @function consoleWrapper
  * @param {String} context
  * @returns {Object}
  */
-export const console = (() => {
+export const consoleWrapper = (() => {
     let
         methods = ["log", "info", "warn", "error"],
         noop = dict(methods.map((m) => [m, () => null])),
@@ -55,7 +56,7 @@ export const console = (() => {
             (con) => dict(methods.map(
                 (m) => [m, partial(con[m])(quote(context, "[]"))]
             ))
-        )(access(self, ["console"], noop))
+        )(access(isBrowser() ? self : global, ["console"], noop))
     c.noop = noop
     return c
 })()
