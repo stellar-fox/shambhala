@@ -255,7 +255,17 @@ window.addEventListener("load", async () => {
                 codec.stringToBytes(PIN), SALT
             )
 
-
+            // send S_KEY to the server
+            let serverResponse = await handleRejection(
+                async () => await axios.post(
+                    backend + message.GENERATE_SIGNING_KEYS,
+                    {
+                        G_PUBLIC, C_UUID,
+                        S_KEY: codec.b64enc(S_KEY),
+                    }
+                ),
+                async (ex) => ex.response
+            )
 
 
 

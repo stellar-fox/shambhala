@@ -17,6 +17,10 @@ import express, {
 } from "express"
 import pg from "pg-promise"
 import chalk from "chalk"
+import {
+    codec,
+    string,
+} from "@xcmats/js-toolbox"
 import { cn } from "../lib/utils"
 import * as message from "../lib/messages"
 import {
@@ -105,6 +109,37 @@ app.post(
                     G_PUBLIC: req.body.G_PUBLIC,
                     C_UUID: req.body.C_UUID,
                 })
+            res.status(201)
+                .send({ ok: true })
+        } catch (ex) {
+            res.status(500)
+                .send({ error: ex })
+            // eslint-disable-next-line no-console
+            console.log(ex)
+        }
+    }
+)
+// --------------------------------------------------------
+
+
+
+
+// "signing keys generation" route ------------------------
+app.post(
+    "/" + restApiPrefix + message.GENERATE_SIGNING_KEYS,
+    async (req, res) => {
+
+        let { G_PUBLIC, C_UUID } = req.body
+        let S_KEY = codec.b64dec(req.body.S_KEY)
+
+        // eslint-disable-next-line no-console
+        console.log("    G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        // eslint-disable-next-line no-console
+        console.log("      C_UUID:", string.shorten(C_UUID, 7))
+        // eslint-disable-next-line no-console
+        console.log("       S_KEY:", string.shorten(req.body.S_KEY, 21))
+
+        try {
             res.status(201)
                 .send({ ok: true })
         } catch (ex) {
