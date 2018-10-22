@@ -51,7 +51,7 @@ export const restApiPrefix = "api/v1/"
 /**
  * @constant defaultMessageTimeout ...
  */
-export const defaultMessageTimeout = 3 * timeUnit.second
+export const defaultMessageTimeout = 5 * timeUnit.second
 
 
 
