@@ -97,7 +97,7 @@ window.addEventListener("load", async () => {
         await async.delay(timeUnit.second)
 
         logger.info("Receiving transaction associating keys with account...")
-        let tx = shambhala.generateSignedKeyAssocTX(G_PUBLIC)
+        let tx = await shambhala.generateSignedKeyAssocTX(G_PUBLIC)
         logger.info("It came.")
 
         await async.delay(timeUnit.second)
@@ -108,7 +108,7 @@ window.addEventListener("load", async () => {
         logger.info("Sent.")
 
     } catch (ex) {
-        logger.info("Whoops...", ex)
+        logger.error("Whoops...", ex)
     }
 
 })

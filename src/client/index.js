@@ -378,6 +378,58 @@ window.addEventListener("load", async () => {
 
 
 
+    // automatic keys association -----------------------------------
+    messageHandler.handle(
+        message.GENERATE_SIGNED_KEY_ASSOC_TX,
+        async (p) => {
+
+            let
+                G_PUBLIC = null,
+                C_PUBLIC = null,
+                S_PUBLIC = null
+
+            logger.info("Key association transaction generation requested.")
+
+            // validate received G_PUBLIC
+            // and check if it has been associated before
+            try {
+
+                Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
+                (
+                    { G_PUBLIC, C_PUBLIC, S_PUBLIC } =
+                        await forage.getItem(p.G_PUBLIC)
+                )
+
+            } catch (_) {
+
+                // report error
+                messageHandler.postMessage(
+                    message.GENERATE_SIGNED_KEY_ASSOC_TX,
+                    { error: "client:[invalid or not associated G_PUBLIC]" }
+                )
+
+                logger.error("Invalid or not associated G_PUBLIC received.")
+
+                // don't do anything else
+                return
+            }
+
+            logger.info(
+                string.shorten(G_PUBLIC, 11),
+                string.shorten(C_PUBLIC, 11),
+                string.shorten(S_PUBLIC, 11),
+            )
+
+
+
+
+        }
+    )
+    // --------------------------------------------------------------
+
+
+
+
     // report readiness
     messageHandler.postMessage(message.READY)
 

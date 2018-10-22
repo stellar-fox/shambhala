@@ -233,8 +233,21 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Uint8Array>}
      */
-    generateSignedKeyAssocTX = (_accountId) =>
-        Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
+    generateSignedKeyAssocTX = async (accountId) => {
+        await this._openShambhala()
+        _store.messageHandler.postMessage(
+            message.GENERATE_SIGNED_KEY_ASSOC_TX,
+            { G_PUBLIC: accountId }
+        )
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(
+                    message.GENERATE_SIGNED_KEY_ASSOC_TX,
+                )
+        )
+        if (data.ok) codec.b64dec(data.tx)
+        else throw new Error(data.error)
+    }
 
 
 
