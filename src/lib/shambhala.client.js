@@ -90,7 +90,7 @@ export default class Shambhala {
             return await this._ping()
 
         // 'ping' can throw because there was no recipient set
-        // for 'postMessage' to work, or because 'receiveMessage'
+        // for 'postMessage' to work or because 'receiveMessage'
         // reached timeout which mean that shambhala was opened
         // but then closed and now it's gone
         } catch (_) {
@@ -99,14 +99,12 @@ export default class Shambhala {
                 _store.windowName = this._generateRandomWindowName()
             }
 
-            // open shambhala window
+            // open shambhala window and set recipient in message handler
             _store.client = window.open(
-                _store.url.href,
-                _store.windowName
+                _store.url.href, _store.windowName
             )
             _store.messageHandler.setRecipient(
-                _store.client,
-                _store.windowName
+                _store.client, _store.windowName
             )
 
             // wait for 'message.READY' and resolve
