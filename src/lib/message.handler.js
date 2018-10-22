@@ -15,8 +15,18 @@ import {
     choose,
     handleException,
 } from "@xcmats/js-toolbox"
+import { consoleWrapper } from "./utils"
 import * as message from "./messages"
 import { defaultMessageTimeout } from "../config/env"
+
+
+
+
+/**
+ * @private
+ * @function logger
+ */
+const logger = consoleWrapper("📬")
 
 
 
@@ -196,8 +206,7 @@ export default class MessageHandler {
         choose(
             packet.message,
             this.handlers,
-            // eslint-disable-next-line no-console
-            (p) => console.info("Received:", p, "from", e.origin),
+            () => logger.info("Received:", packet, "from", e.origin),
             [packet.payload]
         )
 
