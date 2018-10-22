@@ -383,9 +383,11 @@ export const encrypt = (key, message) => {
         !type.isNumber(message.BYTES_PER_ELEMENT)  ||
         key.BYTES_PER_ELEMENT !== 1  ||
         message.BYTES_PER_ELEMENT !== 1
-    ) throw new TypeError("Arguments must be of Uint8Array type.")
+    ) throw new TypeError("encrypt: Arguments must be of Uint8Array type.")
 
-    if (key.length !== 64) throw new RangeError("Key must be 512 bits long.")
+    if (key.length !== 64) throw new RangeError(
+        "encrypt: Key must be 512 bits long."
+    )
 
     return codec.concatBytes(
         codec.hexToBytes(encdec.MAGIC),
@@ -430,9 +432,11 @@ export const decrypt = (key, ciphertext) => {
         !type.isNumber(ciphertext.BYTES_PER_ELEMENT)  ||
         key.BYTES_PER_ELEMENT !== 1  ||
         ciphertext.BYTES_PER_ELEMENT !== 1
-    ) throw new TypeError("Arguments must be of Uint8Array type.")
+    ) throw new TypeError("decrypt: Arguments must be of Uint8Array type.")
 
-    if (key.length !== 64) throw new RangeError("Key must be 512 bits long.")
+    if (key.length !== 64) throw new RangeError(
+        "decrypt: Key must be 512 bits long."
+    )
 
     if (!codec.compareBytes(
         codec.concatBytes(
@@ -440,7 +444,7 @@ export const decrypt = (key, ciphertext) => {
             codec.hexToBytes(encdec.VERSION)
         ),
         ciphertext.slice(0, 4)
-    )) throw new Error("Magic byte or version mismatch.")
+    )) throw new Error("decrypt: Magic byte or version mismatch.")
 
     return func.compose(
         func.partial(salsaDecrypt)(key.slice(0, 32)),
