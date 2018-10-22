@@ -127,8 +127,8 @@ app.post(
         // receive G_PUBLIC and C_UUID
         let { G_PUBLIC, C_UUID } = req.body
 
-        logger.info("    G_PUBLIC:", G_PUBLIC)
-        logger.info("      C_UUID:", C_UUID)
+        logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
 
         try {
 
@@ -172,9 +172,9 @@ app.post(
         // base64 decode S_KEY
         let S_KEY = codec.b64dec(req.body.S_KEY)
 
-        logger.info("    G_PUBLIC:", string.shorten(G_PUBLIC, 11))
-        logger.info("      C_UUID:", string.shorten(C_UUID, 7))
-        logger.info("       S_KEY:", string.shorten(req.body.S_KEY, 21))
+        logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
+        logger.info("  ->    S_KEY:", string.shorten(req.body.S_KEY, 17))
 
         // generate S_SECRET
         let S_SECRET = Keypair.random().secret()
@@ -206,6 +206,9 @@ app.post(
                     G_PUBLIC, C_UUID,
                     S_PUBLIC, ENC_SKP,
                 })
+
+            logger.info("  <-     S_PUBLIC:", string.shorten(S_PUBLIC, 11))
+            logger.info("  <- C_PASSPHRASE:", string.shorten(C_PASSPHRASE, 17))
 
             // all went smooth
             res.status(201)
