@@ -32,6 +32,7 @@ import {
     restApiPrefix,
 } from "../config/env"
 import * as message from "../lib/messages"
+import pingPongAction from "./ping_pong"
 
 import "./index.css"
 
@@ -77,30 +78,10 @@ window.addEventListener("load", async () => {
 
 
 
-    // PING-PONG ----------------------------------------------------
+    // ping-pong ----------------------------------------------------
     messageHandler.handle(
         message.PING,
-        async () => {
-
-            logger.info("-> PING")
-
-            let resp = await axios.get(backend)
-
-            messageHandler.postMessage(
-                message.PONG,
-                {
-                    hash: func.compose(
-                        codec.bytesToHex,
-                        cryptops.sha512,
-                        codec.stringToBytes,
-                        JSON.stringify
-                    )(resp.data),
-                }
-            )
-
-            logger.info("<- PONG")
-
-        }
+        pingPongAction(messageHandler, logger)
     )
     // --------------------------------------------------------------
 
