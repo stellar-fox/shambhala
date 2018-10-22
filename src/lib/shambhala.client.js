@@ -82,25 +82,65 @@ export default class Shambhala {
      * @memberof module:shambhala-client~Shambhala
      * @returns {Promise.<String>}
      */
-    _openShambhala = () => {
-        if (!type.isString(_store.windowName)) {
-            _store.windowName = this._generateRandomWindowName()
+    _openShambhala = async () => {
+
+        // maybe shambhala is already up-and-running?
+        try {
+
+            return await this._ping()
+
+        // 'ping' can throw because there was no recipient set
+        // for 'postMessage' to work, or because 'receiveMessage'
+        // reached timeout which mean that shambhala was opened
+        // but then closed and now it's gone
+        } catch (_) {
+
+            if (!type.isString(_store.windowName)) {
+                _store.windowName = this._generateRandomWindowName()
+            }
+
+            // open shambhala window
+            _store.client = window.open(
+                _store.url.href,
+                _store.windowName
+            )
+            _store.messageHandler.setRecipient(
+                _store.client,
+                _store.windowName
+            )
+
+            // wait for 'message.READY' and resolve
+            return await _store.messageHandler.receiveMessage(
+                message.READY, maximumWindowOpeningTime
+            )
+
         }
 
-        // open shambhala window
-        _store.client = window.open(
-            _store.url.href,
-            _store.windowName
-        )
-        _store.messageHandler.setRecipient(
-            _store.client,
-            _store.windowName
-        )
+    }
 
-        // wait for 'message.READY' and resolve
-        return _store.messageHandler.receiveMessage(
-            message.READY, maximumWindowOpeningTime
+
+
+
+    /**
+     * Ping-Pong.
+     *
+     * @async
+     * @instance
+     * @private
+     * @method ping
+     * @memberof module:shambhala-client~Shambhala
+     * @returns {Promise.<String>}
+     */
+    _ping = async () => {
+        _store.messageHandler.postMessage(message.PING)
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(
+                    message.PONG,
+                    1 * timeUnit.second
+                )
         )
+        return data.hash
     }
 
 

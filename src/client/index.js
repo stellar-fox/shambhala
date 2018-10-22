@@ -80,20 +80,25 @@ window.addEventListener("load", async () => {
     // PING-PONG ----------------------------------------------------
     messageHandler.handle(
         message.PING,
-        async (p) => {
+        async () => {
 
-            logger.info("Root has spoken:", p)
+            logger.info("-> PING")
 
-            logger.info("getting data...")
             let resp = await axios.get(backend)
-            logger.info("got:", resp)
 
             messageHandler.postMessage(
                 message.PONG,
-                resp.data
+                {
+                    hash: func.compose(
+                        codec.bytesToHex,
+                        cryptops.sha512,
+                        codec.stringToBytes,
+                        JSON.stringify
+                    )(resp.data),
+                }
             )
 
-            logger.info("data sent to root...")
+            logger.info("<- PONG")
 
         }
     )
@@ -390,8 +395,11 @@ window.addEventListener("load", async () => {
 
             logger.info("Key association transaction generation requested.")
 
-            // validate received G_PUBLIC
-            // and check if it has been associated before
+            // validate received G_PUBLIC,
+            // check if it has been associated before
+            // and compare it with public part of GKP
+            // (implicit check if GKP is present in memory
+            // and of appropriate type)
             try {
 
                 Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
@@ -399,6 +407,9 @@ window.addEventListener("load", async () => {
                     { G_PUBLIC, C_PUBLIC, S_PUBLIC } =
                         await forage.getItem(p.G_PUBLIC)
                 )
+                if (context.GKP.publicKey() !== G_PUBLIC) {
+                    throw new Error("Wrong G_PUBLIC.")
+                }
 
             } catch (_) {
 
@@ -417,7 +428,7 @@ window.addEventListener("load", async () => {
             logger.info(
                 string.shorten(G_PUBLIC, 11),
                 string.shorten(C_PUBLIC, 11),
-                string.shorten(S_PUBLIC, 11),
+                string.shorten(S_PUBLIC, 11)
             )
 
 
@@ -431,6 +442,9 @@ window.addEventListener("load", async () => {
 
 
     // report readiness
-    messageHandler.postMessage(message.READY)
+    messageHandler.postMessage(
+        message.READY,
+        { hash: codec.bytesToHex(cryptops.salt64()) }
+    )
 
 })
