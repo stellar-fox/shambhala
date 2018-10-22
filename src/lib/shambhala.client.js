@@ -13,6 +13,7 @@
 import {
     codec,
     // string,
+    timeUnit,
     type,
 } from "@xcmats/js-toolbox"
 import { maximumWindowOpeningTime } from "../config/env"
@@ -205,9 +206,15 @@ export default class Shambhala {
         )
         let data = await (
             _store.messageHandler
-                .receiveMessage(message.GENERATE_SIGNING_KEYS)
+                .receiveMessage(
+                    message.GENERATE_SIGNING_KEYS,
+                    20 * timeUnit.second
+                )
         )
-        if (data.ok) return data.keys
+        if (data.ok) return {
+            C_PUBLIC: data.C_PUBLIC,
+            S_PUBLIC: data.S_PUBLIC,
+        }
         else throw new Error(data.error)
     }
 

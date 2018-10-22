@@ -242,7 +242,10 @@ window.addEventListener("load", async () => {
                 return
             }
 
-            logger.info(G_PUBLIC, C_UUID)
+            logger.info(
+                string.shorten(G_PUBLIC, 11),
+                string.shorten(C_UUID, 7)
+            )
 
             // generate user-specific SALT
             let SALT = cryptops.salt64()
@@ -267,16 +270,11 @@ window.addEventListener("load", async () => {
                 async (ex) => ex.response
             )
 
-            // all went smooth
-            if (
-                serverResponse.status === 201  &&
-                access(serverResponse, ["data", "ok"], false)
-            ) {
-
-                // ...
-
             // unfortunately - an error occured
-            } else {
+            if (
+                serverResponse.status !== 201  ||
+                !access(serverResponse, ["data", "ok"], false)
+            ) {
 
                 // report error
                 messageHandler.postMessage(
@@ -289,23 +287,89 @@ window.addEventListener("load", async () => {
                     serverResponse.data.error
                 )
 
+                // do nothing more
                 return
 
             }
 
+            // receive C_PASSPHRASE and S_PUBLIC from the server
+            let { S_PUBLIC } = serverResponse.data
+            let C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE)
 
+            // compute C_KEY
+            let C_KEY = await cryptops.deriveKey(C_PASSPHRASE, SALT)
 
+            // [💥] destroy C_PASSPHRASE
+            C_PASSPHRASE = null
 
-            // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNING_KEYS,
-                { error: "NOT IMPLEMENTED YET" }
+            // generate C_SECRET
+            let C_SECRET = Keypair.random().secret()
+
+            // compute and store ENC_CKP
+            let ENC_CKP = cryptops.encrypt(
+                C_KEY,
+                codec.stringToBytes(C_SECRET)
             )
 
-            logger.error(
-                "Signing keys generation failure.",
-                "NOT IMPLEMENTED"
+            // [💥] destroy C_KEY
+            C_KEY = null
+
+            // extract C_PUBLIC from C_SECRET
+            let C_PUBLIC = Keypair.fromSecret(C_SECRET).publicKey()
+
+            // [💥] destroy C_SECRET
+            C_SECRET = null
+
+            // store all needed data in local storage
+            let localResponse = await handleRejection(
+                async () => {
+                    await forage.setItem(
+                        G_PUBLIC,
+                        {
+                            G_PUBLIC, C_UUID,
+                            C_PUBLIC, S_PUBLIC,
+                            SALT: codec.b64enc(SALT),
+                            ENC_CKP: codec.b64enc(ENC_CKP),
+                        }
+                    )
+                    return { ok: true }
+                },
+                async (ex) => ({ error: ex })
             )
+
+            // something went wrong - data is not stored locally
+            if (!toBool(localResponse.ok)) {
+
+                // TODO / CONSIDER:
+                // rollback server-side changes
+
+                // report error
+                messageHandler.postMessage(
+                    message.GENERATE_SIGNING_KEYS,
+                    { error: "client:[failure]" }
+                )
+
+                logger.error(
+                    "Signing keys generation failure.",
+                    localResponse.error
+                )
+
+            // all ok
+            } else {
+
+                // respond to the host application
+                messageHandler.postMessage(
+                    message.GENERATE_SIGNING_KEYS,
+                    { ok: true, C_PUBLIC, S_PUBLIC }
+                )
+
+                logger.info(
+                    "Signing keys succesfully generated:",
+                    string.shorten(C_PUBLIC, 11),
+                    string.shorten(S_PUBLIC, 11)
+                )
+
+            }
 
         }
     )

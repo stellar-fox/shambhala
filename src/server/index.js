@@ -195,7 +195,7 @@ app.post(
         ))
 
         // compute C_PASSPHRASE
-        let C_PASSPHRASE = cryptops.genKey(S_KEY, PEPPER)
+        let C_PASSPHRASE = codec.b64enc(cryptops.genKey(S_KEY, PEPPER))
 
         try {
 
