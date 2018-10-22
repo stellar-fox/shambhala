@@ -15,6 +15,7 @@ import {
     devEnv,
     isObject,
     randomInt,
+    string,
     timeUnit,
 } from "@xcmats/js-toolbox"
 import {
@@ -73,7 +74,7 @@ window.addEventListener("load", async () => {
 
         logger.info("Requesting account generation...")
         let G_PUBLIC = await shambhala.generateAccount()
-        logger.info("Got it:", G_PUBLIC)
+        logger.info("Got it:", string.shorten(G_PUBLIC, 11))
 
         await async.delay(timeUnit.second)
 
@@ -85,8 +86,13 @@ window.addEventListener("load", async () => {
         await async.delay(timeUnit.second)
 
         logger.info("Requesting signing keys generation...")
-        let keys = await shambhala.generateSigningKeys(G_PUBLIC)
-        logger.info("Got them.", keys)
+        let { C_PUBLIC, S_PUBLIC } =
+            await shambhala.generateSigningKeys(G_PUBLIC)
+        logger.info(
+            "Got them:",
+            string.shorten(C_PUBLIC, 11),
+            string.shorten(S_PUBLIC, 11)
+        )
 
         await async.delay(timeUnit.second)
 
