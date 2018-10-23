@@ -10,7 +10,6 @@
 
 
 
-import { join } from "path"
 import express, {
     json,
     urlencoded,
@@ -23,10 +22,11 @@ import {
     codec,
     string,
 } from "@xcmats/js-toolbox"
+import { consoleWrapper } from "../lib/utils"
 import {
     cn,
-    consoleWrapper,
-} from "../lib/utils"
+    sql,
+} from "../lib/utils.backend"
 import * as message from "../lib/messages"
 import {
     database,
@@ -47,19 +47,7 @@ const
 
     // http server
     app = express(),
-    port = 8081,
-
-    // QueryFiles linking helper with memoization
-    sql = ((qfs) =>
-        (file) => {
-            if (!(file in qfs)) {
-                qfs[file] = new pg.QueryFile(
-                    join(__dirname, file), { minify: true }
-                )
-            }
-            return qfs[file]
-        }
-    )({})
+    port = 8081
 
 
 
@@ -102,7 +90,7 @@ app.use((req, _res, next) => {
 app.get(
     "/" + restApiPrefix,
     (_req, res) => {
-        db.many(sql("./pg_stats.sql"))
+        db.many(sql("./src/server/pg_stats.sql"))
             .then((dbStats) => {
                 res.status(200)
                     .send({
@@ -134,7 +122,7 @@ app.post(
 
             // store G_PUBLIC and C_UUID
             await db.none(
-                sql("./generate_account.sql"), {
+                sql("./src/server/generate_account.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                 })
@@ -201,7 +189,7 @@ app.post(
 
             // store S_PUBLIC and ENC_SKP
             await db.none(
-                sql("./generate_signing_keys.sql"), {
+                sql("./src/server/generate_signing_keys.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                     S_PUBLIC, ENC_SKP,
