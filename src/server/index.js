@@ -17,13 +17,11 @@ import express, {
 import pg from "pg-promise"
 import chalk from "chalk"
 import { consoleWrapper } from "../lib/utils"
-import {
-    cn,
-    sql,
-} from "../lib/utils.backend"
+import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
 import { restApiPrefix } from "../config/env"
 import * as message from "../lib/messages"
+import hello from "./actions/hello"
 import generateAccount from "./actions/generate_account"
 import generateSigningKeys from "./actions/generate_signing_keys"
 
@@ -79,43 +77,25 @@ app.use((req, _res, next) => {
 
 
 
-// "hello world" route ------------------------------------
+// "hello world" route
 app.get(
     "/" + restApiPrefix,
-    (_req, res) => {
-        db.many(sql("./src/server/pg_stats.sql"))
-            .then((dbStats) => {
-                res.status(200)
-                    .send({
-                        message: "shambhala - REST API",
-                        version: 1,
-                        dbStats,
-                    })
-                logger.ok("200")
-            })
-    }
+    hello(db, logger)
 )
-// --------------------------------------------------------
 
 
-
-
-// "generate account" route -------------------------------
+// "generate account" route
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
     generateAccount(db, logger)
 )
-// --------------------------------------------------------
 
 
-
-
-// "signing keys generation" route ------------------------
+// "signing keys generation" route
 app.post(
     "/" + restApiPrefix + message.GENERATE_SIGNING_KEYS,
     generateSigningKeys(db, logger)
 )
-// --------------------------------------------------------
 
 
 
