@@ -16,7 +16,10 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
-import crypto from "crypto-browserify"
+import {
+    createCipheriv,
+    createDecipheriv,
+} from "crypto-browserify"
 import scrypt from "scrypt-js"
 import {
     codec as sjclCodec,
@@ -311,7 +314,7 @@ export const aesNonce = () => random(16)
  */
 export const aesEncrypt = (key, message) => {
     let iv = aesNonce(),
-        cipher = crypto.createCipheriv("aes-256-ctr", key, iv)
+        cipher = createCipheriv("aes-256-ctr", key, iv)
     return codec.concatBytes(iv, cipher.update(message), cipher.final())
 }
 
@@ -329,7 +332,7 @@ export const aesEncrypt = (key, message) => {
  */
 export const aesDecrypt = (key, ciphertext) => {
     let iv = ciphertext.slice(0, 16),
-        decipher = crypto.createDecipheriv("aes-256-ctr", key, iv)
+        decipher = createDecipheriv("aes-256-ctr", key, iv)
     return codec.concatBytes(
         decipher.update(ciphertext.slice(16)),
         decipher.final()
