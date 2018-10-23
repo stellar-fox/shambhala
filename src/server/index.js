@@ -27,12 +27,13 @@ import {
     cn,
     sql,
 } from "../lib/utils.backend"
-import * as message from "../lib/messages"
 import {
     database,
     tables,
 } from "../config/server.credentials"
 import { restApiPrefix } from "../config/env"
+import * as message from "../lib/messages"
+import generateAccount from "./actions/generate_account"
 
 
 
@@ -76,7 +77,7 @@ app.use((_req, res, next) => {
 
 
 
-// simple logger
+// simple request logger
 app.use((req, _res, next) => {
     // eslint-disable-next-line no-console
     console.log(chalk.gray(req.method), req.url)
@@ -110,39 +111,7 @@ app.get(
 // "generate account" route -------------------------------
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
-    async (req, res) => {
-
-        // receive G_PUBLIC and C_UUID
-        let { G_PUBLIC, C_UUID } = req.body
-
-        logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
-        logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
-
-        try {
-
-            // store G_PUBLIC and C_UUID
-            await db.none(
-                sql("./src/server/generate_account.sql"), {
-                    key_table: tables.key_table,
-                    G_PUBLIC, C_UUID,
-                })
-
-            // all went smooth
-            res.status(201)
-                .send({ ok: true })
-            logger.ok("201")
-
-        } catch (ex) {
-
-            // unfortunately - error occured
-            res.status(500)
-                .send({ error: ex })
-            logger.error(ex)
-            logger.err("500")
-
-        }
-
-    }
+    generateAccount(db, logger)
 )
 // --------------------------------------------------------
 
