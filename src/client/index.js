@@ -19,7 +19,7 @@ import * as message from "../lib/messages"
 import pingPong from "./actions/ping_pong"
 import generateAccount from "./actions/generate_account"
 import generateSigningKeys from "./actions/generate_signing_keys"
-import generateSignedKeyAssocTx from "./generate_signed_key_assoc_tx"
+import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 
 import "./index.css"
 

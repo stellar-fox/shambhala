@@ -13,13 +13,13 @@
 import forage from "localforage"
 import { Keypair } from "stellar-sdk"
 import { string } from "@xcmats/js-toolbox"
-import * as message from "../lib/messages"
+import * as message from "../../lib/messages"
 
 
 
 
 /**
- * Signing keys generation.
+ * Signed key association transaction generation.
  *
  * @function generateSignedKeyAssocTx
  * @param {Object} messageHandler Instance of MessageHandler class.
