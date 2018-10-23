@@ -10,7 +10,7 @@
 
 
 
-import * as cryptops from "../lib/cryptops"
+import { salt64 } from "../lib/cryptops"
 import { codec } from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
 import { consoleWrapper } from "../lib/utils"
@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
     // report readiness
     messageHandler.postMessage(
         message.READY,
-        { hash: codec.bytesToHex(cryptops.salt64()) }
+        { hash: codec.bytesToHex(salt64()) }
     )
 
 })

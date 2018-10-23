@@ -11,7 +11,7 @@
 
 
 import axios from "axios"
-import * as cryptops from "../../lib/cryptops"
+import { sha512 } from "../../lib/cryptops"
 import {
     codec,
     func
@@ -59,7 +59,7 @@ export default function pingPong (messageHandler, _context, logger) {
             {
                 hash: func.compose(
                     codec.bytesToHex,
-                    cryptops.sha512,
+                    sha512,
                     codec.stringToBytes,
                     JSON.stringify
                 )(resp.data),

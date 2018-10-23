@@ -12,7 +12,11 @@
 
 import axios from "axios"
 import forage from "localforage"
-import * as cryptops from "../../lib/cryptops"
+import {
+    deriveKey,
+    encrypt,
+    salt64,
+} from "../../lib/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
     access,
@@ -88,13 +92,13 @@ export default function generateSigningKeys (
         )
 
         // generate user-specific SALT
-        let SALT = cryptops.salt64()
+        let SALT = salt64()
 
         // PIN - will be read from the user
         let PIN = string.random(5, string.digits())
 
         // compute S_KEY
-        let S_KEY = await cryptops.deriveKey(
+        let S_KEY = await deriveKey(
             codec.stringToBytes(PIN), SALT
         )
 
@@ -137,7 +141,7 @@ export default function generateSigningKeys (
         let C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE)
 
         // compute C_KEY
-        let C_KEY = await cryptops.deriveKey(C_PASSPHRASE, SALT)
+        let C_KEY = await deriveKey(C_PASSPHRASE, SALT)
 
         // [💥] destroy C_PASSPHRASE
         C_PASSPHRASE = null
@@ -146,7 +150,7 @@ export default function generateSigningKeys (
         let C_SECRET = Keypair.random().secret()
 
         // compute and store ENC_CKP
-        let ENC_CKP = cryptops.encrypt(
+        let ENC_CKP = encrypt(
             C_KEY,
             codec.stringToBytes(C_SECRET)
         )

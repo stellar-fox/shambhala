@@ -13,7 +13,7 @@
 import axios from "axios"
 import forage from "localforage"
 import * as redshift from "@stellar-fox/redshift"
-import * as cryptops from "../../lib/cryptops"
+import { genUUID } from "../../lib/cryptops"
 import {
     access,
     codec,
@@ -79,7 +79,7 @@ export default function generateAccount (messageHandler, context, logger) {
         let G_PUBLIC = context.GKP.publicKey()
 
         // generate user's new unique identifier
-        let C_UUID = codec.bytesToHex(cryptops.genUUID())
+        let C_UUID = codec.bytesToHex(genUUID())
 
         // store G_PUBLIC and C_UUID in local storage
         let localResponse = await handleRejection(
