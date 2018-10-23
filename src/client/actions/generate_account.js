@@ -13,7 +13,7 @@
 import axios from "axios"
 import forage from "localforage"
 import * as redshift from "@stellar-fox/redshift"
-import * as cryptops from "../lib/cryptops"
+import * as cryptops from "../../lib/cryptops"
 import {
     access,
     codec,
@@ -26,8 +26,8 @@ import {
     clientDomain,
     registrationPath,
     restApiPrefix,
-} from "../config/env"
-import * as message from "../lib/messages"
+} from "../../config/env"
+import * as message from "../../lib/messages"
 
 
 
