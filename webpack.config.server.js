@@ -8,6 +8,7 @@ const
     fs = require("fs"),
     path = require("path"),
     webpack = require("webpack"),
+    UglifyJsPlugin = require("uglifyjs-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     nodeExternals = require("webpack-node-externals")
 
@@ -57,12 +58,21 @@ module.exports = {
     devtool: "source-map",
 
 
-    plugins: [
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    output: { comments: false },
+                },
+            }),
+        ],
+    },
 
+
+    plugins: [
         new webpack.DefinePlugin({
             "process.env.BABEL_ENV": JSON.stringify("commonjs"),
         }),
-
     ],
 
 }
