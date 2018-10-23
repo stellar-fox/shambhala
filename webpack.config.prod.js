@@ -24,6 +24,9 @@ module.exports = {
     mode: "production",
 
 
+    target: "web",
+
+
     entry: {
         "static/host": path.resolve(
             appDirectory, "src/host/index.js"
@@ -31,9 +34,9 @@ module.exports = {
         "static/client": path.resolve(
             appDirectory, "src/client/index.js"
         ),
-        "shambhala.sw": path.resolve(
-            appDirectory, "src/client/index.sw.obsolete.js"
-        ),
+        // "shambhala.sw": path.resolve(
+        //     appDirectory, "src/client/index.sw.obsolete.js"
+        // ),
     },
 
 
