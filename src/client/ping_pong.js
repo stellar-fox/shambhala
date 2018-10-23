@@ -41,11 +41,12 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * Ping-pong.
  *
  * @function pingPongAction
- * @param {Function} logger
  * @param {Object} messageHandler Instance of MessageHandler class.
+ * @param {Object} context
+ * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function pingPongAction (messageHandler, logger) {
+export default function pingPong (messageHandler, _context, logger) {
 
     return async () => {
 
