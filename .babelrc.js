@@ -27,17 +27,21 @@ var
 
     // ES environment config
     esEnv = {
-        "comments": false,
-        "plugins": commonPlugins,
-        "presets": [
+        comments: false,
+        plugins: commonPlugins,
+        presets: [
             [
                 "@babel/preset-env",
                 {
-                    "modules": false,
-                    "shippedProposals": true,
-                    "targets": {
-                        "esmodules": true
-                    }
+                    modules: false,
+                    shippedProposals: true,
+                    targets: [
+                        ">0.2%",
+                        "not dead",
+                        "not ie <= 11",
+                        "not op_mini all"
+                    ],
+                    forceAllTransforms: true
                 }
             ]
         ]
@@ -53,25 +57,25 @@ module.exports = function (api) {
 
     return {
 
-        "env": {
+        env: {
             // shambhala-frontend development environment
-            "development": esEnv,
+            development: esEnv,
 
             // shambhala-frontend production environment
-            "production": esEnv,
+            production: esEnv,
 
             // shambhala-backend environment for devApiServer
-            "commonjs": {
-                "comments": false,
-                "plugins": commonPlugins.concat([
+            commonjs: {
+                comments: false,
+                plugins: commonPlugins.concat([
                     "@babel/plugin-transform-modules-commonjs"
                 ]),
-                "presets": [
+                presets: [
                     [
                         "@babel/preset-env",
                         {
-                            "modules": "commonjs",
-                            "shippedProposals": true
+                            modules: "commonjs",
+                            shippedProposals: true
                         }
                     ]
                 ]
