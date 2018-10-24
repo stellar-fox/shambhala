@@ -43,6 +43,25 @@ module.exports = {
     },
 
 
+    optimization: {
+        minimize: true,
+        mergeDuplicateChunks: true,
+        sideEffects: true,
+        providedExports: true,
+        concatenateModules: true,
+        occurrenceOrder: true,
+        removeEmptyChunks: true,
+        removeAvailableModules: true,
+        minimizer: [
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    output: { comments: false },
+                },
+            }),
+        ],
+    },
+
+
     module: {
         rules: [
             {
@@ -55,23 +74,9 @@ module.exports = {
     },
 
 
-    devtool: "source-map",
-
-
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    output: { comments: false },
-                },
-            }),
-        ],
-    },
-
-
     plugins: [
         new webpack.DefinePlugin({
-            "process.env.BABEL_ENV": JSON.stringify("commonjs"),
+            "process.env.BABEL_ENV": JSON.stringify("production"),
         }),
     ],
 

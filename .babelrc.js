@@ -60,7 +60,7 @@ module.exports = function (api) {
             // shambhala-frontend production environment
             "production": esEnv,
 
-            // shambhala-backend environment (devApiServer and production)
+            // shambhala-backend environment for devApiServer
             "commonjs": {
                 "comments": false,
                 "plugins": commonPlugins.concat([
