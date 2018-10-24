@@ -9,4 +9,5 @@
 
 # builds
 /dist
+/dist.lib
 /dist.server
