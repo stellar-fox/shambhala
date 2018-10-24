@@ -8,6 +8,7 @@ const
     fs = require("fs"),
     path = require("path"),
     webpack = require("webpack"),
+    MinifyPlugin = require("babel-minify-webpack-plugin"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",
@@ -50,6 +51,23 @@ module.exports = {
     },
 
 
+    optimization: {
+        minimize: true,
+        mergeDuplicateChunks: true,
+        sideEffects: true,
+        providedExports: true,
+        concatenateModules: true,
+        occurrenceOrder: true,
+        removeEmptyChunks: true,
+        removeAvailableModules: true,
+        minimizer: [
+            new MinifyPlugin({}, {
+                comments: false,
+            }),
+        ],
+    },
+
+
     module: {
         rules: [
             {
@@ -60,12 +78,10 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
+                sideEffects: false,
             },
         ],
     },
-
-
-    devtool: "source-map",
 
 
     plugins: [

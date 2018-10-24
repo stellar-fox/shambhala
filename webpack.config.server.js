@@ -8,7 +8,7 @@ const
     fs = require("fs"),
     path = require("path"),
     webpack = require("webpack"),
-    UglifyJsPlugin = require("uglifyjs-webpack-plugin"),
+    MinifyPlugin = require("babel-minify-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     nodeExternals = require("webpack-node-externals")
 
@@ -53,10 +53,8 @@ module.exports = {
         removeEmptyChunks: true,
         removeAvailableModules: true,
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    output: { comments: false },
-                },
+            new MinifyPlugin({}, {
+                comments: false,
             }),
         ],
     },
