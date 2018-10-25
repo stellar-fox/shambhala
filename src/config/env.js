@@ -17,14 +17,6 @@ import { timeUnit } from "@xcmats/js-toolbox"
 
 
 /**
- * @constant hostDomain Domain of the host application.
- */
-export const hostDomain = "https://localhost"
-
-
-
-
-/**
  * @constant clientDomain Domain of the `client` application.
  */
 export const clientDomain = "https://secrets.localhost"
@@ -63,6 +55,15 @@ export const maximumWindowOpeningTime = 10 * timeUnit.second
 
 
 
+
+/**
+ * @constant originWhitelist
+ * temp. dev. solution - it'll go to the database, soon...
+ */
+export const originWhitelist = [
+    "https://localhost",
+    "http://localhost:3000",
+]
 
 // OBSOLETE below -----------------------------------------------------------
 

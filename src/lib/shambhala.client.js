@@ -101,7 +101,8 @@ export default class Shambhala {
 
             // open shambhala window and set recipient in message handler
             _store.client = window.open(
-                _store.url.href, _store.windowName
+                `${_store.url.href}?${window.location.origin}`,
+                _store.windowName
             )
             _store.messageHandler.setRecipient(
                 _store.client, _store.windowName

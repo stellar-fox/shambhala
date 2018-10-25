@@ -14,7 +14,7 @@ import { salt64 } from "../lib/cryptops"
 import { codec } from "@xcmats/js-toolbox"
 import MessageHandler from "../lib/message.handler"
 import { consoleWrapper } from "../lib/utils"
-import { hostDomain } from "../config/env"
+import { originWhitelist } from "../config/env"
 import * as message from "../lib/messages"
 import pingPong from "./actions/ping_pong"
 import generateAccount from "./actions/generate_account"
@@ -51,6 +51,18 @@ window.addEventListener("load", async () => {
 
     // greet
     logger.info("Boom! 💥")
+
+
+    // get claimed origin (domain of the host application)
+    let hostDomain = window.location.search.slice(1)
+
+    // do whitelist check (don't worry if somebody just lied
+    // about it's true location - messages won't work
+    // in such case anyway)
+    if (originWhitelist.indexOf(hostDomain) === -1) {
+        logger.warning("Domain not whitelisted.")
+        return
+    }
 
 
     // instantiate message handler
