@@ -9,10 +9,7 @@ const
     path = require("path"),
     webpack = require("webpack"),
     MinifyPlugin = require("babel-minify-webpack-plugin"),
-    appDirectory = fs.realpathSync(process.cwd()),
-    publicPath = JSON.parse(
-        fs.readFileSync("package.json", "utf-8")
-    ).publicPath
+    appDirectory = fs.realpathSync(process.cwd())
 
 
 
@@ -36,9 +33,13 @@ module.exports = {
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "../dist.lib"),
-        publicPath,
+        library: "shambhalaClient",
+        libraryTarget: "umd",
         globalObject: "self",
     },
+
+
+    externals: ["@xcmats/js-toolbox"],
 
 
     optimization: {
