@@ -13,7 +13,7 @@ const
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",
     publicPath = JSON.parse(
-        fs.readFileSync("./package.json", "utf-8")
+        fs.readFileSync("package.json", "utf-8")
     ).publicPath
 
 
@@ -43,9 +43,9 @@ module.exports = {
 
     output: {
         filename: "[name].bundle.js",
-        chunkFilename: "[name].chunk.js",
+        chunkFilename: "static/[name].chunk.js",
         sourceMapFilename: "[name].map",
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "../dist"),
         publicPath,
         globalObject: "self",
     },
@@ -98,7 +98,7 @@ module.exports = {
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - host",
             template: path.resolve(
-                appDirectory, "./src/host/index.html"
+                appDirectory, "src/host/index.html"
             ),
         }),
 
@@ -110,7 +110,7 @@ module.exports = {
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala",
             template: path.resolve(
-                appDirectory, "./src/client/index.html"
+                appDirectory, "src/client/index.html"
             ),
         }),
 

@@ -92,11 +92,11 @@
     },
     "scripts": {
         "apiServer": "node ./dist.server/server.bundle.js",
-        "build": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.prod.js",
+        "build": "cross-env BABEL_ENV=production webpack -p --config=webpack/webpack.config.prod.js",
         "build:all": "npm run build && npm run build:apiServer && npm run build:lib && npm run build:jsdoc",
-        "build:apiServer": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.server.js",
+        "build:apiServer": "cross-env BABEL_ENV=production webpack -p --config=webpack/webpack.config.server.js",
         "build:jsdoc": "echo \"Generating jsdoc ...\" && jsdoc -c ./jsdoc.json -R ./README.md -r ./src/ -d ./jsdoc/",
-        "build:lib": "cross-env BABEL_ENV=production webpack -p --config=webpack.config.lib.js",
+        "build:lib": "cross-env BABEL_ENV=production webpack -p --config=webpack/webpack.config.lib.js",
         "clean": "rimraf ./dist",
         "clean:all": "npm run clean && npm run clean:apiServer && npm run clean:jsdoc && npm run clean:lib",
         "clean:apiServer": "rimraf ./dist.server",
@@ -107,7 +107,7 @@
         "jsdoc": "npm run clean:jsdoc && npm run build:jsdoc",
         "lint": "eslint ./src/",
         "prepublishOnly": "npm run test && npm run build:all",
-        "start": "webpack-dev-server --no-inline --config=webpack.config.dev.js",
+        "start": "webpack-dev-server --no-inline --config=webpack/webpack.config.dev.js",
         "test": "npm run lint && echo \"Warning: no tests specified (yet)\""
     },
     "version": "0.0.1"

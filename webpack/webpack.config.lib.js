@@ -10,7 +10,9 @@ const
     webpack = require("webpack"),
     MinifyPlugin = require("babel-minify-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
-    nodeExternals = require("webpack-node-externals")
+    publicPath = JSON.parse(
+        fs.readFileSync("package.json", "utf-8")
+    ).publicPath
 
 
 
@@ -21,24 +23,20 @@ module.exports = {
     mode: "production",
 
 
-    target: "node",
-
-
-    externals: [nodeExternals()],
+    target: "web",
 
 
     entry: {
-        "server": path.resolve(
-            appDirectory, "src/server/index.js"
+        "shambhala.client": path.resolve(
+            appDirectory, "src/lib/shambhala.client.js"
         ),
     },
 
 
     output: {
-        filename: "[name].bundle.js",
-        chunkFilename: "[name].chunk.js",
-        sourceMapFilename: "[name].map",
-        path: path.resolve(__dirname, "dist.server"),
+        filename: "[name].js",
+        path: path.resolve(__dirname, "../dist.lib"),
+        publicPath,
         globalObject: "self",
     },
 
@@ -73,9 +71,11 @@ module.exports = {
 
 
     plugins: [
+
         new webpack.DefinePlugin({
             "process.env.BABEL_ENV": JSON.stringify("production"),
         }),
+
     ],
 
 }
