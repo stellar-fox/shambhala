@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
     // about it's true location - messages won't work
     // in such case anyway)
     if (originWhitelist.indexOf(hostDomain) === -1) {
-        logger.warning("Domain not whitelisted.")
+        logger.warn("Domain not whitelisted.")
         return
     }
 
