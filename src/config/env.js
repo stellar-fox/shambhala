@@ -63,6 +63,7 @@ export const maximumWindowOpeningTime = 10 * timeUnit.second
 export const originWhitelist = [
     "https://localhost",
     "http://localhost:3000",
+    "http://localhost:8080",
 ]
 
 // OBSOLETE below -----------------------------------------------------------
