@@ -67,8 +67,8 @@ export default function generateAccount (messageHandler, context, logger) {
 
         // "genesis" key pair generation
         context.GKP = func.compose(
-            redshift.keypair,
-            redshift.hexSeed
+            redshift.genKeypair,
+            redshift.mnemonicToSeedHex
         )(G_MNEMONIC, PASSPHRASE)
 
         // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
