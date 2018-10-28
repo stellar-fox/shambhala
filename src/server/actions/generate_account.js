@@ -47,7 +47,7 @@ export default function generateAccount (db, logger) {
             // all went smooth
             res.status(201)
                 .send({ ok: true })
-            logger.ok("201")
+            logger.ok(string.padLeft("201", 8))
 
         } catch (ex) {
 
@@ -55,7 +55,7 @@ export default function generateAccount (db, logger) {
             res.status(500)
                 .send({ error: ex })
             logger.error(ex)
-            logger.err("500")
+            logger.err(string.padLeft("500", 8))
 
         }
 

@@ -10,6 +10,7 @@
 
 
 
+import { string } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 
 
@@ -35,7 +36,7 @@ export default function hello (db, logger) {
                 version: 1,
                 dbStats,
             })
-        logger.ok("200")
+        logger.ok(string.padLeft("200", 8))
 
     }
 

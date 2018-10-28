@@ -85,7 +85,7 @@ export default function generateSigningKeys (db, logger) {
                     S_PUBLIC,
                     C_PASSPHRASE,
                 })
-            logger.ok("201")
+            logger.ok(string.padLeft("201", 8))
 
             // [💥] mark things to destroy
             S_KEY = null
@@ -99,7 +99,7 @@ export default function generateSigningKeys (db, logger) {
             res.status(500)
                 .send({ error: ex })
             logger.error(ex)
-            logger.err("500")
+            logger.err(string.padLeft("500", 8))
 
         }
 

@@ -16,6 +16,7 @@ import express, {
 } from "express"
 import pg from "pg-promise"
 import chalk from "chalk"
+import { string } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
@@ -60,7 +61,10 @@ Object.assign(logger, {
 // simple request logger
 app.use((req, _res, next) => {
     // eslint-disable-next-line no-console
-    console.log(chalk.gray(req.method), req.url)
+    console.log(
+        chalk.gray(string.padLeft(req.method, 8)),
+        req.url
+    )
     next()
 })
 
