@@ -21,7 +21,10 @@ import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
 import { restApiPrefix } from "../config/env"
-import { version } from "../../package.json"
+import {
+    name as applicationName,
+    version,
+} from "../../package.json"
 import * as message from "../lib/messages"
 import hello from "./actions/hello"
 import generateAccount from "./actions/generate_account"
@@ -75,7 +78,7 @@ app.use((req, _res, next) => {
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use((_req, res, next) => {
-    res.header("X-Powered-By", "shambhala.server")
+    res.header("X-Powered-By", applicationName)
     next()
 })
 
