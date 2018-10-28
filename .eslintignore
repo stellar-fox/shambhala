@@ -1,4 +1,7 @@
 dist/*
+dist.lib/*
+dist.server/*
 doc/*
+jsdoc/*
 node_modules/*
 public/*
