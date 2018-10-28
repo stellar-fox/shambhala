@@ -56,21 +56,21 @@ Object.assign(logger, {
 
 
 
-// basic express.js server config
-app.use(json())
-app.use(urlencoded({ extended: true }))
-app.use((_req, res, next) => {
-    res.header("X-Powered-By", "shambhala.server")
+// simple request logger
+app.use((req, _res, next) => {
+    // eslint-disable-next-line no-console
+    console.log(chalk.gray(req.method), req.url)
     next()
 })
 
 
 
 
-// simple request logger
-app.use((req, _res, next) => {
-    // eslint-disable-next-line no-console
-    console.log(chalk.gray(req.method), req.url)
+// basic express.js server config
+app.use(json())
+app.use(urlencoded({ extended: true }))
+app.use((_req, res, next) => {
+    res.header("X-Powered-By", "shambhala.server")
     next()
 })
 
