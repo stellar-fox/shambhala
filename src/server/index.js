@@ -20,6 +20,7 @@ import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
 import { restApiPrefix } from "../config/env"
+import { version } from "../../package.json"
 import * as message from "../lib/messages"
 import hello from "./actions/hello"
 import generateAccount from "./actions/generate_account"
@@ -103,5 +104,8 @@ app.post(
 // ...
 app.listen(
     port,
-    () => logger.info(`shambhala.serv::${port}`)
+    () => logger.info(
+        `shambhala.serv::${chalk.yellow(port)}`,
+        `(${chalk.blueBright("v." + version)})`
+    )
 )
