@@ -40,6 +40,7 @@ import {
  * Alias for `tweetnacl.randomBytes()`.
  *
  * @function random
+ * @see {@link https://bit.ly/tweetnaclrandom}
  * @param {Number} n
  * @returns {Uint8Array}
  */
@@ -53,6 +54,9 @@ export const random = naclRandomBytes
  * Uses `bitwiseshiftleft/sjcl`'s `sha256` implementation.
  *
  * @function sha256
+ * @see {@link https://bit.ly/sjclsha256}
+ * @see {@link https://bit.ly/toolboxcodec}
+ * @see {@link https://bit.ly/toolboxfunc}
  * @param {Uint8Array} input
  * @returns {Uint8Array}
  */
@@ -83,6 +87,9 @@ export const salt32 = () => sha256(random(128))
  * Uses `pbkdf2` implemented in `bitwiseshiftleft/sjcl`.
  *
  * @function genKey
+ * @see {@link https://bit.ly/sjclpbkdf2}
+ * @see {@link https://bit.ly/toolboxcodec}
+ * @see {@link https://bit.ly/toolboxfunc}
  * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {Number} [count=2**12] Difficulty.
@@ -111,6 +118,7 @@ export const genKey = (
  * Uses `dchest/tweetnacl-js`'s `sha512` implementation.
  *
  * @function sha512
+ * @see {@link https://bit.ly/tweetnaclhash}
  * @param {Uint8Array} input
  * @returns {Uint8Array}
  */
@@ -144,6 +152,7 @@ export const salt64 = () => sha512(random(256))
  *
  * @async
  * @function deriveKey
+ * @see {@link https://bit.ly/scryptjs}
  * @param {Uint8Array} [pass=Uint8Array.from([])] A password to derive key.
  * @param {Uint8Array} [salt=(new Uint8Array(32)).fill(0)]
  * @param {KeyDerivationOptions} [opts={}] @see KeyDerivationOptions
@@ -261,6 +270,7 @@ export const salsaNonce = () => codec.concatBytes(
  * Uses `dchest/tweetnacl-js` implementation.
  *
  * @function salsaEncrypt
+ * @see {@link https://bit.ly/tweetnaclsalsa}
  * @param {Uint8Array} key Encryption key.
  * @param {Uint8Array} message A content to encrypt.
  * @returns {Uint8Array} Initialization Vector concatenated with Ciphertext.
@@ -278,6 +288,7 @@ export const salsaEncrypt = (key, message) => {
  * Uses `dchest/tweetnacl-js` implementation.
  *
  * @function salsaDecrypt
+ * @see {@link https://bit.ly/tweetnaclsalsa}
  * @param {Uint8Array} key Decryption key.
  * @param {Uint8Array} ciphertext A content to decrypt.
  * @returns {(Uint8Array|null)} Decrypted message or null.
@@ -308,6 +319,8 @@ export const aesNonce = () => random(16)
  * Uses `crypto-browserify` implementation.
  *
  * @function aesEncrypt
+ * @see {@link https://bit.ly/npmcryptobrowserify}
+ * @see {@link https://bit.ly/createcipheriv}
  * @param {Uint8Array} key Encryption key.
  * @param {Uint8Array} message A content to encrypt.
  * @returns {Uint8Array} Initialization Vector concatenated with Ciphertext.
@@ -326,6 +339,8 @@ export const aesEncrypt = (key, message) => {
  * Uses `crypto-browserify` implementation.
  *
  * @function aesDecrypt
+ * @see {@link https://bit.ly/npmcryptobrowserify}
+ * @see {@link https://bit.ly/createdecipheriv}
  * @param {Uint8Array} key Decryption key.
  * @param {Uint8Array} ciphertext A content to decrypt.
  * @returns {Uint8Array} Decrypted message.
@@ -376,6 +391,8 @@ const encdec = Object.freeze({
  *    is returned as Uint8Array result
  *
  * @function encrypt
+ * @see {@link https://bit.ly/toolboxcodec}
+ * @see {@link https://bit.ly/toolboxfunc}
  * @param {Uint8Array} key 512 bits (64 bytes) encryption key.
  * @param {Uint8Array} message A content to encrypt.
  * @returns {Uint8Array} [MAGIC] + [VERSION] + [AES IV] + [Ciphertext].
@@ -425,6 +442,8 @@ Object.freeze(Object.assign(encrypt, encdec))
  *     otherwise `null`.
  *
  * @function decrypt
+ * @see {@link https://bit.ly/toolboxcodec}
+ * @see {@link https://bit.ly/toolboxfunc}
  * @param {Uint8Array} key 512 bits (64 bytes) decryption key.
  * @param {Uint8Array} message A content to encrypt.
  * @returns {Uint8Array} [MAGIC] + [VERSION] + [AES IV] + [Ciphertext].
