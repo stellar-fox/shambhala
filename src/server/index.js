@@ -88,19 +88,29 @@ app.get(
     hello(db, logger)
 )
 
-
 // "generate account" route
 app.post(
     "/" + restApiPrefix + message.GENERATE_ACCOUNT,
     generateAccount(db, logger)
 )
 
-
 // "signing keys generation" route
 app.post(
     "/" + restApiPrefix + message.GENERATE_SIGNING_KEYS,
     generateSigningKeys(db, logger)
 )
+
+
+
+
+// simple response-code logger
+app.use((_req, res, next) => {
+    if (res.statusCode < 400)
+        logger.ok(string.padLeft(String(res.statusCode), 8))
+    else
+        logger.err(string.padLeft(String(res.statusCode), 8))
+    next()
+})
 
 
 

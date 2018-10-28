@@ -27,7 +27,7 @@ import { tables } from "../../config/server.credentials"
  */
 export default function generateAccount (db, logger) {
 
-    return async (req, res) => {
+    return async (req, res, next) => {
 
         // receive G_PUBLIC and C_UUID
         let { G_PUBLIC, C_UUID } = req.body
@@ -47,7 +47,6 @@ export default function generateAccount (db, logger) {
             // all went smooth
             res.status(201)
                 .send({ ok: true })
-            logger.ok(string.padLeft("201", 8))
 
         } catch (ex) {
 
@@ -55,9 +54,10 @@ export default function generateAccount (db, logger) {
             res.status(500)
                 .send({ error: ex })
             logger.error(ex)
-            logger.err(string.padLeft("500", 8))
 
         }
+
+        next()
 
     }
 

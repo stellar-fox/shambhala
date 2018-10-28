@@ -10,7 +10,6 @@
 
 
 
-import { string } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 
 
@@ -21,12 +20,12 @@ import { sql } from "../../lib/utils.backend"
  *
  * @function hello
  * @param {Object} db Database connection.
- * @param {Function} logger
+ * @param {Function} _logger
  * @returns {Function} express.js action.
  */
-export default function hello (db, logger) {
+export default function hello (db, _logger) {
 
-    return async (_req, res) => {
+    return async (_req, res, next) => {
 
         let dbStats = await db.many(sql("./src/server/actions/pg_stats.sql"))
 
@@ -36,7 +35,8 @@ export default function hello (db, logger) {
                 version: 1,
                 dbStats,
             })
-        logger.ok(string.padLeft("200", 8))
+
+        next()
 
     }
 

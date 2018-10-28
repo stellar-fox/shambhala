@@ -32,7 +32,7 @@ import { tables } from "../../config/server.credentials"
  */
 export default function generateSigningKeys (db, logger) {
 
-    return async (req, res) => {
+    return async (req, res, next) => {
 
         // receive G_PUBLIC, C_UUID
         let { G_PUBLIC, C_UUID } = req.body
@@ -85,7 +85,6 @@ export default function generateSigningKeys (db, logger) {
                     S_PUBLIC,
                     C_PASSPHRASE,
                 })
-            logger.ok(string.padLeft("201", 8))
 
             // [💥] mark things to destroy
             S_KEY = null
@@ -99,9 +98,10 @@ export default function generateSigningKeys (db, logger) {
             res.status(500)
                 .send({ error: ex })
             logger.error(ex)
-            logger.err(string.padLeft("500", 8))
 
         }
+
+        next()
 
     }
 
