@@ -39,7 +39,7 @@ module.exports = {
         chunkFilename: "[name].chunk.js",
         sourceMapFilename: "[name].map",
         path: path.resolve(__dirname, "../dist.server"),
-        globalObject: "self",
+        globalObject: "this",
     },
 
 
