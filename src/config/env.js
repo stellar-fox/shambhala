@@ -33,9 +33,17 @@ export const registrationPath = publicPath
 
 
 /**
+ * @constant restApiRoot Root of all REST API paths.
+ */
+export const restApiRoot = "api/"
+
+
+
+
+/**
  * @constant restApiPrefix Where to send xhr queries?
  */
-export const restApiPrefix = "api/v1/"
+export const restApiPrefix = `${restApiRoot}v1/`
 
 
 
@@ -65,6 +73,9 @@ export const originWhitelist = [
     "http://localhost:3000",
     "http://localhost:8080",
 ]
+
+
+
 
 // OBSOLETE below -----------------------------------------------------------
 

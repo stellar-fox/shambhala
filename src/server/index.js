@@ -20,7 +20,11 @@ import { string } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
-import { restApiPrefix } from "../config/env"
+import {
+    registrationPath,
+    restApiPrefix,
+    restApiRoot,
+} from "../config/env"
 import {
     name as applicationName,
     version,
@@ -82,9 +86,13 @@ app.use((_req, res, next) => {
 
 // "hello world" route
 app.get(
-    "/" + restApiPrefix,
-    hello(db, logger)
+    "/" + restApiRoot,
+    (_req, res, next) => {
+        res.redirect(registrationPath + restApiPrefix)
+        next()
+    }
 )
+app.get("/" + restApiPrefix, hello(db, logger))
 
 // "generate account" route
 app.post(
