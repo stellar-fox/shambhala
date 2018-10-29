@@ -152,7 +152,7 @@ module.exports = {
             inject: true,
             hash: true,
             realPublicPath: path.join(publicPath, publicDirectory),
-            title: "Shambhala",
+            title: "Shambhala - client",
             template: path.resolve(
                 appDirectory, "src/client/index.html"
             ),
