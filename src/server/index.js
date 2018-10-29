@@ -36,7 +36,15 @@ import generateSigningKeys from "./actions/generate_signing_keys"
 // ...
 const
     // console logger
-    logger = consoleWrapper("🏢"),
+    logger = {
+        ...consoleWrapper("🏢"),
+        ok: (text) =>
+            // eslint-disable-next-line no-console
+            console.log(chalk.green(text)),
+        err: (text) =>
+            // eslint-disable-next-line no-console
+            console.log(chalk.red(text)),
+    },
 
     // postgresql connection
     db = pg()(cn(database)),
@@ -44,19 +52,6 @@ const
     // http server
     app = express(),
     port = 8081
-
-
-
-
-// extend logger
-Object.assign(logger, {
-    ok: (text) =>
-        // eslint-disable-next-line no-console
-        console.log(chalk.green(text)),
-    err: (text) =>
-        // eslint-disable-next-line no-console
-        console.log(chalk.red(text)),
-})
 
 
 
