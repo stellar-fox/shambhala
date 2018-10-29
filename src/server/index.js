@@ -20,19 +20,11 @@ import { string } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
 import { database } from "../config/server.credentials"
-import {
-    registrationPath,
-    restApiPrefix,
-    restApiRoot,
-} from "../config/env"
+import configureRoutes from "./routes"
 import {
     name as applicationName,
     version,
 } from "../../package.json"
-import * as message from "../lib/messages"
-import hello from "./actions/hello"
-import generateAccount from "./actions/generate_account"
-import generateSigningKeys from "./actions/generate_signing_keys"
 
 
 
@@ -73,7 +65,7 @@ app.use((req, _res, next) => {
 
 
 
-// basic express.js server config
+// basic middlewares
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use((_req, res, next) => {
@@ -84,27 +76,8 @@ app.use((_req, res, next) => {
 
 
 
-// "hello world" route
-app.get(
-    "/" + restApiRoot,
-    (_req, res, next) => {
-        res.redirect(registrationPath + restApiPrefix)
-        next()
-    }
-)
-app.get("/" + restApiPrefix, hello(db, logger))
-
-// "generate account" route
-app.post(
-    "/" + restApiPrefix + message.GENERATE_ACCOUNT,
-    generateAccount(db, logger)
-)
-
-// "signing keys generation" route
-app.post(
-    "/" + restApiPrefix + message.GENERATE_SIGNING_KEYS,
-    generateSigningKeys(db, logger)
-)
+// routes configuration
+configureRoutes(app, db, logger)
 
 
 
