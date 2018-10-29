@@ -3,7 +3,7 @@
  *
  * OBSOLETE.
  *
- * @module shambhala-sw-app
+ * @module serviceworker-app
  * @license Apache-2.0
  */
 

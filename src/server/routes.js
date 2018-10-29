@@ -3,7 +3,7 @@
  *
  * Routes configuration.
  *
- * @module shambhala-server-routes
+ * @module server-routes
  * @license Apache-2.0
  */
 

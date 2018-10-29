@@ -3,7 +3,7 @@
  *
  * Generate account action.
  *
- * @module shambhala-server-actions
+ * @module server-actions
  * @license Apache-2.0
  */
 

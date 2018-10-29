@@ -3,7 +3,7 @@
  *
  * Simple message handling.
  *
- * @module message-handler
+ * @module message-handler-lib
  * @license Apache-2.0
  */
 
@@ -55,7 +55,7 @@ export default class MessageHandler {
      *
      * @instance
      * @method setRecipient
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {Object} recipient
      * @param {String} windowName
      */
@@ -72,7 +72,7 @@ export default class MessageHandler {
      *
      * @instance
      * @method postMessage
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {String} message
      * @param {Object} [payload]
      */
@@ -91,7 +91,7 @@ export default class MessageHandler {
      *
      * @instance
      * @method handle
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {String} message
      * @param {Function} handler
      * @param {Boolean} [volatile] If set to true then
@@ -116,7 +116,7 @@ export default class MessageHandler {
      *
      * @instance
      * @method unhandle
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {String} message
      */
     unhandle = (message) => { delete this.handlers[message] }
@@ -131,7 +131,7 @@ export default class MessageHandler {
      * @async
      * @instance
      * @method receiveMessage
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {String} message
      * @param {Number} [timeout]
      * @returns {Promise.<Object>}
@@ -184,7 +184,7 @@ export default class MessageHandler {
      * @instance
      * @private
      * @method _messageProcessor
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      * @param {Object} e
      */
     _messageProcessor = (e) => {
@@ -220,7 +220,7 @@ export default class MessageHandler {
      *
      * @instance
      * @method remove
-     * @memberof module:message-handler~MessageHandler
+     * @memberof module:message-handler-lib~MessageHandler
      */
     remove = () =>
         window.removeEventListener(

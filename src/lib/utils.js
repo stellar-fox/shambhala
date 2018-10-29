@@ -3,7 +3,7 @@
  *
  * Various utilities suitable to use everywhere (browser or node.js).
  *
- * @module utils
+ * @module utils-lib
  * @license Apache-2.0
  */
 

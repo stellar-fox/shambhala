@@ -3,7 +3,7 @@
  *
  * Generate signed key association transaction.
  *
- * @module shambhala-client-actions
+ * @module client-actions
  * @license Apache-2.0
  */
 

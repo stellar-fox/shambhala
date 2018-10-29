@@ -3,7 +3,7 @@
  *
  * Various utilities - only for node.js environment.
  *
- * @module utils-backend
+ * @module utils-backend-lib
  * @license Apache-2.0
  */
 

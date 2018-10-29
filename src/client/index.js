@@ -3,7 +3,7 @@
  *
  * Client application (frontend).
  *
- * @module shambhala-client-app
+ * @module client-app
  * @license Apache-2.0
  */
 

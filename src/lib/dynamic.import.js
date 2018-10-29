@@ -3,7 +3,7 @@
  *
  * Libs for browser's console playground.
  *
- * @module dynamic-import
+ * @module dynamic-import-lib
  * @license Apache-2.0
  */
 

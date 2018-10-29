@@ -1,7 +1,7 @@
 /**
  * Stellar transaction-related operations (library).
  *
- * @module txops
+ * @module txops-lib
  * @license Apache-2.0
  */
 

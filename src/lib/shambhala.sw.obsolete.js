@@ -5,7 +5,7 @@
  *
  * OBSOLETE.
  *
- * @module shambhala-sw
+ * @module serviceworker-lib
  * @license Apache-2.0
  */
 

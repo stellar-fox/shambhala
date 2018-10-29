@@ -3,7 +3,7 @@
  *
  * Backend server.
  *
- * @module shambhala-server-app
+ * @module server-app
  * @license Apache-2.0
  */
 

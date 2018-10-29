@@ -3,7 +3,7 @@
  *
  * Ping-pong message action.
  *
- * @module shambhala-client-actions
+ * @module client-actions
  * @license Apache-2.0
  */
 

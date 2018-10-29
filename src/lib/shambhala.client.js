@@ -3,7 +3,7 @@
  *
  * Library for accessing the client.
  *
- * @module shambhala-client
+ * @module client-lib
  * @license Apache-2.0
  */
 
@@ -63,7 +63,7 @@ export default class Shambhala {
      * @instance
      * @private
      * @method _generateRandomWindowName
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     _generateRandomWindowName = () =>
@@ -79,7 +79,7 @@ export default class Shambhala {
      * @instance
      * @private
      * @method _openShambhala
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     _openShambhala = async () => {
@@ -127,7 +127,7 @@ export default class Shambhala {
      * @instance
      * @private
      * @method ping
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     _ping = async () => {
@@ -151,7 +151,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method getLibVersion
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     getLibVersion = () => Promise.reject("NOT IMPLEMENTED")
@@ -165,7 +165,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method getVersion
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     getVersion = () => Promise.reject("NOT IMPLEMENTED")
@@ -179,7 +179,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method getPublicKeys
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<Array>}
      */
@@ -194,7 +194,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method generateAccount
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
     generateAccount = async () => {
@@ -217,7 +217,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method associateAccount
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<String>}
      */
@@ -233,7 +233,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method generateSigningKeys
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<Object>}
      */
@@ -268,7 +268,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method generateSignedKeyAssocTX
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<Uint8Array>}
      */
@@ -299,7 +299,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method generateKeyAssocTX
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<Uint8Array>}
      */
@@ -316,7 +316,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method canSignFor
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<Boolean>}
      */
@@ -333,7 +333,7 @@ export default class Shambhala {
      * @async
      * @instance
      * @method signTransaction
-     * @memberof module:shambhala-client~Shambhala
+     * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @param {Uint8Array} transaction
      * @returns {Promise.<Array>}

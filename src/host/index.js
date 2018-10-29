@@ -3,7 +3,7 @@
  *
  * Host application (playground).
  *
- * @module shambhala-host-app
+ * @module host-app
  * @license Apache-2.0
  */
 

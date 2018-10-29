@@ -1,7 +1,7 @@
 /**
  * Crypto-related operations (library).
  *
- * @module cryptops
+ * @module cryptops-lib
  * @license Apache-2.0
  */
 
