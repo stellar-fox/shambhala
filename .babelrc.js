@@ -22,11 +22,19 @@ var
         "@babel/plugin-transform-runtime",
         "@babel/plugin-transform-shorthand-properties",
         "@babel/plugin-transform-spread",
-        "@babel/plugin-transform-template-literals"
+        "@babel/plugin-transform-template-literals",
     ],
 
-    // ES environment config
-    esEnv = {
+    // browserlist targets
+    frontendTargets = [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all",
+    ],
+
+    // ES6 environment config - frontend
+    frontendEsEnv = {
         comments: false,
         plugins: commonPlugins,
         presets: [
@@ -35,52 +43,66 @@ var
                 {
                     modules: false,
                     shippedProposals: true,
-                    targets: [
-                        ">0.2%",
-                        "not dead",
-                        "not ie <= 11",
-                        "not op_mini all"
-                    ],
-                    forceAllTransforms: true
-                }
-            ]
-        ]
-    };
+                    targets: frontendTargets,
+                    forceAllTransforms: true,
+                },
+            ],
+        ],
+    }
 
 
 
 
 // configuration
 module.exports = function (api) {
-    api.cache.using(() => process.env.BABEL_ENV);
-    console.log("Compiling for", "'" + api.env() + "'", "...");
+    api.cache.using(() => process.env.BABEL_ENV)
+    console.log("Compiling for", "'" + api.env() + "'", "...")
 
     return {
 
         env: {
-            // shambhala-frontend development environment
-            development: esEnv,
 
             // shambhala-frontend production environment
-            production: esEnv,
+            production: frontendEsEnv,
 
-            // shambhala-backend environment for devApiServer
-            commonjs: {
+
+            // shambhala-frontend development environment (webpack-dev-server)
+            development: frontendEsEnv,
+
+            // shambhala-backend production environment
+            prodserver: {
+                comments: false,
+                plugins: commonPlugins,
+                presets: [
+                    [
+                        "@babel/preset-env",
+                        {
+                            modules: false,
+                            shippedProposals: true,
+                            forceAllTransforms: true,
+                        },
+                    ],
+                ],
+            },
+
+            // shambhala-backend development environment (devApiServer)
+            devserver: {
                 comments: false,
                 plugins: commonPlugins.concat([
-                    "@babel/plugin-transform-modules-commonjs"
+                    "@babel/plugin-transform-modules-commonjs",
                 ]),
                 presets: [
                     [
                         "@babel/preset-env",
                         {
                             modules: "commonjs",
-                            shippedProposals: true
-                        }
-                    ]
-                ]
-            }
-        }
+                            shippedProposals: true,
+                        },
+                    ],
+                ],
+            },
 
-    };
-};
+        },
+
+    }
+}

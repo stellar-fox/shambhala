@@ -37,8 +37,8 @@ module.exports = {
     output: {
         filename: "[name].bundle.js",
         chunkFilename: "[name].chunk.js",
-        sourceMapFilename: "[name].map",
         path: path.resolve(__dirname, "../dist.server"),
+        libraryTarget: "commonjs",
         globalObject: "this",
     },
 
