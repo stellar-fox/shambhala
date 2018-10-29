@@ -69,7 +69,7 @@ export default function generateSigningKeys (db, logger) {
 
             // store S_PUBLIC and ENC_SKP
             await db.none(
-                sql("./src/server/actions/generate_signing_keys.sql"), {
+                sql(__dirname, "generate_signing_keys.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                     S_PUBLIC, ENC_SKP,

@@ -72,6 +72,12 @@ module.exports = {
     },
 
 
+    node: {
+        __dirname: true,
+        __filename: true,
+    },
+
+
     plugins: [
         new webpack.DefinePlugin({
             "process.env.BABEL_ENV": JSON.stringify("production"),

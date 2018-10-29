@@ -12,7 +12,6 @@
 
 import { join } from "path"
 import { realpathSync } from "fs"
-import { cwd } from "process"
 import pg from "pg-promise"
 
 
@@ -44,10 +43,10 @@ export const cn = (c) => {
  * @returns {QueryFile}
  */
 export const sql = ((qfs) =>
-    (file) => {
+    (dirname, file) => {
         if (!(file in qfs)) {
             qfs[file] = new pg.QueryFile(
-                join(realpathSync(cwd()), file), { minify: true }
+                join(realpathSync(dirname), file), { minify: true }
             )
         }
         return qfs[file]

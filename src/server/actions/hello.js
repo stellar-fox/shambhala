@@ -27,7 +27,7 @@ export default function hello (db, _logger) {
 
     return async (_req, res, next) => {
 
-        let dbStats = await db.many(sql("./src/server/actions/pg_stats.sql"))
+        let dbStats = await db.many(sql(__dirname, "pg_stats.sql"))
 
         res.status(200)
             .send({

@@ -39,7 +39,7 @@ export default function generateAccount (db, logger) {
 
             // store G_PUBLIC and C_UUID
             await db.none(
-                sql("./src/server/actions/generate_account.sql"), {
+                sql(__dirname, "generate_account.sql"), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                 })
