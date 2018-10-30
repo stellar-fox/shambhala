@@ -39,7 +39,8 @@ export const cn = (c) => {
  * QueryFiles linking helper with memoization.
  *
  * @function sql
- * @param {String} file path to an SQL file (relative to application's root)
+ * @param {String} dirname directory path containing SQL file
+ * @param {String} file SQL file name
  * @returns {QueryFile}
  */
 export const sql = ((qfs) =>
