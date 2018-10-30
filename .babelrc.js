@@ -35,8 +35,6 @@ var
 
     // ES6 environment config - frontend
     frontendEsEnv = {
-        comments: false,
-        plugins: commonPlugins,
         presets: [
             [
                 "@babel/preset-env",
@@ -48,6 +46,8 @@ var
                 },
             ],
         ],
+        plugins: commonPlugins,
+        comments: false,
     }
 
 
@@ -71,8 +71,6 @@ module.exports = function (api) {
 
             // shambhala-backend production environment
             prodserver: {
-                comments: false,
-                plugins: commonPlugins,
                 presets: [
                     [
                         "@babel/preset-env",
@@ -83,6 +81,8 @@ module.exports = function (api) {
                         },
                     ],
                 ],
+                plugins: commonPlugins,
+                comments: false,
             },
 
             // shambhala-backend development environment (devApiServer)
@@ -106,9 +106,9 @@ module.exports = function (api) {
                             "publicPath": "./",
                             "outputPath": null,
                             "context": "",
-                            "limit": 0
-                        }
-                    ]
+                            "limit": 0,
+                        },
+                    ],
                 ]),
                 comments: false,
             },
