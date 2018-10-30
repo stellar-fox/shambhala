@@ -11,6 +11,7 @@
 
 
 import { sql } from "../../lib/utils.backend"
+import pgStatsSQL from "./pg_stats.sql"
 
 
 
@@ -27,7 +28,7 @@ export default function hello (db, _logger) {
 
     return async (_req, res, next) => {
 
-        let dbStats = await db.many(sql(__dirname, "pg_stats.sql"))
+        let dbStats = await db.many(sql(__dirname, pgStatsSQL))
 
         res.status(200)
             .send({

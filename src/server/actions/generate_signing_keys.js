@@ -17,6 +17,7 @@ import {
     string,
 } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
+import generateSigningKeysSQL from "./generate_signing_keys.sql"
 import { tables } from "../../config/server.credentials"
 
 
@@ -69,7 +70,7 @@ export default function generateSigningKeys (db, logger) {
 
             // store S_PUBLIC and ENC_SKP
             await db.none(
-                sql(__dirname, "generate_signing_keys.sql"), {
+                sql(__dirname, generateSigningKeysSQL), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                     S_PUBLIC, ENC_SKP,

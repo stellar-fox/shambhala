@@ -12,6 +12,7 @@
 
 import { string } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
+import generateAccountSQL from "./generate_account.sql"
 import { tables } from "../../config/server.credentials"
 
 
@@ -39,7 +40,7 @@ export default function generateAccount (db, logger) {
 
             // store G_PUBLIC and C_UUID
             await db.none(
-                sql(__dirname, "generate_account.sql"), {
+                sql(__dirname, generateAccountSQL), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                 })

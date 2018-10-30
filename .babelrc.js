@@ -87,10 +87,6 @@ module.exports = function (api) {
 
             // shambhala-backend development environment (devApiServer)
             devserver: {
-                comments: false,
-                plugins: commonPlugins.concat([
-                    "@babel/plugin-transform-modules-commonjs",
-                ]),
                 presets: [
                     [
                         "@babel/preset-env",
@@ -100,6 +96,21 @@ module.exports = function (api) {
                         },
                     ],
                 ],
+                plugins: commonPlugins.concat([
+                    "@babel/plugin-transform-modules-commonjs",
+                    [
+                        "file-loader",
+                        {
+                            "name": "[name].[ext]",
+                            "extensions": ["sql"],
+                            "publicPath": "./",
+                            "outputPath": null,
+                            "context": "",
+                            "limit": 0
+                        }
+                    ]
+                ]),
+                comments: false,
             },
 
         },
