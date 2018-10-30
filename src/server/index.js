@@ -69,7 +69,10 @@ app.use((req, _res, next) => {
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use((_req, res, next) => {
-    res.header("X-Powered-By", applicationName)
+    res.header(
+        "X-Powered-By",
+        `${applicationName}/${version}`
+    )
     next()
 })
 
