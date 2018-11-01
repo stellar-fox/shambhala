@@ -72,7 +72,7 @@ window.addEventListener("load", async () => {
 
         // Onboarding - [Variant A]
 
-        logger.info("Requesting account generation...")
+        logger.info("Requesting address generation...")
         let G_PUBLIC = await shambhala.generateAccount()
         logger.info("Got it:", string.shorten(G_PUBLIC, 11))
 
@@ -89,15 +89,23 @@ window.addEventListener("load", async () => {
 
         await async.delay(timeUnit.second)
 
-        logger.info("Requesting initial funds...")
+        logger.info("Requesting account generation and initial funds...")
         ;((x) => (x))(G_PUBLIC)  // no-op
-        await async.delay(0.5 * timeUnit.second)
-        logger.info("Done.")
+        await async.delay(0.3 * timeUnit.second)
+        logger.warn("NOT IMPLEMENTED.")
+
+        await async.delay(timeUnit.second)
+
+        logger.info("Getting account information (current sequence)...")
+        ;((x) => (x))(G_PUBLIC)  // no-op
+        let sequence = string.random(11, string.digits())
+        await async.delay(0.2 * timeUnit.second)
+        logger.warn("NOT IMPLEMENTED.")
 
         await async.delay(timeUnit.second)
 
         logger.info("Receiving transaction associating keys with account...")
-        let tx = await shambhala.generateSignedKeyAssocTX(G_PUBLIC)
+        let tx = await shambhala.generateSignedKeyAssocTX(G_PUBLIC, sequence)
         logger.info("It came.")
 
         await async.delay(timeUnit.second)

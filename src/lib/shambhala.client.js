@@ -270,13 +270,14 @@ export default class Shambhala {
      * @method generateSignedKeyAssocTX
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
+     * @param {String} sequence
      * @returns {Promise.<Uint8Array>}
      */
-    generateSignedKeyAssocTX = async (accountId) => {
+    generateSignedKeyAssocTX = async (accountId, sequence) => {
         await this._openShambhala()
         _store.messageHandler.postMessage(
             message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            { G_PUBLIC: accountId }
+            { G_PUBLIC: accountId, sequence }
         )
         let data = await (
             _store.messageHandler
