@@ -290,7 +290,7 @@ export default class Shambhala {
             _store.messageHandler
                 .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
-        if (data.ok) codec.b64dec(data.tx)
+        if (data.ok) return codec.b64dec(data.tx)
         else throw new Error(data.error)
     }
 

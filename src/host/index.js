@@ -109,7 +109,7 @@ window.addEventListener("load", async () => {
         let tx = await shambhala.generateSignedKeyAssocTX(
             G_PUBLIC, sequence, Networks.TESTNET
         )
-        logger.info("It came.")
+        logger.info("It came:", tx)
 
         await async.delay(timeUnit.second)
 

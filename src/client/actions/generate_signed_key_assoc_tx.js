@@ -12,9 +12,17 @@
 
 import forage from "localforage"
 import {
+    Account,
     Keypair,
+    Memo,
+    MemoHash,
+    Network,
+    Operation,
+    TransactionBuilder,
 } from "stellar-sdk"
+import { sha256 } from "../../lib/cryptops"
 import {
+    codec,
     func,
     type,
     string,
@@ -76,20 +84,21 @@ export default function generateSignedKeyAssocTx (
             return
         }
 
-        // check received `sequence`
+        // check received `sequence` and `networkPassphrase`
         if (
             !type.isString(p.sequence)  ||
             !p.sequence.split(string.empty())
-                .every(func.compose(type.isNumber, Number))
+                .every(func.compose(type.isNumber, Number))  ||
+            !type.isString(p.networkPassphrase)
         ) {
 
             // report error
             messageHandler.postMessage(
                 message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                { error: "client:[invalid sequence]" }
+                { error: "client:[invalid sequence or network]" }
             )
 
-            logger.error("Invalid sequence received.")
+            logger.error("Invalid sequence or network received.")
 
             // don't do anything else if sequence is wrong
             return
@@ -99,13 +108,54 @@ export default function generateSignedKeyAssocTx (
         logger.info(
             string.shorten(G_PUBLIC, 11),
             p.sequence,
+            string.quote(p.networkPassphrase),
             string.shorten(C_PUBLIC, 11),
             string.shorten(S_PUBLIC, 11)
         )
 
+        // use appropriate network
+        Network.use(new Network(p.networkPassphrase))
 
-        // ...
+        // build transaction
+        let transaction = new TransactionBuilder(
+            new Account(G_PUBLIC, p.sequence)
+        )
+            .addMemo(new Memo(MemoHash, func.compose(
+                // stellar-sdk uses https://www.npmjs.com/package/buffer
+                // but we're not, so hex-string is used here
+                codec.bytesToHex, sha256, codec.stringToBytes
+            )("shambhala key association")))
+            .addOperation(Operation.setOptions({
+                masterWeight: 100,
+                lowThreshold: 10,
+                medThreshold: 20,
+                highThreshold: 40,
+                signer: {
+                    ed25519PublicKey: C_PUBLIC,
+                    weight: 10,
+                },
+            }))
+            .addOperation(Operation.setOptions({
+                signer: {
+                    ed25519PublicKey: S_PUBLIC,
+                    weight: 10,
+                },
+            }))
+            .build()
 
+        // sign the transaction with MASTER KEY ("genesis" keypair)
+        transaction.sign(context.GKP)
+
+        // [💥] destroy GKP
+        delete context.GKP
+
+        // respond to the host application
+        messageHandler.postMessage(
+            message.GENERATE_SIGNED_KEY_ASSOC_TX,
+            { ok: true, tx: codec.b64enc(transaction.toEnvelope().toXDR()) }
+        )
+
+        logger.info("Generated.")
 
     }
 
