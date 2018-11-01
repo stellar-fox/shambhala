@@ -26,16 +26,16 @@ import {
 
 
 /**
- * Decode relevant information from a given `TransactionSignatureBase` XDR.
+ * Decode relevant information from a given `TransactionSignaturePayload` XDR.
  *
- * @function inspectTSB
- * @param {Uint8Array} tsbXDR XDR-encoded `TransactionSignatureBase`
+ * @function inspectTSP
+ * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
  * @returns {Object}
  */
-export const inspectTSB = (tsbXDR) => {
+export const inspectTSP = (tspXDR) => {
     let tx = (
         xdr.TransactionSignaturePayload
-            .fromXDR(tsbXDR)
+            .fromXDR(tspXDR)
             .taggedTransaction()
             .tx()
     )
@@ -79,13 +79,13 @@ export const inspectTSB = (tsbXDR) => {
 
 
 /**
- * Sign `TransactionSignatureBase` using given Stellar `Keypair` object.
+ * Sign `TransactionSignaturePayload` using given Stellar `Keypair` object.
  * Return `DecoratedSignature` (XDR).
  *
- * @function signTSB
+ * @function signTSP
  * @param {Object} kp StellarSDK.Keypair object
- * @param {Uint8Array} tsbXDR XDR-encoded `TransactionSignatureBase`
+ * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
  * @returns {Uint8Array} XDR-encoded `DecoratedSignature`
  */
-export const signTSB = (kp, tsbXDR) =>
-    kp.signDecorated(stellarHash(tsbXDR)).toXDR()
+export const signTSP = (kp, tspXDR) =>
+    kp.signDecorated(stellarHash(tspXDR)).toXDR()
