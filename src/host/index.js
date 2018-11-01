@@ -78,13 +78,6 @@ window.addEventListener("load", async () => {
 
         await async.delay(timeUnit.second)
 
-        logger.info("Requesting initial funds...")
-        ;((x) => (x))(G_PUBLIC)  // no-op
-        await async.delay(0.5 * timeUnit.second)
-        logger.info("Done.")
-
-        await async.delay(timeUnit.second)
-
         logger.info("Requesting signing keys generation...")
         let { C_PUBLIC, S_PUBLIC } =
             await shambhala.generateSigningKeys(G_PUBLIC)
@@ -93,6 +86,13 @@ window.addEventListener("load", async () => {
             string.shorten(C_PUBLIC, 11),
             string.shorten(S_PUBLIC, 11)
         )
+
+        await async.delay(timeUnit.second)
+
+        logger.info("Requesting initial funds...")
+        ;((x) => (x))(G_PUBLIC)  // no-op
+        await async.delay(0.5 * timeUnit.second)
+        logger.info("Done.")
 
         await async.delay(timeUnit.second)
 
