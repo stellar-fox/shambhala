@@ -101,6 +101,10 @@ export default function generateSigningKeys (
         // PIN - will be read from the user
         let PIN = string.random(5, string.digits())
 
+        // pretend this is UI
+        logger.info("PIN:", PIN)
+
+
         // compute S_KEY
         let S_KEY = await deriveKey(
             codec.stringToBytes(PIN), SALT
@@ -150,7 +154,6 @@ export default function generateSigningKeys (
 
         // [💥] destroy C_PASSPHRASE
         C_PASSPHRASE = null
-
 
 
         // generate C_SECRET
