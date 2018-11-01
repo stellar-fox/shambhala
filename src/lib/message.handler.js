@@ -169,7 +169,7 @@ export default class MessageHandler {
             // cancelled, but here it's the "positive scenario";
             // if timeout has been cancelled then message was
             // received and handled
-            ).catch()
+            ).catch((_) => _)
 
         })
 
