@@ -135,7 +135,7 @@ export default function generateSignedKeyAssocTx (
                 )("shambhala genesis transaction - key association")))
                 .addOperation(Operation.setOptions({
                     masterWeight: 100,
-                    lowThreshold: 10,
+                    lowThreshold: 20,
                     medThreshold: 20,
                     highThreshold: 40,
                     signer: {
