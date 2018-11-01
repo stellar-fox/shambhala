@@ -58,6 +58,7 @@ export default function generateAccount (messageHandler, context, logger) {
 
         logger.info("Account generation requested.")
 
+
         // "genesis" mnemonic
         // has to be presented to the user
         let G_MNEMONIC = redshift.genMnemonic()
@@ -107,6 +108,7 @@ export default function generateAccount (messageHandler, context, logger) {
             // don't do anything else
             return
         }
+
 
         // send G_PUBLIC and C_UUID to the server
         let serverResponse = await handleRejection(
