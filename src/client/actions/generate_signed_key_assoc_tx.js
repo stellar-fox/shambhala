@@ -11,8 +11,14 @@
 
 
 import forage from "localforage"
-import { Keypair } from "stellar-sdk"
-import { string } from "@xcmats/js-toolbox"
+import {
+    Keypair,
+} from "stellar-sdk"
+import {
+    func,
+    type,
+    string,
+} from "@xcmats/js-toolbox"
 import * as message from "../../lib/messages"
 
 
@@ -70,8 +76,29 @@ export default function generateSignedKeyAssocTx (
             return
         }
 
+        // check received `sequence`
+        if (
+            !type.isString(p.sequence)  ||
+            !p.sequence.split(string.empty())
+                .every(func.compose(type.isNumber, Number))
+        ) {
+
+            // report error
+            messageHandler.postMessage(
+                message.GENERATE_SIGNED_KEY_ASSOC_TX,
+                { error: "client:[invalid sequence]" }
+            )
+
+            logger.error("Invalid sequence received.")
+
+            // don't do anything else if sequence is wrong
+            return
+
+        }
+
         logger.info(
             string.shorten(G_PUBLIC, 11),
+            p.sequence,
             string.shorten(C_PUBLIC, 11),
             string.shorten(S_PUBLIC, 11)
         )
