@@ -63,7 +63,9 @@ export default function generateSigningKeys (
 
         let G_PUBLIC = null, C_UUID = null
 
+
         logger.info("Signing keys generation requested.")
+
 
         // validate received G_PUBLIC
         // and check if it has been associated before
@@ -86,10 +88,12 @@ export default function generateSigningKeys (
             return
         }
 
+
         logger.info(
             string.shorten(G_PUBLIC, 11),
             string.shorten(C_UUID, 7)
         )
+
 
         // generate user-specific SALT
         let SALT = salt64()
@@ -136,6 +140,7 @@ export default function generateSigningKeys (
 
         }
 
+
         // receive C_PASSPHRASE and S_PUBLIC from the server
         let { S_PUBLIC } = serverResponse.data
         let C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE)
@@ -145,6 +150,8 @@ export default function generateSigningKeys (
 
         // [💥] destroy C_PASSPHRASE
         C_PASSPHRASE = null
+
+
 
         // generate C_SECRET
         let C_SECRET = Keypair.random().secret()
@@ -163,6 +170,8 @@ export default function generateSigningKeys (
 
         // [💥] destroy C_SECRET
         C_SECRET = null
+
+
 
         // store all needed data in local storage
         let localResponse = await handleRejection(
