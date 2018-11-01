@@ -39,7 +39,10 @@ module.exports = {
     },
 
 
-    externals: ["@xcmats/js-toolbox"],
+    externals: [
+        "@xcmats/js-toolbox",
+        "stellar-sdk",
+    ],
 
 
     optimization: {
