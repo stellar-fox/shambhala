@@ -16,6 +16,7 @@ import {
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
+import { Transaction } from "stellar-sdk"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
@@ -272,7 +273,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @param {String} sequence
      * @param {String} networkPassphrase
-     * @returns {Promise.<Uint8Array>}
+     * @returns {Promise.<Transaction>}
      */
     generateSignedKeyAssocTX = async (
         accountId, sequence, networkPassphrase
@@ -290,7 +291,7 @@ export default class Shambhala {
             _store.messageHandler
                 .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
-        if (data.ok) return codec.b64dec(data.tx)
+        if (data.ok) return new Transaction(data.tx)
         else throw new Error(data.error)
     }
 
@@ -307,7 +308,7 @@ export default class Shambhala {
      * @method generateKeyAssocTX
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
-     * @returns {Promise.<Uint8Array>}
+     * @returns {Promise.<Transaction>}
      */
     generateKeyAssocTX = (_accountId) =>
         Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
@@ -333,7 +334,7 @@ export default class Shambhala {
 
     /**
      * On behalf of an `account id` sign a given `transaction` (provided as
-     * `StellarSDK.xdr.TransactionSignatureBase`).
+     * `StellarSDK.xdr.TransactionSignaturePayload`).
      * Returns array of `StellarSDK.xdr.DecoratedSignature`.
      *
      * @async
