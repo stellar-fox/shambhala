@@ -66,6 +66,13 @@ export default function generateAccount (messageHandler, context, logger) {
         // passphrase - will be read from the user
         let PASSPHRASE = string.random(10)
 
+
+        // pretend this is UI
+        logger.info(
+            `(${string.quote(G_MNEMONIC)}, ${string.quote(PASSPHRASE)})`
+        )
+
+
         // "genesis" key pair generation
         context.GKP = func.compose(
             redshift.genKeypair,
