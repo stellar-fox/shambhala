@@ -50,9 +50,12 @@ export default function generateSignedKeyAssocTx (
         let
             G_PUBLIC = null,
             C_PUBLIC = null,
-            S_PUBLIC = null
+            S_PUBLIC = null,
+            transaction = null
+
 
         logger.info("Key association transaction generation requested.")
+
 
         // validate received G_PUBLIC,
         // check if it has been associated before
@@ -84,6 +87,7 @@ export default function generateSignedKeyAssocTx (
             return
         }
 
+
         // check received `sequence` and `networkPassphrase`
         if (
             !type.isString(p.sequence)  ||
@@ -105,6 +109,7 @@ export default function generateSignedKeyAssocTx (
 
         }
 
+
         logger.info(
             string.shorten(G_PUBLIC, 11),
             p.sequence,
@@ -113,38 +118,56 @@ export default function generateSignedKeyAssocTx (
             string.shorten(S_PUBLIC, 11)
         )
 
+
         // use appropriate network
         Network.use(new Network(p.networkPassphrase))
 
-        // build transaction
-        let transaction = new TransactionBuilder(
-            new Account(G_PUBLIC, p.sequence)
-        )
-            .addMemo(new Memo(MemoHash, func.compose(
-                // stellar-sdk uses https://www.npmjs.com/package/buffer
-                // but we're not, so hex-string is used here
-                codec.bytesToHex, sha256, codec.stringToBytes
-            )("shambhala key association")))
-            .addOperation(Operation.setOptions({
-                masterWeight: 100,
-                lowThreshold: 10,
-                medThreshold: 20,
-                highThreshold: 40,
-                signer: {
-                    ed25519PublicKey: C_PUBLIC,
-                    weight: 10,
-                },
-            }))
-            .addOperation(Operation.setOptions({
-                signer: {
-                    ed25519PublicKey: S_PUBLIC,
-                    weight: 10,
-                },
-            }))
-            .build()
+        // build key association transaction
+        try {
 
-        // sign the transaction with MASTER KEY ("genesis" keypair)
-        transaction.sign(context.GKP)
+            transaction = new TransactionBuilder(
+                new Account(G_PUBLIC, p.sequence)
+            )
+                .addMemo(new Memo(MemoHash, func.compose(
+                    // stellar-sdk uses https://www.npmjs.com/package/buffer
+                    // but we're not, so hex-string is used here
+                    codec.bytesToHex, sha256, codec.stringToBytes
+                )("shambhala genesis transaction - key association")))
+                .addOperation(Operation.setOptions({
+                    masterWeight: 100,
+                    lowThreshold: 10,
+                    medThreshold: 20,
+                    highThreshold: 40,
+                    signer: {
+                        ed25519PublicKey: C_PUBLIC,
+                        weight: 10,
+                    },
+                }))
+                .addOperation(Operation.setOptions({
+                    signer: {
+                        ed25519PublicKey: S_PUBLIC,
+                        weight: 10,
+                    },
+                }))
+                .build()
+
+            // sign the transaction with MASTER KEY ("genesis" keypair)
+            transaction.sign(context.GKP)
+
+        } catch (_) {
+
+            // report error
+            messageHandler.postMessage(
+                message.GENERATE_SIGNED_KEY_ASSOC_TX,
+                { error: "client:[transaction build error]" }
+            )
+
+            logger.error("Transaction build failed.")
+
+            // don't do anything else
+            return
+
+        }
 
         // [💥] destroy GKP
         delete context.GKP
