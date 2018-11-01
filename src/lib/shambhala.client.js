@@ -271,19 +271,24 @@ export default class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @param {String} sequence
+     * @param {String} networkPassphrase
      * @returns {Promise.<Uint8Array>}
      */
-    generateSignedKeyAssocTX = async (accountId, sequence) => {
+    generateSignedKeyAssocTX = async (
+        accountId, sequence, networkPassphrase
+    ) => {
         await this._openShambhala()
         _store.messageHandler.postMessage(
             message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            { G_PUBLIC: accountId, sequence }
+            {
+                G_PUBLIC: accountId,
+                sequence,
+                networkPassphrase,
+            }
         )
         let data = await (
             _store.messageHandler
-                .receiveMessage(
-                    message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                )
+                .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
         if (data.ok) codec.b64dec(data.tx)
         else throw new Error(data.error)

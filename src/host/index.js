@@ -10,6 +10,7 @@
 
 
 
+import { Networks } from "stellar-sdk"
 import {
     async,
     devEnv,
@@ -105,7 +106,9 @@ window.addEventListener("load", async () => {
         await async.delay(timeUnit.second)
 
         logger.info("Receiving transaction associating keys with account...")
-        let tx = await shambhala.generateSignedKeyAssocTX(G_PUBLIC, sequence)
+        let tx = await shambhala.generateSignedKeyAssocTX(
+            G_PUBLIC, sequence, Networks.TESTNET
+        )
         logger.info("It came.")
 
         await async.delay(timeUnit.second)
