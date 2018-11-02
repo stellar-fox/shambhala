@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Generate account action.
+ * Generate address action.
  *
  * @module server-actions
  * @license Apache-2.0
@@ -12,21 +12,21 @@
 
 import { string } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
-import generateAccountSQL from "./generate_account.sql"
+import generateAddressSQL from "./generate_address.sql"
 import { tables } from "../../config/server.credentials"
 
 
 
 
 /**
- * Account generation.
+ * Address generation.
  *
- * @function generateAccount
+ * @function generateAddress
  * @param {Object} db Database connection.
  * @param {Function} logger
  * @returns {Function} express.js action.
  */
-export default function generateAccount (db, logger) {
+export default function generateAddress (db, logger) {
 
     return async (req, res, next) => {
 
@@ -40,7 +40,7 @@ export default function generateAccount (db, logger) {
 
             // store G_PUBLIC and C_UUID
             await db.none(
-                sql(__dirname, generateAccountSQL), {
+                sql(__dirname, generateAddressSQL), {
                     key_table: tables.key_table,
                     G_PUBLIC, C_UUID,
                 })

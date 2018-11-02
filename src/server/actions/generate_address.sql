@@ -1,4 +1,4 @@
--- account creation / association
+-- address creation / association
 
 
 -- add fresh G_PUBLIC with C_UUID

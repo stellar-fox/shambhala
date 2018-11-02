@@ -17,7 +17,7 @@ import { consoleWrapper } from "../lib/utils"
 import { originWhitelist } from "../config/env"
 import * as message from "../lib/messages"
 import pingPong from "./actions/ping_pong"
-import generateAccount from "./actions/generate_account"
+import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 
@@ -79,8 +79,8 @@ window.addEventListener("load", async () => {
 
     // account generation
     messageHandler.handle(
-        message.GENERATE_ACCOUNT,
-        generateAccount(messageHandler, context, logger)
+        message.GENERATE_ADDRESS,
+        generateAddress(messageHandler, context, logger)
     )
 
 

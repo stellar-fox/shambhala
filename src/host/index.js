@@ -92,7 +92,7 @@ window.addEventListener("load", async () => {
         // https://bit.ly/shambhalagenaccount
         logger.info("Requesting address generation...")
 
-        let G_PUBLIC = await shambhala.generateAccount()
+        let G_PUBLIC = await shambhala.generateAddress()
 
         logger.info("Got it:", string.shorten(G_PUBLIC, 11))
         await async.delay(0.1 * timeUnit.second)

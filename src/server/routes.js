@@ -17,7 +17,7 @@ import {
 } from "../config/env"
 import * as message from "../lib/messages"
 import hello from "./actions/hello"
-import generateAccount from "./actions/generate_account"
+import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 
 
@@ -46,10 +46,10 @@ export default function configureRoutes (app, db, logger) {
     // "hello world" route
     app.get("/" + restApiPrefix, hello(db, logger))
 
-    // "generate account" route
+    // "generate address" route
     app.post(
-        "/" + restApiPrefix + message.GENERATE_ACCOUNT,
-        generateAccount(db, logger)
+        "/" + restApiPrefix + message.GENERATE_ADDRESS,
+        generateAddress(db, logger)
     )
 
     // "signing keys generation" route

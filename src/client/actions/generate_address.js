@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Generate account action.
+ * Generate address action.
  *
  * @module client-actions
  * @license Apache-2.0
@@ -44,19 +44,19 @@ const backend = clientDomain + registrationPath + restApiPrefix
 
 
 /**
- * Account generation.
+ * Address generation.
  *
- * @function generateAccount
+ * @function generateAddress
  * @param {Object} messageHandler Instance of MessageHandler class.
  * @param {Object} context
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function generateAccount (messageHandler, context, logger) {
+export default function generateAddress (messageHandler, context, logger) {
 
     return async () => {
 
-        logger.info("Account generation requested.")
+        logger.info("Address generation requested.")
 
 
         // "genesis" mnemonic
@@ -83,7 +83,7 @@ export default function generateAccount (messageHandler, context, logger) {
         G_MNEMONIC = null
         PASSPHRASE = null
 
-        // extract user's new public account
+        // extract user's new public address
         let G_PUBLIC = context.GKP.publicKey()
 
         // generate user's new unique identifier
@@ -103,12 +103,12 @@ export default function generateAccount (messageHandler, context, logger) {
 
             // report error
             messageHandler.postMessage(
-                message.GENERATE_ACCOUNT,
+                message.GENERATE_ADDRESS,
                 { error: "client:[failure]" }
             )
 
             logger.error(
-                "Account generation failure.",
+                "Address generation failure.",
                 localResponse.error
             )
 
@@ -120,7 +120,7 @@ export default function generateAccount (messageHandler, context, logger) {
         // send G_PUBLIC and C_UUID to the server
         let serverResponse = await handleRejection(
             async () => await axios.post(
-                backend + message.GENERATE_ACCOUNT,
+                backend + message.GENERATE_ADDRESS,
                 { G_PUBLIC, C_UUID }
             ),
             async (ex) => ex.response
@@ -132,14 +132,14 @@ export default function generateAccount (messageHandler, context, logger) {
             access(serverResponse, ["data", "ok"], false)
         ) {
 
-            // confirm account creation to the host application
+            // confirm address creation to the host application
             messageHandler.postMessage(
-                message.GENERATE_ACCOUNT,
+                message.GENERATE_ADDRESS,
                 { ok: true, G_PUBLIC }
             )
 
             logger.info(
-                "Account succesfully generated:",
+                "Address succesfully generated:",
                 G_PUBLIC
             )
 
@@ -153,12 +153,12 @@ export default function generateAccount (messageHandler, context, logger) {
 
             // report error
             messageHandler.postMessage(
-                message.GENERATE_ACCOUNT,
+                message.GENERATE_ADDRESS,
                 { error: `server:[${serverResponse.status}]` }
             )
 
             logger.error(
-                "Account generation failure.",
+                "Address generation failure.",
                 serverResponse.data.error
             )
 

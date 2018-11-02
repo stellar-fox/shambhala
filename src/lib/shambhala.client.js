@@ -190,20 +190,20 @@ export default class Shambhala {
 
 
     /**
-     * Generate account. Returns an `account id` (`G_PUBLIC`).
+     * Generate address. Returns an `account id` (`G_PUBLIC`).
      *
      * @async
      * @instance
-     * @method generateAccount
+     * @method generateAddress
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    generateAccount = async () => {
+    generateAddress = async () => {
         await this._openShambhala()
-        _store.messageHandler.postMessage(message.GENERATE_ACCOUNT)
+        _store.messageHandler.postMessage(message.GENERATE_ADDRESS)
         let data = await (
             _store.messageHandler
-                .receiveMessage(message.GENERATE_ACCOUNT)
+                .receiveMessage(message.GENERATE_ADDRESS)
         )
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -213,16 +213,16 @@ export default class Shambhala {
 
 
     /**
-     * Associate account. Returns an `account id` (`G_PUBLIC`).
+     * Associate address. Returns an `account id` (`G_PUBLIC`).
      *
      * @async
      * @instance
-     * @method associateAccount
+     * @method associateAddress
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @returns {Promise.<String>}
      */
-    associateAccount = (_accountId) => Promise.reject("NOT IMPLEMENTED")
+    associateAddress = (_accountId) => Promise.reject("NOT IMPLEMENTED")
 
 
 
