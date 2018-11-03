@@ -63,19 +63,24 @@ window.addEventListener("load", async () => {
     }, () => true)
 
 
-    // expose `s` dev. namespace
+    // instantiate shambhala client
+    let shambhala = new Shambhala(
+        clientDomain + registrationPath + "shambhala.html"
+    )
+
+
+    // expose `sf` dev. namespace
     if (devEnv()  &&  isObject(window)) {
-        window.s = { ...await dynamicImportLibs() }
+        window.sf = {
+            ...await dynamicImportLibs(),
+            shambhala,
+        }
     }
 
 
 
 
     // do meaningful stuff
-    let shambhala = new Shambhala(
-        clientDomain + registrationPath + "shambhala.html"
-    )
-
     try {
 
         // Onboarding - [Variant A]

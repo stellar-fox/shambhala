@@ -24,7 +24,7 @@ import forage from "localforage"
 export const dynamicImportLibs = async () => {
     let [
         axios, bip39, crypto, cryptops, env, nacl, redshift,
-        sjcl, stellar, toolbox, txops, utils, scrypt,
+        Shambhala, sjcl, stellar, toolbox, txops, utils, scrypt,
     ] = await Promise.all([
         import("axios"),
         import("bip39"),
@@ -33,6 +33,7 @@ export const dynamicImportLibs = async () => {
         import("../config/env"),
         import("tweetnacl"),
         import("@stellar-fox/redshift"),
+        import("./shambhala.client"),
         import("sjcl"),
         import("stellar-sdk"),
         import("@xcmats/js-toolbox"),
@@ -49,6 +50,7 @@ export const dynamicImportLibs = async () => {
         forage,   // can't be imported dynamically
         nacl,
         redshift,
+        Shambhala,
         sjcl,
         stellar,
         toolbox,
