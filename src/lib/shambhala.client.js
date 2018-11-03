@@ -327,7 +327,19 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<String>} base64-encoded, encrypted content
      */
-    backup = (_accountId) => Promise.reject("NOT IMPLEMENTED")
+    backup = async (accountId) => {
+        await this._openShambhala()
+        _store.messageHandler.postMessage(
+            message.BACKUP,
+            { G_PUBLIC: accountId }
+        )
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.BACKUP)
+        )
+        if (data.ok) return data.payload
+        else throw new Error(data.error)
+    }
 
 
 

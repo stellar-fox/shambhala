@@ -20,6 +20,7 @@ import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
+import backup from "./actions/backup"
 
 import "./index.css"
 
@@ -95,6 +96,13 @@ window.addEventListener("load", async () => {
     messageHandler.handle(
         message.GENERATE_SIGNED_KEY_ASSOC_TX,
         generateSignedKeyAssocTx(messageHandler, context, logger)
+    )
+
+
+    // backup
+    messageHandler.handle(
+        message.BACKUP,
+        backup(messageHandler, logger)
     )
 
 
