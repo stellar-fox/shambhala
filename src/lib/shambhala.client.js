@@ -317,6 +317,39 @@ export default class Shambhala {
 
 
     /**
+     * Request (encrypted) backup of a shambhala frontend
+     * web-storage contents for a given `account id`.
+     *
+     * @async
+     * @instance
+     * @method backup
+     * @memberof module:client-lib~Shambhala
+     * @param {String} accountId
+     * @returns {Promise.<String>} base64-encoded, encrypted content
+     */
+    backup = (_accountId) => Promise.reject("NOT IMPLEMENTED")
+
+
+
+
+    /**
+     * Request restoring of shambhala frontend (web-storage)
+     * contents from a given `payload` for a given `account id`.
+     *
+     * @async
+     * @instance
+     * @method restore
+     * @memberof module:client-lib~Shambhala
+     * @param {String} accountId
+     * @param {String} payload output of the `backup` method
+     * @returns {Promise.<Boolean>}
+     */
+    restore = (_accountId, _payload) => Promise.resolve(false)
+
+
+
+
+    /**
      * Returns `true` if transaction can be signed
      * on behalf of an `account id`, `false` otherwise.
      *
