@@ -159,7 +159,7 @@ export default function generateSigningKeys (
         // generate C_SECRET
         let C_SECRET = Keypair.random().secret()
 
-        // compute and store ENC_CKP
+        // compute ENC_CKP
         let ENC_CKP = encrypt(
             C_KEY,
             codec.stringToBytes(C_SECRET)
