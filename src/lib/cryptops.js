@@ -146,6 +146,10 @@ export const salt64 = () => sha512(random(256))
  * @property {Number} [derivedKeySize=64]
  * @property {Function} [progressCallback=()=>false]
  */
+
+
+
+
 /**
  * Password-based key-derivation.
  * Uses `scrypt` implemented in `ricmoo/scrypt-js`.
@@ -474,3 +478,52 @@ export const decrypt = (key, ciphertext) => {
     )(ciphertext.slice(4))
 }
 Object.freeze(Object.assign(decrypt, encdec))
+
+
+
+
+/**
+ * Double-cipher scrypt-based key-from-passphrase-deriving encrypter.
+ * A `passphrase` is normalized to Normalization Form Canonical Composition.
+ * @see {@link http://bit.ly/wikiuniequ}
+ *
+ * @async
+ * @function passphraseEncrypt
+ * @param {String} passphrase A password to derive key.
+ * @param {Uint8Array} message A content to encrypt.
+ * @param {Object} [opts={}] @see KeyDerivationOptions.
+ *      `salt` can be passed here as an additional parameter.
+ * @returns {Promise.<String>} base64-encoded ciphertext
+ */
+export const passphraseEncrypt = async (
+    passphrase = string.empty(),
+    message = Uint8Array.from([]),
+    {
+        salt = salt64(),
+        count = 2**16,
+        blockSize = 8,
+        parallelization = 1,
+        derivedKeySize = 64,
+        progressCallback = (_p) => false,
+    } = {}
+) =>
+    func.compose(
+        codec.b64enc,
+        codec.concatBytes
+    )(
+        salt,
+        encrypt(
+            await deriveKey(
+                func.compose(
+                    codec.stringToBytes,
+                    (p) => p.normalize("NFC")
+                )(passphrase),
+                salt,
+                {
+                    count, blockSize, parallelization,
+                    derivedKeySize, progressCallback,
+                }
+            ),
+            message
+        )
+    )
