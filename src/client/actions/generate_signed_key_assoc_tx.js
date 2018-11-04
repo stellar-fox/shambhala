@@ -27,7 +27,6 @@ import {
     type,
     string,
 } from "@xcmats/js-toolbox"
-import * as message from "../../lib/messages"
 
 
 
@@ -36,13 +35,14 @@ import * as message from "../../lib/messages"
  * Signed key association transaction generation.
  *
  * @function generateSignedKeyAssocTx
- * @param {Object} messageHandler Instance of MessageHandler class.
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Object} context
  * @param {Function} logger
  * @returns {Function} Message action.
  */
 export default function generateSignedKeyAssocTx (
-    messageHandler, context, logger
+    respond, context, logger
 ) {
 
     return async (p) => {
@@ -55,6 +55,8 @@ export default function generateSignedKeyAssocTx (
 
 
         logger.info("Key association transaction generation requested.")
+
+
 
 
         // validate received G_PUBLIC,
@@ -76,16 +78,15 @@ export default function generateSignedKeyAssocTx (
         } catch (_) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                { error: "client:[invalid or not associated G_PUBLIC]" }
-            )
+            respond({ error: "client:[invalid or not associated G_PUBLIC]" })
 
             logger.error("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else
             return
         }
+
+
 
 
         // check received `sequence` and `networkPassphrase`
@@ -97,10 +98,7 @@ export default function generateSignedKeyAssocTx (
         ) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                { error: "client:[invalid sequence or network]" }
-            )
+            respond({ error: "client:[invalid sequence or network]" })
 
             logger.error("Invalid sequence or network received.")
 
@@ -110,6 +108,8 @@ export default function generateSignedKeyAssocTx (
         }
 
 
+
+
         logger.info(
             string.shorten(G_PUBLIC, 11),
             p.sequence,
@@ -117,6 +117,8 @@ export default function generateSignedKeyAssocTx (
             string.shorten(C_PUBLIC, 11),
             string.shorten(S_PUBLIC, 11)
         )
+
+
 
 
         // use appropriate network
@@ -157,10 +159,7 @@ export default function generateSignedKeyAssocTx (
         } catch (_) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                { error: "client:[transaction build error]" }
-            )
+            respond({ error: "client:[transaction build error]" })
 
             logger.error("Transaction build failed.")
 
@@ -172,11 +171,18 @@ export default function generateSignedKeyAssocTx (
         // [💥] destroy GKP
         delete context.GKP
 
+
+
+
         // respond to the host application
-        messageHandler.postMessage(
-            message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            { ok: true, tx: codec.b64enc(transaction.toEnvelope().toXDR()) }
-        )
+        respond({
+            ok: true,
+            tx: func.compose(
+                codec.b64enc,
+                (e) => e.toXDR(),
+                (t) => t.toEnvelope(),
+            )(transaction),
+        })
 
         logger.info("Generated.")
 

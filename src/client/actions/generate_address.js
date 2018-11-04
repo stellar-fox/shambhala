@@ -47,16 +47,19 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * Address generation.
  *
  * @function generateAddress
- * @param {Object} messageHandler Instance of MessageHandler class.
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Object} context
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function generateAddress (messageHandler, context, logger) {
+export default function generateAddress (respond, context, logger) {
 
     return async () => {
 
         logger.info("Address generation requested.")
+
+
 
 
         // "genesis" mnemonic
@@ -66,11 +69,12 @@ export default function generateAddress (messageHandler, context, logger) {
         // passphrase - will be read from the user
         let PASSPHRASE = string.random(10)
 
-
         // pretend this is UI
         logger.info(
             `(${string.quote(G_MNEMONIC)}, ${string.quote(PASSPHRASE)})`
         )
+
+
 
 
         // "genesis" key pair generation
@@ -82,6 +86,9 @@ export default function generateAddress (messageHandler, context, logger) {
         // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
         G_MNEMONIC = null
         PASSPHRASE = null
+
+
+
 
         // extract user's new public address
         let G_PUBLIC = context.GKP.publicKey()
@@ -102,10 +109,7 @@ export default function generateAddress (messageHandler, context, logger) {
         if (!toBool(localResponse.ok)) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_ADDRESS,
-                { error: "client:[failure]" }
-            )
+            respond({ error: "client:[failure]" })
 
             logger.error(
                 "Address generation failure.",
@@ -115,6 +119,8 @@ export default function generateAddress (messageHandler, context, logger) {
             // don't do anything else
             return
         }
+
+
 
 
         // send G_PUBLIC and C_UUID to the server
@@ -133,10 +139,7 @@ export default function generateAddress (messageHandler, context, logger) {
         ) {
 
             // confirm address creation to the host application
-            messageHandler.postMessage(
-                message.GENERATE_ADDRESS,
-                { ok: true, G_PUBLIC }
-            )
+            respond({ ok: true, G_PUBLIC })
 
             logger.info(
                 "Address succesfully generated:",
@@ -152,10 +155,7 @@ export default function generateAddress (messageHandler, context, logger) {
             )
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_ADDRESS,
-                { error: `server:[${serverResponse.status}]` }
-            )
+            respond({ error: `server:[${serverResponse.status}]` })
 
             logger.error(
                 "Address generation failure.",

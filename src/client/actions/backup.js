@@ -23,7 +23,6 @@ import {
     func,
     string,
 } from "@xcmats/js-toolbox"
-import * as message from "../../lib/messages"
 
 
 
@@ -32,11 +31,12 @@ import * as message from "../../lib/messages"
  * Backup dumping.
  *
  * @function backup
- * @param {Object} messageHandler Instance of MessageHandler class.
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function backup (messageHandler, logger) {
+export default function backup (respond, logger) {
 
     return async (p) => {
 
@@ -67,10 +67,9 @@ export default function backup (messageHandler, logger) {
         } catch (_) {
 
             // report error
-            messageHandler.postMessage(
-                message.BACKUP,
-                { error: "client:[invalid or not associated G_PUBLIC]" }
-            )
+            respond({
+                error: "client:[invalid or not associated G_PUBLIC]",
+            })
 
             logger.error("Invalid or not associated G_PUBLIC received.")
 
@@ -123,19 +122,16 @@ export default function backup (messageHandler, logger) {
 
 
         // send encrypted backup to the host application
-        messageHandler.postMessage(
-            message.BACKUP,
-            {
-                ok: true,
-                payload: func.compose(
-                    codec.b64enc,
-                    codec.concatBytes
-                )(
-                    BACKUP_SALT,
-                    BACKUP_CIPHERTEXT
-                ),
-            }
-        )
+        respond({
+            ok: true,
+            payload: func.compose(
+                codec.b64enc,
+                codec.concatBytes
+            )(
+                BACKUP_SALT,
+                BACKUP_CIPHERTEXT
+            ),
+        })
 
 
 

@@ -13,7 +13,6 @@
 import {
     string,
 } from "@xcmats/js-toolbox"
-import * as message from "../../lib/messages"
 
 
 
@@ -22,11 +21,12 @@ import * as message from "../../lib/messages"
  * Restoring from a backup.
  *
  * @function restore
- * @param {Object} messageHandler Instance of MessageHandler class.
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function restore (messageHandler, logger) {
+export default function restore (respond, logger) {
 
     return async (p) => {
 
@@ -37,10 +37,7 @@ export default function restore (messageHandler, logger) {
 
 
         // confirm backup restoration
-        messageHandler.postMessage(
-            message.RESTORE,
-            { error: "NOT IMPLEMENTED" }
-        )
+        respond({ error: "NOT IMPLEMENTED" })
 
         logger.info("Done.")
 

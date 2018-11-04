@@ -50,14 +50,12 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * Signing keys generation.
  *
  * @function generateSigningKeys
- * @param {Object} messageHandler Instance of MessageHandler class.
- * @param {Object} context
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function generateSigningKeys (
-    messageHandler, _context, logger
-) {
+export default function generateSigningKeys (respond, logger) {
 
     return async (p) => {
 
@@ -65,6 +63,8 @@ export default function generateSigningKeys (
 
 
         logger.info("Signing keys generation requested.")
+
+
 
 
         // validate received G_PUBLIC
@@ -77,10 +77,7 @@ export default function generateSigningKeys (
         } catch (_) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNING_KEYS,
-                { error: "client:[invalid or not associated G_PUBLIC]" }
-            )
+            respond({ error: "client:[invalid or not associated G_PUBLIC]" })
 
             logger.error("Invalid or not associated G_PUBLIC received.")
 
@@ -89,10 +86,14 @@ export default function generateSigningKeys (
         }
 
 
+
+
         logger.info(
             string.shorten(G_PUBLIC, 11),
             string.shorten(C_UUID, 7)
         )
+
+
 
 
         // generate user-specific SALT
@@ -103,6 +104,8 @@ export default function generateSigningKeys (
 
         // pretend this is UI
         logger.info("PIN:", PIN)
+
+
 
 
         // compute S_KEY
@@ -129,10 +132,7 @@ export default function generateSigningKeys (
         ) {
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNING_KEYS,
-                { error: `server:[${serverResponse.status}]` }
-            )
+            respond({ error: `server:[${serverResponse.status}]` })
 
             logger.error(
                 "Signing keys generation failure.",
@@ -145,6 +145,8 @@ export default function generateSigningKeys (
         }
 
 
+
+
         // receive C_PASSPHRASE and S_PUBLIC from the server
         let { S_PUBLIC } = serverResponse.data
         let C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE)
@@ -154,6 +156,8 @@ export default function generateSigningKeys (
 
         // [💥] destroy C_PASSPHRASE
         C_PASSPHRASE = null
+
+
 
 
         // generate C_SECRET
@@ -173,6 +177,7 @@ export default function generateSigningKeys (
 
         // [💥] destroy C_SECRET
         C_SECRET = null
+
 
 
 
@@ -200,10 +205,7 @@ export default function generateSigningKeys (
             // rollback server-side changes
 
             // report error
-            messageHandler.postMessage(
-                message.GENERATE_SIGNING_KEYS,
-                { error: "client:[failure]" }
-            )
+            respond({ error: "client:[failure]" })
 
             logger.error(
                 "Signing keys generation failure.",
@@ -214,10 +216,7 @@ export default function generateSigningKeys (
         } else {
 
             // respond to the host application
-            messageHandler.postMessage(
-                message.GENERATE_SIGNING_KEYS,
-                { ok: true, C_PUBLIC, S_PUBLIC }
-            )
+            respond({ ok: true, C_PUBLIC, S_PUBLIC })
 
             logger.info(
                 "Signing keys succesfully generated:",

@@ -21,7 +21,6 @@ import {
     registrationPath,
     restApiPrefix,
 } from "../../config/env"
-import * as message from "../../lib/messages"
 
 
 
@@ -41,12 +40,12 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * Ping-pong.
  *
  * @function pingPongAction
- * @param {Object} messageHandler Instance of MessageHandler class.
- * @param {Object} context
+ * @param {Function} respond MessageHandler::postMessage() with first argument
+ *      bound to an appropriate message type.
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function pingPong (messageHandler, _context, logger) {
+export default function pingPong (respond, logger) {
 
     return async () => {
 
@@ -54,17 +53,14 @@ export default function pingPong (messageHandler, _context, logger) {
 
         let resp = await axios.get(backend)
 
-        messageHandler.postMessage(
-            message.PONG,
-            {
-                hash: func.compose(
-                    codec.bytesToHex,
-                    sha512,
-                    codec.stringToBytes,
-                    JSON.stringify
-                )(resp.data),
-            }
-        )
+        respond({
+            hash: func.compose(
+                codec.bytesToHex,
+                sha512,
+                codec.stringToBytes,
+                JSON.stringify
+            )(resp.data),
+        })
 
         logger.info("<- PONG")
 
