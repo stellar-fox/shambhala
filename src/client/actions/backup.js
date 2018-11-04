@@ -12,11 +12,7 @@
 
 import forage from "localforage"
 import { Keypair } from "stellar-sdk"
-import {
-    deriveKey,
-    encrypt,
-    salt64,
-} from "../../lib/cryptops"
+import { passphraseEncrypt } from "../../lib/cryptops"
 import {
     array,
     codec,
@@ -80,9 +76,6 @@ export default function backup (respond, logger) {
 
 
 
-        // generate BACKUP_SALT (needed for key derivation)
-        let BACKUP_SALT = salt64()
-
         // BACKUP_PASSPHRASE - will be read from the user
         let BACKUP_PASSPHRASE = array.range(6).map(
             (_) => func.compose(
@@ -99,41 +92,29 @@ export default function backup (respond, logger) {
         logger.info("BACKUP_PASSPHRASE:", string.quote(BACKUP_PASSPHRASE))
 
 
-        // encrypt data
-        let BACKUP_CIPHERTEXT = encrypt(
-            await deriveKey(
-                codec.stringToBytes(BACKUP_PASSPHRASE),
-                BACKUP_SALT
-            ),
-            func.compose(
-                codec.stringToBytes,
-                JSON.stringify
-            )({
-                G_PUBLIC, C_UUID,
-                C_PUBLIC, S_PUBLIC,
-                SALT, ENC_CKP,
-            })
-        )
-
-        // [💥] destroy BACKUP_PASSPHRASE
-        BACKUP_PASSPHRASE = null
-
-
 
 
         // send encrypted backup to the host application
         respond({
             ok: true,
-            payload: func.compose(
-                codec.b64enc,
-                codec.concatBytes
-            )(
-                BACKUP_SALT,
-                BACKUP_CIPHERTEXT
+            payload: await passphraseEncrypt(
+                BACKUP_PASSPHRASE,
+                func.compose(
+                    codec.stringToBytes,
+                    JSON.stringify
+                )({
+                    G_PUBLIC, C_UUID,
+                    C_PUBLIC, S_PUBLIC,
+                    SALT, ENC_CKP,
+                })
             ),
         })
 
 
+
+
+        // [💥] destroy BACKUP_PASSPHRASE
+        BACKUP_PASSPHRASE = null
 
 
         logger.info("Done.")
