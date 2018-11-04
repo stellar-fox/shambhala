@@ -16,11 +16,13 @@ import MessageHandler from "../lib/message.handler"
 import { consoleWrapper } from "../lib/utils"
 import { originWhitelist } from "../config/env"
 import * as message from "../lib/messages"
+
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 import backup from "./actions/backup"
+import restore from "./actions/restore"
 
 import "./index.css"
 
@@ -56,6 +58,7 @@ window.addEventListener("load", async () => {
 
     // get claimed origin (domain of the host application)
     let hostDomain = window.location.search.slice(1)
+
 
     // do whitelist check (don't worry if somebody just lied
     // about it's true location - messages won't work
@@ -103,6 +106,13 @@ window.addEventListener("load", async () => {
     messageHandler.handle(
         message.BACKUP,
         backup(messageHandler, logger)
+    )
+
+
+    // restore
+    messageHandler.handle(
+        message.RESTORE,
+        restore(messageHandler, logger)
     )
 
 

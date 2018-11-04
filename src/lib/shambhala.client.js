@@ -356,7 +356,19 @@ export default class Shambhala {
      * @param {String} payload output of the `backup` method
      * @returns {Promise.<Boolean>}
      */
-    restore = (_accountId, _payload) => Promise.resolve(false)
+    restore = async (accountId, payload) => {
+        await this._openShambhala()
+        _store.messageHandler.postMessage(
+            message.RESTORE,
+            { G_PUBLIC: accountId, payload }
+        )
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.RESTORE)
+        )
+        if (data.ok) return true
+        else throw new Error(data.error)
+    }
 
 
 
