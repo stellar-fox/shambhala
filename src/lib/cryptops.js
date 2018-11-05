@@ -392,7 +392,7 @@ const encdec = Object.freeze({
  *     using last 32 bytes of `key` and `aesNonce`
  *     producing `[aesNonce + aesCiphertext]`
  * 5. [`encdec.MAGIC` + `encdec.VERSION` + `aesNonce` + `aesCiphertext`]
- *    is returned as Uint8Array result
+ *    is returned as an `Uint8Array` result
  *
  * @function encrypt
  * @see {@link https://bit.ly/toolboxcodec}
@@ -450,7 +450,8 @@ Object.freeze(Object.assign(encrypt, encdec))
  * @see {@link https://bit.ly/toolboxfunc}
  * @param {Uint8Array} key 512 bits (64 bytes) decryption key.
  * @param {Uint8Array} message A content to encrypt.
- * @returns {Uint8Array} [MAGIC] + [VERSION] + [AES IV] + [Ciphertext].
+ * @returns {Uint8Array|Null} byte representation
+ *      of a decrypted content or `null` if decryption is not possible.
  */
 export const decrypt = (key, ciphertext) => {
     if (
@@ -489,7 +490,7 @@ Object.freeze(Object.assign(decrypt, encdec))
  *
  * @async
  * @function passphraseEncrypt
- * @param {String} passphrase A password to derive key.
+ * @param {String} passphrase A password to derive key from.
  * @param {Uint8Array} message A content to encrypt.
  * @param {Object} [opts={}] @see KeyDerivationOptions.
  *      `salt` can be passed here as an additional parameter.
@@ -527,3 +528,48 @@ export const passphraseEncrypt = async (
             message
         )
     )
+
+
+
+
+/**
+ * Double-cipher scrypt-based key-from-passphrase-deriving decrypter.
+ * A `passphrase` is normalized to Normalization Form Canonical Composition.
+ * @see {@link http://bit.ly/wikiuniequ}
+ *
+ * @async
+ * @function passphraseDecrypt
+ * @param {String} passphrase A password to derive key from.
+ * @param {String} message A base64-encoded content to decrypt.
+ * @param {KeyDerivationOptions} [opts={}] @see KeyDerivationOptions.
+ * @returns {Promise.<Uint8Array>|Promise.<Null>} byte representation
+ *      of a decrypted content or `null` if decryption is not possible.
+ */
+export const passphraseDecrypt = async (
+    passphrase = string.empty(),
+    ciphertext = string.empty(),
+    {
+        count = 2**16,
+        blockSize = 8,
+        parallelization = 1,
+        derivedKeySize = 64,
+        progressCallback = (_p) => false,
+    } = {}
+) => {
+    let cipherBytes = codec.b64dec(ciphertext)
+
+    return decrypt(
+        await deriveKey(
+            func.compose(
+                codec.stringToBytes,
+                (p) => p.normalize("NFC")
+            )(passphrase),
+            cipherBytes.slice(0, 64),
+            {
+                count, blockSize, parallelization,
+                derivedKeySize, progressCallback,
+            }
+        ),
+        cipherBytes.slice(64)
+    )
+}
