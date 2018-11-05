@@ -61,7 +61,6 @@ export default function generateSigningKeys (respond, logger) {
 
         let G_PUBLIC = null, C_UUID = null
 
-
         logger.info("Signing keys generation requested.")
 
 
@@ -96,11 +95,12 @@ export default function generateSigningKeys (respond, logger) {
 
 
 
-        // generate user-specific SALT
-        let SALT = salt64()
+        let
+            // generate user-specific SALT
+            SALT = salt64(),
 
-        // PIN - will be read from the user
-        let PIN = string.random(5, string.digits())
+            // PIN - will be read from the user
+            PIN = string.random(5, string.digits())
 
         // pretend this is UI
         logger.info("PIN:", PIN)
@@ -108,22 +108,23 @@ export default function generateSigningKeys (respond, logger) {
 
 
 
-        // compute S_KEY
-        let S_KEY = await deriveKey(
-            codec.stringToBytes(PIN), SALT
-        )
-
-        // send S_KEY to the server
-        let serverResponse = await handleRejection(
-            async () => await axios.post(
-                backend + message.GENERATE_SIGNING_KEYS,
-                {
-                    G_PUBLIC, C_UUID,
-                    S_KEY: codec.b64enc(S_KEY),
-                }
+        let
+            // compute S_KEY
+            S_KEY = await deriveKey(
+                codec.stringToBytes(PIN), SALT
             ),
-            async (ex) => ex.response
-        )
+
+            // send S_KEY to the server
+            serverResponse = await handleRejection(
+                async () => await axios.post(
+                    backend + message.GENERATE_SIGNING_KEYS,
+                    {
+                        G_PUBLIC, C_UUID,
+                        S_KEY: codec.b64enc(S_KEY),
+                    }
+                ),
+                async (ex) => ex.response
+            )
 
         // unfortunately - an error occured
         if (
@@ -147,12 +148,15 @@ export default function generateSigningKeys (respond, logger) {
 
 
 
-        // receive C_PASSPHRASE and S_PUBLIC from the server
-        let { S_PUBLIC } = serverResponse.data
-        let C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE)
+        let
+            // receive C_PASSPHRASE ...
+            { S_PUBLIC } = serverResponse.data,
 
-        // compute C_KEY
-        let C_KEY = await deriveKey(C_PASSPHRASE, SALT)
+            // ... and S_PUBLIC from the server
+            C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE),
+
+            // compute C_KEY
+            C_KEY = await deriveKey(C_PASSPHRASE, SALT)
 
         // [💥] destroy C_PASSPHRASE
         C_PASSPHRASE = null
@@ -160,14 +164,15 @@ export default function generateSigningKeys (respond, logger) {
 
 
 
-        // generate C_SECRET
-        let C_SECRET = Keypair.random().secret()
+        let
+            // generate C_SECRET
+            C_SECRET = Keypair.random().secret(),
 
-        // compute ENC_CKP
-        let ENC_CKP = encrypt(
-            C_KEY,
-            codec.stringToBytes(C_SECRET)
-        )
+            // compute ENC_CKP
+            ENC_CKP = encrypt(
+                C_KEY,
+                codec.stringToBytes(C_SECRET)
+            )
 
         // [💥] destroy C_KEY
         C_KEY = null
