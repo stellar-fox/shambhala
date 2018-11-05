@@ -14,11 +14,32 @@ import forage from "localforage"
 import { Keypair } from "stellar-sdk"
 import { passphraseEncrypt } from "../../lib/cryptops"
 import {
-    array,
     codec,
-    func,
     string,
 } from "@xcmats/js-toolbox"
+
+
+
+
+/**
+ * Binary pack client data.
+ * Much more space-efficient than simple `JSON.stringify`.
+ *
+ * @param {Object} data Object with all client-data fields.
+ * @returns {Uint8Array} Binary representation of a client data.
+ */
+const packClientData = ({
+    G_PUBLIC, C_UUID,
+    C_PUBLIC, S_PUBLIC,
+    SALT, ENC_CKP,
+}) => codec.concatBytes(
+    codec.stringToBytes(G_PUBLIC),
+    codec.hexToBytes(C_UUID),
+    codec.stringToBytes(C_PUBLIC),
+    codec.stringToBytes(S_PUBLIC),
+    codec.b64dec(SALT),
+    codec.b64dec(ENC_CKP)
+)
 
 
 
@@ -40,7 +61,6 @@ export default function backup (respond, logger) {
             G_PUBLIC = null, C_UUID = null,
             C_PUBLIC = null, S_PUBLIC = null,
             SALT = null, ENC_CKP = null
-
 
         logger.info(`Backup requested for ${string.quote(p.G_PUBLIC)}.`)
 
@@ -77,16 +97,9 @@ export default function backup (respond, logger) {
 
 
         // BACKUP_PASSPHRASE - will be read from the user
-        let BACKUP_PASSPHRASE = array.range(6).map(
-            (_) => func.compose(
-                string.capitalize,
-                string.random
-            )(
-                func.compose(array.draw, array.range)(3, 12),
-                string.asciiLowercase()
-            )
-        ).join(string.space())
-
+        // this is a constant just for the 'restore' action
+        // testing purposes
+        let BACKUP_PASSPHRASE = "Some very long and multi-word phrase!"
 
         // pretend this is UI
         logger.info("BACKUP_PASSPHRASE:", string.quote(BACKUP_PASSPHRASE))
@@ -99,10 +112,7 @@ export default function backup (respond, logger) {
             ok: true,
             payload: await passphraseEncrypt(
                 BACKUP_PASSPHRASE,
-                func.compose(
-                    codec.stringToBytes,
-                    JSON.stringify
-                )({
+                packClientData({
                     G_PUBLIC, C_UUID,
                     C_PUBLIC, S_PUBLIC,
                     SALT, ENC_CKP,
@@ -115,7 +125,6 @@ export default function backup (respond, logger) {
 
         // [💥] destroy BACKUP_PASSPHRASE
         BACKUP_PASSPHRASE = null
-
 
         logger.info("Done.")
 
