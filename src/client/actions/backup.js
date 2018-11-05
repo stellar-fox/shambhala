@@ -29,17 +29,16 @@ import {
  * @returns {Uint8Array} Binary representation of a client data.
  */
 const packClientData = ({
-    G_PUBLIC, C_UUID,
-    C_PUBLIC, S_PUBLIC,
+    C_UUID, C_PUBLIC, S_PUBLIC,
     SALT, ENC_CKP,
-}) => codec.concatBytes(
-    codec.stringToBytes(G_PUBLIC),
-    codec.hexToBytes(C_UUID),
-    codec.stringToBytes(C_PUBLIC),
-    codec.stringToBytes(S_PUBLIC),
-    codec.b64dec(SALT),
-    codec.b64dec(ENC_CKP)
-)
+}) =>
+    codec.concatBytes(
+        codec.hexToBytes(C_UUID),
+        codec.stringToBytes(C_PUBLIC),
+        codec.stringToBytes(S_PUBLIC),
+        codec.b64dec(SALT),
+        codec.b64dec(ENC_CKP)
+    )
 
 
 
@@ -58,8 +57,7 @@ export default function backup (respond, logger) {
     return async (p) => {
 
         let
-            G_PUBLIC = null, C_UUID = null,
-            C_PUBLIC = null, S_PUBLIC = null,
+            C_UUID = null, C_PUBLIC = null, S_PUBLIC = null,
             SALT = null, ENC_CKP = null
 
         logger.info(`Backup requested for ${string.quote(p.G_PUBLIC)}.`)
@@ -74,8 +72,7 @@ export default function backup (respond, logger) {
             Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
             (
                 {
-                    G_PUBLIC, C_UUID,
-                    C_PUBLIC, S_PUBLIC,
+                    C_UUID, C_PUBLIC, S_PUBLIC,
                     SALT, ENC_CKP,
                 } = await forage.getItem(p.G_PUBLIC)
             )
@@ -113,8 +110,7 @@ export default function backup (respond, logger) {
             payload: await passphraseEncrypt(
                 BACKUP_PASSPHRASE,
                 packClientData({
-                    G_PUBLIC, C_UUID,
-                    C_PUBLIC, S_PUBLIC,
+                    C_UUID, C_PUBLIC, S_PUBLIC,
                     SALT, ENC_CKP,
                 })
             ),

@@ -366,7 +366,10 @@ export default class Shambhala {
             _store.messageHandler
                 .receiveMessage(message.RESTORE)
         )
-        if (data.ok) return true
+        if (data.ok) return {
+            C_PUBLIC: data.C_PUBLIC,
+            S_PUBLIC: data.S_PUBLIC,
+        }
         else throw new Error(data.error)
     }
 
