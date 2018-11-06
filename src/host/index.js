@@ -21,9 +21,9 @@ import {
     async,
     devEnv,
     func,
-    isObject,
     randomInt,
     string,
+    type,
     timeUnit,
 } from "@xcmats/js-toolbox"
 import {
@@ -42,8 +42,261 @@ import "./index.css"
 
 
 
-// console logger
-const logger = consoleWrapper("💻")
+// shambhala.client integration testing
+export const testPieces = (context, logger) => {
+
+    let that = { scenario: {} }
+
+
+
+
+    // instantiate client
+    that.instantiate = async (
+        url = clientDomain + registrationPath + "shambhala.html"
+    ) => {
+
+        if (!type.isObject(context.shambhala)) {
+            context.shambhala = new Shambhala(url)
+            context.shambhalaUrl = url
+        }
+
+        logger.info(`Instance pointing to ${string.quote(url)} created.`)
+
+    }
+
+
+
+
+    // choose network and _stellar_ horizon server
+    that.setEnv = async ({
+        network = Networks.TESTNET,
+        horizonUrl = "https://horizon-testnet.stellar.org/",
+    } = {}) => {
+
+        Network.use(new Network(network))
+        context.network = network
+
+        context.server = new Server(horizonUrl)
+        context.horizonUrl = horizonUrl
+
+        logger.info(`Network: ${string.quote(network)}`)
+        logger.info(` Server: ${horizonUrl}`)
+
+    }
+
+
+
+
+    // address generation
+    // https://bit.ly/shambhalagenaccount
+    that.generateAddress = async () => {
+
+        logger.info("Requesting address generation...")
+
+        context.G_PUBLIC = await context.shambhala.generateAddress()
+
+        logger.info("Got it:", string.quote(context.G_PUBLIC))
+        return context.G_PUBLIC
+
+    }
+
+
+
+
+    // signing keys generation
+    // https://bit.ly/shambhalagensig
+    that.generateSigningKeys = async (G_PUBLIC = context.G_PUBLIC) => {
+
+        logger.info("Requesting signing keys generation...")
+
+        let { C_PUBLIC, S_PUBLIC } =
+            await context.shambhala.generateSigningKeys(G_PUBLIC)
+        context.C_PUBLIC = C_PUBLIC
+        context.S_PUBLIC = S_PUBLIC
+
+        logger.info(
+            "Got them:",
+            string.shorten(C_PUBLIC, 11),
+            string.shorten(S_PUBLIC, 11)
+        )
+        return context.keys
+
+    }
+
+
+
+
+    // account creation, initial funding
+    // and finding sequence number
+    // http://bit.ly/stellarseqnumber
+    that.createAccountOnLedger = async (G_PUBLIC = context.G_PUBLIC) => {
+
+        logger.info("Requesting account generation and initial funds...")
+
+        let friendbotResponse =
+            await axios.get("https://friendbot.stellar.org/", {
+                params: { addr: G_PUBLIC },
+            })
+
+        logger.info(
+            "Got it:",
+            func.compose(
+                string.quote,
+                (op) => `${op.type}: ${op.startingBalance} XLM`,
+                (tx) => tx.operations[0],
+                (xdr64) => new Transaction(xdr64)
+            )(friendbotResponse.data.envelope_xdr)
+        )
+
+        logger.info("Getting account sequence...")
+
+        context.account = await context.server.loadAccount(G_PUBLIC)
+        context.sequence = context.account.sequenceNumber()
+
+        logger.info("It's:", string.quote(context.sequence))
+        return context.account
+
+    }
+
+
+
+
+    // automatic keys association
+    // http://bit.ly/shambhalaautokeyassoc
+    that.generateSignedKeyAssocTX = async (
+        G_PUBLIC = context.G_PUBLIC,
+        sequence = context.sequence,
+        network = context.network
+    ) => {
+
+        logger.info("Requesting transaction associating keys with account...")
+
+        context.tx = await context.shambhala.generateSignedKeyAssocTX(
+            G_PUBLIC, sequence, network
+        )
+
+        logger.info(
+            "It came:",
+            func.compose(
+                string.quote,
+                (opTypes) => opTypes.join(string.space()),
+                (ops) => ops.map((op) => op.type)
+            )(context.tx.operations)
+        )
+        return context.tx
+    }
+
+
+
+
+    // send transaction to the network
+    // https://bit.ly/stellarsubmittx
+    that.submitTransaction = async (tx = context.tx) => {
+
+        logger.info("Sending transaction to the stellar network.")
+
+        await context.server.submitTransaction(tx)
+
+        logger.info("Sent.")
+    }
+
+
+
+
+    // backup (test)
+    that.backup = async (G_PUBLIC = context.G_PUBLIC) => {
+
+        logger.info(`Requesting encrypted backup for ${G_PUBLIC}.`)
+
+        context.backup = await context.shambhala.backup(G_PUBLIC)
+
+        logger.info("Here it is:", context.backup)
+    }
+
+
+
+
+    // restore (test)
+    that.restore = async (
+        G_PUBLIC = context.G_PUBLIC,
+        backup = context.backup
+    ) => {
+
+        logger.info(`Trying to restore backup for ${G_PUBLIC}.`)
+
+        await context.shambhala.restore(
+            G_PUBLIC, backup
+        )
+
+        logger.info("All good.")
+    }
+
+
+
+
+    // ...
+    that.scenario.accountCreation = async () => {
+
+        logger.info("Account Creation Test BEGIN")
+        // eslint-disable-next-line no-console
+        console.time("Account Creation")
+
+        await that.instantiate()
+        await that.setEnv()
+        await that.generateAddress()
+        await that.generateSigningKeys()
+        await that.createAccountOnLedger()
+        await that.generateSignedKeyAssocTX()
+        await that.submitTransaction()
+
+        // eslint-disable-next-line no-console
+        console.timeEnd("Account Creation")
+        logger.info("Account Creation Test END")
+        return context
+
+    }
+
+
+
+
+    // ...
+    that.scenario.backupRestore = async () => {
+
+        logger.info("Backup-Restore Test BEGIN")
+        // eslint-disable-next-line no-console
+        console.time("Backup-Restore")
+
+        await that.instantiate()
+        await that.setEnv()
+        await that.backup()
+        await that.restore()
+
+        // eslint-disable-next-line no-console
+        console.timeEnd("Backup-Restore")
+        logger.info("Backup-Restore Test END")
+        return context
+
+    }
+
+
+
+
+    return Object.freeze(that)
+
+}
+
+
+
+
+const
+    // "global" variables context
+    context = {},
+
+    // console logger
+    logger = consoleWrapper("💻"),
+
+    // all basic shambhala elements in action
+    testing = testPieces(context, logger)
 
 
 
@@ -63,141 +316,21 @@ window.addEventListener("load", async () => {
     }, () => true)
 
 
-    // instantiate shambhala client
-    let shambhala = new Shambhala(
-        clientDomain + registrationPath + "shambhala.html"
-    )
-
-
     // expose `sf` dev. namespace
-    if (devEnv()  &&  isObject(window)) {
+    if (devEnv()  &&  type.isObject(window)) {
         window.sf = {
             ...await dynamicImportLibs(),
-            shambhala,
+            context, logger, testing,
         }
     }
 
 
-
-
-    // do meaningful stuff
-    try {
-
-        // Onboarding - [Variant A]
-
-
-        // choose network and _stellar_ horizon server
-        Network.use(new Network(Networks.TESTNET))
-        let server = new Server("https://horizon-testnet.stellar.org/")
-
-
-
-
-        // account generation
-        // https://bit.ly/shambhalagenaccount
-        logger.info("Requesting address generation...")
-
-        let G_PUBLIC = await shambhala.generateAddress()
-
-        logger.info("Got it:", string.shorten(G_PUBLIC, 11))
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        // signing keys generation
-        // https://bit.ly/shambhalagensig
-        logger.info("Requesting signing keys generation...")
-
-        let { C_PUBLIC, S_PUBLIC } =
-            await shambhala.generateSigningKeys(G_PUBLIC)
-
-        logger.info(
-            "Got them:",
-            string.shorten(C_PUBLIC, 11),
-            string.shorten(S_PUBLIC, 11)
-        )
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        // account creation and initial funding
-        // https://friendbot.stellar.org/
-        logger.info("Requesting account generation and initial funds...")
-
-        let friendbotResponse =
-            await axios.get("https://friendbot.stellar.org/", {
-                params: { addr: G_PUBLIC },
-            })
-
-        logger.info(
-            "Got it:",
-            func.compose(
-                string.quote,
-                (op) => `${op.type}: ${op.startingBalance} XLM`,
-                (tx) => tx.operations[0],
-                (xdr64) => new Transaction(xdr64)
-            )(friendbotResponse.data.envelope_xdr)
-        )
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        // find sequence number
-        // http://bit.ly/stellarseqnumber
-        logger.info("Getting account sequence...")
-
-        let sequence = (
-            await server.loadAccount(G_PUBLIC)
-        ).sequenceNumber()
-
-        logger.info("It's:", string.quote(sequence))
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        // automatic keys association
-        // http://bit.ly/shambhalaautokeyassoc
-        logger.info("Requesting transaction associating keys with account...")
-
-        let tx = await shambhala.generateSignedKeyAssocTX(
-            G_PUBLIC, sequence, Networks.TESTNET
-        )
-
-        logger.info(
-            "It came:",
-            func.compose(
-                string.quote,
-                (opTypes) => opTypes.join(string.space()),
-                (ops) => ops.map((op) => op.type)
-            )(tx.operations)
-        )
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        // send transaction to the network
-        // https://bit.ly/stellarsubmittx
-        logger.info("Sending transaction to the stellar network.")
-
-        await server.submitTransaction(tx)
-
-        logger.info("Sent.")
-        await async.delay(0.1 * timeUnit.second)
-
-
-
-
-        logger.info("All done!")
-
-    } catch (ex) {
-
-        logger.error("Whoops...", ex)
-
-    }
+    // do meaningful stuff (instruct how to do so)
+    logger.info(
+        "Try one of these:\n",
+        Object.keys(testing.scenario).map(
+            (n) => `sf.testing.scenario.${n}()`
+        ).join("\n ")
+    )
 
 })
