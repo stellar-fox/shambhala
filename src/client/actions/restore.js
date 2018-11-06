@@ -110,10 +110,13 @@ export default function restore (respond, logger) {
 
 
 
-        // store all needed data in local storage
+        // store all needed data in the local storage
         let localResponse = await handleRejection(
             async () => {
-                await forage.setItem(p.G_PUBLIC, unpacked)
+                await forage.setItem(p.G_PUBLIC, {
+                    G_PUBLIC: p.G_PUBLIC,
+                    ...unpacked,
+                })
                 return { ok: true }
             },
             async (ex) => ({ error: ex })
