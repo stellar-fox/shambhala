@@ -242,11 +242,11 @@ export const genUUID = () => codec.concatBytes(
  * Extract `timestamp`, `user agent id` and `random` component
  * from given `uuid`, which was generated using `genUUID()`.
  *
- * @function uuidDecode
+ * @function decodeUUID
  * @param {Uint8Array} uuid
  * @returns {Object}
  */
-export const uuidDecode = (uuid) => ({
+export const decodeUUID = (uuid) => ({
     timestamp: new Date(parseInt(codec.bytesToHex(uuid.slice(0, 6)), 16)),
     uaId: codec.bytesToHex(uuid.slice(6, 6 + 4)),
     rnd: codec.bytesToHex(uuid.slice(10, 10 + 6)),
