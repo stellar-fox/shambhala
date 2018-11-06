@@ -16,6 +16,7 @@ import {
 } from "@xcmats/js-toolbox"
 import {
     hash as stellarHash,
+    Keypair,
     Memo,
     Operation,
     StrKey,
@@ -79,13 +80,16 @@ export const inspectTSP = (tspXDR) => {
 
 
 /**
- * Sign `TransactionSignaturePayload` using given Stellar `Keypair` object.
+ * Sign `TransactionSignaturePayload` using given _stellar_ secret key.
  * Return `DecoratedSignature` (XDR).
  *
  * @function signTSP
- * @param {Object} kp StellarSDK.Keypair object
+ * @param {String} secret _stellar_ secret key
  * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
  * @returns {Uint8Array} XDR-encoded `DecoratedSignature`
  */
-export const signTSP = (kp, tspXDR) =>
-    kp.signDecorated(stellarHash(tspXDR)).toXDR()
+export const signTSP = (secret, tspXDR) =>
+    Keypair
+        .fromSecret(secret)
+        .signDecorated(stellarHash(tspXDR))
+        .toXDR()
