@@ -100,7 +100,8 @@ export default function generateSigningKeys (respond, logger) {
             SALT = salt64(),
 
             // PIN - will be read from the user
-            PIN = string.random(5, string.digits())
+            // this is a constant just for the testing purposes
+            PIN = "00000"
 
         // pretend this is UI
         logger.info("PIN:", PIN)

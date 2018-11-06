@@ -108,7 +108,8 @@ export default function signTransaction (respond, logger) {
 
 
         // PIN - will be read from the user
-        let PIN = string.random(5, string.digits())
+        // this is a constant just for the testing purposes
+        let PIN = "00000"
 
         // pretend this is UI
         logger.info("PIN:", PIN)
@@ -116,23 +117,24 @@ export default function signTransaction (respond, logger) {
 
 
 
-        // compute S_KEY
-        let S_KEY = await deriveKey(
-            codec.stringToBytes(PIN), SALT
-        )
-
-        // send S_KEY with TX_PAYLOAD to the server
-        let serverResponse = await handleRejection(
-            async () => await axios.post(
-                backend + message.SIGN_TRANSACTION,
-                {
-                    G_PUBLIC, C_UUID,
-                    S_KEY: codec.b64enc(S_KEY),
-                    TX_PAYLOAD: p.TX_PAYLOAD,
-                }
+        let
+            // compute S_KEY
+            S_KEY = await deriveKey(
+                codec.stringToBytes(PIN), SALT
             ),
-            async (ex) => ex.response
-        )
+
+            // send S_KEY with TX_PAYLOAD to the server
+            serverResponse = await handleRejection(
+                async () => await axios.post(
+                    backend + message.SIGN_TRANSACTION,
+                    {
+                        G_PUBLIC, C_UUID,
+                        S_KEY: codec.b64enc(S_KEY),
+                        TX_PAYLOAD: p.TX_PAYLOAD,
+                    }
+                ),
+                async (ex) => ex.response
+            )
 
         // [💥] destroy PIN and S_KEY
         PIN = null
