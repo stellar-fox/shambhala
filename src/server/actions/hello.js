@@ -30,12 +30,11 @@ export default function hello (db, _logger) {
 
         let dbStats = await db.many(sql(__dirname, pgStatsSQL))
 
-        res.status(200)
-            .send({
-                message: "shambhala - REST API",
-                version: 1,
-                dbStats,
-            })
+        res.status(200).send({
+            message: "shambhala - REST API",
+            version: 1,
+            dbStats,
+        })
 
         next()
 

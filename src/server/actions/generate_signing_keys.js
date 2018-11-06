@@ -35,36 +35,46 @@ export default function generateSigningKeys (db, logger) {
 
     return async (req, res, next) => {
 
-        // receive G_PUBLIC, C_UUID
-        let { G_PUBLIC, C_UUID } = req.body
+        let
+            // receive G_PUBLIC, C_UUID
+            { G_PUBLIC, C_UUID } = req.body,
 
-        // base64 decode S_KEY
-        let S_KEY = codec.b64dec(req.body.S_KEY)
+            // base64 decode S_KEY
+            S_KEY = codec.b64dec(req.body.S_KEY)
+
+
+
 
         logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
         logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
         logger.info("  ->    S_KEY:", string.shorten(req.body.S_KEY, 17))
 
-        // generate S_SECRET
-        let S_SECRET = Keypair.random().secret()
 
-        // extract S_PUBLIC from generated S_SECRET
-        let S_PUBLIC = Keypair.fromSecret(S_SECRET).publicKey()
 
-        // generate PEPPER
-        let PEPPER = cryptops.salt32()
 
-        // encrypt PEPPER and S_SECRET
-        let ENC_SKP = codec.b64enc(cryptops.encrypt(
-            S_KEY,
-            codec.concatBytes(
-                PEPPER,
-                codec.stringToBytes(S_SECRET)
-            )
-        ))
+        let
+            // generate S_SECRET
+            S_SECRET = Keypair.random().secret(),
 
-        // compute C_PASSPHRASE
-        let C_PASSPHRASE = codec.b64enc(cryptops.genKey(S_KEY, PEPPER))
+            // extract S_PUBLIC from generated S_SECRET
+            S_PUBLIC = Keypair.fromSecret(S_SECRET).publicKey(),
+
+            // generate PEPPER
+            PEPPER = cryptops.salt32(),
+
+            // encrypt PEPPER and S_SECRET
+            ENC_SKP = codec.b64enc(cryptops.encrypt(
+                S_KEY,
+                codec.concatBytes(
+                    PEPPER, codec.stringToBytes(S_SECRET)
+                )
+            )),
+
+            // compute C_PASSPHRASE
+            C_PASSPHRASE = codec.b64enc(cryptops.genKey(S_KEY, PEPPER))
+
+
+
 
         try {
 
@@ -76,8 +86,14 @@ export default function generateSigningKeys (db, logger) {
                     S_PUBLIC, ENC_SKP,
                 })
 
+
+
+
             logger.info("  <-     S_PUBLIC:", string.shorten(S_PUBLIC, 11))
             logger.info("  <- C_PASSPHRASE:", string.shorten(C_PASSPHRASE, 17))
+
+
+
 
             // all went smooth
             res.status(201)
@@ -86,6 +102,9 @@ export default function generateSigningKeys (db, logger) {
                     S_PUBLIC,
                     C_PASSPHRASE,
                 })
+
+
+
 
             // [💥] mark things to destroy
             S_KEY = null

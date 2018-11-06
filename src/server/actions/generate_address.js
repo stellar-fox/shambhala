@@ -46,14 +46,12 @@ export default function generateAddress (db, logger) {
                 })
 
             // all went smooth
-            res.status(201)
-                .send({ ok: true })
+            res.status(201).send({ ok: true })
 
         } catch (ex) {
 
             // unfortunately - error occured
-            res.status(500)
-                .send({ error: ex })
+            res.status(500).send({ error: ex })
             logger.error(ex)
 
         }

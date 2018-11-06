@@ -49,6 +49,9 @@ export default function signTransaction (db, logger) {
             // base64 decode TX_PAYLOAD
             TX_PAYLOAD = codec.b64dec(req.body.TX_PAYLOAD)
 
+
+
+
         logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
         logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
         logger.info("  ->       TX:", string.shorten(req.body.TX_PAYLOAD, 17))
@@ -87,8 +90,8 @@ export default function signTransaction (db, logger) {
 
 
 
-            logger.info("  <- S_SIGNATURE:", string.shorten(S_SIGNATURE, 17))
-            logger.info(" <- C_PASSPHRASE:", string.shorten(C_PASSPHRASE, 17))
+            logger.info("   <- S_SIGNATURE:", string.shorten(S_SIGNATURE, 17))
+            logger.info("  <- C_PASSPHRASE:", string.shorten(C_PASSPHRASE, 17))
 
 
 
