@@ -153,16 +153,16 @@ export default function generateSigningKeys (respond, logger) {
 
 
         let
-            // receive C_PASSPHRASE ...
+            // receive S_PUBLIC ...
             { S_PUBLIC } = serverResponse.data,
 
-            // ... and S_PUBLIC from the server
+            // ... and C_PASSPHRASE from the server
             C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE),
 
             // compute C_KEY
             C_KEY = await deriveKey(C_PASSPHRASE, SALT)
 
-        // [💥] destroy C_PASSPHRASE
+        // [💥] destroy C_PASSPHRASE (it was needed only to derive C_KEY)
         C_PASSPHRASE = null
 
 
