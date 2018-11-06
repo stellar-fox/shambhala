@@ -133,6 +133,7 @@ export default class Shambhala {
      */
     _ping = async () => {
         _store.messageHandler.postMessage(message.PING)
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(
@@ -140,6 +141,7 @@ export default class Shambhala {
                     1 * timeUnit.second
                 )
         )
+
         return data.hash
     }
 
@@ -200,11 +202,14 @@ export default class Shambhala {
      */
     generateAddress = async () => {
         await this._openShambhala()
+
         _store.messageHandler.postMessage(message.GENERATE_ADDRESS)
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(message.GENERATE_ADDRESS)
         )
+
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
     }
@@ -240,10 +245,12 @@ export default class Shambhala {
      */
     generateSigningKeys = async (accountId) => {
         await this._openShambhala()
+
         _store.messageHandler.postMessage(
             message.GENERATE_SIGNING_KEYS,
             { G_PUBLIC: accountId }
         )
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(
@@ -251,6 +258,7 @@ export default class Shambhala {
                     20 * timeUnit.second
                 )
         )
+
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
             S_PUBLIC: data.S_PUBLIC,
@@ -279,6 +287,7 @@ export default class Shambhala {
         accountId, sequence, networkPassphrase
     ) => {
         await this._openShambhala()
+
         _store.messageHandler.postMessage(
             message.GENERATE_SIGNED_KEY_ASSOC_TX,
             {
@@ -287,10 +296,12 @@ export default class Shambhala {
                 networkPassphrase,
             }
         )
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
+
         if (data.ok) return new Transaction(data.tx)
         else throw new Error(data.error)
     }
@@ -329,14 +340,17 @@ export default class Shambhala {
      */
     backup = async (accountId) => {
         await this._openShambhala()
+
         _store.messageHandler.postMessage(
             message.BACKUP,
             { G_PUBLIC: accountId }
         )
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(message.BACKUP)
         )
+
         if (data.ok) return data.payload
         else throw new Error(data.error)
     }
@@ -358,14 +372,17 @@ export default class Shambhala {
      */
     restore = async (accountId, payload) => {
         await this._openShambhala()
+
         _store.messageHandler.postMessage(
             message.RESTORE,
             { G_PUBLIC: accountId, payload }
         )
+
         let data = await (
             _store.messageHandler
                 .receiveMessage(message.RESTORE)
         )
+
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
             S_PUBLIC: data.S_PUBLIC,
@@ -394,17 +411,40 @@ export default class Shambhala {
 
     /**
      * On behalf of an `account id` sign a given `transaction` (provided as
-     * `StellarSDK.xdr.TransactionSignaturePayload`).
-     * Returns array of `StellarSDK.xdr.DecoratedSignature`.
+     * `StellarSDK.Transaction`). Returns signed `StellarSDK.Transaction`.
      *
      * @async
      * @instance
      * @method signTransaction
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
-     * @param {Uint8Array} transaction
-     * @returns {Promise.<Array>}
+     * @param {Transaction} transaction Transaction to sign.
+     * @returns {Promise.<Transaction>} Signed transaction.
      */
-    signTransaction = (_accountId, _transaction) =>
-        Promise.reject([codec.stringToBytes("NOT IMPLEMENTED")])
+    signTransaction = async (accountId, transaction) => {
+        await this._openShambhala()
+
+        let signedTransaction = new Transaction(transaction.toEnvelope())
+
+        _store.messageHandler.postMessage(
+            message.SIGN_TRANSACTION,
+            {
+                G_PUBLIC: accountId,
+                TX_PAYLOAD: codec.b64enc(signedTransaction.signatureBase()),
+            }
+        )
+
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.SIGN_TRANSACTION)
+        )
+
+        if (data.ok) {
+            signedTransaction.signatures.push(codec.b64dec(data.C_SIGNATURE))
+            signedTransaction.signatures.push(codec.b64dec(data.S_SIGNATURE))
+            return signedTransaction
+        }
+        else throw new Error(data.error)
+    }
+
 }
