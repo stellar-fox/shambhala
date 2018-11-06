@@ -10,10 +10,15 @@
 
 
 
-import * as cryptops from "../../lib/cryptops"
+import {
+    encrypt,
+    genKey,
+    salt32,
+} from "../../lib/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
     codec,
+    func,
     string,
 } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
@@ -60,18 +65,22 @@ export default function generateSigningKeys (db, logger) {
             S_PUBLIC = Keypair.fromSecret(S_SECRET).publicKey(),
 
             // generate PEPPER
-            PEPPER = cryptops.salt32(),
+            PEPPER = salt32(),
 
             // encrypt PEPPER and S_SECRET
-            ENC_SKP = codec.b64enc(cryptops.encrypt(
+            ENC_SKP = func.compose(
+                codec.b64enc, encrypt
+            )(
                 S_KEY,
                 codec.concatBytes(
                     PEPPER, codec.stringToBytes(S_SECRET)
                 )
-            )),
+            ),
 
             // compute C_PASSPHRASE
-            C_PASSPHRASE = codec.b64enc(cryptops.genKey(S_KEY, PEPPER))
+            C_PASSPHRASE = func.compose(
+                codec.b64enc, genKey
+            )(S_KEY, PEPPER)
 
 
 
@@ -96,12 +105,11 @@ export default function generateSigningKeys (db, logger) {
 
 
             // all went smooth
-            res.status(201)
-                .send({
-                    ok: true,
-                    S_PUBLIC,
-                    C_PASSPHRASE,
-                })
+            res.status(201).send({
+                ok: true,
+                S_PUBLIC,
+                C_PASSPHRASE,
+            })
 
 
 
@@ -115,8 +123,7 @@ export default function generateSigningKeys (db, logger) {
         } catch (ex) {
 
             // unfortunately - error occured
-            res.status(500)
-                .send({ error: ex })
+            res.status(500).send({ error: ex })
             logger.error(ex)
 
         }
