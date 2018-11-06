@@ -126,6 +126,10 @@ export default function generateSigningKeys (respond, logger) {
                 async (ex) => ex.response
             )
 
+        // [💥] destroy PIN and S_KEY
+        PIN = null
+        S_KEY = null
+
         // unfortunately - an error occured
         if (
             serverResponse.status !== 201  ||
