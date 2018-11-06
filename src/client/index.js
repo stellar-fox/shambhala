@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Client application (frontend).
+ * Client application (frontend-logic-controller).
  *
  * @module client-app
  * @license Apache-2.0
@@ -26,6 +26,7 @@ import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 import backup from "./actions/backup"
 import restore from "./actions/restore"
+import signTransaction from "./actions/sign_transaction"
 
 import "./index.css"
 
@@ -73,74 +74,59 @@ window.addEventListener("load", async () => {
 
 
     // instantiate message handler
-    const messageHandler = new MessageHandler(hostDomain)
+    const
+        messageHandler = new MessageHandler(hostDomain),
+        postMessageBinder = func.partial(messageHandler.postMessage)
     messageHandler.setRecipient(window.opener, "root")
 
 
-    // ping-pong
-    messageHandler.handle(message.PING,
-        pingPong(
-            func.partial(
-                messageHandler.postMessage
-            )(message.PONG),
-            logger
-        )
-    )
 
 
-    // account generation
-    messageHandler.handle(message.GENERATE_ADDRESS,
-        generateAddress(
-            func.partial(
-                messageHandler.postMessage
-            )(message.GENERATE_ADDRESS),
-            context, logger
-        )
-    )
+    // ping-pong action
+    messageHandler.handle(message.PING, pingPong(
+        postMessageBinder(message.PONG), logger
+    ))
 
 
-    // signing keys generation
-    messageHandler.handle(message.GENERATE_SIGNING_KEYS,
-        generateSigningKeys(
-            func.partial(
-                messageHandler.postMessage
-            )(message.GENERATE_SIGNING_KEYS),
-            logger
-        )
-    )
+    // account generation action
+    messageHandler.handle(message.GENERATE_ADDRESS, generateAddress(
+        postMessageBinder(message.GENERATE_ADDRESS), context, logger
+    ))
 
 
-    // automatic keys association
+    // signing keys generation action
+    messageHandler.handle(message.GENERATE_SIGNING_KEYS, generateSigningKeys(
+        postMessageBinder(message.GENERATE_SIGNING_KEYS), logger
+    ))
+
+
+    // automatic keys association action
     messageHandler.handle(message.GENERATE_SIGNED_KEY_ASSOC_TX,
         generateSignedKeyAssocTx(
-            func.partial(
-                messageHandler.postMessage
-            )(message.GENERATE_SIGNED_KEY_ASSOC_TX),
+            postMessageBinder(message.GENERATE_SIGNED_KEY_ASSOC_TX),
             context, logger
         )
     )
 
 
-    // backup
-    messageHandler.handle(message.BACKUP,
-        backup(
-            func.partial(
-                messageHandler.postMessage
-            )(message.BACKUP),
-            logger
-        )
-    )
+    // backup action
+    messageHandler.handle(message.BACKUP, backup(
+        postMessageBinder(message.BACKUP), logger
+    ))
 
 
-    // restore
-    messageHandler.handle(message.RESTORE,
-        restore(
-            func.partial(
-                messageHandler.postMessage
-            )(message.RESTORE),
-            logger
-        )
-    )
+    // restore action
+    messageHandler.handle(message.RESTORE, restore(
+        postMessageBinder(message.RESTORE), logger
+    ))
+
+
+    // sign transaction action
+    messageHandler.handle(message.SIGN_TRANSACTION, signTransaction(
+        postMessageBinder(message.SIGN_TRANSACTION), logger
+    ))
+
+
 
 
     // report readiness
