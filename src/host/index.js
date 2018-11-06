@@ -289,7 +289,7 @@ export const testPieces = (context, logger) => {
 
 
 const
-    // "global" variables context
+    // local memory, volatile context/store
     context = {},
 
     // console logger
@@ -302,35 +302,40 @@ const
 
 
 // gentle start
-window.addEventListener("load", async () => {
+if (type.isObject(window) && window.addEventListener) {
 
-    // greet
-    logger.info("Hi there! 🌴")
+    window.addEventListener("load", async () => {
 
-
-    // entertain...
-    const toy = document.getElementById("toy")
-    async.repeat(async () => {
-        toy.innerHTML = drawEmojis(randomInt() % 4 + 1).join(string.space())
-        await async.delay(0.8 * timeUnit.second)
-    }, () => true)
+        // greet
+        logger.info("Hi there! 🌴")
 
 
-    // expose `sf` dev. namespace
-    if (devEnv()  &&  type.isObject(window)) {
-        window.sf = {
-            ...await dynamicImportLibs(),
-            context, logger, testing,
+        // expose `sf` dev. namespace
+        if (devEnv()  &&  type.isObject(window)) {
+            window.sf = {
+                ...await dynamicImportLibs(),
+                context, logger, testing,
+            }
         }
-    }
 
 
-    // do meaningful stuff (instruct how to do so)
-    logger.info(
-        "Try one of these:\n",
-        Object.keys(testing.scenario).map(
-            (n) => `sf.testing.scenario.${n}()`
-        ).join("\n ")
-    )
+        // entertain...
+        const toy = document.getElementById("toy")
+        async.repeat(async () => {
+            toy.innerHTML =
+                drawEmojis(randomInt() % 4 + 1).join(string.space())
+            await async.delay(0.8 * timeUnit.second)
+        }, () => true)
 
-})
+
+        // do meaningful stuff (instruct how to do so)
+        logger.info(
+            "Try one of these:\n",
+            Object.keys(testing.scenario).map(
+                (n) => `sf.testing.scenario.${n}()`
+            ).join("\n ")
+        )
+
+    })
+
+}
