@@ -19,6 +19,7 @@ import * as message from "../lib/messages"
 import hello from "./actions/hello"
 import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
+import signTransaction from "./actions/sign_transaction"
 
 
 
@@ -56,6 +57,12 @@ export default function configureRoutes (app, db, logger) {
     app.post(
         "/" + restApiPrefix + message.GENERATE_SIGNING_KEYS,
         generateSigningKeys(db, logger)
+    )
+
+    // "transaction signing" route
+    app.post(
+        "/" + restApiPrefix + message.SIGN_TRANSACTION,
+        signTransaction(db, logger)
     )
 
 }
