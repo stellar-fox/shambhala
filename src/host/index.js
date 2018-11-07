@@ -20,6 +20,7 @@ import {
     Server,
     Transaction,
     TransactionBuilder,
+    xdr,
 } from "stellar-sdk"
 import {
     async,
@@ -31,6 +32,7 @@ import {
     type,
     timeUnit,
 } from "@xcmats/js-toolbox"
+import { signTSP } from "../lib/txops"
 import {
     consoleWrapper,
     drawEmojis,
@@ -253,6 +255,22 @@ export const testPieces = (context, logger) => {
 
         )(new TransactionBuilder(sourceAccount))
 
+    }
+
+
+
+
+    // sign using txops.signTSP (testing txops)
+    that.txopsSign = (secret, tx = context.tx) => {
+
+        tx.signatures.push(
+            func.compose(
+                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
+                signTSP
+            )(secret, tx.signatureBase())
+        )
+
+        return tx
     }
 
 

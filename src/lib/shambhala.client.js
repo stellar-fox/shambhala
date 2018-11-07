@@ -12,11 +12,15 @@
 
 import {
     codec,
+    func,
     // string,
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
-import { Transaction } from "stellar-sdk"
+import {
+    Transaction,
+    xdr,
+} from "stellar-sdk"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
@@ -434,14 +438,21 @@ export default class Shambhala {
             }
         )
 
-        let data = await (
-            _store.messageHandler
-                .receiveMessage(message.SIGN_TRANSACTION)
-        )
+        let
+            data = await (
+                _store.messageHandler
+                    .receiveMessage(message.SIGN_TRANSACTION)
+            ),
+            b64ToSignature = func.compose(
+                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
+                codec.b64dec
+            )
 
         if (data.ok) {
-            signedTransaction.signatures.push(codec.b64dec(data.C_SIGNATURE))
-            signedTransaction.signatures.push(codec.b64dec(data.S_SIGNATURE))
+            signedTransaction.signatures.push(
+                b64ToSignature(data.C_SIGNATURE),
+                b64ToSignature(data.S_SIGNATURE)
+            )
             return signedTransaction
         }
         else throw new Error(data.error)
