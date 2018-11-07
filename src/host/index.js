@@ -13,6 +13,7 @@
 import axios from "axios"
 import {
     Asset,
+    Keypair,
     Memo,
     Network,
     Networks,
@@ -23,6 +24,7 @@ import {
     xdr,
 } from "stellar-sdk"
 import {
+    array,
     async,
     devEnv,
     func,
@@ -58,23 +60,6 @@ export const testPieces = (context, logger) => {
 
 
 
-    // instantiate client
-    that.instantiate = async (
-        url = clientDomain + registrationPath + "shambhala.html"
-    ) => {
-
-        if (!type.isObject(context.shambhala)) {
-            context.shambhala = new Shambhala(url)
-            context.shambhalaUrl = url
-        }
-
-        logger.info(`Instance pointing to ${string.quote(url)} created.`)
-
-    }
-
-
-
-
     // choose network and _stellar_ horizon server
     that.setEnv = async ({
         network = Networks.TESTNET,
@@ -89,6 +74,23 @@ export const testPieces = (context, logger) => {
 
         logger.info(`Network: ${string.quote(network)}`)
         logger.info(` Server: ${horizonUrl}`)
+
+    }
+
+
+
+
+    // instantiate client
+    that.instantiate = async (
+        url = clientDomain + registrationPath + "shambhala.html"
+    ) => {
+
+        if (!type.isObject(context.shambhala)) {
+            context.shambhala = new Shambhala(url)
+            context.shambhalaUrl = url
+        }
+
+        logger.info(`Instance pointing to ${string.quote(url)} created.`)
 
     }
 
@@ -213,7 +215,21 @@ export const testPieces = (context, logger) => {
 
     // build transaction sending >>value<< from `source` to `destination`
     // if `destination` doesn't exists it'll be created
-    that.transferMoney = async (source, destination, amount) => {
+    that.transferMoney = async (
+        source, destination, amount,
+        memoText = "https://bit.ly/shambhalasrc"
+    ) => {
+
+        logger.info(
+            "Building test transaction:\n",
+            "[",
+            string.quote(string.shorten(source, 11)),
+            "->",
+            string.quote(string.shorten(destination, 11)),
+            "],",
+            `amount: ${amount} XLM,`,
+            `memo: ${string.quote(memoText)}`
+        )
 
         let
             // try loading `sourceAccount`
@@ -228,32 +244,38 @@ export const testPieces = (context, logger) => {
             destinationAccount = await handleRejection(
                 context.server.loadAccount.bind(context.server, destination),
                 () => null
-            )
+            ),
 
-        return func.compose(
+            tx = func.compose(
 
-            // build the transaction
-            (tb) => tb.build(),
+                // build the transaction
+                (tb) => tb.build(),
 
-            // add memo
-            (tb) => tb.addMemo(Memo.text("https://bit.ly/shambhalasrc")),
+                // add memo
+                (tb) => tb.addMemo(Memo.text(memoText)),
 
-            destinationAccount ?
+                destinationAccount ?
 
-                // if `destination` exists - create payment
-                (tb) => tb.addOperation(Operation.payment({
-                    destination,
-                    asset: Asset.native(),
-                    amount: String(amount),
-                })) :
+                    // if `destination` exists - create payment
+                    (tb) => tb.addOperation(Operation.payment({
+                        destination,
+                        asset: Asset.native(),
+                        amount: String(amount),
+                    })) :
 
-                // if `destination` doesn't exist - create account
-                (tb) => tb.addOperation(Operation.createAccount({
-                    destination,
-                    startingBalance: String(amount),
-                }))
+                    // if `destination` doesn't exist - create account
+                    (tb) => tb.addOperation(Operation.createAccount({
+                        destination,
+                        startingBalance: String(amount),
+                    }))
 
-        )(new TransactionBuilder(sourceAccount))
+            )(new TransactionBuilder(sourceAccount))
+
+        context.tx = tx
+
+        logger.info("Transaction built.")
+
+        return tx
 
     }
 
@@ -329,8 +351,6 @@ export const testPieces = (context, logger) => {
         // eslint-disable-next-line no-console
         console.time("Account Creation")
 
-        await that.instantiate()
-        await that.setEnv()
         await that.generateAddress()
         await that.generateSigningKeys()
         await that.createAccountOnLedger()
@@ -354,14 +374,57 @@ export const testPieces = (context, logger) => {
         // eslint-disable-next-line no-console
         console.time("Backup-Restore")
 
-        await that.instantiate()
-        await that.setEnv()
         await that.backup()
         await that.restore()
 
         // eslint-disable-next-line no-console
         console.timeEnd("Backup-Restore")
         logger.info("Backup-Restore Test END")
+        return context
+
+    }
+
+
+
+
+    // ...
+    that.scenario.wasteSomeMoney = async (
+        source = context.G_PUBLIC,
+        destination = null,
+        amount = null,
+        memoText = "https://bit.ly/shambhalasrc"
+    ) => {
+
+        logger.info("Transaction-Signing Test BEGIN")
+        // eslint-disable-next-line no-console
+        console.time("Transaction-Signing")
+
+        let randomDestination = null
+
+        if (!destination) {
+            randomDestination = Keypair.random()
+            logger.info("Using some random, ad-hoc generated destination.")
+        }
+
+        await that.transferMoney(
+            source,
+            destination || randomDestination.publicKey(),
+            amount || array.head(array.sparse(10, 100, 1)),
+            memoText
+        )
+        await that.sign(source)
+        await that.submitTransaction()
+
+        if (!destination) {
+            logger.info(
+                "Here's destination SECRET:",
+                randomDestination.secret()
+            )
+        }
+
+        // eslint-disable-next-line no-console
+        console.timeEnd("Transaction-Signing")
+        logger.info("Transaction-Signing Test END")
         return context
 
     }
