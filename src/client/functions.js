@@ -10,8 +10,13 @@
 
 
 
-import { async } from "@xcmats/js-toolbox"
+import {
+    async,
+    codec,
+    func,
+} from "@xcmats/js-toolbox"
 import forage from "localforage"
+import { decodeUUID } from "../lib/cryptops"
 
 
 
@@ -22,7 +27,22 @@ import forage from "localforage"
  * @function getAllClientData
  * @returns {Promise.<Array>}
  */
-export const getAllClientData = async () =>
-    await async.map(await forage.keys(), async (G_PUBLIC) =>
-        await forage.getItem(G_PUBLIC)
+export const getAllClientData = async () => {
+
+    let timestamp = func.compose(
+        (dUUID) => dUUID.timestamp,
+        decodeUUID,
+        codec.hexToBytes,
+        (key) => key.C_UUID
     )
+
+    return (
+        await async.map(
+            await forage.keys(),
+            forage.getItem.bind(forage)
+        )
+    )
+        .map((item) => ({ _ts: timestamp(item), ...item }))
+        .sort((a, b) => timestamp(a).getTime() - timestamp(b).getTime())
+
+}
