@@ -18,7 +18,10 @@ import {
 } from "@xcmats/js-toolbox"
 import { salt64 } from "../lib/cryptops"
 import MessageHandler from "../lib/message.handler"
-import { consoleWrapper } from "../lib/utils"
+import {
+    consoleWrapper,
+    to_,
+} from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
 import { originWhitelist } from "../config/env"
@@ -63,11 +66,13 @@ if (type.isObject(window) && window.addEventListener) {
         logger.info("Boom! 💥")
 
         // expose `sf` dev. namespace
-        if (devEnv()  &&  type.isObject(window)) {
+        // and some convenience shortcuts
+        if (devEnv()) {
             window.sf = {
                 ...await dynamicImportLibs(),
-                context, functions, logger,
+                context, functions, message, logger,
             }
+            window.to_ = to_
         }
 
         // get claimed origin (domain of the host application)
@@ -86,6 +91,11 @@ if (type.isObject(window) && window.addEventListener) {
             messageHandler = new MessageHandler(hostDomain),
             postMessageBinder = func.partial(messageHandler.postMessage)
         messageHandler.setRecipient(window.opener, "root")
+
+        // expose message handler
+        if (devEnv() && window.sf) {
+            window.sf.messageHandler = messageHandler
+        }
 
 
 
