@@ -12,15 +12,20 @@
 
 import axios from "axios"
 import {
+    Asset,
+    Memo,
     Network,
     Networks,
+    Operation,
     Server,
     Transaction,
+    TransactionBuilder,
 } from "stellar-sdk"
 import {
     async,
     devEnv,
     func,
+    handleRejection,
     randomInt,
     string,
     type,
@@ -204,6 +209,55 @@ export const testPieces = (context, logger) => {
 
 
 
+    // build transaction sending >>value<< from `source` to `destination`
+    // if `destination` doesn't exists it'll be created
+    that.transferMoney = async (source, destination, amount) => {
+
+        let
+            // try loading `sourceAccount`
+            // if it doesn't exist - let the exception propagate out
+            // as nothing can be done in such case
+            sourceAccount = await context.server.loadAccount(source),
+
+            // try loading `destinationAccount`, but handle
+            // the eventual rejection - if there is no `destination`
+            // then it shall be created,
+            // so `destinationAccount` can be set to null
+            destinationAccount = await handleRejection(
+                context.server.loadAccount.bind(context.server, destination),
+                () => null
+            )
+
+        return func.compose(
+
+            // build the transaction
+            (tb) => tb.build(),
+
+            // add memo
+            (tb) => tb.addMemo(Memo.text("http://bit.ly/shambhalasrc")),
+
+            destinationAccount ?
+
+                // if `destination` exists - create payment
+                (tb) => tb.addOperation(Operation.payment({
+                    destination,
+                    asset: Asset.native(),
+                    amount: String(amount),
+                })) :
+
+                // if `destination` doesn't exist - create account
+                (tb) => tb.addOperation(Operation.createAccount({
+                    destination,
+                    startingBalance: String(amount),
+                }))
+
+        )(new TransactionBuilder(sourceAccount))
+
+    }
+
+
+
+
     // backup (test)
     that.backup = async (G_PUBLIC = context.G_PUBLIC) => {
 
@@ -312,11 +366,13 @@ if (type.isObject(window) && window.addEventListener) {
 
 
         // expose `sf` dev. namespace
-        if (devEnv()  &&  type.isObject(window)) {
+        // and some convenience shortcuts
+        if (devEnv()) {
             window.sf = {
                 ...await dynamicImportLibs(),
                 context, logger, testing,
             }
+            window.to_ = to_
         }
 
 
@@ -335,9 +391,8 @@ if (type.isObject(window) && window.addEventListener) {
         await context.shambhala._openShambhala()
 
 
-        // some dev. convenience shortcuts
-        if (type.isObject(window)) {
-            window.to_ = to_
+        // expose stellar server
+        if (devEnv()) {
             window.ss = context.server
         }
 
