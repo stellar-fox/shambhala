@@ -12,7 +12,6 @@
 
 import {
     codec,
-    func,
     // string,
     timeUnit,
     type,
@@ -436,23 +435,18 @@ export default class Shambhala {
             }
         )
 
-        let
-            data = await (
-                _store.messageHandler
-                    .receiveMessage(
-                        message.SIGN_TRANSACTION,
-                        20 * timeUnit.second
-                    )
-            ),
-            b64ToSignature = func.compose(
-                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
-                codec.b64dec
-            )
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(
+                    message.SIGN_TRANSACTION,
+                    20 * timeUnit.second
+                )
+        )
 
         if (data.ok) {
             transaction.signatures.push(
-                b64ToSignature(data.C_SIGNATURE),
-                b64ToSignature(data.S_SIGNATURE)
+                xdr.DecoratedSignature.fromXDR(data.C_SIGNATURE, "base64"),
+                xdr.DecoratedSignature.fromXDR(data.S_SIGNATURE, "base64")
             )
             return transaction
         }
