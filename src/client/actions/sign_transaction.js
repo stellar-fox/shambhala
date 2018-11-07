@@ -183,7 +183,10 @@ export default function signTransaction (respond, logger) {
             )(C_KEY, codec.b64dec(ENC_CKP)),
 
             // sign TX_PAYLOAD with C_SECRET
-            C_SIGNATURE = signTSP(C_SECRET, TX_PAYLOAD)
+            C_SIGNATURE = func.compose(
+                codec.b64enc,
+                signTSP
+            )(C_SECRET, TX_PAYLOAD)
 
 
         // [💥] destroy C_KEY and C_SECRET
@@ -196,11 +199,13 @@ export default function signTransaction (respond, logger) {
         // respond to the host application
         respond({
             ok: true,
-            C_SIGNATURE: codec.b64enc(C_SIGNATURE),
+            C_SIGNATURE,
             S_SIGNATURE: serverResponse.data.S_SIGNATURE,
         })
 
-        logger.info("Transaction signatures succesfully generated")
+        logger.info("Transaction signatures succesfully generated:")
+        logger.info("C_SIGNATURE:", C_SIGNATURE)
+        logger.info("S_SIGNATURE:", serverResponse.data.S_SIGNATURE)
 
     }
 
