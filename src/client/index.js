@@ -20,6 +20,7 @@ import { salt64 } from "../lib/cryptops"
 import MessageHandler from "../lib/message.handler"
 import { consoleWrapper } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
+import * as functions from "./functions"
 import { originWhitelist } from "../config/env"
 import * as message from "../lib/messages"
 
@@ -65,7 +66,7 @@ if (type.isObject(window) && window.addEventListener) {
         if (devEnv()  &&  type.isObject(window)) {
             window.sf = {
                 ...await dynamicImportLibs(),
-                context, logger,
+                context, functions, logger,
             }
         }
 
