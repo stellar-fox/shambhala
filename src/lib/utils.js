@@ -63,3 +63,19 @@ export const drawEmojis = ((emojis) =>
     "🐢", "👻", "🔨", "🍕", "🚀", "🚗", "⛅️", "🐼",
     "🍷", "🌹", "💰", "📷", "👍", "🍒", "⚽️", "⏳",
 ])
+
+
+
+
+/**
+ * Assign argument to the global object.
+ * Async-console-dev-helper.
+ *
+ * @function to_
+ * @param {*}
+ * @returns {*}
+ */
+export const to_ = (_) => {
+    (window || self || global || this)._ = _
+    return _
+}
