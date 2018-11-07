@@ -24,6 +24,7 @@ import { Keypair } from "stellar-sdk"
 import {
     access,
     codec,
+    func,
     handleRejection,
     string,
 } from "@xcmats/js-toolbox"
@@ -120,7 +121,7 @@ export default function signTransaction (respond, logger) {
         let
             // compute S_KEY
             S_KEY = await deriveKey(
-                codec.stringToBytes(PIN), SALT
+                codec.stringToBytes(PIN), codec.b64dec(SALT)
             ),
 
             // send S_KEY with TX_PAYLOAD to the server
@@ -142,7 +143,7 @@ export default function signTransaction (respond, logger) {
 
         // unfortunately - an error occured
         if (
-            serverResponse.status !== 201  ||
+            serverResponse.status !== 200  ||
             !access(serverResponse, ["data", "ok"], false)
         ) {
 
@@ -162,29 +163,31 @@ export default function signTransaction (respond, logger) {
 
 
 
-        let
-            // receive C_PASSPHRASE
-            C_PASSPHRASE = codec.b64dec(serverResponse.data.C_PASSPHRASE),
-
-            // compute C_KEY
-            C_KEY = await deriveKey(C_PASSPHRASE, SALT)
+        // compute C_KEY based on received C_PASSPHRASE and stored SALT
+        let C_KEY = await deriveKey(
+            codec.b64dec(serverResponse.data.C_PASSPHRASE),
+            codec.b64dec(SALT)
+        )
 
         // [💥] destroy C_PASSPHRASE
-        C_PASSPHRASE = null
+        delete serverResponse.data.C_PASSPHRASE
 
 
 
 
-        // decrypt C_SECRET
-        let C_SECRET = decrypt(C_KEY, codec.b64dec(ENC_CKP))
+        let
+            // decrypt C_SECRET
+            C_SECRET = func.compose(
+                codec.bytesToString,
+                decrypt
+            )(C_KEY, codec.b64dec(ENC_CKP)),
 
-        // [💥] destroy C_KEY
+            // sign TX_PAYLOAD with C_SECRET
+            C_SIGNATURE = signTSP(C_SECRET, TX_PAYLOAD)
+
+
+        // [💥] destroy C_KEY and C_SECRET
         C_KEY = null
-
-        // sign TX_PAYLOAD with C_SECRET
-        let C_SIGNATURE = signTSP(C_SECRET, TX_PAYLOAD)
-
-        // [💥] destroy C_SECRET
         C_SECRET = null
 
 

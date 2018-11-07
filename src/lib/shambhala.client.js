@@ -428,20 +428,21 @@ export default class Shambhala {
     signTransaction = async (accountId, transaction) => {
         await this._openShambhala()
 
-        let signedTransaction = new Transaction(transaction.toEnvelope())
-
         _store.messageHandler.postMessage(
             message.SIGN_TRANSACTION,
             {
                 G_PUBLIC: accountId,
-                TX_PAYLOAD: codec.b64enc(signedTransaction.signatureBase()),
+                TX_PAYLOAD: codec.b64enc(transaction.signatureBase()),
             }
         )
 
         let
             data = await (
                 _store.messageHandler
-                    .receiveMessage(message.SIGN_TRANSACTION)
+                    .receiveMessage(
+                        message.SIGN_TRANSACTION,
+                        20 * timeUnit.second
+                    )
             ),
             b64ToSignature = func.compose(
                 xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
@@ -449,11 +450,11 @@ export default class Shambhala {
             )
 
         if (data.ok) {
-            signedTransaction.signatures.push(
+            transaction.signatures.push(
                 b64ToSignature(data.C_SIGNATURE),
                 b64ToSignature(data.S_SIGNATURE)
             )
-            return signedTransaction
+            return transaction
         }
         else throw new Error(data.error)
     }

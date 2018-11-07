@@ -236,7 +236,7 @@ export const testPieces = (context, logger) => {
             (tb) => tb.build(),
 
             // add memo
-            (tb) => tb.addMemo(Memo.text("http://bit.ly/shambhalasrc")),
+            (tb) => tb.addMemo(Memo.text("https://bit.ly/shambhalasrc")),
 
             destinationAccount ?
 
@@ -271,6 +271,21 @@ export const testPieces = (context, logger) => {
         )
 
         return tx
+    }
+
+
+
+
+    // sign the transaction `tx` on behalf of an `accountId`
+    // https://bit.ly/shambhalasigning
+    that.sign = async (accountId = context.G_PUBLIC, tx = context.tx) => {
+
+        logger.info("Request transaction to be signed by shambhala.")
+
+        await context.shambhala.signTransaction(accountId, tx)
+
+        logger.info("Success!")
+
     }
 
 
