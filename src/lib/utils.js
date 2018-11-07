@@ -75,7 +75,8 @@ export const drawEmojis = ((emojis) =>
  * @param {*}
  * @returns {*}
  */
-export const to_ = (_) => {
-    (window || self || global || this)._ = _
-    return _
-}
+export const to_ = (name = "_") =>
+    (_) => {
+        (window || self || global || this)[name] = _
+        return _
+    }

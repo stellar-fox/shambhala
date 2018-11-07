@@ -29,6 +29,7 @@ import {
 import {
     consoleWrapper,
     drawEmojis,
+    to_,
 } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import {
@@ -328,7 +329,20 @@ if (type.isObject(window) && window.addEventListener) {
         }, () => true)
 
 
-        // do meaningful stuff (instruct how to do so)
+        // do meaningful stuff
+        await testing.setEnv()
+        await testing.instantiate()
+        await context.shambhala._openShambhala()
+
+
+        // some dev. convenience shortcuts
+        if (type.isObject(window)) {
+            window.to_ = to_
+            window.ss = context.server
+        }
+
+
+        // instruct what to do next
         logger.info(
             "Try one of these:\n",
             Object.keys(testing.scenario).map(
