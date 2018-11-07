@@ -204,8 +204,14 @@ export default function signTransaction (respond, logger) {
         })
 
         logger.info("Transaction signatures succesfully generated:")
-        logger.info("C_SIGNATURE:", C_SIGNATURE)
-        logger.info("S_SIGNATURE:", serverResponse.data.S_SIGNATURE)
+        logger.info(
+            "C_SIGNATURE:",
+            string.quote(C_SIGNATURE)
+        )
+        logger.info(
+            "S_SIGNATURE:",
+            string.quote(serverResponse.data.S_SIGNATURE)
+        )
 
     }
 
