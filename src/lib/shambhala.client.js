@@ -16,10 +16,7 @@ import {
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
-import {
-    Transaction,
-    xdr,
-} from "stellar-sdk"
+import { Transaction } from "stellar-sdk"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
@@ -421,17 +418,17 @@ export default class Shambhala {
      * @method signTransaction
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
-     * @param {Transaction} transaction Transaction to sign.
-     * @returns {Promise.<Transaction>} Signed transaction.
+     * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
+     * @returns {Promise.<Array>} Array of b64-XDR-ecoded `DecoratedSignature`.
      */
-    signTransaction = async (accountId, transaction) => {
+    signTransaction = async (accountId, tspXDR) => {
         await this._openShambhala()
 
         _store.messageHandler.postMessage(
             message.SIGN_TRANSACTION,
             {
                 G_PUBLIC: accountId,
-                TX_PAYLOAD: codec.b64enc(transaction.signatureBase()),
+                TX_PAYLOAD: codec.b64enc(tspXDR),
             }
         )
 
@@ -443,13 +440,10 @@ export default class Shambhala {
                 )
         )
 
-        if (data.ok) {
-            transaction.signatures.push(
-                xdr.DecoratedSignature.fromXDR(data.C_SIGNATURE, "base64"),
-                xdr.DecoratedSignature.fromXDR(data.S_SIGNATURE, "base64")
-            )
-            return transaction
-        }
+        if (data.ok) return [
+            data.C_SIGNATURE,
+            data.S_SIGNATURE,
+        ]
         else throw new Error(data.error)
     }
 
