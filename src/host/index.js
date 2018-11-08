@@ -215,7 +215,7 @@ export const testPieces = (context, logger) => {
 
     // build transaction sending >>value<< from `source` to `destination`
     // if `destination` doesn't exists it'll be created
-    that.transferMoney = async (
+    that.buildTransferTransaction = async (
         source, destination, amount,
         memoText = "https://bit.ly/shambhalasrc"
     ) => {
@@ -304,7 +304,15 @@ export const testPieces = (context, logger) => {
 
         logger.info("Request transaction to be signed by shambhala.")
 
-        await context.shambhala.signTransaction(accountId, tx)
+        tx.signatures.push(
+            ...(
+                await context.shambhala.signTransaction(
+                    accountId, tx.signatureBase()
+                )
+            ).map(
+                (sigXDR) => xdr.DecoratedSignature.fromXDR(sigXDR, "base64")
+            )
+        )
 
         logger.info("Success!")
 
@@ -345,7 +353,7 @@ export const testPieces = (context, logger) => {
 
 
     // ...
-    that.scenario.accountCreation = async () => {
+    that.scenario.createAccount = async () => {
 
         logger.info("Account Creation Test BEGIN")
         // eslint-disable-next-line no-console
@@ -388,7 +396,7 @@ export const testPieces = (context, logger) => {
 
 
     // ...
-    that.scenario.wasteSomeMoney = async (
+    that.scenario.transferMoney = async (
         source = context.G_PUBLIC,
         destination = null,
         amount = null,
@@ -406,7 +414,7 @@ export const testPieces = (context, logger) => {
             logger.info("Using some random, ad-hoc generated destination.")
         }
 
-        await that.transferMoney(
+        await that.buildTransferTransaction(
             source,
             destination || randomDestination.publicKey(),
             amount || array.head(array.sparse(10, 100, 1)),
@@ -485,12 +493,6 @@ if (type.isObject(window) && window.addEventListener) {
         await testing.setEnv()
         await testing.instantiate()
         await context.shambhala._openShambhala()
-
-
-        // expose stellar server
-        if (devEnv()) {
-            window.ss = context.server
-        }
 
 
         // instruct what to do next
