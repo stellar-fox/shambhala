@@ -20,6 +20,7 @@ import { Transaction } from "stellar-sdk"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
+import { version } from "../../package.json"
 
 
 
@@ -157,7 +158,7 @@ export default class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    getLibVersion = () => Promise.reject("NOT IMPLEMENTED")
+    getLibVersion = async () => version
 
 
 
