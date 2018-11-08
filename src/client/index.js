@@ -31,6 +31,7 @@ import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
+import generateKeyAssocTx from "./actions/generate_key_assoc_tx"
 import backup from "./actions/backup"
 import restore from "./actions/restore"
 import signTransaction from "./actions/sign_transaction"
@@ -121,6 +122,14 @@ if (type.isObject(window) && window.addEventListener) {
         messageHandler.handle(message.GENERATE_SIGNED_KEY_ASSOC_TX,
             generateSignedKeyAssocTx(
                 postMessageBinder(message.GENERATE_SIGNED_KEY_ASSOC_TX),
+                context, logger
+            )
+        )
+
+        // manual keys association action
+        messageHandler.handle(message.GENERATE_KEY_ASSOC_TX,
+            generateKeyAssocTx(
+                postMessageBinder(message.GENERATE_KEY_ASSOC_TX),
                 context, logger
             )
         )

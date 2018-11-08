@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Generate signed key association transaction.
+ * Generate key association transaction. Not-signed version.
  *
  * @module client-actions
  * @license Apache-2.0
@@ -32,17 +32,17 @@ import {
 
 
 /**
- * Signed key association transaction generation.
+ * Key association transaction generation.
  *
- * @function generateSignedKeyAssocTx
+ * @function generateKeyAssocTX
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Object} context
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function generateSignedKeyAssocTx (
-    respond, context, logger
+export default function generateKeyAssocTX (
+    respond, logger
 ) {
 
     return async (p) => {
@@ -54,7 +54,7 @@ export default function generateSignedKeyAssocTx (
             transaction = null
 
 
-        logger.info("Signed key association transaction generation requested.")
+        logger.info("Key association transaction generation requested.")
 
 
 
@@ -71,9 +71,6 @@ export default function generateSignedKeyAssocTx (
                 { G_PUBLIC, C_PUBLIC, S_PUBLIC } =
                     await forage.getItem(p.G_PUBLIC)
             )
-            if (context.GKP.publicKey() !== G_PUBLIC) {
-                throw new Error("Wrong G_PUBLIC.")
-            }
 
         } catch (_) {
 
@@ -134,7 +131,7 @@ export default function generateSignedKeyAssocTx (
                     // stellar-sdk uses https://www.npmjs.com/package/buffer
                     // but we're not, so hex-string is used here
                     codec.bytesToHex, sha256, codec.stringToBytes
-                )("shambhala genesis transaction - key association")))
+                )("shambhala key association transaction")))
                 .addOperation(Operation.setOptions({
                     masterWeight: 100,
                     lowThreshold: 20,
@@ -153,9 +150,6 @@ export default function generateSignedKeyAssocTx (
                 }))
                 .build()
 
-            // sign the transaction with MASTER KEY ("genesis" keypair)
-            transaction.sign(context.GKP)
-
         } catch (_) {
 
             // report error
@@ -167,9 +161,6 @@ export default function generateSignedKeyAssocTx (
             return
 
         }
-
-        // [💥] destroy GKP
-        delete context.GKP
 
 
 
