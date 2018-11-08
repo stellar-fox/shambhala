@@ -410,8 +410,22 @@ export default class Shambhala {
 
 
     /**
-     * On behalf of an `account id` sign a given `transaction` (provided as
-     * `StellarSDK.Transaction`). Returns signed `StellarSDK.Transaction`.
+     * On behalf of an `account id` compute appropriate signatures
+     * for `transaction` (provided as XDR-encoded - `Uint8Array` -
+     * `StellarSDK.xdr.TransactionSignaturePayload`). Returns array
+     * of base64-encoded `DecoratedSignature`.
+     *
+     * Example:
+     *
+     * ```
+     * let signs = await shambhala.signTransaction("G...", tx.signatureBase())
+     *
+     * tx.signatures.push(
+     *     ...(signs.map((s) =>
+     *         xdr.DecoratedSignature.fromXDR(s, "base64")
+     *     ))
+     * )
+     * ```
      *
      * @async
      * @instance
