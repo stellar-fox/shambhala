@@ -228,7 +228,22 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<String>}
      */
-    associateAddress = (_accountId) => Promise.reject("NOT IMPLEMENTED")
+    associateAddress = async (accountId) => {
+        await this._openShambhala()
+
+        _store.messageHandler.postMessage(
+            message.ASSOCIATE_ADDRESSS,
+            { G_PUBLIC: accountId }
+        )
+
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.ASSOCIATE_ADDRESSS)
+        )
+
+        if (data.ok) return data.G_PUBLIC
+        else throw new Error(data.error)
+    }
 
 
 
