@@ -10,16 +10,12 @@
 
 import {
     codec,
-    choose,
-    handleException,
-    isString,
+    func,
 } from "@xcmats/js-toolbox"
 import {
-    hash as stellarHash,
+    hash,
     Keypair,
-    Memo,
-    Operation,
-    StrKey,
+    Transaction,
     xdr,
 } from "stellar-sdk"
 
@@ -31,49 +27,19 @@ import {
  *
  * @function inspectTSP
  * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
- * @returns {Object}
+ * @returns {Object} Two keys: `transaction` and `networkId`
  */
 export const inspectTSP = (tspXDR) => {
-    let tx = (
-        xdr.TransactionSignaturePayload
-            .fromXDR(tspXDR)
-            .taggedTransaction()
-            .tx()
-    )
+    let
+        txTSP = xdr.TransactionSignaturePayload.fromXDR(tspXDR),
+        networkId = codec.bytesToHex(txTSP.networkId())
 
-    return {
-
-        sourceAccount: StrKey.encodeEd25519PublicKey(
-            tx.sourceAccount().ed25519()
-        ),
-
-        fee: tx.fee(),
-
-        seqNum: tx.seqNum().toString(),
-
-        timeBounds: tx.timeBounds(),
-
-        memo: handleException(
-            () => ((memo) => choose(
-                memo.arm(), {
-                    id: (val) => Memo.id(val.toString()),
-                    text: (val) => isString(val) ?
-                        Memo.text(val) :
-                        Memo.text(codec.bytesToString(val)),
-                    hash: (val) => Memo.hash(val),
-                    retHash: (val) => Memo.return(val),
-                },
-                (_) => Memo.none(),
-                [memo.value()]
-            ))(tx.memo()),
-            () => Memo.none()
-        ),
-
-        operations: tx.operations().map(
-            Operation.fromXDRObject.bind(Operation)
-        ),
-
-    }
+    return func.compose(
+        (transaction) => ({ networkId, transaction }),
+        (envelope) => new Transaction(envelope),
+        (tx) => new xdr.TransactionEnvelope({tx}),
+        (txTSP) => txTSP.taggedTransaction().tx()
+    )(txTSP)
 }
 
 
@@ -91,5 +57,5 @@ export const inspectTSP = (tspXDR) => {
 export const signTSP = (secret, tspXDR) =>
     Keypair
         .fromSecret(secret)
-        .signDecorated(stellarHash(tspXDR))
+        .signDecorated(hash(tspXDR))
         .toXDR()
