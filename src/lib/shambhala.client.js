@@ -312,18 +312,40 @@ export default class Shambhala {
 
     /**
      * Generate key association transaction. This transaction has to be signed
-     * with an appropriate `SECRET` before it can be sent
-     * to the _stellar network_.
+     * with an appropriate `SECRET` before it can submitted
+     * to the _stellar_ network.
      *
      * @async
      * @instance
      * @method generateKeyAssocTX
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
+     * @param {String} sequence
+     * @param {String} networkPassphrase
      * @returns {Promise.<Transaction>}
      */
-    generateKeyAssocTX = (_accountId) =>
-        Promise.reject(codec.stringToBytes("NOT IMPLEMENTED"))
+    generateKeyAssocTX = async (
+        accountId, sequence, networkPassphrase
+    ) => {
+        await this._openShambhala()
+
+        _store.messageHandler.postMessage(
+            message.GENERATE_KEY_ASSOC_TX,
+            {
+                G_PUBLIC: accountId,
+                sequence,
+                networkPassphrase,
+            }
+        )
+
+        let data = await (
+            _store.messageHandler
+                .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
+        )
+
+        if (data.ok) return new Transaction(data.tx)
+        else throw new Error(data.error)
+    }
 
 
 
@@ -419,10 +441,12 @@ export default class Shambhala {
      * Example:
      *
      * ```
-     * let signs = await shambhala.signTransaction("G...", tx.signatureBase())
+     * let signatures = await shambhala.signTransaction(
+     *     "G...", tx.signatureBase()
+     * )
      *
      * tx.signatures.push(
-     *     ...(signs.map((s) =>
+     *     ...(signatures.map((s) =>
      *         xdr.DecoratedSignature.fromXDR(s, "base64")
      *     ))
      * )
