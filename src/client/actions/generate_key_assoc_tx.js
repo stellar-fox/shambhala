@@ -60,10 +60,7 @@ export default function generateKeyAssocTX (
 
 
         // validate received G_PUBLIC,
-        // check if it has been associated before
-        // and compare it with public part of GKP
-        // (implicit check if GKP is present in memory
-        // and of appropriate type)
+        // and check if it has been associated before
         try {
 
             Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
