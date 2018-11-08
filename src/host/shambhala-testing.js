@@ -43,12 +43,12 @@ import Shambhala from "../lib/shambhala.client"
 /**
  * shambhala.client integration testing
  *
- * @function shambhalaTesting
+ * @function shambhalaTestingModule
  * @param {Object} context
  * @param {Object} logger
  * @returns {Object} Test functions and scenarios.
  */
-export default function shambhalaTesting (context, logger) {
+export default function shambhalaTestingModule (context, logger) {
 
     let that = { scenario: {} }
 

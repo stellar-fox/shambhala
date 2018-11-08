@@ -18,7 +18,7 @@ import {
     type,
     timeUnit,
 } from "@xcmats/js-toolbox"
-import shambhalaTesting from "./shambhala-testing"
+import shambhalaTestingModule from "./shambhala-testing"
 import {
     consoleWrapper,
     drawEmojis,
@@ -39,7 +39,7 @@ const
     logger = consoleWrapper("💻"),
 
     // all basic shambhala elements in action
-    testing = shambhalaTesting(context, logger)
+    testing = shambhalaTestingModule(context, logger)
 
 
 
