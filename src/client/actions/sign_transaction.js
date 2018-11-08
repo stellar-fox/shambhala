@@ -101,9 +101,9 @@ export default function signTransaction (respond, logger) {
 
         logger.info(
             string.shorten(G_PUBLIC, 11),
-            string.shorten(C_UUID, 7),
-            inspectTSP(TX_PAYLOAD)
+            string.shorten(C_UUID, 7)
         )
+        logger.info(inspectTSP(TX_PAYLOAD))
 
 
 
