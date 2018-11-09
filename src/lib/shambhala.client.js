@@ -501,3 +501,14 @@ export default class Shambhala {
     }
 
 }
+
+
+
+
+/**
+ * @see {@link module:txops-lib}
+ */
+export {
+    inspectTSP,
+    signTSP,
+} from "./txops"
