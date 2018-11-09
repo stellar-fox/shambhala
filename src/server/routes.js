@@ -18,6 +18,7 @@ import {
 import * as message from "../lib/messages"
 import hello from "./actions/hello"
 import generateAddress from "./actions/generate_address"
+import associateAddress from "./actions/associate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import signTransaction from "./actions/sign_transaction"
 
@@ -51,6 +52,11 @@ export default function configureRoutes (app, db, logger) {
     // "generate address" route
     app.post("/" + restApiPrefix + message.GENERATE_ADDRESS,
         generateAddress(db, logger)
+    )
+
+    // "associate address" route
+    app.post("/" + restApiPrefix + message.ASSOCIATE_ADDRESS,
+        associateAddress(db, logger)
     )
 
     // "signing keys generation" route
