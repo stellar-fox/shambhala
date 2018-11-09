@@ -129,8 +129,7 @@ if (type.isObject(window) && window.addEventListener) {
         // manual keys association action
         messageHandler.handle(message.GENERATE_KEY_ASSOC_TX,
             generateKeyAssocTx(
-                postMessageBinder(message.GENERATE_KEY_ASSOC_TX),
-                context, logger
+                postMessageBinder(message.GENERATE_KEY_ASSOC_TX), logger
             )
         )
 

@@ -136,9 +136,8 @@ export default function shambhalaTestingModule (context, logger) {
 
 
 
-    // account creation, initial funding
-    // and finding sequence number
-    // http://bit.ly/stellarseqnumber
+    // account creation and initial funding
+    // https://friendbot.stellar.org/
     that.createAccountOnLedger = async (G_PUBLIC = context.G_PUBLIC) => {
 
         logger.info("Requesting account generation and initial funds...")
@@ -158,6 +157,17 @@ export default function shambhalaTestingModule (context, logger) {
             )(friendbotResponse.data.envelope_xdr)
         )
 
+        return context
+
+    }
+
+
+
+
+    // finding current sequence number
+    // https://bit.ly/stellarseqnumber
+    that.getSequenceNumber = async (G_PUBLIC = context.G_PUBLIC) => {
+
         logger.info("Getting account sequence...")
 
         context.account = await context.server.loadAccount(G_PUBLIC)
@@ -165,7 +175,7 @@ export default function shambhalaTestingModule (context, logger) {
 
         logger.info("It's:", string.quote(context.sequence))
 
-        return context.account
+        return context.sequence
 
     }
 
@@ -173,16 +183,49 @@ export default function shambhalaTestingModule (context, logger) {
 
 
     // automatic keys association
-    // http://bit.ly/shambhalaautokeyassoc
+    // https://bit.ly/shambhalaautokeyassoc
     that.generateSignedKeyAssocTX = async (
         G_PUBLIC = context.G_PUBLIC,
         sequence = context.sequence,
         network = context.network
     ) => {
 
-        logger.info("Requesting transaction associating keys with account...")
+        logger.info(
+            "Requesting signed transaction associating keys with account..."
+        )
 
         context.tx = await context.shambhala.generateSignedKeyAssocTX(
+            G_PUBLIC, sequence, network
+        )
+
+        logger.info(
+            "It came:",
+            func.compose(
+                string.quote,
+                (opTypes) => opTypes.join(string.space()),
+                (ops) => ops.map((op) => op.type)
+            )(context.tx.operations)
+        )
+
+        return context.tx
+    }
+
+
+
+
+    // manual keys association
+    // https://bit.ly/shambhalamanualkeyassoc
+    that.generateKeyAssocTX = async (
+        G_PUBLIC = context.G_PUBLIC,
+        sequence = context.sequence,
+        network = context.network
+    ) => {
+
+        logger.info(
+            "Requesting unsigned transaction associating keys with account..."
+        )
+
+        context.tx = await context.shambhala.generateKeyAssocTX(
             G_PUBLIC, sequence, network
         )
 
@@ -373,6 +416,7 @@ export default function shambhalaTestingModule (context, logger) {
         await that.generateAddress()
         await that.generateSigningKeys()
         await that.createAccountOnLedger()
+        await that.getSequenceNumber()
         await that.generateSignedKeyAssocTX()
         await that.submitTransaction()
 
