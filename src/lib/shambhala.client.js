@@ -232,13 +232,13 @@ export default class Shambhala {
         await this._openShambhala()
 
         store.messageHandler.postMessage(
-            message.ASSOCIATE_ADDRESSS,
+            message.ASSOCIATE_ADDRESS,
             { G_PUBLIC: accountId }
         )
 
         let data = await (
             store.messageHandler
-                .receiveMessage(message.ASSOCIATE_ADDRESSS)
+                .receiveMessage(message.ASSOCIATE_ADDRESS)
         )
 
         if (data.ok) return data.G_PUBLIC

@@ -125,7 +125,7 @@ export default function associateAddress (respond, logger) {
         // send G_PUBLIC and C_UUID to the server
         let serverResponse = await handleRejection(
             async () => await axios.post(
-                backend + message.ASSOCIATE_ADDRESSS,
+                backend + message.ASSOCIATE_ADDRESS,
                 { G_PUBLIC, C_UUID }
             ),
             async (ex) => ex.response
