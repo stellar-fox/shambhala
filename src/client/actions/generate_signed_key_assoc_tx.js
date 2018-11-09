@@ -78,9 +78,9 @@ export default function generateSignedKeyAssocTx (
         } catch (_) {
 
             // report error
-            respond({ error: "client:[invalid or not associated G_PUBLIC]" })
+            respond({ error: "client:[can't do that]" })
 
-            logger.error("Invalid or not associated G_PUBLIC received.")
+            logger.error("Invalid, not associated G_PUBLIC or no secret.")
 
             // don't do anything else
             return
