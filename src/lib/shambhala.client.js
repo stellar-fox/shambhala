@@ -16,7 +16,6 @@ import {
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
-import { Transaction } from "stellar-sdk"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
@@ -297,7 +296,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @param {String} sequence
      * @param {String} networkPassphrase
-     * @returns {Promise.<Transaction>}
+     * @returns {Promise.<String>} b64-encoded TransactionEnvelope XDR
      */
     generateSignedKeyAssocTX = async (
         accountId, sequence, networkPassphrase
@@ -318,7 +317,7 @@ export default class Shambhala {
                 .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
 
-        if (data.ok) return new Transaction(data.tx)
+        if (data.ok) return data.tx
         else throw new Error(data.error)
     }
 
@@ -337,7 +336,7 @@ export default class Shambhala {
      * @param {String} accountId
      * @param {String} sequence
      * @param {String} networkPassphrase
-     * @returns {Promise.<Transaction>}
+     * @returns {Promise.<String>} b64-encoded TransactionEnvelope XDR
      */
     generateKeyAssocTX = async (
         accountId, sequence, networkPassphrase
@@ -358,7 +357,7 @@ export default class Shambhala {
                 .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
         )
 
-        if (data.ok) return new Transaction(data.tx)
+        if (data.ok) return data.tx
         else throw new Error(data.error)
     }
 

@@ -230,8 +230,10 @@ export default function shambhalaTestingModule (context, logger) {
             "Requesting signed transaction associating keys with account..."
         )
 
-        context.tx = await context.shambhala.generateSignedKeyAssocTX(
-            G_PUBLIC, sequence, network
+        context.tx = new Transaction(
+            await context.shambhala.generateSignedKeyAssocTX(
+                G_PUBLIC, sequence, network
+            )
         )
 
         logger.info(
@@ -261,8 +263,10 @@ export default function shambhalaTestingModule (context, logger) {
             "Requesting unsigned transaction associating keys with account..."
         )
 
-        context.tx = await context.shambhala.generateKeyAssocTX(
-            G_PUBLIC, sequence, network
+        context.tx = new Transaction(
+            await context.shambhala.generateKeyAssocTX(
+                G_PUBLIC, sequence, network
+            )
         )
 
         logger.info(
