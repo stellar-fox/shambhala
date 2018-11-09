@@ -250,11 +250,11 @@ export default function shambhalaTestingModule (context, logger) {
 
         logger.info("Sending transaction to the stellar network.")
 
-        let resp = await context.server.submitTransaction(tx)
+        context.lastServerResponse = await context.server.submitTransaction(tx)
 
         logger.info("Sent.")
 
-        return resp
+        return context.lastServerResponse
 
     }
 
