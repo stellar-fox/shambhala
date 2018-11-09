@@ -12,7 +12,11 @@
 
 import axios from "axios"
 import forage from "localforage"
-import * as redshift from "@stellar-fox/redshift"
+import {
+    genKeypair,
+    genMnemonic,
+    mnemonicToSeedHex,
+} from "@stellar-fox/redshift"
 import { genUUID } from "../../lib/cryptops"
 import {
     access,
@@ -65,7 +69,7 @@ export default function generateAddress (respond, context, logger) {
         let
             // "genesis" mnemonic
             // has to be presented to the user
-            G_MNEMONIC = redshift.genMnemonic(),
+            G_MNEMONIC = genMnemonic(),
 
             // passphrase - will be read from the user
             PASSPHRASE = string.random(10)
@@ -80,8 +84,8 @@ export default function generateAddress (respond, context, logger) {
 
         // "genesis" key pair generation
         context.GKP = func.compose(
-            redshift.genKeypair,
-            redshift.mnemonicToSeedHex
+            genKeypair,
+            mnemonicToSeedHex
         )(G_MNEMONIC, PASSPHRASE)
 
         // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
