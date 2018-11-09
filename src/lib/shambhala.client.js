@@ -29,9 +29,9 @@ import { version } from "../../package.json"
  * Private store.
  *
  * @private
- * @constant _store
+ * @constant store
  */
-const _store = {}
+const store = {}
 
 
 
@@ -46,13 +46,13 @@ const _store = {}
 export default class Shambhala {
 
     constructor (url, opts = {}) {
-        if (!_store.url) { _store.url = new URL(url) }
-        if (!_store.token) {
-            if (opts.token) { _store.token = opts.token }
-            else { _store.token = null }
+        if (!store.url) { store.url = new URL(url) }
+        if (!store.token) {
+            if (opts.token) { store.token = opts.token }
+            else { store.token = null }
         }
-        if (!_store.messageHandler) {
-            _store.messageHandler = new MessageHandler(_store.url.origin)
+        if (!store.messageHandler) {
+            store.messageHandler = new MessageHandler(store.url.origin)
         }
     }
 
@@ -97,21 +97,21 @@ export default class Shambhala {
         // but then closed and now it's gone
         } catch (_) {
 
-            if (!type.isString(_store.windowName)) {
-                _store.windowName = this._generateRandomWindowName()
+            if (!type.isString(store.windowName)) {
+                store.windowName = this._generateRandomWindowName()
             }
 
             // open shambhala window and set recipient in message handler
-            _store.client = window.open(
-                `${_store.url.href}?${window.location.origin}`,
-                _store.windowName
+            store.client = window.open(
+                `${store.url.href}?${window.location.origin}`,
+                store.windowName
             )
-            _store.messageHandler.setRecipient(
-                _store.client, _store.windowName
+            store.messageHandler.setRecipient(
+                store.client, store.windowName
             )
 
             // wait for 'message.READY' and resolve
-            return await _store.messageHandler.receiveMessage(
+            return await store.messageHandler.receiveMessage(
                 message.READY, maximumWindowOpeningTime
             )
 
@@ -133,10 +133,10 @@ export default class Shambhala {
      * @returns {Promise.<String>}
      */
     _ping = async () => {
-        _store.messageHandler.postMessage(message.PING)
+        store.messageHandler.postMessage(message.PING)
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(
                     message.PONG,
                     1 * timeUnit.second
@@ -204,10 +204,10 @@ export default class Shambhala {
     generateAddress = async () => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(message.GENERATE_ADDRESS)
+        store.messageHandler.postMessage(message.GENERATE_ADDRESS)
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.GENERATE_ADDRESS)
         )
 
@@ -231,13 +231,13 @@ export default class Shambhala {
     associateAddress = async (accountId) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.ASSOCIATE_ADDRESSS,
             { G_PUBLIC: accountId }
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.ASSOCIATE_ADDRESSS)
         )
 
@@ -262,13 +262,13 @@ export default class Shambhala {
     generateSigningKeys = async (accountId) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.GENERATE_SIGNING_KEYS,
             { G_PUBLIC: accountId }
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(
                     message.GENERATE_SIGNING_KEYS,
                     20 * timeUnit.second
@@ -304,7 +304,7 @@ export default class Shambhala {
     ) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.GENERATE_SIGNED_KEY_ASSOC_TX,
             {
                 G_PUBLIC: accountId,
@@ -314,7 +314,7 @@ export default class Shambhala {
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
         )
 
@@ -344,7 +344,7 @@ export default class Shambhala {
     ) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.GENERATE_KEY_ASSOC_TX,
             {
                 G_PUBLIC: accountId,
@@ -354,7 +354,7 @@ export default class Shambhala {
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
         )
 
@@ -379,13 +379,13 @@ export default class Shambhala {
     backup = async (accountId) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.BACKUP,
             { G_PUBLIC: accountId }
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.BACKUP)
         )
 
@@ -411,13 +411,13 @@ export default class Shambhala {
     restore = async (accountId, payload) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.RESTORE,
             { G_PUBLIC: accountId, payload }
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(message.RESTORE)
         )
 
@@ -478,7 +478,7 @@ export default class Shambhala {
     signTransaction = async (accountId, tspXDR) => {
         await this._openShambhala()
 
-        _store.messageHandler.postMessage(
+        store.messageHandler.postMessage(
             message.SIGN_TRANSACTION,
             {
                 G_PUBLIC: accountId,
@@ -487,7 +487,7 @@ export default class Shambhala {
         )
 
         let data = await (
-            _store.messageHandler
+            store.messageHandler
                 .receiveMessage(
                     message.SIGN_TRANSACTION,
                     20 * timeUnit.second
