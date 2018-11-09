@@ -29,6 +29,7 @@ import * as message from "../lib/messages"
 
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
+import associateAddress from "./actions/associate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 import generateKeyAssocTx from "./actions/generate_key_assoc_tx"
@@ -109,6 +110,11 @@ if (type.isObject(window) && window.addEventListener) {
         // account generation action
         messageHandler.handle(message.GENERATE_ADDRESS, generateAddress(
             postMessageBinder(message.GENERATE_ADDRESS), context, logger
+        ))
+
+        // account association action
+        messageHandler.handle(message.ASSOCIATE_ADDRESS, associateAddress(
+            postMessageBinder(message.ASSOCIATE_ADDRESS), logger
         ))
 
         // signing keys generation action

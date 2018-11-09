@@ -18,6 +18,7 @@ import {
     quote,
     randomInt,
     shuffle,
+    string,
 } from "@xcmats/js-toolbox"
 
 
@@ -72,11 +73,15 @@ export const drawEmojis = ((emojis) =>
  * Async-console-dev-helper.
  *
  * @function to_
- * @param {*}
- * @returns {*}
+ * @param {String} name
+ * @returns {Function} (*) => *
  */
 export const to_ = (name = "_") =>
     (_) => {
         (window || self || global || this)[name] = _
+        // eslint-disable-next-line no-console
+        console.log(`${name} = ${string.quote(typeof _, "[]")}`)
+        // eslint-disable-next-line no-console
+        console.log(_)
         return _
     }
