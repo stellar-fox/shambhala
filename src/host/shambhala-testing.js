@@ -95,6 +95,22 @@ export default function shambhalaTestingModule (context, logger) {
 
 
 
+    // sign using txops.signTSP (testing txops)
+    that.txopsSign = (secret, tx = context.tx) => {
+
+        tx.signatures.push(
+            func.compose(
+                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
+                signTSP
+            )(secret, tx.signatureBase())
+        )
+
+        return tx
+    }
+
+
+
+
     // address generation
     // https://bit.ly/shambhalagenaccount
     that.generateAddress = async () => {
@@ -325,22 +341,6 @@ export default function shambhalaTestingModule (context, logger) {
 
         return tx
 
-    }
-
-
-
-
-    // sign using txops.signTSP (testing txops)
-    that.txopsSign = (secret, tx = context.tx) => {
-
-        tx.signatures.push(
-            func.compose(
-                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
-                signTSP
-            )(secret, tx.signatureBase())
-        )
-
-        return tx
     }
 
 
