@@ -101,7 +101,8 @@ export default function generateSignedKeyAssocTx (
 
             logger.error("Invalid sequence or network received.")
 
-            // don't do anything else if sequence is wrong
+            // don't do anything else
+            // if `sequence` or `networkPassphrase` is wrong
             return
 
         }
