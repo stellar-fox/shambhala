@@ -53,7 +53,6 @@ export default function generateSignedKeyAssocTx (
             S_PUBLIC = null,
             transaction = null
 
-
         logger.info("Signed key association transaction generation requested.")
 
 

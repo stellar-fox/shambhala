@@ -62,12 +62,13 @@ export default function generateAddress (respond, context, logger) {
 
 
 
-        // "genesis" mnemonic
-        // has to be presented to the user
-        let G_MNEMONIC = redshift.genMnemonic()
+        let
+            // "genesis" mnemonic
+            // has to be presented to the user
+            G_MNEMONIC = redshift.genMnemonic(),
 
-        // passphrase - will be read from the user
-        let PASSPHRASE = string.random(10)
+            // passphrase - will be read from the user
+            PASSPHRASE = string.random(10)
 
         // pretend this is UI
         logger.info(
@@ -90,20 +91,21 @@ export default function generateAddress (respond, context, logger) {
 
 
 
-        // extract user's new public address
-        let G_PUBLIC = context.GKP.publicKey()
+        let
+            // extract user's new public address
+            G_PUBLIC = context.GKP.publicKey(),
 
-        // generate user's new unique identifier
-        let C_UUID = codec.bytesToHex(genUUID())
+            // generate user's new unique identifier
+            C_UUID = codec.bytesToHex(genUUID()),
 
-        // store G_PUBLIC and C_UUID in local storage
-        let localResponse = await handleRejection(
-            async () => {
-                await forage.setItem(G_PUBLIC, { G_PUBLIC, C_UUID })
-                return { ok: true }
-            },
-            async (ex) => ({ error: ex })
-        )
+            // store G_PUBLIC and C_UUID in local storage
+            localResponse = await handleRejection(
+                async () => {
+                    await forage.setItem(G_PUBLIC, { G_PUBLIC, C_UUID })
+                    return { ok: true }
+                },
+                async (ex) => ({ error: ex })
+            )
 
         // something went wrong - data is not stored locally
         if (!toBool(localResponse.ok)) {

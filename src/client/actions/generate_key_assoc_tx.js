@@ -37,13 +37,10 @@ import {
  * @function generateKeyAssocTX
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
- * @param {Object} context
  * @param {Function} logger
  * @returns {Function} Message action.
  */
-export default function generateKeyAssocTX (
-    respond, logger
-) {
+export default function generateKeyAssocTX (respond, logger) {
 
     return async (p) => {
 
@@ -52,7 +49,6 @@ export default function generateKeyAssocTX (
             C_PUBLIC = null,
             S_PUBLIC = null,
             transaction = null
-
 
         logger.info("Key association transaction generation requested.")
 
