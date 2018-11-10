@@ -15,13 +15,11 @@ import {
     devEnv,
     func,
     type,
+    to_,
 } from "@xcmats/js-toolbox"
 import { salt64 } from "../lib/cryptops"
 import MessageHandler from "../lib/message.handler"
-import {
-    consoleWrapper,
-    to_,
-} from "../lib/utils"
+import { consoleWrapper } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
 import { originWhitelist } from "../config/env"
