@@ -60,12 +60,12 @@ export const random = naclRandomBytes
  * @param {Uint8Array} input
  * @returns {Uint8Array}
  */
-export const sha256 = func.compose(
-    codec.hexToBytes,
-    sjclCodec.hex.fromBits,
-    sjclHash.sha256.hash,
+export const sha256 = func.flow(
+    codec.bytesToHex,
     sjclCodec.hex.toBits,
-    codec.bytesToHex
+    sjclHash.sha256.hash,
+    sjclCodec.hex.fromBits,
+    codec.hexToBytes,
 )
 
 
@@ -99,9 +99,9 @@ export const genKey = (
     pass = Uint8Array.from([]),
     salt = (new Uint8Array(32)).fill(0),
     count = 2**12
-) => func.compose(
-    codec.hexToBytes,
-    sjclCodec.hex.fromBits
+) => func.flow(
+    sjclCodec.hex.fromBits,
+    codec.hexToBytes
 )(
     sjclMisc.pbkdf2(
         func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(pass),
