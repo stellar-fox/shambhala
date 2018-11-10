@@ -29,11 +29,11 @@ import { decodeUUID } from "../lib/cryptops"
  */
 export const getAllClientData = async () => {
 
-    let timestamp = func.compose(
-        (dUUID) => dUUID.timestamp,
-        decodeUUID,
+    let timestamp = func.flow(
+        (key) => key.C_UUID,
         codec.hexToBytes,
-        (key) => key.C_UUID
+        decodeUUID,
+        (dUUID) => dUUID.timestamp,
     )
 
     return (

@@ -81,10 +81,10 @@ if (type.isObject(window) && window.addEventListener) {
 
         // instruct what to do next
         logger.info(
-            "Try one of these:\n",
+            `Try one of these:${string.nl()}`,
             Object.keys(testing.scenario).map(
                 (n) => `sf.testing.scenario.${n}()`
-            ).join("\n ")
+            ).join(`${string.nl()}${string.space()}`)
         )
 
     })
