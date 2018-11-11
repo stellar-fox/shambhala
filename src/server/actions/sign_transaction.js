@@ -70,23 +70,25 @@ export default function signTransaction (db, logger) {
                     }),
 
                 // decrypt and extract PEPPER and S_SECRET
-                { PEPPER, S_SECRET } = func.compose(
+                { PEPPER, S_SECRET } = func.pipe(
+                    S_KEY, codec.b64dec(ENC_SKP)
+                )(
+                    decrypt,
                     (SKP) => ({
                         PEPPER: SKP.slice(0, 32),
                         S_SECRET: codec.bytesToString(SKP.slice(32)),
-                    }),
-                    decrypt
-                )(S_KEY, codec.b64dec(ENC_SKP)),
+                    })
+                ),
 
                 // sign TX_PAYLOAD with S_SECRET
-                S_SIGNATURE = func.compose(
-                    codec.b64enc, signTSP
-                )(S_SECRET, TX_PAYLOAD),
+                S_SIGNATURE = func.pipe(S_SECRET, TX_PAYLOAD)(
+                    signTSP, codec.b64enc
+                ),
 
                 // compute C_PASSPHRASE
-                C_PASSPHRASE = func.compose(
-                    codec.b64enc, genKey
-                )(S_KEY, PEPPER)
+                C_PASSPHRASE = func.pipe(S_KEY, PEPPER)(
+                    genKey, codec.b64enc
+                )
 
 
 

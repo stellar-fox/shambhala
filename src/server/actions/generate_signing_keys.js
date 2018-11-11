@@ -68,19 +68,18 @@ export default function generateSigningKeys (db, logger) {
             PEPPER = salt32(),
 
             // encrypt PEPPER and S_SECRET
-            ENC_SKP = func.compose(
-                codec.b64enc, encrypt
-            )(
+            ENC_SKP = func.pipe(
                 S_KEY,
                 codec.concatBytes(
-                    PEPPER, codec.stringToBytes(S_SECRET)
+                    PEPPER,
+                    codec.stringToBytes(S_SECRET)
                 )
-            ),
+            )(encrypt, codec.b64enc),
 
             // compute C_PASSPHRASE
-            C_PASSPHRASE = func.compose(
-                codec.b64enc, genKey
-            )(S_KEY, PEPPER)
+            C_PASSPHRASE = func.pipe(S_KEY, PEPPER)(
+                genKey, codec.b64enc
+            )
 
 
 
