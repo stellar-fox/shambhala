@@ -34,12 +34,12 @@ export const inspectTSP = (tspXDR) => {
         txTSP = xdr.TransactionSignaturePayload.fromXDR(tspXDR),
         networkId = codec.bytesToHex(txTSP.networkId())
 
-    return func.flow(
+    return func.pipe(txTSP)(
         (txTSP) => txTSP.taggedTransaction().tx(),
         (tx) => new xdr.TransactionEnvelope({tx}),
         (envelope) => new Transaction(envelope),
-        (transaction) => ({ networkId, transaction }),
-    )(txTSP)
+        (transaction) => ({ networkId, transaction })
+    )
 }
 
 

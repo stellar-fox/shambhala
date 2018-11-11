@@ -99,15 +99,15 @@ export const genKey = (
     pass = Uint8Array.from([]),
     salt = (new Uint8Array(32)).fill(0),
     count = 2**12
-) => func.flow(
-    sjclCodec.hex.fromBits,
-    codec.hexToBytes
-)(
+) => func.pipe(
     sjclMisc.pbkdf2(
         func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(pass),
         func.compose(sjclCodec.hex.toBits, codec.bytesToHex)(salt),
         count
     )
+)(
+    sjclCodec.hex.fromBits,
+    codec.hexToBytes
 )
 
 
@@ -416,10 +416,10 @@ export const encrypt = (key, message) => {
     return codec.concatBytes(
         codec.hexToBytes(encdec.MAGIC),
         codec.hexToBytes(encdec.VERSION),
-        func.compose(
-            func.partial(aesEncrypt)(key.slice(32)),
-            func.partial(salsaEncrypt)(key.slice(0, 32))
-        )(message)
+        func.pipe(message)(
+            func.partial(salsaEncrypt)(key.slice(0, 32)),
+            func.partial(aesEncrypt)(key.slice(32))
+        )
     )
 }
 Object.freeze(Object.assign(encrypt, encdec))
@@ -473,10 +473,10 @@ export const decrypt = (key, ciphertext) => {
         ciphertext.slice(0, 4)
     )) throw new Error("decrypt: Magic byte or version mismatch.")
 
-    return func.compose(
-        func.partial(salsaDecrypt)(key.slice(0, 32)),
-        func.partial(aesDecrypt)(key.slice(32))
-    )(ciphertext.slice(4))
+    return func.pipe(ciphertext.slice(4))(
+        func.partial(aesDecrypt)(key.slice(32)),
+        func.partial(salsaDecrypt)(key.slice(0, 32))
+    )
 }
 Object.freeze(Object.assign(decrypt, encdec))
 
@@ -508,17 +508,14 @@ export const passphraseEncrypt = async (
         progressCallback = (_p) => false,
     } = {}
 ) =>
-    func.compose(
-        codec.b64enc,
-        codec.concatBytes
-    )(
+    func.pipe(
         salt,
         encrypt(
             await deriveKey(
-                func.compose(
-                    codec.stringToBytes,
-                    (p) => p.normalize("NFC")
-                )(passphrase),
+                func.pipe(passphrase)(
+                    (p) => p.normalize("NFC"),
+                    codec.stringToBytes
+                ),
                 salt,
                 {
                     count, blockSize, parallelization,
@@ -527,6 +524,9 @@ export const passphraseEncrypt = async (
             ),
             message
         )
+    )(
+        codec.concatBytes,
+        codec.b64enc
     )
 
 
@@ -560,10 +560,10 @@ export const passphraseDecrypt = async (
 
     return decrypt(
         await deriveKey(
-            func.compose(
-                codec.stringToBytes,
-                (p) => p.normalize("NFC")
-            )(passphrase),
+            func.pipe(passphrase)(
+                (p) => p.normalize("NFC"),
+                codec.stringToBytes
+            ),
             cipherBytes.slice(0, 64),
             {
                 count, blockSize, parallelization,
