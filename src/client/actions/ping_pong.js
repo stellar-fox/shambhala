@@ -54,12 +54,12 @@ export default function pingPong (respond, logger) {
         let resp = await axios.get(backend)
 
         respond({
-            hash: func.compose(
-                codec.bytesToHex,
-                sha512,
+            hash: func.pipe(resp.data)(
+                JSON.stringify,
                 codec.stringToBytes,
-                JSON.stringify
-            )(resp.data),
+                sha512,
+                codec.bytesToHex
+            ),
         })
 
         logger.info("<- PONG")

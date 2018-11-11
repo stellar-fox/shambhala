@@ -83,7 +83,7 @@ export default function generateKeyAssocTX (respond, logger) {
         if (
             !type.isString(p.sequence)  ||
             !p.sequence.split(string.empty())
-                .every(func.compose(type.isNumber, Number))  ||
+                .every(func.flow(Number, type.isNumber))  ||
             !type.isString(p.networkPassphrase)
         ) {
 
@@ -121,11 +121,15 @@ export default function generateKeyAssocTX (respond, logger) {
             transaction = new TransactionBuilder(
                 new Account(G_PUBLIC, p.sequence)
             )
-                .addMemo(new Memo(MemoHash, func.compose(
+                .addMemo(new Memo(MemoHash, func.pipe(
+                    "shambhala key association transaction"
+                )(
+                    codec.stringToBytes,
+                    sha256,
                     // stellar-sdk uses https://www.npmjs.com/package/buffer
                     // but we're not, so hex-string is used here
-                    codec.bytesToHex, sha256, codec.stringToBytes
-                )("shambhala key association transaction")))
+                    codec.bytesToHex,
+                )))
                 .addOperation(Operation.setOptions({
                     masterWeight: 100,
                     lowThreshold: 20,
@@ -162,11 +166,11 @@ export default function generateKeyAssocTX (respond, logger) {
         // respond to the host application
         respond({
             ok: true,
-            tx: func.compose(
-                codec.b64enc,
-                (e) => e.toXDR(),
+            tx: func.pipe(transaction)(
                 (t) => t.toEnvelope(),
-            )(transaction),
+                (e) => e.toXDR(),
+                codec.b64enc
+            ),
         })
 
         logger.info("Generated.")

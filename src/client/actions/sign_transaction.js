@@ -177,16 +177,16 @@ export default function signTransaction (respond, logger) {
 
         let
             // decrypt C_SECRET
-            C_SECRET = func.compose(
-                codec.bytesToString,
-                decrypt
-            )(C_KEY, codec.b64dec(ENC_CKP)),
+            C_SECRET = func.pipe(C_KEY, codec.b64dec(ENC_CKP))(
+                decrypt,
+                codec.bytesToString
+            ),
 
             // sign TX_PAYLOAD with C_SECRET
-            C_SIGNATURE = func.compose(
-                codec.b64enc,
-                signTSP
-            )(C_SECRET, TX_PAYLOAD)
+            C_SIGNATURE = func.pipe(C_SECRET, TX_PAYLOAD)(
+                signTSP,
+                codec.b64enc
+            )
 
 
         // [💥] destroy C_KEY and C_SECRET

@@ -83,10 +83,10 @@ export default function generateAddress (respond, context, logger) {
 
 
         // "genesis" key pair generation
-        context.GKP = func.compose(
-            genKeypair,
-            mnemonicToSeedHex
-        )(G_MNEMONIC, PASSPHRASE)
+        context.GKP = func.pipe(G_MNEMONIC, PASSPHRASE)(
+            mnemonicToSeedHex,
+            genKeypair
+        )
 
         // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
         G_MNEMONIC = null
