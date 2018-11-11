@@ -101,10 +101,10 @@ export default function shambhalaTestingModule (context, logger) {
     that.txopsSign = (secret, tx = context.tx) => {
 
         tx.signatures.push(
-            func.compose(
-                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature),
-                signTSP
-            )(secret, tx.signatureBase())
+            func.pipe(secret, tx.signatureBase())(
+                signTSP,
+                xdr.DecoratedSignature.fromXDR.bind(xdr.DecoratedSignature)
+            )
         )
 
         return tx
@@ -185,12 +185,12 @@ export default function shambhalaTestingModule (context, logger) {
 
         logger.info(
             "Got it:",
-            func.flow(
+            func.pipe(friendbotResponse.data.envelope_xdr)(
                 (xdr64) => new Transaction(xdr64),
                 (tx) => tx.operations[0],
                 (op) => `${op.type}: ${op.startingBalance} XLM`,
                 string.quote
-            )(friendbotResponse.data.envelope_xdr)
+            )
         )
 
         return context
@@ -238,11 +238,11 @@ export default function shambhalaTestingModule (context, logger) {
 
         logger.info(
             "It came:",
-            func.flow(
+            func.pipe(context.tx.operations)(
                 (ops) => ops.map((op) => op.type),
                 (opTypes) => opTypes.join(string.space()),
                 string.quote
-            )(context.tx.operations)
+            )
         )
 
         return context.tx
@@ -271,11 +271,11 @@ export default function shambhalaTestingModule (context, logger) {
 
         logger.info(
             "It came:",
-            func.flow(
+            func.pipe(context.tx.operations)(
                 (ops) => ops.map((op) => op.type),
                 (opTypes) => opTypes.join(string.space()),
                 string.quote
-            )(context.tx.operations)
+            )
         )
 
         return context.tx
@@ -334,7 +334,7 @@ export default function shambhalaTestingModule (context, logger) {
                 () => null
             ),
 
-            tx = func.flow(
+            tx = func.pipe(new TransactionBuilder(sourceAccount))(
 
                 // first ...
                 destinationAccount ?
@@ -359,7 +359,7 @@ export default function shambhalaTestingModule (context, logger) {
                 // ... and finally build the transaction
                 (tb) => tb.build(),
 
-            )(new TransactionBuilder(sourceAccount))
+            )
 
         context.tx = tx
 
