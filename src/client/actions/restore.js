@@ -61,6 +61,30 @@ export default function restore (respond, logger) {
 
         logger.info(`Restore requested for ${string.quote(p.G_PUBLIC)}.`)
 
+
+
+
+        // validate received G_PUBLIC
+        try {
+
+            Keypair.fromPublicKey(p.G_PUBLIC).publicKey()
+
+        } catch (_) {
+
+            // report error
+            respond({
+                error: "client:[invalid G_PUBLIC]",
+            })
+
+            logger.error("Invalid G_PUBLIC received.")
+
+            // don't do anything else
+            return
+        }
+
+
+
+
         // BACKUP_PASSPHRASE - will be read from the user
         // this is a constant just for the testing purposes
         let BACKUP_PASSPHRASE = "Some very long and multi-word phrase!"
