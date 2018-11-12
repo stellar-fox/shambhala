@@ -134,13 +134,11 @@ export default class Shambhala {
     _ping = async () => {
         store.messageHandler.postMessage(message.PING)
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(
-                    message.PONG,
-                    1 * timeUnit.second
-                )
-        )
+        let data = await store.messageHandler
+            .receiveMessage(
+                message.PONG,
+                1 * timeUnit.second
+            )
 
         return data.hash
     }
@@ -205,10 +203,8 @@ export default class Shambhala {
 
         store.messageHandler.postMessage(message.GENERATE_ADDRESS)
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.GENERATE_ADDRESS)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.GENERATE_ADDRESS)
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -235,10 +231,8 @@ export default class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.ASSOCIATE_ADDRESS)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.ASSOCIATE_ADDRESS)
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -266,13 +260,11 @@ export default class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(
-                    message.GENERATE_SIGNING_KEYS,
-                    20 * timeUnit.second
-                )
-        )
+        let data = await store.messageHandler
+            .receiveMessage(
+                message.GENERATE_SIGNING_KEYS,
+                20 * timeUnit.second
+            )
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -312,10 +304,8 @@ export default class Shambhala {
             }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -352,10 +342,8 @@ export default class Shambhala {
             }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -383,10 +371,8 @@ export default class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.BACKUP)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.BACKUP)
 
         if (data.ok) return data.payload
         else throw new Error(data.error)
@@ -415,10 +401,8 @@ export default class Shambhala {
             { G_PUBLIC: accountId, payload }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(message.RESTORE)
-        )
+        let data = await store.messageHandler
+            .receiveMessage(message.RESTORE)
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -441,7 +425,20 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Boolean>}
      */
-    canSignFor = (_accountId) => Promise.resolve(false)
+    canSignFor = async (accountId) => {
+        await this._openShambhala()
+
+        store.messageHandler.postMessage(
+            message.CAN_SIGN_FOR,
+            { G_PUBLIC: accountId }
+        )
+
+        let data = await store.messageHandler
+            .receiveMessage(message.CAN_SIGN_FOR)
+
+        if (data.ok) return data.answer
+        else throw new Error(data.error)
+    }
 
 
 
@@ -485,13 +482,11 @@ export default class Shambhala {
             }
         )
 
-        let data = await (
-            store.messageHandler
-                .receiveMessage(
-                    message.SIGN_TRANSACTION,
-                    20 * timeUnit.second
-                )
-        )
+        let data = await store.messageHandler
+            .receiveMessage(
+                message.SIGN_TRANSACTION,
+                20 * timeUnit.second
+            )
 
         if (data.ok) return [
             data.C_SIGNATURE,
