@@ -33,6 +33,7 @@ import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 import generateKeyAssocTx from "./actions/generate_key_assoc_tx"
 import backup from "./actions/backup"
 import restore from "./actions/restore"
+import canSignFor from "./actions/can_sign_for"
 import signTransaction from "./actions/sign_transaction"
 
 import "./index.css"
@@ -145,6 +146,11 @@ if (type.isObject(window) && window.addEventListener) {
         // restore action
         messageHandler.handle(message.RESTORE, restore(
             postMessageBinder(message.RESTORE), logger
+        ))
+
+        // sign transaction action
+        messageHandler.handle(message.CAN_SIGN_FOR, canSignFor(
+            postMessageBinder(message.CAN_SIGN_FOR), logger
         ))
 
         // sign transaction action
