@@ -11,7 +11,7 @@
     ],
     "dependencies": {
         "@babel/runtime": "^7.1.5",
-        "@stellar-fox/redshift": "^0.4.4",
+        "@stellar-fox/redshift": "^0.4.5",
         "@types/express": "^4.16.0",
         "@types/stellar-sdk": "^0.10.4",
         "@xcmats/js-toolbox": "^0.6.11",
@@ -23,7 +23,7 @@
         "localforage": "^1.7.3",
         "pg-promise": "^8.5.2",
         "scrypt-js": "^2.0.4",
-        "sjcl": "^1.0.7",
+        "sjcl": "^1.0.8",
         "stellar-sdk": "^0.11.0",
         "tweetnacl": "^1.0.0"
     },
@@ -51,7 +51,7 @@
         "@babel/plugin-transform-spread": "^7.0.0",
         "@babel/plugin-transform-template-literals": "^7.0.0",
         "@babel/preset-env": "^7.1.5",
-        "apidoc": "^0.17.6",
+        "apidoc": "^0.17.7",
         "babel-eslint": "^10.0.1",
         "babel-loader": "^8.0.4",
         "babel-minify-webpack-plugin": "^0.3.1",
