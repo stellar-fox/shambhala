@@ -132,11 +132,11 @@ export default class Shambhala {
      * @returns {Promise.<String>}
      */
     _ping = async () => {
-        store.messageHandler.postMessage(message.PING)
+        store.messageHandler.postMessage(message.PING_PONG)
 
         let data = await store.messageHandler
             .receiveMessage(
-                message.PONG,
+                message.PING_PONG,
                 1 * timeUnit.second
             )
 

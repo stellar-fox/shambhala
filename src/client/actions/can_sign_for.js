@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Can any transaction be signed?
+ * Can any transaction be signed for a given account?
  *
  * @module client-actions
  * @license Apache-2.0

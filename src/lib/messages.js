@@ -12,8 +12,7 @@
 
 export const READY = "ready"
 export const ERROR = "error"
-export const PING = "ping"
-export const PONG = "pong"
+export const PING_PONG = "ping_pong"
 export const VERSION = "version"
 export const GENERATE_ADDRESS = "generate_address"
 export const ASSOCIATE_ADDRESS = "associate_address"

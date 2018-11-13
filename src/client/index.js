@@ -102,68 +102,61 @@ if (type.isObject(window) && window.addEventListener) {
 
 
 
-        // ping-pong action
-        messageHandler.handle(message.PING, pingPong(
-            postMessageBinder(message.PONG), logger
-        ))
+        // assign message handlers
+        [
+            // ping-pong action
+            { m: message.PING_PONG, a: pingPong, args: [logger] },
 
-        // account generation action
-        messageHandler.handle(message.GENERATE_ADDRESS, generateAddress(
-            postMessageBinder(message.GENERATE_ADDRESS), context, logger
-        ))
+            // account generation action
+            {
+                m: message.GENERATE_ADDRESS,
+                a: generateAddress, args: [logger, context],
+            },
 
-        // account association action
-        messageHandler.handle(message.ASSOCIATE_ADDRESS, associateAddress(
-            postMessageBinder(message.ASSOCIATE_ADDRESS), logger
-        ))
+            // account association action
+            {
+                m: message.ASSOCIATE_ADDRESS,
+                a: associateAddress, args: [logger],
+            },
 
-        // signing keys generation action
-        messageHandler.handle(message.GENERATE_SIGNING_KEYS,
-            generateSigningKeys(
-                postMessageBinder(message.GENERATE_SIGNING_KEYS), logger
-            )
-        )
+            // signing keys generation action
+            {
+                m: message.GENERATE_SIGNING_KEYS,
+                a: generateSigningKeys, args: [logger],
+            },
 
-        // automatic keys association action
-        messageHandler.handle(message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            generateSignedKeyAssocTx(
-                postMessageBinder(message.GENERATE_SIGNED_KEY_ASSOC_TX),
-                context, logger
-            )
-        )
+            // automatic keys association action
+            {
+                m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
+                a: generateSignedKeyAssocTx, args: [logger, context],
+            },
 
-        // manual keys association action
-        messageHandler.handle(message.GENERATE_KEY_ASSOC_TX,
-            generateKeyAssocTx(
-                postMessageBinder(message.GENERATE_KEY_ASSOC_TX), logger
-            )
-        )
+            // manual keys association action
+            {
+                m: message.GENERATE_KEY_ASSOC_TX,
+                a: generateKeyAssocTx, args: [logger],
+            },
 
-        // public keys retrieval action
-        messageHandler.handle(message.GET_PUBLIC_KEYS,
-            getPublicKeys(
-                postMessageBinder(message.GET_PUBLIC_KEYS), logger
-            )
-        )
+            // public keys retrieval action
+            { m: message.GET_PUBLIC_KEYS, a: getPublicKeys, args: [logger] },
 
-        // backup action
-        messageHandler.handle(message.BACKUP, backup(
-            postMessageBinder(message.BACKUP), logger
-        ))
+            // backup action
+            { m: message.BACKUP, a: backup, args: [logger] },
 
-        // restore action
-        messageHandler.handle(message.RESTORE, restore(
-            postMessageBinder(message.RESTORE), logger
-        ))
+            // restore action
+            { m: message.RESTORE, a: restore, args: [logger] },
 
-        // sign transaction action
-        messageHandler.handle(message.CAN_SIGN_FOR, canSignFor(
-            postMessageBinder(message.CAN_SIGN_FOR), logger
-        ))
+            // transaction signing check
+            { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger] },
 
-        // sign transaction action
-        messageHandler.handle(message.SIGN_TRANSACTION, signTransaction(
-            postMessageBinder(message.SIGN_TRANSACTION), logger
+            // sign transaction action
+            {
+                m: message.SIGN_TRANSACTION,
+                a: signTransaction, args: [logger],
+            },
+
+        ].forEach((ad) => messageHandler.handle(
+            ad.m, func.curry(ad.a)(postMessageBinder(ad.m))(...ad.args)()
         ))
 
 

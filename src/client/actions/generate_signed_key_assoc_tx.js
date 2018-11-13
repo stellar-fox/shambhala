@@ -37,12 +37,12 @@ import {
  * @function generateSignedKeyAssocTx
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
- * @param {Object} context
  * @param {Function} logger
+ * @param {Object} context
  * @returns {Function} Message action.
  */
 export default function generateSignedKeyAssocTx (
-    respond, context, logger
+    respond, logger, context
 ) {
 
     return async (p) => {
