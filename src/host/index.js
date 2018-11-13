@@ -19,7 +19,7 @@ import {
     timeUnit,
     to_,
 } from "@xcmats/js-toolbox"
-import shambhalaTestingModule from "../lib/shambhala.testing"
+import { shambhalaTestingModule } from "../lib/shambhala.client"
 import {
     consoleWrapper,
     drawEmojis,

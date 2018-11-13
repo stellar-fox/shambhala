@@ -32,7 +32,6 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
-import Shambhala, { signTSP } from "./shambhala.client"
 import {
     clientDomain,
     registrationPath,
@@ -44,12 +43,12 @@ import {
 /**
  * shambhala.client integration testing
  *
- * @function shambhalaTestingModule
+ * @function shambhalaTesting
  * @param {Object} context
  * @param {Object} logger
  * @returns {Object} Test functions and scenarios.
  */
-export default function shambhalaTestingModule (context, logger) {
+export function shambhalaTesting ({ Shambhala, signTSP }, context, logger) {
 
     let that = { scenario: {} }
 

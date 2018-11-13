@@ -12,10 +12,16 @@
 
 import {
     codec,
+    func,
     // string,
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
+import {
+    inspectTSP,
+    signTSP,
+} from "./txops"
+import { shambhalaTesting as testingModule } from "./shambhala.testing"
 import { maximumWindowOpeningTime } from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
@@ -524,3 +530,13 @@ export {
     inspectTSP,
     signTSP,
 } from "./txops"
+
+
+
+
+/**
+ * @see {@link module:testing-lib}
+ */
+export const shambhalaTestingModule = func.partial(testingModule)({
+    Shambhala, inspectTSP, signTSP,
+})
