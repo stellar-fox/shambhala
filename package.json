@@ -104,7 +104,7 @@
         "clean:apiServer": "rimraf ./dist.server",
         "clean:jsdoc": "rimraf ./jsdoc",
         "clean:lib": "rimraf ./dist.lib",
-        "clean:modules": "rimraf ./node_modules",
+        "clean:modules": "rimraf node_modules && rimraf package-lock.json",
         "devApiServer": "nodemon -e js,sql --watch ./src/ ./src/server/index.js --exec \"cross-env BABEL_ENV=devserver babel-node --inspect\"",
         "jsdoc": "npm run clean:jsdoc && npm run build:jsdoc",
         "lint": "eslint ./src/",
