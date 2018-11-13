@@ -31,6 +31,7 @@ import associateAddress from "./actions/associate_address"
 import generateSigningKeys from "./actions/generate_signing_keys"
 import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
 import generateKeyAssocTx from "./actions/generate_key_assoc_tx"
+import getPublicKeys from "./actions/get_public_keys"
 import backup from "./actions/backup"
 import restore from "./actions/restore"
 import canSignFor from "./actions/can_sign_for"
@@ -135,6 +136,13 @@ if (type.isObject(window) && window.addEventListener) {
         messageHandler.handle(message.GENERATE_KEY_ASSOC_TX,
             generateKeyAssocTx(
                 postMessageBinder(message.GENERATE_KEY_ASSOC_TX), logger
+            )
+        )
+
+        // public keys retrieval action
+        messageHandler.handle(message.GET_PUBLIC_KEYS,
+            getPublicKeys(
+                postMessageBinder(message.GET_PUBLIC_KEYS), logger
             )
         )
 

@@ -175,37 +175,6 @@ export default class Shambhala {
 
 
     /**
-     * Get associated `public keys` for a given `account id`.
-     *
-     * @async
-     * @instance
-     * @method getPublicKeys
-     * @memberof module:client-lib~Shambhala
-     * @param {String} accountId
-     * @returns {Promise.<Array>}
-     */
-    getPublicKeys = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.GET_PUBLIC_KEYS,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.messageHandler
-            .receiveMessage(message.GET_PUBLIC_KEYS)
-
-        if (data.ok) return {
-            C_PUBLIC: data.C_PUBLIC,
-            S_PUBLIC: data.S_PUBLIC,
-        }
-        else throw new Error(data.error)
-    }
-
-
-
-
-    /**
      * Generate address. Returns an `account id` (`G_PUBLIC`).
      *
      * @async
@@ -362,6 +331,38 @@ export default class Shambhala {
             .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
 
         if (data.ok) return data.tx
+        else throw new Error(data.error)
+    }
+
+
+
+
+    /**
+     * Get associated `public keys` for a given `account id`.
+     *
+     * @async
+     * @instance
+     * @method getPublicKeys
+     * @memberof module:client-lib~Shambhala
+     * @param {String} accountId
+     * @returns {Promise.<Array>}
+     */
+    getPublicKeys = async (accountId) => {
+        await this._openShambhala()
+
+        store.messageHandler.postMessage(
+            message.GET_PUBLIC_KEYS,
+            { G_PUBLIC: accountId }
+        )
+
+        let data = await store.messageHandler
+            .receiveMessage(message.GET_PUBLIC_KEYS)
+
+        if (data.ok) return {
+            G_PUBLIC: data.G_PUBLIC,
+            C_PUBLIC: data.C_PUBLIC,
+            S_PUBLIC: data.S_PUBLIC,
+        }
         else throw new Error(data.error)
     }
 
