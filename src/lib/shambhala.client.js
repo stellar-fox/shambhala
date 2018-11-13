@@ -48,7 +48,7 @@ const store = {}
  * @param {String} url
  * @param {Object} [opts={}]
  */
-export default class Shambhala {
+export class Shambhala {
 
     constructor (url, opts = {}) {
         if (!store.url) { store.url = new URL(url) }
@@ -540,3 +540,9 @@ export {
 export const shambhalaTestingModule = func.partial(testingModule)({
     Shambhala, inspectTSP, signTSP,
 })
+
+
+
+
+// default export
+export default Shambhala
