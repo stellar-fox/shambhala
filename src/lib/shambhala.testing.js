@@ -32,12 +32,11 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
-import { signTSP } from "../lib/txops"
+import Shambhala, { signTSP } from "./shambhala.client"
 import {
     clientDomain,
     registrationPath,
 } from "../config/env"
-import Shambhala from "../lib/shambhala.client"
 
 
 
