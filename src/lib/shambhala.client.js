@@ -184,7 +184,23 @@ export default class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Array>}
      */
-    getPublicKeys = (_accountId) => Promise.reject(["NOT IMPLEMENTED"])
+    getPublicKeys = async (accountId) => {
+        await this._openShambhala()
+
+        store.messageHandler.postMessage(
+            message.GET_PUBLIC_KEYS,
+            { G_PUBLIC: accountId }
+        )
+
+        let data = await store.messageHandler
+            .receiveMessage(message.GET_PUBLIC_KEYS)
+
+        if (data.ok) return {
+            C_PUBLIC: data.C_PUBLIC,
+            S_PUBLIC: data.S_PUBLIC,
+        }
+        else throw new Error(data.error)
+    }
 
 
 
