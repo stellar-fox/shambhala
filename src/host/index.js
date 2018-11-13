@@ -39,7 +39,7 @@ const
     logger = consoleWrapper("💻"),
 
     // all basic shambhala elements in action
-    testing = shambhalaTestingModule(context, logger)
+    testing = shambhalaTestingModule(logger, context)
 
 
 

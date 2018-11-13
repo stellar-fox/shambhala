@@ -44,11 +44,11 @@ import {
  * shambhala.client integration testing
  *
  * @function shambhalaTesting
- * @param {Object} context
  * @param {Object} logger
+ * @param {Object} context
  * @returns {Object} Test functions and scenarios.
  */
-export function shambhalaTesting ({ Shambhala, signTSP }, context, logger) {
+export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
 
     let that = { scenario: {} }
 
