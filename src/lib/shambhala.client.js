@@ -414,7 +414,7 @@ export class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
      * @param {String} payload output of the `backup` method
-     * @returns {Promise.<Boolean>}
+     * @returns {Promise.<Object>}
      */
     restore = async (accountId, payload) => {
         await this._openShambhala()
