@@ -544,5 +544,7 @@ export const shambhalaTestingModule = func.partial(testingModule)({
 
 
 
-// default export
+/**
+ * Default export.
+ */
 export default Shambhala
