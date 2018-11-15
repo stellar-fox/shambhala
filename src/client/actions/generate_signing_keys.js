@@ -23,7 +23,7 @@ import {
     codec,
     handleRejection,
     string,
-    toBool,
+    type,
 } from "@xcmats/js-toolbox"
 import {
     clientDomain,
@@ -209,7 +209,7 @@ export default function generateSigningKeys (respond, logger) {
         )
 
         // something went wrong - data is not stored locally
-        if (!toBool(localResponse.ok)) {
+        if (!type.toBool(localResponse.ok)) {
 
             // TODO / CONSIDER:
             // rollback server-side changes

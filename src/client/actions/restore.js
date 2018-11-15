@@ -16,7 +16,7 @@ import {
     codec,
     handleRejection,
     string,
-    toBool,
+    type,
 } from "@xcmats/js-toolbox"
 import { passphraseDecrypt } from "../../lib/cryptops"
 
@@ -147,7 +147,7 @@ export default function restore (respond, logger) {
         )
 
         // something went wrong - data is not stored locally
-        if (!toBool(localResponse.ok)) {
+        if (!type.toBool(localResponse.ok)) {
 
             // report error
             respond({ error: "client:[local storage failure]" })

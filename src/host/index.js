@@ -12,12 +12,10 @@
 
 import {
     async,
-    devEnv,
-    randomInt,
+    math,
     string,
     type,
-    timeUnit,
-    to_,
+    utils,
 } from "@xcmats/js-toolbox"
 import { shambhalaTestingModule } from "../lib/shambhala.client"
 import {
@@ -55,12 +53,12 @@ if (type.isObject(window) && window.addEventListener) {
 
         // expose `sf` dev. namespace
         // and some convenience shortcuts
-        if (devEnv()) {
+        if (utils.devEnv()) {
             window.sf = {
                 ...await dynamicImportLibs(),
                 context, logger, testing,
             }
-            window.to_ = to_
+            window.to_ = utils.to_
         }
 
 
@@ -68,8 +66,8 @@ if (type.isObject(window) && window.addEventListener) {
         const toy = document.getElementById("toy")
         async.repeat(async () => {
             toy.innerHTML =
-                drawEmojis(randomInt() % 4 + 1).join(string.space())
-            await async.delay(0.8 * timeUnit.second)
+                drawEmojis(math.randomInt() % 4 + 1).join(string.space())
+            await async.delay(0.8 * utils.timeUnit.second)
         }, () => true)
 
 

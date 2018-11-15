@@ -11,13 +11,12 @@
 
 
 import {
-    access,
-    dict,
-    isBrowser,
-    partial,
-    quote,
-    randomInt,
-    shuffle,
+    array,
+    func,
+    math,
+    string,
+    struct,
+    utils,
 } from "@xcmats/js-toolbox"
 
 
@@ -33,12 +32,12 @@ import {
 export const consoleWrapper = (() => {
     let
         methods = ["log", "info", "warn", "error"],
-        noop = dict(methods.map((m) => [m, () => null])),
+        noop = struct.dict(methods.map((m) => [m, () => null])),
         c = (context = "main") => (
-            (con) => dict(methods.map(
-                (m) => [m, partial(con[m])(quote(context, "[]"))]
+            (con) => struct.dict(methods.map(
+                (m) => [m, func.partial(con[m])(string.quote(context, "[]"))]
             ))
-        )(access(isBrowser() ? self : global, ["console"], noop))
+        )(struct.access(utils.isBrowser() ? self : global, ["console"], noop))
     c.noop = noop
     return c
 })()
@@ -55,8 +54,8 @@ export const consoleWrapper = (() => {
  */
 export const drawEmojis = ((emojis) =>
     (windowSize) => {
-        let i = randomInt() % (emojis.length - windowSize)
-        return shuffle(emojis).slice(i, i + windowSize)
+        let i = math.randomInt() % (emojis.length - windowSize)
+        return array.shuffle(emojis).slice(i, i + windowSize)
     }
 )([
     "🎁", "🎀", "🎧", "🍺", "💣", "💥", "🔥", "👊",

@@ -24,7 +24,7 @@ import {
     func,
     handleRejection,
     string,
-    toBool,
+    type,
 } from "@xcmats/js-toolbox"
 import {
     clientDomain,
@@ -112,7 +112,7 @@ export default function generateAddress (respond, logger, context) {
             )
 
         // something went wrong - data is not stored locally
-        if (!toBool(localResponse.ok)) {
+        if (!type.toBool(localResponse.ok)) {
 
             // report error
             respond({ error: "client:[failure]" })

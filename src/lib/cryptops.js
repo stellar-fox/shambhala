@@ -12,9 +12,9 @@ import {
     codec,
     func,
     handleException,
-    isBrowser,
     string,
     type,
+    utils,
 } from "@xcmats/js-toolbox"
 import {
     createCipheriv,
@@ -224,7 +224,7 @@ export const genUUID = () => codec.concatBytes(
         codec.stringToBytes
     )(
         handleException(
-            () => isBrowser() ?
+            () => utils.isBrowser() ?
                 navigator.userAgent :
                 "non-browser-env"
         )

@@ -12,7 +12,7 @@
 
 import {
     async,
-    choose,
+    func,
     handleException,
 } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "./utils"
@@ -203,7 +203,7 @@ export default class MessageHandler {
         )
 
         // undertake action
-        choose(
+        func.choose(
             packet.message,
             this.handlers,
             () => logger.info("Received:", packet, "from", e.origin),

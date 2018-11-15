@@ -12,10 +12,9 @@
 
 import {
     codec,
-    devEnv,
     func,
     type,
-    to_,
+    utils,
 } from "@xcmats/js-toolbox"
 import { salt64 } from "../lib/cryptops"
 import MessageHandler from "../lib/message.handler"
@@ -69,12 +68,12 @@ if (type.isObject(window) && window.addEventListener) {
 
         // expose `sf` dev. namespace
         // and some convenience shortcuts
-        if (devEnv()) {
+        if (utils.devEnv()) {
             window.sf = {
                 ...await dynamicImportLibs(),
                 context, functions, message, logger,
             }
-            window.to_ = to_
+            window.to_ = utils.to_
         }
 
         // get claimed origin (domain of the host application)
@@ -95,7 +94,7 @@ if (type.isObject(window) && window.addEventListener) {
         messageHandler.setRecipient(window.opener, "root")
 
         // expose message handler
-        if (devEnv() && window.sf) {
+        if (utils.devEnv() && window.sf) {
             window.sf.messageHandler = messageHandler
         }
 
