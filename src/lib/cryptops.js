@@ -77,7 +77,7 @@ export const sha256 = func.flow(
  * @function salt32
  * @returns {Uint8Array}
  */
-export const salt32 = () => sha256(random(128))
+export const salt32 = () => func.compose(sha256, random)(128)
 
 
 
@@ -133,7 +133,7 @@ export const sha512 = naclHash
  * @function salt64
  * @returns {Uint8Array}
  */
-export const salt64 = () => sha512(random(256))
+export const salt64 = () => func.compose(sha512, random)(256)
 
 
 
@@ -197,8 +197,7 @@ export const deriveKey = (
  * @returns {Uint8Array}
  */
 export const timestamp = () => func.compose(
-    codec.hexToBytes,
-    string.padLeft
+    codec.hexToBytes, string.padLeft
 )(Date.now().toString(16), 6*2, "0")
 
 
