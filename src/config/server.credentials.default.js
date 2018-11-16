@@ -22,4 +22,5 @@ export const database = {
 // ...
 export const tables = {
     key_table: "key_v1",
+    whitelist_table: "white_v1",
 }
