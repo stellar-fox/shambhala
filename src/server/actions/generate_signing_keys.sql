@@ -9,4 +9,6 @@ SET
     datum = jsonb_build_object(
         's_public', $<S_PUBLIC>
     )
-WHERE g_public = $<G_PUBLIC> AND c_uuid = $<C_UUID>;
+WHERE
+    g_public = $<G_PUBLIC> AND
+    c_uuid = $<C_UUID>;
