@@ -407,7 +407,7 @@ export const encrypt = (key, message) => {
         !type.isNumber(message.BYTES_PER_ELEMENT)  ||
         key.BYTES_PER_ELEMENT !== 1  ||
         message.BYTES_PER_ELEMENT !== 1
-    ) throw new TypeError("encrypt: Arguments must be of Uint8Array type.")
+    ) throw new TypeError("encrypt: Arguments must be of [Uint8Array] type.")
 
     if (key.length !== 64) throw new RangeError(
         "encrypt: Key must be 512 bits long."
@@ -459,7 +459,7 @@ export const decrypt = (key, ciphertext) => {
         !type.isNumber(ciphertext.BYTES_PER_ELEMENT)  ||
         key.BYTES_PER_ELEMENT !== 1  ||
         ciphertext.BYTES_PER_ELEMENT !== 1
-    ) throw new TypeError("decrypt: Arguments must be of Uint8Array type.")
+    ) throw new TypeError("decrypt: Arguments must be of [Uint8Array] type.")
 
     if (key.length !== 64) throw new RangeError(
         "decrypt: Key must be 512 bits long."
