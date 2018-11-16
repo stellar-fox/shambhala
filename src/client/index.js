@@ -10,9 +10,12 @@
 
 
 
+import axios from "axios"
 import {
+    array,
     codec,
     func,
+    struct,
     type,
     utils,
 } from "@xcmats/js-toolbox"
@@ -21,7 +24,13 @@ import MessageHandler from "../lib/message.handler"
 import { consoleWrapper } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
-import { originWhitelist } from "../config/env"
+import {
+    devOriginWhitelist,
+    clientDomain,
+    entrypoint,
+    registrationPath,
+    restApiPrefix,
+} from "../config/env"
 import * as message from "../lib/messages"
 
 import pingPong from "./actions/ping_pong"
@@ -46,7 +55,10 @@ const
     context = {},
 
     // console logger
-    logger = consoleWrapper("🎭")
+    logger = consoleWrapper("🎭"),
+
+    // backend url
+    backend = clientDomain + registrationPath + restApiPrefix
 
 
 
@@ -59,7 +71,7 @@ if (type.isObject(window) && window.addEventListener) {
         // if there is no parent - there is nothing to do
         if (!window.opener) {
             logger.error("What are you looking for?")
-            // window.location.replace(hostDomain)
+            window.location.replace("https://stellarfox.net/")
             return null
         }
 
@@ -76,14 +88,26 @@ if (type.isObject(window) && window.addEventListener) {
             window.to_ = utils.to_
         }
 
-        // get claimed origin (domain of the host application)
-        let hostDomain = window.location.search.slice(1)
+        let
+            // get claimed origin (domain of the host application)
+            hostDomain = window.location.search.slice(1),
+
+            // get origin whitelist
+            originWhitelist = struct.access(
+                await axios.get(backend + entrypoint.WHITELIST),
+                ["data", "whitelist"], []
+            )
 
         // do whitelist check (don't worry if somebody just lied
         // about it's true location - messages won't work
         // in such case anyway)
-        if (originWhitelist.indexOf(hostDomain) === -1) {
+        if (
+            func.pipe(originWhitelist.concat(devOriginWhitelist))(
+                array.countBy, Object.keys.bind(Object)
+            ).indexOf(hostDomain) === -1
+        ) {
             logger.warn("Domain not whitelisted.")
+            window.location.replace("https://stellarfox.net/")
             return
         }
 

@@ -65,11 +65,21 @@ export const maximumWindowOpeningTime = 10 * timeUnit.second
 
 
 /**
- * @constant originWhitelist
- * temp. dev. solution - it'll go to the database, soon...
+ * @constant devOriginWhitelist
  */
-export const originWhitelist = [
+export const devOriginWhitelist = [
     "https://localhost",
     "http://localhost:3000",
     "http://localhost:8080",
+    "http://localhost:8000",
 ]
+
+
+
+
+/**
+ * @constant entrypoint
+ */
+export const entrypoint = Object.freeze({
+    WHITELIST: "whitelist",
+})

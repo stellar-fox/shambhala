@@ -11,6 +11,7 @@
 
 
 import {
+    entrypoint,
     registrationPath,
     restApiPrefix,
     restApiRoot,
@@ -71,7 +72,7 @@ export default function configureRoutes (app, db, logger) {
     )
 
     // origins whitelist route
-    app.get("/" + restApiPrefix + "whitelist",
+    app.get("/" + restApiPrefix + entrypoint.WHITELIST,
         whitelist(db, logger)
     )
 
