@@ -475,9 +475,9 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
     // * host application is responsible for:
     //     - providing already existing `account id` to shambhala
     //     - getting current `sequence number` for generated account,
-    //     - signing transaction association keys with account,
+    //     - signing transaction associating keys with account,
     //     - submitting signed transaction associating keys with account
-    //         to stellar network,
+    //         to the stellar network,
     that.scenario.associateAccount = async () => {
 
         logger.info("Account Association Test BEGIN")
