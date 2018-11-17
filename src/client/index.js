@@ -102,8 +102,13 @@ if (type.isObject(window) && window.addEventListener) {
         // about it's true location - messages won't work
         // in such case anyway)
         if (
-            func.pipe(originWhitelist.concat(devOriginWhitelist))(
-                array.countBy, Object.keys.bind(Object)
+            (utils.devEnv() ?
+                // in devEnv allow also 'localhost' connections ...
+                func.pipe(originWhitelist.concat(devOriginWhitelist))(
+                    array.countBy, Object.keys.bind(Object)
+                ) :
+                // ... while in production allow only those coming from db
+                originWhitelist
             ).indexOf(hostDomain) === -1
         ) {
             logger.warn("Domain not whitelisted.")

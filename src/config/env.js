@@ -68,10 +68,12 @@ export const maximumWindowOpeningTime = 10 * timeUnit.second
  * @constant devOriginWhitelist
  */
 export const devOriginWhitelist = [
-    "https://localhost",
+    "http://localhost",
     "http://localhost:3000",
-    "http://localhost:8080",
+    "http://localhost:3001",
     "http://localhost:8000",
+    "http://localhost:8080",
+    "https://localhost",
 ]
 
 
