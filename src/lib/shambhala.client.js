@@ -17,6 +17,7 @@ import {
     timeUnit,
     type,
 } from "@xcmats/js-toolbox"
+import { miniHash } from "./utils"
 import {
     inspectTSP,
     signTSP,
@@ -108,7 +109,7 @@ export class Shambhala {
 
             // open shambhala window and set recipient in message handler
             store.client = window.open(
-                `${store.url.href}?${window.location.origin}`,
+                `${store.url.href}?${miniHash(window.location.origin)}`,
                 store.windowName
             )
             store.messageHandler.setRecipient(

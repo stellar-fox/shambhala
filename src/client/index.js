@@ -21,7 +21,10 @@ import {
 } from "@xcmats/js-toolbox"
 import { salt64 } from "../lib/cryptops"
 import MessageHandler from "../lib/message.handler"
-import { consoleWrapper } from "../lib/utils"
+import {
+    consoleWrapper,
+    miniHash,
+} from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
 import {
@@ -90,27 +93,28 @@ if (type.isObject(window) && window.addEventListener) {
 
         let
             // get claimed origin (domain of the host application)
-            hostDomain = window.location.search.slice(1),
+            hostDomainHash = window.location.search.slice(1),
 
             // get origin whitelist
-            originWhitelist = struct.access(
-                await axios.get(backend + entrypoint.WHITELIST),
-                ["data", "whitelist"], []
+            originWhitelist = array.removeDuplicates(
+                struct.access(
+                    await axios.get(backend + entrypoint.WHITELIST),
+                    ["data", "whitelist"], []
+                ).concat(
+                    // in devEnv allow also connections from 'dev' origins
+                    utils.devEnv(true) ? devOriginWhitelist : []
+                )
+            ),
+
+            // build 'miniHash' -> 'origin' dictionary
+            originDict = struct.dict(
+                originWhitelist.map((origin) => [miniHash(origin), origin])
             )
 
         // do whitelist check (don't worry if somebody just lied
         // about it's true location - messages won't work
         // in such case anyway)
-        if (
-            (utils.devEnv() ?
-                // in devEnv allow also 'localhost' connections ...
-                func.pipe(originWhitelist.concat(devOriginWhitelist))(
-                    array.countBy, Object.keys.bind(Object)
-                ) :
-                // ... while in production allow only those coming from db
-                originWhitelist
-            ).indexOf(hostDomain) === -1
-        ) {
+        if (!type.isString(originDict[hostDomainHash])) {
             logger.warn("Domain not whitelisted.")
             window.location.replace("https://stellarfox.net/")
             return
@@ -118,7 +122,7 @@ if (type.isObject(window) && window.addEventListener) {
 
         // instantiate message handler
         const
-            messageHandler = new MessageHandler(hostDomain),
+            messageHandler = new MessageHandler(originDict[hostDomainHash]),
             postMessageBinder = func.partial(messageHandler.postMessage)
         messageHandler.setRecipient(window.opener, "root")
 

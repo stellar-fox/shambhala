@@ -12,12 +12,14 @@
 
 import {
     array,
+    codec,
     func,
     math,
     string,
     struct,
     utils,
 } from "@xcmats/js-toolbox"
+import { sha256 } from "./cryptops"
 
 
 
@@ -62,3 +64,22 @@ export const drawEmojis = ((emojis) =>
     "🐢", "👻", "🔨", "🍕", "🚀", "🚗", "⛅️", "🐼",
     "🍷", "🌹", "💰", "📷", "👍", "🍒", "⚽️", "⏳",
 ])
+
+
+
+
+/**
+ * Returns hex representation of every 4th byte of sha256 hash of input string.
+ *
+ * @function miniHash
+ * @param {String} str
+ * @return {String} hex
+ */
+export const miniHash = func.flow(
+    codec.stringToBytes,
+    sha256,
+    (bytes) => Array.from(bytes),
+    array.takeEvery(4),
+    (arr) => Uint8Array.from(arr),
+    codec.bytesToHex
+)
