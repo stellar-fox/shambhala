@@ -13,7 +13,7 @@
 import {
     decrypt,
     genKey,
-} from "../../lib/cryptops"
+} from "@stellar-fox/cryptops"
 import { signTSP } from "../../lib/txops"
 import {
     codec,

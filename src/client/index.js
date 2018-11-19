@@ -19,7 +19,7 @@ import {
     type,
     utils,
 } from "@xcmats/js-toolbox"
-import { salt64 } from "../lib/cryptops"
+import { salt64 } from "@stellar-fox/cryptops"
 import MessageHandler from "../lib/message.handler"
 import {
     consoleWrapper,

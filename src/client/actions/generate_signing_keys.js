@@ -16,7 +16,7 @@ import {
     deriveKey,
     encrypt,
     salt64,
-} from "../../lib/cryptops"
+} from "@stellar-fox/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
     access,

@@ -13,7 +13,7 @@
 import axios from "axios"
 import forage from "localforage"
 import { Keypair } from "stellar-sdk"
-import { genUUID } from "../../lib/cryptops"
+import { genUUID } from "@stellar-fox/cryptops"
 import {
     access,
     codec,

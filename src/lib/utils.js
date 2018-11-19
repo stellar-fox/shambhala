@@ -19,7 +19,7 @@ import {
     struct,
     utils,
 } from "@xcmats/js-toolbox"
-import { sha256 } from "./cryptops"
+import { sha256 } from "@stellar-fox/cryptops"
 
 
 

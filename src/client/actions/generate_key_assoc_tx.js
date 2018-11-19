@@ -20,7 +20,7 @@ import {
     Operation,
     TransactionBuilder,
 } from "stellar-sdk"
-import { sha256 } from "../../lib/cryptops"
+import { sha256 } from "@stellar-fox/cryptops"
 import {
     codec,
     func,

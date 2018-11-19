@@ -23,15 +23,12 @@ import forage from "localforage"
  */
 export const dynamicImportLibs = async () => {
     let [
-        axios, bip39, crypto, cryptops, env, nacl, redshift,
-        Shambhala, sjcl, stellar, toolbox, txops, utils, scrypt,
+        axios, cryptops, env, redshift, Shambhala,
+        stellar, toolbox, txops, utils,
     ] = await Promise.all([
         import("axios"),
-        import("bip39"),
-        import("crypto-browserify"),
-        import("./cryptops"),
+        import("@stellar-fox/cryptops"),
         import("../config/env"),
-        import("tweetnacl"),
         import("@stellar-fox/redshift"),
         import("./shambhala.client"),
         import("sjcl"),
@@ -39,23 +36,17 @@ export const dynamicImportLibs = async () => {
         import("@xcmats/js-toolbox"),
         import("./txops"),
         import("./utils"),
-        import("scrypt-js"),
     ])
     return {
         axios,
-        bip39,
-        crypto,
         cryptops,
         env,
         forage,   // can't be imported dynamically
-        nacl,
         redshift,
         Shambhala,
-        sjcl,
         stellar,
         toolbox,
         txops,
         utils,
-        scrypt: scrypt.default,
     }
 }

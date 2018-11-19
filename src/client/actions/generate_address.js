@@ -17,7 +17,7 @@ import {
     genMnemonic,
     mnemonicToSeedHex,
 } from "@stellar-fox/redshift"
-import { genUUID } from "../../lib/cryptops"
+import { genUUID } from "@stellar-fox/cryptops"
 import {
     access,
     codec,

@@ -11,21 +11,17 @@
     ],
     "dependencies": {
         "@babel/runtime": "^7.1.5",
-        "@stellar-fox/redshift": "^0.4.6",
+        "@stellar-fox/cryptops": "^1.0.1",
+        "@stellar-fox/redshift": "^0.4.7",
         "@types/express": "^4.16.0",
         "@types/stellar-sdk": "^0.10.4",
         "@xcmats/js-toolbox": "^0.6.14",
         "axios": "^0.18.0",
-        "bip39": "^2.5.0",
         "chalk": "^2.4.1",
-        "crypto-browserify": "^3.12.0",
         "express": "^4.16.4",
         "localforage": "^1.7.3",
         "pg-promise": "^8.5.2",
-        "scrypt-js": "^2.0.4",
-        "sjcl": "^1.0.8",
-        "stellar-sdk": "^0.11.0",
-        "tweetnacl": "^1.0.0"
+        "stellar-sdk": "^0.11.0"
     },
     "description": "Mystery.",
     "devDependencies": {
@@ -72,8 +68,8 @@
         "webpack-node-externals": "^1.7.2"
     },
     "engines": {
-        "node": ">=6.0.0",
-        "npm": ">=5.0.0"
+        "node": ">=8.0.0",
+        "npm": ">=6.0.0"
     },
     "homepage": "https://github.com/stellar-fox/shambhala",
     "keywords": [

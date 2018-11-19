@@ -12,7 +12,7 @@
 
 import forage from "localforage"
 import { Keypair } from "stellar-sdk"
-import { passphraseEncrypt } from "../../lib/cryptops"
+import { passphraseEncrypt } from "@stellar-fox/cryptops"
 import {
     codec,
     string,

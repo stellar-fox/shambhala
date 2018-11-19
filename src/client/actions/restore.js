@@ -18,7 +18,7 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
-import { passphraseDecrypt } from "../../lib/cryptops"
+import { passphraseDecrypt } from "@stellar-fox/cryptops"
 
 
 

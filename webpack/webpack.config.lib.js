@@ -40,6 +40,7 @@ module.exports = {
 
 
     externals: [
+        "@stellar-fox/cryptops",
         "@stellar-fox/redshift",
         "@xcmats/js-toolbox",
         "axios",

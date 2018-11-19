@@ -11,7 +11,7 @@
 
 
 import axios from "axios"
-import { sha512 } from "../../lib/cryptops"
+import { sha512 } from "@stellar-fox/cryptops"
 import {
     codec,
     func

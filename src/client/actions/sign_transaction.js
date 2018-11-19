@@ -15,7 +15,7 @@ import forage from "localforage"
 import {
     decrypt,
     deriveKey,
-} from "../../lib/cryptops"
+} from "@stellar-fox/cryptops"
 import {
     inspectTSP,
     signTSP,

@@ -14,7 +14,7 @@ import {
     encrypt,
     genKey,
     salt32,
-} from "../../lib/cryptops"
+} from "@stellar-fox/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
     codec,

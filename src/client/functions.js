@@ -16,7 +16,7 @@ import {
     func,
 } from "@xcmats/js-toolbox"
 import forage from "localforage"
-import { decodeUUID } from "../lib/cryptops"
+import { decodeUUID } from "@stellar-fox/cryptops"
 
 
 
