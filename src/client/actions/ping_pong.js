@@ -39,7 +39,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
 /**
  * Ping-pong.
  *
- * @function pingPongAction
+ * @function pingPong
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger

@@ -36,6 +36,7 @@ import {
 } from "../config/env"
 import * as message from "../lib/messages"
 
+import heartbeat from "./actions/heartbeat"
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import associateAddress from "./actions/associate_address"
@@ -136,6 +137,9 @@ if (type.isObject(window) && window.addEventListener) {
 
         // assign message handlers
         [
+            // heartbeat action
+            { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
+
             // ping-pong action
             { m: message.PING_PONG, a: pingPong, args: [logger] },
 
