@@ -21,7 +21,11 @@ import {
     ERROR,
     HEARTBEAT,
 } from "./messages"
-import { defaultMessageTimeout } from "../config/env"
+import {
+    defaultHeartbeatInterval,
+    defaultLongReceivingTimeout,
+    defaultMessageTimeout,
+} from "../config/env"
 
 
 
@@ -215,9 +219,9 @@ export default class MessageHandler {
         message,
         {
             hb = HEARTBEAT,
-            hbInterval = 1 * utils.timeUnit.second,
+            hbInterval = defaultHeartbeatInterval,
             hbCallback = func.identity,
-            rmTimeout = 1 * utils.timeUnit.hour,
+            rmTimeout = defaultLongReceivingTimeout,
         } = {}
     ) => {
 
@@ -240,7 +244,7 @@ export default class MessageHandler {
                 // ... and wait for the response
                 try {
 
-                    hbPayload = await this.receiveMessage(hb, 0.9 * hbInterval)
+                    hbPayload = await this.receiveMessage(hb, 0.8 * hbInterval)
 
                     // if response came then pass received `hbPayload`
                     // to the `hbCallback` function

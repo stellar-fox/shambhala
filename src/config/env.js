@@ -17,7 +17,7 @@ import { timeUnit } from "@xcmats/js-toolbox"
 
 
 /**
- * @constant clientDomain Domain of the `client` application.
+ * @constant {String} clientDomain Domain of the `client` application.
  */
 export const clientDomain = "https://secrets.localhost"
 
@@ -25,7 +25,7 @@ export const clientDomain = "https://secrets.localhost"
 
 
 /**
- * @constant registrationPath Path prefix
+ * @constant {String} registrationPath Path prefix
  */
 export const registrationPath = publicPath
 
@@ -33,7 +33,7 @@ export const registrationPath = publicPath
 
 
 /**
- * @constant restApiRoot Root of all REST API paths.
+ * @constant {String} restApiRoot Root of all REST API paths.
  */
 export const restApiRoot = "api/"
 
@@ -41,7 +41,7 @@ export const restApiRoot = "api/"
 
 
 /**
- * @constant restApiPrefix Where to send xhr queries?
+ * @constant {String} restApiPrefix Where to send xhr queries?
  */
 export const restApiPrefix = `${restApiRoot}v1/`
 
@@ -49,23 +49,47 @@ export const restApiPrefix = `${restApiRoot}v1/`
 
 
 /**
- * @constant defaultMessageTimeout ...
+ * @constant {Number} defaultMessageTimeout ...
  */
-export const defaultMessageTimeout = 5 * timeUnit.second
+export const defaultMessageTimeout = 1 * timeUnit.second
 
 
 
 
 /**
- * @constant maximumWindowOpeningTime ...
+ * @constant {Number} defaultHeartbeatInterval ...
  */
-export const maximumWindowOpeningTime = 10 * timeUnit.second
+export const defaultHeartbeatInterval = 0.6 * timeUnit.second
 
 
 
 
 /**
- * @constant devOriginWhitelist
+ * @constant {Number} defaultHeartbeatInterval ...
+ */
+export const defaultLongReceivingTimeout = 2 * timeUnit.hour
+
+
+
+
+/**
+ * @constant {Number} defaultBackendPingTimeout ...
+ */
+export const defaultBackendPingTimeout = 5 * timeUnit.second
+
+
+
+
+/**
+ * @constant {Number} maximumWindowOpeningTime ...
+ */
+export const maximumWindowOpeningTime = 20 * timeUnit.second
+
+
+
+
+/**
+ * @constant {Array.<String>} devOriginWhitelist
  */
 export const devOriginWhitelist = [
     "http://localhost",
@@ -80,7 +104,7 @@ export const devOriginWhitelist = [
 
 
 /**
- * @constant entrypoint
+ * @constant {Object} entrypoint REST API entrypoints that are not "messages"
  */
 export const entrypoint = Object.freeze({
     WHITELIST: "whitelist",

@@ -14,7 +14,6 @@ import {
     codec,
     func,
     // string,
-    timeUnit,
     type,
 } from "@xcmats/js-toolbox"
 import { miniHash } from "./utils"
@@ -23,7 +22,10 @@ import {
     signTSP,
 } from "./txops"
 import { shambhalaTesting as testingModule } from "./shambhala.testing"
-import { maximumWindowOpeningTime } from "../config/env"
+import {
+    defaultBackendPingTimeout,
+    maximumWindowOpeningTime,
+} from "../config/env"
 import MessageHandler from "./message.handler"
 import * as message from "./messages"
 import { version } from "../../package.json"
@@ -144,7 +146,7 @@ export class Shambhala {
         let data = await store.messageHandler
             .receiveMessage(
                 message.PING_PONG,
-                1 * timeUnit.second
+                defaultBackendPingTimeout
             )
 
         return data.hash
@@ -196,7 +198,7 @@ export class Shambhala {
         store.messageHandler.postMessage(message.GENERATE_ADDRESS)
 
         let data = await store.messageHandler
-            .receiveMessage(message.GENERATE_ADDRESS)
+            .receiveMessageHB(message.GENERATE_ADDRESS)
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -224,7 +226,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.ASSOCIATE_ADDRESS)
+            .receiveMessageHB(message.ASSOCIATE_ADDRESS)
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -253,10 +255,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(
-                message.GENERATE_SIGNING_KEYS,
-                20 * timeUnit.second
-            )
+            .receiveMessageHB(message.GENERATE_SIGNING_KEYS)
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -297,7 +296,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.GENERATE_SIGNED_KEY_ASSOC_TX)
+            .receiveMessageHB(message.GENERATE_SIGNED_KEY_ASSOC_TX)
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -335,7 +334,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.GENERATE_KEY_ASSOC_TX)
+            .receiveMessageHB(message.GENERATE_KEY_ASSOC_TX)
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -363,7 +362,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.GET_PUBLIC_KEYS)
+            .receiveMessageHB(message.GET_PUBLIC_KEYS)
 
         if (data.ok) return {
             G_PUBLIC: data.G_PUBLIC,
@@ -396,7 +395,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.BACKUP)
+            .receiveMessageHB(message.BACKUP)
 
         if (data.ok) return data.payload
         else throw new Error(data.error)
@@ -426,7 +425,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.RESTORE)
+            .receiveMessageHB(message.RESTORE)
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -458,7 +457,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(message.CAN_SIGN_FOR)
+            .receiveMessageHB(message.CAN_SIGN_FOR)
 
         if (data.ok) return data.answer
         else throw new Error(data.error)
@@ -507,10 +506,7 @@ export class Shambhala {
         )
 
         let data = await store.messageHandler
-            .receiveMessage(
-                message.SIGN_TRANSACTION,
-                20 * timeUnit.second
-            )
+            .receiveMessageHB(message.SIGN_TRANSACTION)
 
         if (data.ok) return [
             data.C_SIGNATURE,
