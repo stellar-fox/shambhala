@@ -13,10 +13,14 @@
 import {
     async,
     func,
-    handleException,
+    string,
+    utils,
 } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "./utils"
-import * as message from "./messages"
+import {
+    ERROR,
+    HEARTBEAT,
+} from "./messages"
 import { defaultMessageTimeout } from "../config/env"
 
 
@@ -76,12 +80,11 @@ export default class MessageHandler {
      * @param {String} message
      * @param {Object} [payload]
      */
-    postMessage = (message, payload = {}) => {
+    postMessage = (message, payload = {}) =>
         this.recipient.postMessage(
             JSON.stringify({ message, payload }),
             this.origin
         )
-    }
 
 
 
@@ -128,15 +131,24 @@ export default class MessageHandler {
      * Receive one specified message with payload.
      * Guarded by watchdog timer - rejects if timeout reached.
      *
+     * Also - externally cancellable. Pass a function as a last
+     * argument and it'll receive the "canceller". When "canceller"
+     * will be invoked, whole `receiveMessage` invocation will be cancelled.
+     *
      * @async
      * @instance
      * @method receiveMessage
      * @memberof module:message-handler-lib~MessageHandler
      * @param {String} message
      * @param {Number} [timeout]
+     * @param {Function} [cancel] (canceller) => any
      * @returns {Promise.<Object>}
      */
-    receiveMessage = (message, timeout = defaultMessageTimeout) =>
+    receiveMessage = (
+        message,
+        timeout = defaultMessageTimeout,
+        cancel = func.identity
+    ) =>
         new Promise((resolve, reject) => {
 
             // "watchdog" timer
@@ -156,22 +168,127 @@ export default class MessageHandler {
                 // when invoked, will cancel the timeout
                 (cancelTimeout) => {
 
+                    // first - pass whole "receiveMessage canceller",
+                    // to the `cancel` function. It allows somebody from
+                    // the outside world to cancel this invocation
+                    // of `receiveMessage`. "Cancellable promises"??
+                    cancel((reason) => {
+                        this.unhandle(message)
+                        cancelTimeout("receiveMessage cancelled externally.")
+                        reject(reason)
+                    })
+
                     // wait for message and when it'll arrive
-                    // cancel the timeout and resolve promise
+                    // cancel the timeout ("watchdog timer")
+                    // and resolve the promise
                     this.handle(message, (payload) => {
-                        cancelTimeout()
+                        cancelTimeout("Message received.")
                         resolve(payload)
                     }, true)
 
                 }
 
-            // catch the exception - `async.timeout` throws when
+            // catch the exception - `async.timeout` rejects when
             // cancelled, but here it's the "positive scenario";
             // if timeout has been cancelled then message was
             // received and handled
             ).catch((_) => _)
 
         })
+
+
+
+
+    /**
+     * "Heartbeat" version of `receiveMessage`.
+     * Used for long-lasting queries.
+     *
+     * @async
+     * @instance
+     * @method receiveMessageHB
+     * @memberof module:message-handler-lib~MessageHandler
+     * @param {String} message
+     * @param {Object} [opts]
+     * @returns {Promise.<Object>}
+     */
+    receiveMessageHB = async (
+        message,
+        {
+            hb = HEARTBEAT,
+            hbInterval = 1 * utils.timeUnit.second,
+            hbCallback = func.identity,
+            rmTimeout = 1 * utils.timeUnit.hour,
+        } = {}
+    ) => {
+
+        let
+            abortReceiving = null,
+            stopHeartbeat = null,
+            payload = null
+
+        // first "main step" - setup heartbeat interval:
+        // every `hbInterval` milliseconds ...
+        async.interval(
+
+            async () => {
+
+                let hbPayload = null
+
+                // ... send `hb` message ...
+                this.postMessage(hb)
+
+                // ... and wait for the response
+                try {
+
+                    hbPayload = await this.receiveMessage(hb, 0.9 * hbInterval)
+
+                    // if response came then pass received `hbPayload`
+                    // to the `hbCallback` function
+                    utils.handleException(() => hbCallback(hbPayload))
+
+                } catch (_ex) {
+
+                    // if response didn't come on time, stop
+                    // heartbeat interval and abort message receiving
+                    stopHeartbeat()
+                    abortReceiving("the heart stopped beating")
+
+                }
+            },
+
+            (canceller) => { stopHeartbeat = canceller },
+            hbInterval
+
+        )
+
+        // second "main" step - wait for the `message` to come;
+        // it can be a long wait, but while the heart beats, we know
+        // that something's going on
+        try {
+            payload = await this.receiveMessage(
+                message,
+                rmTimeout,
+                (canceller) => { abortReceiving = canceller }
+            )
+        } catch (ex) {
+
+            // `rmTimeout` can also kick-in - in such case
+            // we should stop the heartbeat ...
+            stopHeartbeat()
+
+            // ... and rethrow
+            throw ex
+
+        }
+
+        // third "main" step - everything went smooth,
+        // after potentially long wait the message has been received
+        // so heartbeat can be stopped
+        stopHeartbeat()
+
+        return payload
+
+    }
 
 
 
@@ -193,10 +310,10 @@ export default class MessageHandler {
         if (e.origin !== this.origin) { return }
 
         // parse the packet of data
-        let packet = handleException(
+        let packet = utils.handleException(
             () => JSON.parse(e.data),
             (ex) => ({
-                message: message.ERROR,
+                message: ERROR,
                 payload: e,
                 exception: ex,
             })
@@ -206,7 +323,9 @@ export default class MessageHandler {
         func.choose(
             packet.message,
             this.handlers,
-            () => logger.info("Received:", packet, "from", e.origin),
+            () => logger.info(
+                "Received:", packet, "from", string.quote(e.origin)
+            ),
             [packet.payload]
         )
 
