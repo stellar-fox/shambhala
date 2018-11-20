@@ -73,9 +73,10 @@
     },
     "homepage": "https://github.com/stellar-fox/shambhala",
     "keywords": [
-        "javascript",
-        "library",
-        "secrets"
+        "secrets",
+        "mystery",
+        "security",
+        "client-auth"
     ],
     "license": "Apache-2.0",
     "name": "@stellar-fox/shambhala",
