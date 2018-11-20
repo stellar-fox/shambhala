@@ -31,7 +31,6 @@ export const dynamicImportLibs = async () => {
         import("../config/env"),
         import("@stellar-fox/redshift"),
         import("./shambhala.client"),
-        import("sjcl"),
         import("stellar-sdk"),
         import("@xcmats/js-toolbox"),
         import("./txops"),
