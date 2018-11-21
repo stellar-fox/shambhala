@@ -69,7 +69,13 @@ export default function signTransaction (db, logger) {
                         G_PUBLIC, C_UUID,
                     }),
 
-                // decrypt and extract PEPPER and S_SECRET
+                PEPPER = null, S_SECRET = null
+
+            // try PEPPER and S_SECRET decryption and extraction
+            try {(
+                // if `S_KEY` is bad, then decryption will fail
+                // returning `null`, so object decomposition won't be possible
+                // and an exception will be thrown
                 { PEPPER, S_SECRET } = func.pipe(
                     S_KEY, codec.b64dec(ENC_SKP)
                 )(
@@ -78,8 +84,21 @@ export default function signTransaction (db, logger) {
                         PEPPER: SKP.slice(0, 32),
                         S_SECRET: codec.bytesToString(SKP.slice(32)),
                     })
-                ),
+                )
+            )} catch (ex) {
 
+                res.status(400).send({ error: "bad decryption key" })
+                logger.warn("Bad decryption key.")
+
+                // do nothing more
+                next()
+                return
+            }
+
+
+
+
+            let
                 // sign TX_PAYLOAD with S_SECRET
                 S_SIGNATURE = func.pipe(S_SECRET, TX_PAYLOAD)(
                     signTSP, codec.b64enc
