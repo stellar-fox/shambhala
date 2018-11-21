@@ -150,6 +150,10 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
     that.generateSigningKeys = async (G_PUBLIC = context.G_PUBLIC) => {
 
         logger.info("Requesting signing keys generation...")
+        logger.warn([
+            "Go to the shambhala window,",
+            "open console and follow the instructions.",
+        ].join(string.space()))
 
         let { C_PUBLIC, S_PUBLIC } =
             await context.shambhala.generateSigningKeys(G_PUBLIC)
@@ -375,6 +379,10 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
     that.sign = async (accountId = context.G_PUBLIC, tx = context.tx) => {
 
         logger.info("Request transaction to be signed by shambhala.")
+        logger.warn([
+            "Go to the shambhala window,",
+            "open console and follow the instructions.",
+        ].join(string.space()))
 
         tx.signatures.push(
             ...(
