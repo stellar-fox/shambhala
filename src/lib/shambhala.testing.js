@@ -449,12 +449,22 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
         // eslint-disable-next-line no-console
         console.time("Account Creation")
 
-        await that.generateAddress()
-        await that.generateSigningKeys()
-        await that.createAccountOnLedger()
-        await that.getSequenceNumber()
-        await that.generateSignedKeyAssocTX()
-        await that.submitTransaction()
+        try {
+
+            await that.generateAddress()
+            await that.generateSigningKeys()
+            await that.createAccountOnLedger()
+            await that.getSequenceNumber()
+            await that.generateSignedKeyAssocTX()
+            await that.submitTransaction()
+
+        } catch (ex) {
+            // eslint-disable-next-line no-console
+            console.timeEnd("Account Creation")
+            logger.error(ex)
+            logger.warn("Account Creation Test FAILED.")
+            return context
+        }
 
         // eslint-disable-next-line no-console
         console.timeEnd("Account Creation")
@@ -484,29 +494,39 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
         // eslint-disable-next-line no-console
         console.time("Account Association")
 
-        let addr = newAddress("TstHostGen")
+        try {
 
-        logger.info(
-            `(${string.quote(addr.mnemonic)},`,
-            `${string.quote(addr.passphrase)})`
-        )
+            let addr = newAddress("TstHostGen")
 
-        await that.createAccountOnLedger(addr.keypair.publicKey())
-        await that.associateAddress(addr.keypair.publicKey())
-        await that.generateSigningKeys()
-        await that.getSequenceNumber()
+            logger.info(
+                `(${string.quote(addr.mnemonic)},`,
+                `${string.quote(addr.passphrase)})`
+            )
 
-        let tx = await that.generateKeyAssocTX()
+            await that.createAccountOnLedger(addr.keypair.publicKey())
+            await that.associateAddress(addr.keypair.publicKey())
+            await that.generateSigningKeys()
+            await that.getSequenceNumber()
 
-        logger.info("Signing received transaction.")
+            let tx = await that.generateKeyAssocTX()
 
-        tx.sign(addr.keypair)
+            logger.info("Signing received transaction.")
 
-        logger.info(
-            "OK:", codec.b64enc(array.head(tx.signatures).toXDR())
-        )
+            tx.sign(addr.keypair)
 
-        await that.submitTransaction()
+            logger.info(
+                "OK:", codec.b64enc(array.head(tx.signatures).toXDR())
+            )
+
+            await that.submitTransaction()
+
+        } catch (ex) {
+            // eslint-disable-next-line no-console
+            console.timeEnd("Account Association")
+            logger.error(ex)
+            logger.warn("Account Association Test FAILED.")
+            return context
+        }
 
         // eslint-disable-next-line no-console
         console.timeEnd("Account Association")
@@ -526,8 +546,18 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
         // eslint-disable-next-line no-console
         console.time("Backup-Restore")
 
-        await that.backup(G_PUBLIC)
-        await that.restore(G_PUBLIC)
+        try {
+
+            await that.backup(G_PUBLIC)
+            await that.restore(G_PUBLIC)
+
+        } catch (ex) {
+            // eslint-disable-next-line no-console
+            console.timeEnd("Backup-Restore")
+            logger.error(ex)
+            logger.warn("Backup-Restore Test FAILED.")
+            return context
+        }
 
         // eslint-disable-next-line no-console
         console.timeEnd("Backup-Restore")
@@ -552,27 +582,37 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
         // eslint-disable-next-line no-console
         console.time("Transaction-Signing")
 
-        let randomDestination = null
+        try {
 
-        if (!destination) {
-            randomDestination = Keypair.random()
-            logger.info("Using some random, ad-hoc generated destination.")
-        }
+            let randomDestination = null
 
-        await that.buildTransferTransaction(
-            source,
-            destination || randomDestination.publicKey(),
-            amount || array.head(array.sparse(10, 100, 1)),
-            memoText
-        )
-        await that.sign(source)
-        await that.submitTransaction()
+            if (!destination) {
+                randomDestination = Keypair.random()
+                logger.info("Using some random, ad-hoc generated destination.")
+            }
 
-        if (!destination) {
-            logger.info(
-                "Here's destination SECRET:",
-                randomDestination.secret()
+            await that.buildTransferTransaction(
+                source,
+                destination || randomDestination.publicKey(),
+                amount || array.head(array.sparse(10, 100, 1)),
+                memoText
             )
+            await that.sign(source)
+            await that.submitTransaction()
+
+            if (!destination) {
+                logger.info(
+                    "Here's destination SECRET:",
+                    randomDestination.secret()
+                )
+            }
+
+        } catch (ex) {
+            // eslint-disable-next-line no-console
+            console.timeEnd("Transaction-Signing")
+            logger.error(ex)
+            logger.warn("Transaction-Signing Test FAILED.")
+            return context
         }
 
         // eslint-disable-next-line no-console
