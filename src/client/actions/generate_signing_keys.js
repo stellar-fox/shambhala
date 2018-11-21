@@ -19,12 +19,13 @@ import {
 } from "@stellar-fox/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
-    access,
     codec,
-    handleRejection,
     string,
+    struct,
     type,
+    utils,
 } from "@xcmats/js-toolbox"
+import { getPin } from "../functions"
 import {
     clientDomain,
     registrationPath,
@@ -53,9 +54,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger
+ * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function generateSigningKeys (respond, logger) {
+export default function generateSigningKeys (respond, logger, context) {
 
     return async (p) => {
 
@@ -99,9 +101,16 @@ export default function generateSigningKeys (respond, logger) {
             // generate user-specific SALT
             SALT = salt64(),
 
-            // PIN - will be read from the user
-            // this is a constant just for the testing purposes
-            PIN = "00000"
+            PIN = null
+
+        // read PIN from the user
+        try {
+            PIN = await getPin(logger, context)
+        } catch (ex) {
+            respond({ error: `user:[${ex}]` })
+            logger.error("User refused to give PIN. Operation aborted.")
+            return
+        }
 
         // pretend this is UI
         logger.info("PIN:", PIN)
@@ -116,7 +125,7 @@ export default function generateSigningKeys (respond, logger) {
             ),
 
             // send S_KEY to the server
-            serverResponse = await handleRejection(
+            serverResponse = await utils.handleRejection(
                 async () => await axios.post(
                     backend + message.GENERATE_SIGNING_KEYS,
                     {
@@ -134,7 +143,7 @@ export default function generateSigningKeys (respond, logger) {
         // unfortunately - an error occured
         if (
             serverResponse.status !== 201  ||
-            !access(serverResponse, ["data", "ok"], false)
+            !struct.access(serverResponse, ["data", "ok"], false)
         ) {
 
             // report error
@@ -192,7 +201,7 @@ export default function generateSigningKeys (respond, logger) {
 
 
         // store all needed data in local storage
-        let localResponse = await handleRejection(
+        let localResponse = await utils.handleRejection(
             async () => {
                 await forage.setItem(
                     G_PUBLIC,

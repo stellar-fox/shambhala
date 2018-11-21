@@ -22,12 +22,13 @@ import {
 } from "../../lib/txops"
 import { Keypair } from "stellar-sdk"
 import {
-    access,
     codec,
     func,
-    handleRejection,
     string,
+    struct,
+    utils,
 } from "@xcmats/js-toolbox"
+import { getPin } from "../functions"
 import {
     clientDomain,
     registrationPath,
@@ -56,9 +57,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger
+ * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function signTransaction (respond, logger) {
+export default function signTransaction (respond, logger, context) {
 
     return async (p) => {
 
@@ -108,9 +110,16 @@ export default function signTransaction (respond, logger) {
 
 
 
-        // PIN - will be read from the user
-        // this is a constant just for the testing purposes
-        let PIN = "00000"
+        let PIN = null
+
+        // read PIN from the user
+        try {
+            PIN = await getPin(logger, context)
+        } catch (ex) {
+            respond({ error: `user:[${ex}]` })
+            logger.error("User refused to give PIN. Operation aborted.")
+            return
+        }
 
         // pretend this is UI
         logger.info("PIN:", PIN)
@@ -125,7 +134,7 @@ export default function signTransaction (respond, logger) {
             ),
 
             // send S_KEY with TX_PAYLOAD to the server
-            serverResponse = await handleRejection(
+            serverResponse = await utils.handleRejection(
                 async () => await axios.post(
                     backend + message.SIGN_TRANSACTION,
                     {
@@ -144,11 +153,15 @@ export default function signTransaction (respond, logger) {
         // unfortunately - an error occured
         if (
             serverResponse.status !== 200  ||
-            !access(serverResponse, ["data", "ok"], false)
+            !struct.access(serverResponse, ["data", "ok"], false)
         ) {
 
             // report error
-            respond({ error: `server:[${serverResponse.status}]` })
+            respond({ error: `server:[${
+                serverResponse.status === 400 ?
+                    serverResponse.data.error :
+                    serverResponse.status
+            }]` })
 
             logger.error(
                 "Transaction signing failure.",

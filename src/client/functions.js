@@ -46,3 +46,23 @@ export const getAllClientData = async () => {
         .sort((a, b) => timestamp(a).getTime() - timestamp(b).getTime())
 
 }
+
+
+
+
+/**
+ * Get user PIN (from the console).
+ *
+ * @async
+ * @function getPin
+ * @param {Object} logger
+ * @param {Object} context
+ * @returns {String}
+ */
+export const getPin = async (logger, context) => {
+    logger.info("Provide PIN (as string): sf.context.pinMutex.resolve(PIN)")
+    context.pinMutex = async.createMutex()
+    let pin = await context.pinMutex.lock()
+    delete context.pinMutex
+    return pin
+}

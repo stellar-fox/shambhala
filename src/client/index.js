@@ -158,7 +158,7 @@ if (type.isObject(window) && window.addEventListener) {
             // signing keys generation action
             {
                 m: message.GENERATE_SIGNING_KEYS,
-                a: generateSigningKeys, args: [logger],
+                a: generateSigningKeys, args: [logger, context],
             },
 
             // automatic keys association action
@@ -188,7 +188,7 @@ if (type.isObject(window) && window.addEventListener) {
             // sign transaction action
             {
                 m: message.SIGN_TRANSACTION,
-                a: signTransaction, args: [logger],
+                a: signTransaction, args: [logger, context],
             },
 
         ].forEach((ad) => messageHandler.handle(
