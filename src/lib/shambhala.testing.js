@@ -34,6 +34,7 @@ import {
 } from "@xcmats/js-toolbox"
 import {
     clientDomain,
+    friendbotAddress,
     registrationPath,
 } from "../config/env"
 
@@ -180,7 +181,7 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
         logger.info("Requesting account generation and initial funds...")
 
         let friendbotResponse =
-            await axios.get("https://friendbot.stellar.org/", {
+            await axios.get(friendbotAddress, {
                 params: { addr: G_PUBLIC },
             })
         context.G_PUBLIC = G_PUBLIC
@@ -189,7 +190,7 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
             "Got it:",
             func.pipe(friendbotResponse.data.envelope_xdr)(
                 (xdr64) => new Transaction(xdr64),
-                (tx) => tx.operations[0],
+                (tx) => array.head(tx.operations),
                 (op) => `${op.type}: ${op.startingBalance} XLM`,
                 string.quote
             )
@@ -602,7 +603,7 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
             await that.buildTransferTransaction(
                 source,
                 destination || randomDestination.publicKey(),
-                amount || array.head(array.sparse(10, 100, 1)),
+                amount || array.head(array.sparse(2, 9, 1)),
                 memoText
             )
             await that.sign(source)
