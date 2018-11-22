@@ -69,7 +69,7 @@ const
 
 
 // gentle start
-if (type.isObject(window) && window.addEventListener) {
+if (type.isObject(window) && type.isFunction(window.addEventListener)) {
 
     window.addEventListener("load", async () => {
 
