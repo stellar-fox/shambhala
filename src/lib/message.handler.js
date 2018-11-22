@@ -250,7 +250,7 @@ export default class MessageHandler {
                     // to the `hbCallback` function
                     utils.handleException(() => hbCallback(hbPayload))
 
-                } catch (_ex) {
+                } catch (_) {
 
                     // if response didn't come on time, stop
                     // heartbeat interval and abort message receiving
@@ -269,26 +269,23 @@ export default class MessageHandler {
         // it can be a long wait, but while the heart beats, we know
         // that something's going on
         try {
+
             payload = await this.receiveMessage(
                 message,
                 rmTimeout,
                 (canceller) => { abortReceiving = canceller }
             )
-        } catch (ex) {
 
-            // `rmTimeout` can also kick-in - in such case
-            // we should stop the heartbeat ...
+        } finally {
+
+            // we should stop the heartbeat in two cases:
+            // - when `rmTimeout` kicks-in - in such case an exception
+            //   is thrown,
+            // - when everything went smooth - afer potentially long wait
+            //   the message has been received,
             stopHeartbeat()
 
-            // ... and rethrow
-            throw ex
-
         }
-
-        // third "main" step - everything went smooth,
-        // after potentially long wait the message has been received
-        // so heartbeat can be stopped
-        stopHeartbeat()
 
         return payload
 
