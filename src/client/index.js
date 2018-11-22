@@ -153,7 +153,7 @@ if (type.isObject(window) && type.isFunction(window.addEventListener)) {
             // account association action
             {
                 m: message.ASSOCIATE_ADDRESS,
-                a: associateAddress, args: [logger],
+                a: associateAddress, args: [logger, context],
             },
 
             // signing keys generation action

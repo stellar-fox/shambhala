@@ -138,6 +138,10 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
     that.associateAddress = async (G_PUBLIC) => {
 
         logger.info("Requesting address association...")
+        logger.warn([
+            "Go to the shambhala window,",
+            "open console and follow the instructions.",
+        ].join(string.space()))
 
         context.G_PUBLIC = await context.shambhala.associateAddress(G_PUBLIC)
 
@@ -516,9 +520,9 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
                 `${string.quote(addr.passphrase)})`
             )
 
-            await that.createAccountOnLedger(addr.keypair.publicKey())
             await that.associateAddress(addr.keypair.publicKey())
-            await that.generateSigningKeys()
+            await that.generateSigningKeys(addr.keypair.publicKey())
+            await that.createAccountOnLedger(addr.keypair.publicKey())
             await that.getSequenceNumber()
 
             let tx = await that.generateKeyAssocTX()

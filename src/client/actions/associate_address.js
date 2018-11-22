@@ -17,9 +17,11 @@ import { genUUID } from "@stellar-fox/cryptops"
 import {
     access,
     codec,
-    handleRejection,
-    toBool,
+    string,
+    type,
+    utils,
 } from "@xcmats/js-toolbox"
+import { promptUser } from "../functions"
 import {
     clientDomain,
     registrationPath,
@@ -48,9 +50,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger
+ * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function associateAddress (respond, logger) {
+export default function associateAddress (respond, logger, context) {
 
     return async (p) => {
 
@@ -89,6 +92,24 @@ export default function associateAddress (respond, logger) {
 
 
 
+        // confirm that user wishes to associate this address
+        if (
+            !await promptUser(
+                logger, context,
+                `Do you wish to associate ${string.quote(p.G_PUBLIC)}?`
+            )
+        ) {
+            respond({ error: "user:[rejected]" })
+            logger.error([
+                "User doesn't want to associate this address.",
+                "Operation aborted.",
+            ].join(string.space()))
+            return
+        }
+
+
+
+
         // extract user's new public address
         G_PUBLIC = p.G_PUBLIC
 
@@ -96,7 +117,7 @@ export default function associateAddress (respond, logger) {
         C_UUID = codec.bytesToHex(genUUID())
 
         // store G_PUBLIC and C_UUID in local storage
-        let localResponse = await handleRejection(
+        let localResponse = await utils.handleRejection(
             async () => {
                 await forage.setItem(G_PUBLIC, { G_PUBLIC, C_UUID })
                 return { ok: true }
@@ -105,7 +126,7 @@ export default function associateAddress (respond, logger) {
         )
 
         // something went wrong - data is not stored locally
-        if (!toBool(localResponse.ok)) {
+        if (!type.toBool(localResponse.ok)) {
 
             // report error
             respond({ error: "client:[failure]" })
@@ -123,7 +144,7 @@ export default function associateAddress (respond, logger) {
 
 
         // send G_PUBLIC and C_UUID to the server
-        let serverResponse = await handleRejection(
+        let serverResponse = await utils.handleRejection(
             async () => await axios.post(
                 backend + message.ASSOCIATE_ADDRESS,
                 { G_PUBLIC, C_UUID }
@@ -149,7 +170,7 @@ export default function associateAddress (respond, logger) {
         } else {
 
             // rollback all locally saved data (ignore any errors)
-            await handleRejection(
+            await utils.handleRejection(
                 async () => await forage.removeItem(G_PUBLIC)
             )
 
