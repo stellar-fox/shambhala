@@ -59,15 +59,16 @@ export const getAllClientData = async () => {
  * @function getValueFromUser
  * @param {Object} logger
  * @param {Object} context
+ * @param {String} [promptText]
  * @param {String} [name]
  * @param {*} [defVal] default value
- * @returns {String}
+ * @returns {Promise.<String>}
  */
 export const getValueFromUser = async (
-    logger, context, name = "VALUE", defVal = null
+    logger, context, promptText = "Enter ", name = "VALUE", defVal = null
 ) => {
-    logger.warn(`Please provide a ${name}`)
-    logger.info(`p.yes(${name})`, "p.no(REASON)")
+    logger.warn(`${promptText}${name}`)
+    logger.info(`p.yes(${name})`, "p.no(optional:REASON)")
     context.promptMutex = async.createMutex()
     if (type.isObject(window)) {
         window.p = {
@@ -87,16 +88,39 @@ export const getValueFromUser = async (
 
 
 /**
+ * Ask user a question (`promptText`) and expect yes/no answer.
+ *
+ * @async
+ * @function promptUser
+ * @param {Object} logger
+ * @param {Object} context
+ * @param {String} [promptText]
+ * @returns {Promise.<Boolean>}
+ */
+export const promptUser = async (
+    logger, context, promptText = "Yes or no?"
+) => {
+    try {
+        return await getValueFromUser(logger, context, promptText, "", true)
+    } catch (_) {
+        return false
+    }
+}
+
+
+
+
+/**
  * Get user PASSPHRASE (from the console).
  *
  * @async
  * @function getPassphrase
  * @param {Object} logger
  * @param {Object} context
- * @returns {String}
+ * @returns {Promise.<String>}
  */
 export const getPassphrase = func.partial(
-    func.rearg(getValueFromUser)(2, 3, 0, 1)
+    func.rearg(getValueFromUser)(3, 4, 0, 1, 2)
 )("PASSPHRASE", string.random(10))
 
 
@@ -109,8 +133,8 @@ export const getPassphrase = func.partial(
  * @function getPin
  * @param {Object} logger
  * @param {Object} context
- * @returns {String}
+ * @returns {Promise.<String>}
  */
 export const getPin = func.partial(
-    func.rearg(getValueFromUser)(2, 3, 0, 1)
+    func.rearg(getValueFromUser)(3, 4, 0, 1, 2)
 )("PIN", "00000")
