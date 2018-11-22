@@ -15,6 +15,7 @@ import {
     array,
     codec,
     func,
+    string,
     struct,
     type,
     utils,
@@ -135,7 +136,7 @@ if (type.isObject(window) && window.addEventListener) {
 
 
 
-        // assign message handlers
+        // message handlers array
         [
             // heartbeat action
             { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
@@ -191,9 +192,40 @@ if (type.isObject(window) && window.addEventListener) {
                 a: signTransaction, args: [logger, context],
             },
 
-        ].forEach((ad) => messageHandler.handle(
-            ad.m, func.curry(ad.a)(postMessageBinder(ad.m))(...ad.args)()
-        ))
+        // for each "action definition" (ad) ...
+        ].forEach((ad) => {
+            let
+                // ... prepare message responder ...
+                respond = postMessageBinder(ad.m),
+
+                // ... and create action with appropriate parameters bound
+                act = func.curry(ad.a)(respond)(...ad.args)()
+
+            // attach augmented action (act) to a message (ad.m):
+            // before an action is invoked a check is performed
+            // if another action is in progress - in such case a response
+            // is formed ({ error: "busy" })
+            messageHandler.handle(
+                ad.m,
+                async (...args) => {
+                    if (ad.m !== message.HEARTBEAT) {
+                        if (type.isString(context.message)) {
+                            logger.warn(
+                                string.quote(ad.m),
+                                "requested while processing",
+                                string.quote(context.message)
+                            )
+                            return respond({ error: "busy" })
+                        }
+                        context.message = ad.m
+                        try { var x = await act(...args) }
+                        finally { delete context.message }
+                        return x
+                    }
+                    return await act(...args)
+                }
+            )
+        })
 
 
 
