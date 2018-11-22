@@ -105,7 +105,7 @@ export default function generateSigningKeys (respond, logger, context) {
 
         // read PIN from the user
         try {
-            PIN = await getPin(logger, context)
+            PIN = String(await getPin(logger, context))
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")

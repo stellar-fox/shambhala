@@ -117,6 +117,10 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
     that.generateAddress = async () => {
 
         logger.info("Requesting address generation...")
+        logger.warn([
+            "Go to the shambhala window,",
+            "open console and follow the instructions.",
+        ].join(string.space()))
 
         context.G_PUBLIC = await context.shambhala.generateAddress()
 

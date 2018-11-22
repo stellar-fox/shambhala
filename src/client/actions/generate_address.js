@@ -26,6 +26,7 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
+import { getPassphrase } from "../functions"
 import {
     clientDomain,
     registrationPath,
@@ -71,8 +72,16 @@ export default function generateAddress (respond, logger, context) {
             // has to be presented to the user
             G_MNEMONIC = genMnemonic(),
 
-            // passphrase - will be read from the user
-            PASSPHRASE = string.random(10)
+            PASSPHRASE = null
+
+        // read PASSPHRASE from the user
+        try {
+            PASSPHRASE = String(await getPassphrase(logger, context))
+        } catch (ex) {
+            respond({ error: `user:[${ex}]` })
+            logger.error("User refused to give PASSPHRASE. Operation aborted.")
+            return
+        }
 
         // pretend this is UI
         logger.info(
