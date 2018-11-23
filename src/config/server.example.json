@@ -1,0 +1,14 @@
+{
+    "port": 4001,
+    "database": {
+        "user": "user",
+        "pass": "pass",
+        "host": "localhost",
+        "port": "5432",
+        "db": "db"
+    },
+    "tables": {
+        "key_table": "key_v1",
+        "whitelist_table": "white_v1"
+    }
+}
