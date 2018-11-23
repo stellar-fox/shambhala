@@ -12,6 +12,9 @@
 
 Mystery.
 
+[![GitHub top language](https://img.shields.io/github/languages/top/stellar-fox/shambhala.svg)](https://github.com/stellar-fox/shambhala)
+[![GitHub code size](https://img.shields.io/github/languages/code-size/stellar-fox/shambhala.svg)](https://github.com/stellar-fox/shambhala)
+
 <br />
 
 
