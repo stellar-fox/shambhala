@@ -26,6 +26,7 @@ Mystery.
 * [api](./doc/02.api.md)
 * [datatypes](./doc/03.datatypes.md)
 * [rest api](./doc/04.rest.api.md)
+* [installation](./doc/05.install.md)
 
 <br />
 
