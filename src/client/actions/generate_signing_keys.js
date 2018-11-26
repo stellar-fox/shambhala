@@ -31,7 +31,7 @@ import {
     registrationPath,
     restApiPrefix,
 } from "../../config/env"
-import { client as clientDomain } from "../../config/client.json"
+import { domain as clientDomain } from "../../config/client.json"
 
 
 
