@@ -49,7 +49,14 @@ import { friendbotAddress } from "../config/host.json"
  * @param {Object} context
  * @returns {Object} Test functions and scenarios.
  */
-export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
+export function shambhalaTesting (
+    { Shambhala, signTSP },
+    logger,
+    context,
+    {
+        client = clientDomain + registrationPath + "shambhala.html",
+    } = {}
+) {
 
     let that = { scenario: {} }
 
@@ -79,9 +86,7 @@ export function shambhalaTesting ({ Shambhala, signTSP }, logger, context) {
 
 
     // instantiate client
-    that.instantiate = async (
-        url = clientDomain + registrationPath + "shambhala.html"
-    ) => {
+    that.instantiate = async (url = client) => {
 
         if (!type.isObject(context.shambhala)) {
             context.shambhala = new Shambhala(url)
