@@ -33,9 +33,9 @@ import {
     type,
 } from "@xcmats/js-toolbox"
 import {
-    clientDomain,
     registrationPath,
 } from "../config/env"
+import { client as clientDomain } from "../../config/client.json"
 import { friendbotAddress } from "../config/host.json"
 
 

@@ -22,12 +22,12 @@ import {
     utils,
 } from "@xcmats/js-toolbox"
 import { promptUser } from "../functions"
+import * as message from "../../lib/messages"
 import {
-    clientDomain,
     registrationPath,
     restApiPrefix,
 } from "../../config/env"
-import * as message from "../../lib/messages"
+import { client as clientDomain } from "../../config/client.json"
 
 
 

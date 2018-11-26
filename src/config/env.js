@@ -17,14 +17,6 @@ import { timeUnit } from "@xcmats/js-toolbox"
 
 
 /**
- * @constant {String} clientDomain Domain of the `client` application.
- */
-export const clientDomain = "https://secrets.localhost"
-
-
-
-
-/**
  * @constant {String} registrationPath Path prefix
  */
 export const registrationPath = publicPath

@@ -17,10 +17,10 @@ import {
     func
 } from "@xcmats/js-toolbox"
 import {
-    clientDomain,
     registrationPath,
     restApiPrefix,
 } from "../../config/env"
+import { client as clientDomain } from "../../config/client.json"
 
 
 

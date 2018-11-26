@@ -28,14 +28,14 @@ import {
 } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
+import * as message from "../lib/messages"
 import {
     devOriginWhitelist,
-    clientDomain,
     entrypoint,
     registrationPath,
     restApiPrefix,
 } from "../config/env"
-import * as message from "../lib/messages"
+import { client as clientDomain } from "../../config/client.json"
 
 import heartbeat from "./actions/heartbeat"
 import pingPong from "./actions/ping_pong"
