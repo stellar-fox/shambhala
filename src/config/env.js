@@ -89,14 +89,6 @@ export const maximumWindowOpeningTime = 20 * timeUnit.second
 
 
 /**
- * @constant {String} friendbotAddress ...
- */
-export const friendbotAddress = "https://friendbot.stellar.org/"
-
-
-
-
-/**
  * @constant {Array.<String>} devOriginWhitelist
  */
 export const devOriginWhitelist = [
