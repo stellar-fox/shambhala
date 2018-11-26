@@ -19,7 +19,10 @@ import chalk from "chalk"
 import { string } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
-import { database } from "../config/server.json"
+import {
+    database,
+    port,
+} from "../config/server.json"
 import configureRoutes from "./routes"
 import {
     name as applicationName,
@@ -46,8 +49,7 @@ const
     db = pg()(cn(database)),
 
     // http server
-    app = express(),
-    port = 8081
+    app = express()
 
 
 
