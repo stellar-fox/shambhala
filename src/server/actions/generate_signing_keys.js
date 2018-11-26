@@ -23,7 +23,7 @@ import {
 } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 import generateSigningKeysSQL from "./generate_signing_keys.sql"
-import { tables } from "../../config/server.credentials"
+import { tables } from "../../config/server.json"
 
 
 

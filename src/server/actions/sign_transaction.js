@@ -22,7 +22,7 @@ import {
 } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 import signTransactionSQL from "./sign_transaction.sql"
-import { tables } from "../../config/server.credentials"
+import { tables } from "../../config/server.json"
 
 
 

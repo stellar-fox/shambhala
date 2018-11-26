@@ -12,7 +12,7 @@
 
 import { sql } from "../../lib/utils.backend"
 import whitelistSQL from "./whitelist.sql"
-import { tables } from "../../config/server.credentials"
+import { tables } from "../../config/server.json"
 
 
 

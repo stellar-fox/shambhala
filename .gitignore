@@ -7,8 +7,10 @@ package-lock.json
 # auto-generated documentation
 /jsdoc
 
-# backend credentials file
-/src/config/server.credentials.js
+# configuration files
+/src/config/client.json
+/src/config/host.json
+/src/config/server.json
 
 # builds
 /dist

@@ -19,7 +19,7 @@ import chalk from "chalk"
 import { string } from "@xcmats/js-toolbox"
 import { consoleWrapper } from "../lib/utils"
 import { cn } from "../lib/utils.backend"
-import { database } from "../config/server.credentials"
+import { database } from "../config/server.json"
 import configureRoutes from "./routes"
 import {
     name as applicationName,

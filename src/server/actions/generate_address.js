@@ -13,7 +13,7 @@
 import { string } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 import generateAddressSQL from "./generate_address.sql"
-import { tables } from "../../config/server.credentials"
+import { tables } from "../../config/server.json"
 
 
 
