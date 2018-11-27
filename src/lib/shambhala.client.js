@@ -39,7 +39,50 @@ import { version } from "../../package.json"
  * @private
  * @constant store
  */
-const store = {}
+const store = {
+
+    // private functions namespace
+    fn: {
+
+        /**
+         * ...
+         *
+         * @instance
+         * @private
+         * @method _generateRandomWindowName
+         * @memberof module:client-lib~Shambhala
+         * @returns {Promise.<String>}
+         */
+        _generateRandomWindowName: () => {
+            return "shambhala-client-" // + string.random(6)
+        },
+
+
+        /**
+         * Ping-Pong.
+         *
+         * @async
+         * @instance
+         * @private
+         * @method ping
+         * @memberof module:client-lib~Shambhala
+         * @returns {Promise.<String>}
+         */
+        _ping: async () => {
+            store.messageHandler.postMessage(message.PING_PONG)
+
+            let data = await store.messageHandler
+                .receiveMessage(
+                    message.PING_PONG,
+                    defaultBackendPingTimeout
+                )
+
+            return data.hash
+        },
+
+    },
+
+}
 
 
 
@@ -68,21 +111,6 @@ export class Shambhala {
 
 
     /**
-     * ...
-     *
-     * @instance
-     * @private
-     * @method _generateRandomWindowName
-     * @memberof module:client-lib~Shambhala
-     * @returns {Promise.<String>}
-     */
-    _generateRandomWindowName = () =>
-        "shambhala-client-" // + string.random(6)
-
-
-
-
-    /**
      * Handle shambhala target window opening.
      *
      * @async
@@ -97,7 +125,7 @@ export class Shambhala {
         // maybe shambhala is already up-and-running?
         try {
 
-            return await this._ping()
+            return await store.fn._ping()
 
         // 'ping' can throw because there was no recipient set
         // for 'postMessage' to work or because 'receiveMessage'
@@ -106,7 +134,7 @@ export class Shambhala {
         } catch (_) {
 
             if (!type.isString(store.windowName)) {
-                store.windowName = this._generateRandomWindowName()
+                store.windowName = store.fn._generateRandomWindowName()
             }
 
             // open shambhala window and set recipient in message handler
@@ -125,31 +153,6 @@ export class Shambhala {
 
         }
 
-    }
-
-
-
-
-    /**
-     * Ping-Pong.
-     *
-     * @async
-     * @instance
-     * @private
-     * @method ping
-     * @memberof module:client-lib~Shambhala
-     * @returns {Promise.<String>}
-     */
-    _ping = async () => {
-        store.messageHandler.postMessage(message.PING_PONG)
-
-        let data = await store.messageHandler
-            .receiveMessage(
-                message.PING_PONG,
-                defaultBackendPingTimeout
-            )
-
-        return data.hash
     }
 
 
