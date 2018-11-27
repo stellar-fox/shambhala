@@ -11,6 +11,7 @@
 
 
 import {
+    async,
     codec,
     func,
     string,
@@ -130,34 +131,82 @@ const store = {
 
 
         /**
-         * ...
+         * Communicate with shambhala instance.
+         * Pass message with payload and wait for returned value.
+         * Take care of cancellation and don't allow multiple simultaneous
+         * communication attempts.
+         *
+         * @async
+         * @private
+         * @function communicate
+         * @param {String} msg
+         * @param {Object} [options] { payload, opts }
+         * @returns {Promise}
          */
-        cancellable: func.identity,
+        communicate: async (
+            msg,
+            { payload = {}, opts = { hbCallback: func.identity } } = {}
+        ) => {
 
-
-
-
-        /**
-         * ...
-         */
-        communicate: async (msg, { payload = {}, opts = {} } = {}) => {
+            // don't try to communicate if there is any ongoing operation
             if (type.isString(store.currentlyProcessedMessage)) {
                 throw `busy with ${
                     string.quote(store.currentlyProcessedMessage)
                 }`
             }
+
+            // save information about ongoing operation
             store.currentlyProcessedMessage = msg
-            await store.fn.openShambhala()
-            store.messageHandler.postMessage(msg, payload)
+
             try {
-                var x = await store.fn.cancellable(
-                    store.messageHandler
-                        .receiveMessageHB(msg, opts)
+
+                // ensure shambhala is opened
+                await store.fn.openShambhala()
+
+                // send message with appropriate payload
+                store.messageHandler.postMessage(msg, payload)
+
+                // make message receiving process cancellable
+                let { promise, cancel } = async.cancellable(
+
+                    // receive message with "heartbeat" in background
+                    store.messageHandler.receiveMessageHB(msg, {
+                        ...opts,
+
+                        // stop the heartbeat if there is no ongoing
+                        // operation (if it was cancelled externally)
+                        hbCallback: (hbPayload, abortReceiving) => {
+                            if (!type.isString(
+                                store.currentlyProcessedMessage
+                            )) {
+                                abortReceiving()
+                                opts.hbCallback(hbPayload, func.identity)
+                            } else {
+                                opts.hbCallback(hbPayload, abortReceiving)
+                            }
+                        },
+                    })
                 )
+
+                // allow current receiving process to be cancelled externally
+                store.cancelCurrentOperation = cancel
+
+                // wait for the data-response from shambhala
+                var data = await promise
+
             } finally {
+
+                // whatever happen - clean information about ongoing
+                // operation after it finishes work (either if it finis
+                // normally or through exception)
+                delete store.cancelCurrentOperation
                 delete store.currentlyProcessedMessage
+
             }
-            return x
+
+            // return data that came from shambhala
+            return data
+
         },
 
     },
@@ -525,6 +574,27 @@ export class Shambhala {
             data.S_SIGNATURE,
         ]
         else throw new Error(data.error)
+    }
+
+
+
+
+    /**
+     * Cancel current operation.
+     *
+     * @async
+     * @instance
+     * @method cancel
+     * @memberof module:client-lib~Shambhala
+     * @returns {Promise.<Boolean>}
+     */
+    cancel = async (reason = "cancelled") => {
+        if (type.isFunction(store.cancelCurrentOperation)) {
+            store.messageHandler.postMessage(message.CANCEL)
+            store.cancelCurrentOperation(reason)
+            return true
+        }
+        return false
     }
 
 }
