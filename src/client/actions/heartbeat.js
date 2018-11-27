@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Heartnbeat message action.
+ * Heartbeat message action.
  *
  * @module client-actions
  * @license Apache-2.0

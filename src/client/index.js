@@ -38,6 +38,7 @@ import {
 import { domain as clientDomain } from "../config/client.json"
 
 import heartbeat from "./actions/heartbeat"
+import cancel from "./actions/cancel"
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import associateAddress from "./actions/associate_address"
@@ -141,6 +142,9 @@ if (type.isObject(window) && type.isFunction(window.addEventListener)) {
             // heartbeat action
             { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
 
+            // cancel ongoing operation action
+            { m: message.CANCEL, a: cancel, args: [logger, context] },
+
             // ping-pong action
             { m: message.PING_PONG, a: pingPong, args: [logger] },
 
@@ -208,7 +212,10 @@ if (type.isObject(window) && type.isFunction(window.addEventListener)) {
             messageHandler.handle(
                 ad.m,
                 async (...args) => {
-                    if (ad.m !== message.HEARTBEAT) {
+                    if (
+                        ad.m !== message.HEARTBEAT  &&
+                        ad.m !== message.CANCEL
+                    ) {
                         if (type.isString(context.message)) {
                             logger.warn(
                                 string.quote(ad.m),
