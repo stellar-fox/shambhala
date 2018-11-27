@@ -98,7 +98,7 @@ export default function restore (respond, logger) {
         // attempt decryption
         let
             deciphered = await passphraseDecrypt(
-                BACKUP_PASSPHRASE, p.payload
+                BACKUP_PASSPHRASE, p.backup
             ),
             unpacked = null
 

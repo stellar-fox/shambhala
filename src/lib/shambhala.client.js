@@ -13,7 +13,7 @@
 import {
     codec,
     func,
-    // string,
+    string,
     type,
 } from "@xcmats/js-toolbox"
 import { miniHash } from "./utils"
@@ -47,10 +47,8 @@ const store = {
         /**
          * ...
          *
-         * @instance
          * @private
-         * @method generateRandomWindowName
-         * @memberof module:client-lib~Shambhala
+         * @function generateRandomWindowName
          * @returns {Promise.<String>}
          */
         generateRandomWindowName: () => {
@@ -58,18 +56,20 @@ const store = {
         },
 
 
+
+
         /**
          * Ping-Pong.
          *
          * @async
-         * @instance
          * @private
-         * @method ping
-         * @memberof module:client-lib~Shambhala
+         * @function ping
          * @returns {Promise.<String>}
          */
         ping: async () => {
-            store.messageHandler.postMessage(message.PING_PONG)
+            store.messageHandler.postMessage(
+                message.PING_PONG
+            )
 
             let data = await store.messageHandler
                 .receiveMessage(
@@ -81,10 +81,84 @@ const store = {
         },
 
 
+
+
+        /**
+         * Handle shambhala target window opening.
+         *
+         * @async
+         * @private
+         * @function openShambhala
+         * @returns {Promise.<String>}
+         */
+        openShambhala: async () => {
+
+            // maybe shambhala is already up-and-running?
+            try {
+
+                return await store.fn.ping()
+
+            // 'ping' can throw because there was no recipient set
+            // for 'postMessage' to work or because 'receiveMessage'
+            // reached timeout which mean that shambhala was opened
+            // but then closed and now it's gone
+            } catch (_) {
+
+                if (!type.isString(store.windowName)) {
+                    store.windowName = store.fn.generateRandomWindowName()
+                }
+
+                // open shambhala window and set recipient in message handler
+                store.client = window.open(
+                    `${store.url.href}?${miniHash(window.location.origin)}`,
+                    store.windowName
+                )
+                store.messageHandler.setRecipient(
+                    store.client, store.windowName
+                )
+
+                // wait for 'message.READY' and resolve
+                return await store.messageHandler.receiveMessage(
+                    message.READY, maximumWindowOpeningTime
+                )
+
+            }
+
+        },
+
+
+
+
         /**
          * ...
          */
         cancellable: func.identity,
+
+
+
+
+        /**
+         * ...
+         */
+        communicate: async (msg, { payload = {}, opts = {} } = {}) => {
+            if (type.isString(store.currentlyProcessedMessage)) {
+                throw `busy with ${
+                    string.quote(store.currentlyProcessedMessage)
+                }`
+            }
+            store.currentlyProcessedMessage = msg
+            await store.fn.openShambhala()
+            store.messageHandler.postMessage(msg, payload)
+            try {
+                var x = await store.fn.cancellable(
+                    store.messageHandler
+                        .receiveMessageHB(msg, opts)
+                )
+            } finally {
+                delete store.currentlyProcessedMessage
+            }
+            return x
+        },
 
     },
 
@@ -118,6 +192,7 @@ export class Shambhala {
 
     /**
      * Handle shambhala target window opening.
+     * Exposed only in dev. purposes - to be removed later.
      *
      * @async
      * @instance
@@ -126,40 +201,7 @@ export class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    _openShambhala = async () => {
-
-        // maybe shambhala is already up-and-running?
-        try {
-
-            return await store.fn.ping()
-
-        // 'ping' can throw because there was no recipient set
-        // for 'postMessage' to work or because 'receiveMessage'
-        // reached timeout which mean that shambhala was opened
-        // but then closed and now it's gone
-        } catch (_) {
-
-            if (!type.isString(store.windowName)) {
-                store.windowName = store.fn.generateRandomWindowName()
-            }
-
-            // open shambhala window and set recipient in message handler
-            store.client = window.open(
-                `${store.url.href}?${miniHash(window.location.origin)}`,
-                store.windowName
-            )
-            store.messageHandler.setRecipient(
-                store.client, store.windowName
-            )
-
-            // wait for 'message.READY' and resolve
-            return await store.messageHandler.receiveMessage(
-                message.READY, maximumWindowOpeningTime
-            )
-
-        }
-
-    }
+    _openShambhala = store.fn.openShambhala
 
 
 
@@ -202,17 +244,8 @@ export class Shambhala {
      * @returns {Promise.<String>}
      */
     generateAddress = async () => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
+        let data = await store.fn.communicate(
             message.GENERATE_ADDRESS
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.GENERATE_ADDRESS
-                )
         )
 
         if (data.ok) return data.G_PUBLIC
@@ -233,18 +266,10 @@ export class Shambhala {
      * @returns {Promise.<String>}
      */
     associateAddress = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.ASSOCIATE_ADDRESS,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.ASSOCIATE_ADDRESS
-                )
+        let data = await store.fn.communicate(
+            message.ASSOCIATE_ADDRESS, {
+                payload: { G_PUBLIC: accountId },
+            }
         )
 
         if (data.ok) return data.G_PUBLIC
@@ -266,18 +291,10 @@ export class Shambhala {
      * @returns {Promise.<Object>}
      */
     generateSigningKeys = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.GENERATE_SIGNING_KEYS,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.GENERATE_SIGNING_KEYS
-                )
+        let data = await store.fn.communicate(
+            message.GENERATE_SIGNING_KEYS, {
+                payload: { G_PUBLIC: accountId },
+            }
         )
 
         if (data.ok) return {
@@ -307,22 +324,14 @@ export class Shambhala {
     generateSignedKeyAssocTX = async (
         accountId, sequence, networkPassphrase
     ) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            {
-                G_PUBLIC: accountId,
-                sequence,
-                networkPassphrase,
+        let data = await store.fn.communicate(
+            message.GENERATE_SIGNED_KEY_ASSOC_TX, {
+                payload: {
+                    G_PUBLIC: accountId,
+                    sequence,
+                    networkPassphrase,
+                },
             }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.GENERATE_SIGNED_KEY_ASSOC_TX
-                )
         )
 
         if (data.ok) return data.tx
@@ -349,22 +358,14 @@ export class Shambhala {
     generateKeyAssocTX = async (
         accountId, sequence, networkPassphrase
     ) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.GENERATE_KEY_ASSOC_TX,
-            {
-                G_PUBLIC: accountId,
-                sequence,
-                networkPassphrase,
+        let data = await store.fn.communicate(
+            message.GENERATE_KEY_ASSOC_TX, {
+                payload: {
+                    G_PUBLIC: accountId,
+                    sequence,
+                    networkPassphrase,
+                },
             }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.GENERATE_KEY_ASSOC_TX
-                )
         )
 
         if (data.ok) return data.tx
@@ -385,18 +386,10 @@ export class Shambhala {
      * @returns {Promise.<Array>}
      */
     getPublicKeys = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.GET_PUBLIC_KEYS,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.GET_PUBLIC_KEYS
-                )
+        let data = await store.fn.communicate(
+            message.GET_PUBLIC_KEYS, {
+                payload: { G_PUBLIC: accountId },
+            }
         )
 
         if (data.ok) return {
@@ -422,18 +415,10 @@ export class Shambhala {
      * @returns {Promise.<String>} base64-encoded, encrypted content
      */
     backup = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.BACKUP,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.BACKUP
-                )
+        let data = await store.fn.communicate(
+            message.BACKUP, {
+                payload: { G_PUBLIC: accountId },
+            }
         )
 
         if (data.ok) return data.payload
@@ -452,22 +437,14 @@ export class Shambhala {
      * @method restore
      * @memberof module:client-lib~Shambhala
      * @param {String} accountId
-     * @param {String} payload output of the `backup` method
+     * @param {String} backup output of the `backup` method
      * @returns {Promise.<Object>}
      */
-    restore = async (accountId, payload) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.RESTORE,
-            { G_PUBLIC: accountId, payload }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.RESTORE
-                )
+    restore = async (accountId, backup) => {
+        let data = await store.fn.communicate(
+            message.RESTORE, {
+                payload: { G_PUBLIC: accountId, backup },
+            }
         )
 
         if (data.ok) return {
@@ -492,18 +469,10 @@ export class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     canSignFor = async (accountId) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.CAN_SIGN_FOR,
-            { G_PUBLIC: accountId }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.CAN_SIGN_FOR
-                )
+        let data = await store.fn.communicate(
+            message.CAN_SIGN_FOR, {
+                payload: { G_PUBLIC: accountId },
+            }
         )
 
         if (data.ok) return data.answer
@@ -542,21 +511,13 @@ export class Shambhala {
      * @returns {Promise.<Array>} Array of b64-XDR-ecoded `DecoratedSignature`.
      */
     signTransaction = async (accountId, tspXDR) => {
-        await this._openShambhala()
-
-        store.messageHandler.postMessage(
-            message.SIGN_TRANSACTION,
-            {
-                G_PUBLIC: accountId,
-                TX_PAYLOAD: codec.b64enc(tspXDR),
+        let data = await store.fn.communicate(
+            message.SIGN_TRANSACTION, {
+                payload: {
+                    G_PUBLIC: accountId,
+                    TX_PAYLOAD: codec.b64enc(tspXDR),
+                },
             }
-        )
-
-        let data = await store.fn.cancellable(
-            store.messageHandler
-                .receiveMessageHB(
-                    message.SIGN_TRANSACTION
-                )
         )
 
         if (data.ok) return [
