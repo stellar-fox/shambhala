@@ -246,9 +246,21 @@ export default class MessageHandler {
 
                     hbPayload = await this.receiveMessage(hb, 0.8 * hbInterval)
 
-                    // if response came then pass received `hbPayload`
-                    // to the `hbCallback` function
-                    utils.handleException(() => hbCallback(hbPayload))
+                    // if response came then:
+                    // - pass received `hbPayload` to the
+                    //   `hbCallback` function
+                    // - allow receiving process to be aborted by
+                    //   `hbCallback` function - it can invoke a function
+                    //   passed as a second argument
+                    utils.handleException(
+                        () => hbCallback(
+                            hbPayload,
+                            (reason = "aborted") => {
+                                stopHeartbeat()
+                                abortReceiving(reason)
+                            }
+                        )
+                    )
 
                 } catch (_) {
 
