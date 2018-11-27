@@ -49,11 +49,11 @@ const store = {
          *
          * @instance
          * @private
-         * @method _generateRandomWindowName
+         * @method generateRandomWindowName
          * @memberof module:client-lib~Shambhala
          * @returns {Promise.<String>}
          */
-        _generateRandomWindowName: () => {
+        generateRandomWindowName: () => {
             return "shambhala-client-" // + string.random(6)
         },
 
@@ -68,7 +68,7 @@ const store = {
          * @memberof module:client-lib~Shambhala
          * @returns {Promise.<String>}
          */
-        _ping: async () => {
+        ping: async () => {
             store.messageHandler.postMessage(message.PING_PONG)
 
             let data = await store.messageHandler
@@ -79,6 +79,12 @@ const store = {
 
             return data.hash
         },
+
+
+        /**
+         * ...
+         */
+        cancellable: func.identity,
 
     },
 
@@ -125,7 +131,7 @@ export class Shambhala {
         // maybe shambhala is already up-and-running?
         try {
 
-            return await store.fn._ping()
+            return await store.fn.ping()
 
         // 'ping' can throw because there was no recipient set
         // for 'postMessage' to work or because 'receiveMessage'
@@ -134,7 +140,7 @@ export class Shambhala {
         } catch (_) {
 
             if (!type.isString(store.windowName)) {
-                store.windowName = store.fn._generateRandomWindowName()
+                store.windowName = store.fn.generateRandomWindowName()
             }
 
             // open shambhala window and set recipient in message handler
@@ -198,10 +204,16 @@ export class Shambhala {
     generateAddress = async () => {
         await this._openShambhala()
 
-        store.messageHandler.postMessage(message.GENERATE_ADDRESS)
+        store.messageHandler.postMessage(
+            message.GENERATE_ADDRESS
+        )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.GENERATE_ADDRESS)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.GENERATE_ADDRESS
+                )
+        )
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -228,8 +240,12 @@ export class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.ASSOCIATE_ADDRESS)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.ASSOCIATE_ADDRESS
+                )
+        )
 
         if (data.ok) return data.G_PUBLIC
         else throw new Error(data.error)
@@ -257,8 +273,12 @@ export class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.GENERATE_SIGNING_KEYS)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.GENERATE_SIGNING_KEYS
+                )
+        )
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -298,8 +318,12 @@ export class Shambhala {
             }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.GENERATE_SIGNED_KEY_ASSOC_TX)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.GENERATE_SIGNED_KEY_ASSOC_TX
+                )
+        )
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -336,8 +360,12 @@ export class Shambhala {
             }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.GENERATE_KEY_ASSOC_TX)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.GENERATE_KEY_ASSOC_TX
+                )
+        )
 
         if (data.ok) return data.tx
         else throw new Error(data.error)
@@ -364,8 +392,12 @@ export class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.GET_PUBLIC_KEYS)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.GET_PUBLIC_KEYS
+                )
+        )
 
         if (data.ok) return {
             G_PUBLIC: data.G_PUBLIC,
@@ -397,8 +429,12 @@ export class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.BACKUP)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.BACKUP
+                )
+        )
 
         if (data.ok) return data.payload
         else throw new Error(data.error)
@@ -427,8 +463,12 @@ export class Shambhala {
             { G_PUBLIC: accountId, payload }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.RESTORE)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.RESTORE
+                )
+        )
 
         if (data.ok) return {
             C_PUBLIC: data.C_PUBLIC,
@@ -459,8 +499,12 @@ export class Shambhala {
             { G_PUBLIC: accountId }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.CAN_SIGN_FOR)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.CAN_SIGN_FOR
+                )
+        )
 
         if (data.ok) return data.answer
         else throw new Error(data.error)
@@ -508,8 +552,12 @@ export class Shambhala {
             }
         )
 
-        let data = await store.messageHandler
-            .receiveMessageHB(message.SIGN_TRANSACTION)
+        let data = await store.fn.cancellable(
+            store.messageHandler
+                .receiveMessageHB(
+                    message.SIGN_TRANSACTION
+                )
+        )
 
         if (data.ok) return [
             data.C_SIGNATURE,
