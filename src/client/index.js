@@ -13,6 +13,7 @@
 import axios from "axios"
 import {
     array,
+    async,
     codec,
     func,
     string,
@@ -203,7 +204,14 @@ if (type.isObject(window) && type.isFunction(window.addEventListener)) {
                 respond = postMessageBinder(ad.m),
 
                 // ... and create action with appropriate parameters bound
-                act = func.curry(ad.a)(respond)(...ad.args)()
+                act = func.curry(ad.a)(
+                    // responding to host should only be possible
+                    // when some operation is "ongoing"
+                    (msg) =>
+                        context.message ?
+                            respond(msg) :
+                            func.identity(msg)
+                )(...ad.args)()
 
             // attach augmented action (act) to a message (ad.m):
             // before an action is invoked a check is performed
@@ -225,11 +233,21 @@ if (type.isObject(window) && type.isFunction(window.addEventListener)) {
                             return respond({ error: "busy" })
                         }
                         context.message = ad.m
-                        try { var x = await act(...args) }
-                        finally { delete context.message }
-                        return x
+                        try {
+                            let { promise, cancel } = async.cancellable(
+                                act(...args)
+                            )
+                            context.cancelCurrentOperation = cancel
+                            await promise
+                        } catch (ex) {
+                            logger.error(ex)
+                        } finally {
+                            delete context.cancelCurrentOperation
+                            delete context.message
+                        }
+                    } else {
+                        await act(...args)
                     }
-                    return await act(...args)
                 }
             )
         })

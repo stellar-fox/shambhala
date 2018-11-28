@@ -29,15 +29,15 @@ export default function cancel (_respond, logger, context) {
 
     return async () => {
 
-        logger.info("host has cancelled current operation")
-
         if (type.isObject(context.promptMutex)) {
             context.promptMutex.reject("cancelled")
         }
 
-        if (type.isString(context.message)) {
-            delete context.message
+        if (type.isFunction(context.cancelCurrentOperation)) {
+            context.cancelCurrentOperation("cancelled by host")
         }
+
+        logger.warn("host has cancelled current operation")
 
     }
 

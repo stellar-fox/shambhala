@@ -196,8 +196,8 @@ const store = {
 
             } finally {
 
-                // whatever happen - clean information about ongoing
-                // operation after it finishes work (either if it finis
+                // whatever happen - clear information about ongoing
+                // operation after it finishes work (either if it finish
                 // normally or through exception)
                 delete store.cancelCurrentOperation
                 delete store.currentlyProcessedMessage
