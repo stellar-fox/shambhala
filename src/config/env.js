@@ -17,6 +17,14 @@ import { timeUnit } from "@xcmats/js-toolbox"
 
 
 /**
+ * @constant {String} homepage
+ */
+export const homepage = "https://stellarfox.net/"
+
+
+
+
+/**
  * @constant {String} registrationPath Path prefix
  */
 export const registrationPath = publicPath

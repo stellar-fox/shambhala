@@ -23,6 +23,7 @@ import forage from "localforage"
 import {
     devOriginWhitelist,
     entrypoint,
+    homepage,
     registrationPath,
     restApiPrefix,
 } from "../config/env"
@@ -106,6 +107,12 @@ const devEnvLibs = async () => ({
 // gentle start
 run(async () => {
 
+    // greet
+    logger.info("Boom! 💥")
+
+
+
+
     const
         // local memory, volatile context/store
         context = {},
@@ -122,12 +129,9 @@ run(async () => {
     // if there is no parent - there is nothing to do
     if (!window.opener) {
         logger.error("What are you looking for?")
-        window.location.replace("https://stellarfox.net/")
+        window.location.replace(homepage)
         return null
     }
-
-    // greet
-    logger.info("Boom! 💥")
 
 
 
@@ -186,7 +190,7 @@ run(async () => {
     // in such case anyway)
     if (!type.isString(originDict[hostDomainHash])) {
         logger.warn("Domain not whitelisted.")
-        window.location.replace("https://stellarfox.net/")
+        window.location.replace(homepage)
         return
     }
 
