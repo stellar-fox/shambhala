@@ -10,6 +10,7 @@ const
     webpack = require("webpack"),
     MinifyPlugin = require("babel-minify-webpack-plugin"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
+    CopyWebpackPlugin = require("copy-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",
     publicPath = JSON.parse(
@@ -110,6 +111,10 @@ module.exports = {
                 appDirectory, "src/client/index.html"
             ),
         }),
+
+        new CopyWebpackPlugin(
+            [{ from: "public", to: "public" }]
+        ),
 
     ],
 
