@@ -20,6 +20,16 @@ import {
     type,
     utils,
 } from "@xcmats/js-toolbox"
+import forage from "localforage"
+import {
+    devOriginWhitelist,
+    entrypoint,
+    registrationPath,
+    restApiPrefix,
+} from "../config/env"
+import { domain as clientDomain } from "../config/client.json"
+import * as message from "../lib/messages"
+
 import axios from "axios"
 import { salt64 } from "@stellar-fox/cryptops"
 import MessageHandler from "../lib/message.handler"
@@ -29,14 +39,6 @@ import {
 } from "../lib/utils"
 import { dynamicImportLibs } from "../lib/dynamic.import"
 import * as functions from "./functions"
-import * as message from "../lib/messages"
-import {
-    devOriginWhitelist,
-    entrypoint,
-    registrationPath,
-    restApiPrefix,
-} from "../config/env"
-import { domain as clientDomain } from "../config/client.json"
 
 import heartbeat from "./actions/heartbeat"
 import cancel from "./actions/cancel"
@@ -155,6 +157,7 @@ run(async () => {
 
     // message handlers array
     [
+
         // heartbeat action
         { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
 
@@ -167,49 +170,52 @@ run(async () => {
         // account generation action
         {
             m: message.GENERATE_ADDRESS,
-            a: generateAddress, args: [logger, context],
+            a: generateAddress, args: [logger, forage, context],
         },
 
         // account association action
         {
             m: message.ASSOCIATE_ADDRESS,
-            a: associateAddress, args: [logger, context],
+            a: associateAddress, args: [logger, forage, context],
         },
 
         // signing keys generation action
         {
             m: message.GENERATE_SIGNING_KEYS,
-            a: generateSigningKeys, args: [logger, context],
+            a: generateSigningKeys, args: [logger, forage, context],
         },
 
         // automatic keys association action
         {
             m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            a: generateSignedKeyAssocTx, args: [logger, context],
+            a: generateSignedKeyAssocTx, args: [logger, forage, context],
         },
 
         // manual keys association action
         {
             m: message.GENERATE_KEY_ASSOC_TX,
-            a: generateKeyAssocTx, args: [logger],
+            a: generateKeyAssocTx, args: [logger, forage],
         },
 
         // public keys retrieval action
-        { m: message.GET_PUBLIC_KEYS, a: getPublicKeys, args: [logger] },
+        {
+            m: message.GET_PUBLIC_KEYS,
+            a: getPublicKeys, args: [logger, forage],
+        },
 
         // backup action
-        { m: message.BACKUP, a: backup, args: [logger] },
+        { m: message.BACKUP, a: backup, args: [logger, forage] },
 
         // restore action
-        { m: message.RESTORE, a: restore, args: [logger] },
+        { m: message.RESTORE, a: restore, args: [logger, forage] },
 
         // transaction signing check
-        { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger] },
+        { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger, forage] },
 
         // sign transaction action
         {
             m: message.SIGN_TRANSACTION,
-            a: signTransaction, args: [logger, context],
+            a: signTransaction, args: [logger, forage, context],
         },
 
     // for each "action definition" (ad) ...

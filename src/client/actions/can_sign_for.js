@@ -10,7 +10,6 @@
 
 
 
-import forage from "localforage"
 import { Keypair } from "stellar-sdk"
 import { func } from "@xcmats/js-toolbox"
 
@@ -24,9 +23,10 @@ import { func } from "@xcmats/js-toolbox"
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger
+ * @param {Object} forage
  * @returns {Function} Message action.
  */
-export default function canSignFor (respond, logger) {
+export default function canSignFor (respond, logger, forage) {
 
     return async (p) => {
 

@@ -11,7 +11,6 @@
 
 
 import axios from "axios"
-import forage from "localforage"
 import {
     genKeypair,
     genMnemonic,
@@ -55,10 +54,11 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
  * @param {Function} logger
+ * @param {Object} forage
  * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function generateAddress (respond, logger, context) {
+export default function generateAddress (respond, logger, forage, context) {
 
     return async () => {
 
