@@ -1,0 +1,172 @@
+/**
+ * Shambhala.
+ *
+ * Handlers attachment logic.
+ *
+ * @module client-app
+ * @license Apache-2.0
+ */
+
+
+
+
+import heartbeat from "./actions/heartbeat"
+import cancel from "./actions/cancel"
+import pingPong from "./actions/ping_pong"
+import generateAddress from "./actions/generate_address"
+import associateAddress from "./actions/associate_address"
+import generateSigningKeys from "./actions/generate_signing_keys"
+import generateSignedKeyAssocTx from "./actions/generate_signed_key_assoc_tx"
+import generateKeyAssocTx from "./actions/generate_key_assoc_tx"
+import getPublicKeys from "./actions/get_public_keys"
+import backup from "./actions/backup"
+import restore from "./actions/restore"
+import canSignFor from "./actions/can_sign_for"
+import signTransaction from "./actions/sign_transaction"
+
+
+
+
+/**
+ * Message handlers - load and attach.
+ *
+ * @function attach
+ * @param {Object} message
+ * @param {Function} logger
+ * @param {Object} forage
+ * @param {Object} context
+ * @param {Object} messageHandler
+ * @param {Object} toolbox
+ */
+export default function attach (
+    message, logger, forage, context, messageHandler,
+    { cancellable, curry, identity, isString, partial, quote }
+) {
+
+    [
+
+        // heartbeat action
+        {
+            m: message.HEARTBEAT,
+            a: heartbeat,
+            args: [logger],
+        },
+
+        // cancel ongoing operation action
+        {
+            m: message.CANCEL,
+            a: cancel,
+            args: [logger, context],
+        },
+
+        // ping-pong action
+        { m: message.PING_PONG, a: pingPong, args: [logger] },
+
+        // account generation action
+        {
+            m: message.GENERATE_ADDRESS,
+            a: generateAddress,
+            args: [logger, forage, context],
+        },
+
+        // account association action
+        {
+            m: message.ASSOCIATE_ADDRESS,
+            a: associateAddress, args: [logger, forage, context],
+        },
+
+        // signing keys generation action
+        {
+            m: message.GENERATE_SIGNING_KEYS,
+            a: generateSigningKeys, args: [logger, forage, context],
+        },
+
+        // automatic keys association action
+        {
+            m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
+            a: generateSignedKeyAssocTx, args: [logger, forage, context],
+        },
+
+        // manual keys association action
+        {
+            m: message.GENERATE_KEY_ASSOC_TX,
+            a: generateKeyAssocTx, args: [logger, forage],
+        },
+
+        // public keys retrieval action
+        {
+            m: message.GET_PUBLIC_KEYS,
+            a: getPublicKeys, args: [logger, forage],
+        },
+
+        // backup action
+        { m: message.BACKUP, a: backup, args: [logger, forage] },
+
+        // restore action
+        { m: message.RESTORE, a: restore, args: [logger, forage] },
+
+        // transaction signing check
+        { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger, forage] },
+
+        // sign transaction action
+        {
+            m: message.SIGN_TRANSACTION,
+            a: signTransaction, args: [logger, forage, context],
+        },
+
+    // for each "action definition" (ad) ...
+    ].forEach((ad) => {
+        let
+            // ... prepare message responder ...
+            respond = partial(messageHandler.postMessage)(ad.m),
+
+            // ... and create action with appropriate parameters bound
+            act = curry(ad.a)(
+                // responding to host should only be possible
+                // when some operation is "ongoing"
+                (msg) =>
+                    context.message ?
+                        respond(msg) :
+                        identity(msg)
+            )(...ad.args)()
+
+        // attach augmented action (act) to a message (ad.m):
+        // before an action is invoked a check is performed
+        // if another action is in progress - in such case a response
+        // is formed ({ error: "busy" })
+        messageHandler.handle(
+            ad.m,
+            async (...args) => {
+                if (
+                    ad.m !== message.HEARTBEAT  &&
+                    ad.m !== message.CANCEL
+                ) {
+                    if (isString(context.message)) {
+                        logger.warn(
+                            quote(ad.m),
+                            "requested while processing",
+                            quote(context.message)
+                        )
+                        return respond({ error: "busy" })
+                    }
+                    context.message = ad.m
+                    try {
+                        let { promise, cancel } = cancellable(
+                            act(...args)
+                        )
+                        context.cancelCurrentOperation = cancel
+                        await promise
+                    } catch (ex) {
+                        logger.error(ex)
+                    } finally {
+                        delete context.cancelCurrentOperation
+                        delete context.message
+                    }
+                } else {
+                    await act(...args)
+                }
+            }
+        )
+    })
+
+}
