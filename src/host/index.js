@@ -159,5 +159,6 @@ run(async () => {
             (n) => `sf.testing.scenario.${n}()`
         ).join(`${string.nl()}${string.space()}`)
     )
+    logger.info("Ready! ✅")
 
 })
