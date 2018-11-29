@@ -11,7 +11,6 @@
 
 
 import { Keypair } from "stellar-sdk"
-import { passphraseEncrypt } from "@stellar-fox/cryptops"
 import {
     codec,
     string,
@@ -48,11 +47,16 @@ const packClientData = ({
  * @function backup
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} cryptops "@stellar-fox/cryptops" module
+ * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} forage
  * @returns {Function} Message action.
  */
-export default function backup (respond, logger, forage) {
+export default function backup (
+    respond,
+    { passphraseEncrypt }, forage,
+    logger
+) {
 
     return async (p) => {
 

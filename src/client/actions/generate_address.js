@@ -16,7 +16,6 @@ import {
     genMnemonic,
     mnemonicToSeedHex,
 } from "@stellar-fox/redshift"
-import { genUUID } from "@stellar-fox/cryptops"
 import {
     access,
     codec,
@@ -53,12 +52,17 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function generateAddress
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} cryptops "@stellar-fox/cryptops" module
+ * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} forage
  * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function generateAddress (respond, logger, forage, context) {
+export default function generateAddress (
+    respond,
+    { genUUID }, forage,
+    logger, context
+) {
 
     return async () => {
 

@@ -17,9 +17,9 @@ import {
     math,
     string,
     struct,
+    type,
     utils,
 } from "@xcmats/js-toolbox"
-import { sha256 } from "@stellar-fox/cryptops"
 
 
 
@@ -69,13 +69,26 @@ export const drawEmojis = ((emojis) =>
 
 
 /**
+ * Extract default export from a module.
+ *
+ * @function mDef
+ * @param {Object} m
+ * @returns {any}
+ */
+export const mDef = (m) => m.default
+
+
+
+
+/**
  * Returns hex representation of every 4th byte of sha256 hash of input string.
  *
  * @function miniHash
+ * @param {Function} sha256
  * @param {String} str
  * @return {String} hex
  */
-export const miniHash = func.flow(
+export const miniHash = (sha256) => func.flow(
     codec.stringToBytes,
     sha256,
     (bytes) => Array.from(bytes),
@@ -83,3 +96,21 @@ export const miniHash = func.flow(
     (arr) => Uint8Array.from(arr),
     codec.bytesToHex
 )
+
+
+
+
+/**
+ * Run "main" function in browser on "load" event.
+ *
+ * @function run
+ * @param {Function} main
+ */
+export const run = (main) => {
+    if (
+        type.isObject(window)  &&
+        type.isFunction(window.addEventListener)
+    ) {
+        window.addEventListener("load", main)
+    }
+}

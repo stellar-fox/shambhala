@@ -10,14 +10,10 @@
 
 
 
-import forage from "localforage"
-
-
-
-
 /**
  * (Not only) asynchronously load libraries.
  *
+ * @async
  * @function dynamicImportLibs
  * @returns {Object}
  */
@@ -40,7 +36,6 @@ export const dynamicImportLibs = async () => {
         axios,
         cryptops,
         env,
-        forage,   // can't be imported dynamically
         redshift,
         Shambhala,
         stellar,

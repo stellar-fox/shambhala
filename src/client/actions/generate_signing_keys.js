@@ -11,11 +11,6 @@
 
 
 import axios from "axios"
-import {
-    deriveKey,
-    encrypt,
-    salt64,
-} from "@stellar-fox/cryptops"
 import { Keypair } from "stellar-sdk"
 import {
     codec,
@@ -52,13 +47,16 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function generateSigningKeys
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} cryptops "@stellar-fox/cryptops" module
+ * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} forage
  * @param {Object} context
  * @returns {Function} Message action.
  */
 export default function generateSigningKeys (
-    respond, logger, forage, context
+    respond,
+    { deriveKey, encrypt, salt64 }, forage,
+    logger, context
 ) {
 
     return async (p) => {

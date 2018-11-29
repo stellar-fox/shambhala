@@ -22,11 +22,11 @@ import { func } from "@xcmats/js-toolbox"
  * @function canSignFor
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} forage
  * @returns {Function} Message action.
  */
-export default function canSignFor (respond, logger, forage) {
+export default function canSignFor (respond, forage, logger) {
 
     return async (p) => {
 

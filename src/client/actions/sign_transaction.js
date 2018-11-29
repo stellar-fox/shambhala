@@ -12,10 +12,6 @@
 
 import axios from "axios"
 import {
-    decrypt,
-    deriveKey,
-} from "@stellar-fox/cryptops"
-import {
     inspectTSP,
     signTSP,
 } from "../../lib/txops"
@@ -55,12 +51,17 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function signTransaction
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} cryptops "@stellar-fox/cryptops" module
+ * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} forage
  * @param {Object} context
  * @returns {Function} Message action.
  */
-export default function signTransaction (respond, logger, forage, context) {
+export default function signTransaction (
+    respond,
+    { decrypt, deriveKey }, forage,
+    logger, context
+) {
 
     return async (p) => {
 

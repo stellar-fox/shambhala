@@ -33,13 +33,15 @@ import signTransaction from "./actions/sign_transaction"
  * @function attach
  * @param {Object} message
  * @param {Function} logger
- * @param {Object} forage
  * @param {Object} context
  * @param {Object} messageHandler
+ * @param {Object} cryptops "@stellar-fox/cryptops" module
+ * @param {Object} forage "localforage" module
  * @param {Object} toolbox
  */
 export default function attach (
-    message, logger, forage, context, messageHandler,
+    message, logger, context, messageHandler,
+    cryptops, forage,
     { cancellable, curry, identity, isString, partial, quote }
 ) {
 
@@ -60,58 +62,80 @@ export default function attach (
         },
 
         // ping-pong action
-        { m: message.PING_PONG, a: pingPong, args: [logger] },
+        {
+            m: message.PING_PONG,
+            a: pingPong,
+            args: [logger],
+        },
 
         // account generation action
         {
             m: message.GENERATE_ADDRESS,
             a: generateAddress,
-            args: [logger, forage, context],
+            args: [cryptops, forage, logger, context],
         },
 
         // account association action
         {
             m: message.ASSOCIATE_ADDRESS,
-            a: associateAddress, args: [logger, forage, context],
+            a: associateAddress,
+            args: [cryptops, forage, logger, context],
         },
 
         // signing keys generation action
         {
             m: message.GENERATE_SIGNING_KEYS,
-            a: generateSigningKeys, args: [logger, forage, context],
+            a: generateSigningKeys,
+            args: [cryptops, forage, logger, context],
         },
 
         // automatic keys association action
         {
             m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
-            a: generateSignedKeyAssocTx, args: [logger, forage, context],
+            a: generateSignedKeyAssocTx,
+            args: [cryptops, forage, logger, context],
         },
 
         // manual keys association action
         {
             m: message.GENERATE_KEY_ASSOC_TX,
-            a: generateKeyAssocTx, args: [logger, forage],
+            a: generateKeyAssocTx,
+            args: [cryptops, forage, logger],
         },
 
         // public keys retrieval action
         {
             m: message.GET_PUBLIC_KEYS,
-            a: getPublicKeys, args: [logger, forage],
+            a: getPublicKeys,
+            args: [forage, logger],
         },
 
         // backup action
-        { m: message.BACKUP, a: backup, args: [logger, forage] },
+        {
+            m: message.BACKUP,
+            a: backup,
+            args: [cryptops, forage, logger],
+        },
 
         // restore action
-        { m: message.RESTORE, a: restore, args: [logger, forage] },
+        {
+            m: message.RESTORE,
+            a: restore,
+            args: [cryptops, forage, logger],
+        },
 
         // transaction signing check
-        { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger, forage] },
+        {
+            m: message.CAN_SIGN_FOR,
+            a: canSignFor,
+            args: [forage, logger],
+        },
 
         // sign transaction action
         {
             m: message.SIGN_TRANSACTION,
-            a: signTransaction, args: [logger, forage, context],
+            a: signTransaction,
+            args: [cryptops, forage, logger, context],
         },
 
     // for each "action definition" (ad) ...

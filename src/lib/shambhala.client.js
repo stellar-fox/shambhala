@@ -17,6 +17,7 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
+import { sha256 } from "@stellar-fox/cryptops"
 import { miniHash } from "./utils"
 import {
     inspectTSP,
@@ -111,7 +112,11 @@ const store = {
 
                 // open shambhala window and set recipient in message handler
                 store.client = window.open(
-                    `${store.url.href}?${miniHash(window.location.origin)}`,
+                    `${
+                        store.url.href
+                    }?${
+                        miniHash(sha256)(window.location.origin)
+                    }`,
                     store.windowName
                 )
                 store.messageHandler.setRecipient(

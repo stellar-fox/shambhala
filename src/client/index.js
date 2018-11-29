@@ -29,15 +29,12 @@ import {
 import { domain as clientDomain } from "../config/client.json"
 import { version } from "../../package.json"
 import * as message from "../lib/messages"
-
-import axios from "axios"
-import MessageHandler from "../lib/message.handler"
 import {
     consoleWrapper,
+    mDef,
     miniHash,
+    run,
 } from "../lib/utils"
-import { dynamicImportLibs } from "../lib/dynamic.import"
-import * as functions from "./functions"
 
 import "./index.css"
 
@@ -45,29 +42,63 @@ import "./index.css"
 
 
 /**
- * Run "main" function in browser on "load" event.
+ * Some code splitting for a libraries.
  *
- * @param {Function} main
+ * @async
+ * @function importLibs
+ * @returns {Object}
  */
-const run = (main) => {
-    if (
-        type.isObject(window)  &&
-        type.isFunction(window.addEventListener)
-    ) {
-        window.addEventListener("load", main)
-    }
-}
+const importLibs = async () => ({
+    axios: await import(
+        /* webpackChunkName: "axios" */
+        "axios"
+    ).then(mDef),
+    cryptops: await import(
+        /* webpackChunkName: "cryptops" */
+        "@stellar-fox/cryptops"
+    ),
+    functions: await import(
+        /* webpackChunkName: "functions" */
+        "./functions"
+    ),
+    MessageHandler: await import(
+        /* webpackChunkName: "message_handler" */
+        "../lib/message.handler"
+    ).then(mDef),
+})
 
 
 
 
 /**
- * Extract default export from a module.
+ * Development environment libraries.
  *
- * @param {Object} m
- * @returns {any}
+ * @async
+ * @function devEnvLibs
+ * @returns {Object}
  */
-const mDef = (m) => m.default
+const devEnvLibs = async () => ({
+    redshift: await import(
+        /* webpackChunkName: "redshift" */
+        "@stellar-fox/redshift"
+    ),
+    stellar: await import(
+        /* webpackChunkName: "stellar" */
+        "stellar-sdk"
+    ),
+    toolbox: await import(
+        /* webpackChunkName: "toolbox" */
+        "@xcmats/js-toolbox"
+    ),
+    txops: await import(
+        /* webpackChunkName: "txops" */
+        "../lib/txops"
+    ),
+    utils: await import(
+        /* webpackChunkName: "utils" */
+        "../lib/utils"
+    ),
+})
 
 
 
@@ -98,12 +129,28 @@ run(async () => {
     // greet
     logger.info("Boom! 💥")
 
+
+
+
+    // lazy-load some heavy libs
+    logger.info("Loading libs... ⏳")
+    const {
+        axios,
+        cryptops,
+        functions,
+        MessageHandler,
+    } = await importLibs()
+
+
+
+
     // expose `sf` dev. namespace
     // and some convenience shortcuts
     if (utils.devEnv()) {
         window.sf = {
-            ...await dynamicImportLibs(),
-            context, functions, message, logger,
+            axios, cryptops, functions, forage,
+            context, message, logger,
+            ...await devEnvLibs(),
         }
         window.to_ = utils.to_
     }
@@ -115,21 +162,24 @@ run(async () => {
         // get claimed origin (domain of the host application)
         hostDomainHash = window.location.search.slice(1),
 
-        // get origin whitelist
-        originWhitelist = array.removeDuplicates(
-            struct.access(
-                await axios.get(backend + entrypoint.WHITELIST),
-                ["data", "whitelist"], []
-            ).concat(
-                // in devEnv allow also connections from 'dev' origins
-                utils.devEnv(true) ? devOriginWhitelist : []
-            )
-        ),
+        originWhitelist = null, originDict = null
 
-        // build 'miniHash' -> 'origin' dictionary
-        originDict = struct.dict(
-            originWhitelist.map((origin) => [miniHash(origin), origin])
+    // get origin whitelist
+    logger.info("Getting origin whitelist... ⏳")
+    originWhitelist = array.removeDuplicates(
+        struct.access(
+            await axios.get(backend + entrypoint.WHITELIST),
+            ["data", "whitelist"], []
+        ).concat(
+            // in devEnv allow also connections from 'dev' origins
+            utils.devEnv(true) ? devOriginWhitelist : []
         )
+    ),
+
+    // build 'miniHash' -> 'origin' dictionary
+    originDict = func.compose(
+        struct.dict, (f) => originWhitelist.map(f)
+    )((origin) => [miniHash(cryptops.sha256)(origin), origin])
 
     // do whitelist check (don't worry if somebody just lied
     // about it's true location - messages won't work
@@ -140,20 +190,28 @@ run(async () => {
         return
     }
 
+
+
+
+
     // instantiate message handler
     const messageHandler = new MessageHandler(originDict[hostDomainHash])
     messageHandler.setRecipient(window.opener, "root")
 
     // expose message handler
-    if (utils.devEnv() && window.sf) {
+    if (utils.devEnv() && type.isObject(window.sf)) {
         window.sf.messageHandler = messageHandler
     }
 
     // attach all handlers to messageHandler allowing actions to execute
     // in response to messages - lazy logic load
     logger.info("Attaching handlers... ⏳");
-    (await import(/* webpackChunkName: "handlers" */ "./handlers").then(mDef))(
-        message, logger, forage, context, messageHandler,
+    (await import(
+        /* webpackChunkName: "handlers" */
+        "./handlers"
+    ).then(mDef))(
+        message, logger, context, messageHandler,
+        cryptops, forage,
         {
             cancellable: async.cancellable,
             curry: func.curry,
