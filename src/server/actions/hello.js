@@ -10,6 +10,11 @@
 
 
 
+import { version } from "../../../package.json"
+
+
+
+
 /**
  * "Hello world".
  *
@@ -24,7 +29,8 @@ export default function hello (_db, _logger) {
 
         res.status(200).send({
             message: "shambhala - REST API",
-            version: 1,
+            apiVersion: String(1),
+            version,
         })
 
         next()
