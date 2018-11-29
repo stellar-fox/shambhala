@@ -10,7 +10,6 @@
 
 
 
-import axios from "axios"
 import {
     array,
     async,
@@ -21,6 +20,7 @@ import {
     type,
     utils,
 } from "@xcmats/js-toolbox"
+import axios from "axios"
 import { salt64 } from "@stellar-fox/cryptops"
 import MessageHandler from "../lib/message.handler"
 import {
@@ -57,209 +57,222 @@ import "./index.css"
 
 
 
-const
-    // local memory, volatile context/store
-    context = {},
-
-    // console logger
-    logger = consoleWrapper("🎭"),
-
-    // backend url
-    backend = clientDomain + registrationPath + restApiPrefix
+/**
+ * Run "main" function in browser on "load" event.
+ *
+ * @param {Function} main
+ */
+const run = (main) => {
+    if (
+        type.isObject(window)  &&
+        type.isFunction(window.addEventListener)
+    ) {
+        window.addEventListener("load", main)
+    }
+}
 
 
 
 
 // gentle start
-if (type.isObject(window) && type.isFunction(window.addEventListener)) {
+run(async () => {
 
-    window.addEventListener("load", async () => {
+    const
+        // local memory, volatile context/store
+        context = {},
 
-        // if there is no parent - there is nothing to do
-        if (!window.opener) {
-            logger.error("What are you looking for?")
-            window.location.replace("https://stellarfox.net/")
-            return null
+        // console logger
+        logger = consoleWrapper("🎭"),
+
+        // backend url
+        backend = clientDomain + registrationPath + restApiPrefix
+
+
+
+
+    // if there is no parent - there is nothing to do
+    if (!window.opener) {
+        logger.error("What are you looking for?")
+        window.location.replace("https://stellarfox.net/")
+        return null
+    }
+
+    // greet
+    logger.info("Boom! 💥")
+
+    // expose `sf` dev. namespace
+    // and some convenience shortcuts
+    if (utils.devEnv()) {
+        window.sf = {
+            ...await dynamicImportLibs(),
+            context, functions, message, logger,
         }
+        window.to_ = utils.to_
+    }
 
-        // greet
-        logger.info("Boom! 💥")
+    let
+        // get claimed origin (domain of the host application)
+        hostDomainHash = window.location.search.slice(1),
 
-        // expose `sf` dev. namespace
-        // and some convenience shortcuts
-        if (utils.devEnv()) {
-            window.sf = {
-                ...await dynamicImportLibs(),
-                context, functions, message, logger,
-            }
-            window.to_ = utils.to_
-        }
+        // get origin whitelist
+        originWhitelist = array.removeDuplicates(
+            struct.access(
+                await axios.get(backend + entrypoint.WHITELIST),
+                ["data", "whitelist"], []
+            ).concat(
+                // in devEnv allow also connections from 'dev' origins
+                utils.devEnv(true) ? devOriginWhitelist : []
+            )
+        ),
 
+        // build 'miniHash' -> 'origin' dictionary
+        originDict = struct.dict(
+            originWhitelist.map((origin) => [miniHash(origin), origin])
+        )
+
+    // do whitelist check (don't worry if somebody just lied
+    // about it's true location - messages won't work
+    // in such case anyway)
+    if (!type.isString(originDict[hostDomainHash])) {
+        logger.warn("Domain not whitelisted.")
+        window.location.replace("https://stellarfox.net/")
+        return
+    }
+
+    // instantiate message handler
+    const
+        messageHandler = new MessageHandler(originDict[hostDomainHash]),
+        postMessageBinder = func.partial(messageHandler.postMessage)
+    messageHandler.setRecipient(window.opener, "root")
+
+    // expose message handler
+    if (utils.devEnv() && window.sf) {
+        window.sf.messageHandler = messageHandler
+    }
+
+
+
+
+    // message handlers array
+    [
+        // heartbeat action
+        { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
+
+        // cancel ongoing operation action
+        { m: message.CANCEL, a: cancel, args: [logger, context] },
+
+        // ping-pong action
+        { m: message.PING_PONG, a: pingPong, args: [logger] },
+
+        // account generation action
+        {
+            m: message.GENERATE_ADDRESS,
+            a: generateAddress, args: [logger, context],
+        },
+
+        // account association action
+        {
+            m: message.ASSOCIATE_ADDRESS,
+            a: associateAddress, args: [logger, context],
+        },
+
+        // signing keys generation action
+        {
+            m: message.GENERATE_SIGNING_KEYS,
+            a: generateSigningKeys, args: [logger, context],
+        },
+
+        // automatic keys association action
+        {
+            m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
+            a: generateSignedKeyAssocTx, args: [logger, context],
+        },
+
+        // manual keys association action
+        {
+            m: message.GENERATE_KEY_ASSOC_TX,
+            a: generateKeyAssocTx, args: [logger],
+        },
+
+        // public keys retrieval action
+        { m: message.GET_PUBLIC_KEYS, a: getPublicKeys, args: [logger] },
+
+        // backup action
+        { m: message.BACKUP, a: backup, args: [logger] },
+
+        // restore action
+        { m: message.RESTORE, a: restore, args: [logger] },
+
+        // transaction signing check
+        { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger] },
+
+        // sign transaction action
+        {
+            m: message.SIGN_TRANSACTION,
+            a: signTransaction, args: [logger, context],
+        },
+
+    // for each "action definition" (ad) ...
+    ].forEach((ad) => {
         let
-            // get claimed origin (domain of the host application)
-            hostDomainHash = window.location.search.slice(1),
+            // ... prepare message responder ...
+            respond = postMessageBinder(ad.m),
 
-            // get origin whitelist
-            originWhitelist = array.removeDuplicates(
-                struct.access(
-                    await axios.get(backend + entrypoint.WHITELIST),
-                    ["data", "whitelist"], []
-                ).concat(
-                    // in devEnv allow also connections from 'dev' origins
-                    utils.devEnv(true) ? devOriginWhitelist : []
-                )
-            ),
+            // ... and create action with appropriate parameters bound
+            act = func.curry(ad.a)(
+                // responding to host should only be possible
+                // when some operation is "ongoing"
+                (msg) =>
+                    context.message ?
+                        respond(msg) :
+                        func.identity(msg)
+            )(...ad.args)()
 
-            // build 'miniHash' -> 'origin' dictionary
-            originDict = struct.dict(
-                originWhitelist.map((origin) => [miniHash(origin), origin])
-            )
-
-        // do whitelist check (don't worry if somebody just lied
-        // about it's true location - messages won't work
-        // in such case anyway)
-        if (!type.isString(originDict[hostDomainHash])) {
-            logger.warn("Domain not whitelisted.")
-            window.location.replace("https://stellarfox.net/")
-            return
-        }
-
-        // instantiate message handler
-        const
-            messageHandler = new MessageHandler(originDict[hostDomainHash]),
-            postMessageBinder = func.partial(messageHandler.postMessage)
-        messageHandler.setRecipient(window.opener, "root")
-
-        // expose message handler
-        if (utils.devEnv() && window.sf) {
-            window.sf.messageHandler = messageHandler
-        }
-
-
-
-
-        // message handlers array
-        [
-            // heartbeat action
-            { m: message.HEARTBEAT, a: heartbeat, args: [logger] },
-
-            // cancel ongoing operation action
-            { m: message.CANCEL, a: cancel, args: [logger, context] },
-
-            // ping-pong action
-            { m: message.PING_PONG, a: pingPong, args: [logger] },
-
-            // account generation action
-            {
-                m: message.GENERATE_ADDRESS,
-                a: generateAddress, args: [logger, context],
-            },
-
-            // account association action
-            {
-                m: message.ASSOCIATE_ADDRESS,
-                a: associateAddress, args: [logger, context],
-            },
-
-            // signing keys generation action
-            {
-                m: message.GENERATE_SIGNING_KEYS,
-                a: generateSigningKeys, args: [logger, context],
-            },
-
-            // automatic keys association action
-            {
-                m: message.GENERATE_SIGNED_KEY_ASSOC_TX,
-                a: generateSignedKeyAssocTx, args: [logger, context],
-            },
-
-            // manual keys association action
-            {
-                m: message.GENERATE_KEY_ASSOC_TX,
-                a: generateKeyAssocTx, args: [logger],
-            },
-
-            // public keys retrieval action
-            { m: message.GET_PUBLIC_KEYS, a: getPublicKeys, args: [logger] },
-
-            // backup action
-            { m: message.BACKUP, a: backup, args: [logger] },
-
-            // restore action
-            { m: message.RESTORE, a: restore, args: [logger] },
-
-            // transaction signing check
-            { m: message.CAN_SIGN_FOR, a: canSignFor, args: [logger] },
-
-            // sign transaction action
-            {
-                m: message.SIGN_TRANSACTION,
-                a: signTransaction, args: [logger, context],
-            },
-
-        // for each "action definition" (ad) ...
-        ].forEach((ad) => {
-            let
-                // ... prepare message responder ...
-                respond = postMessageBinder(ad.m),
-
-                // ... and create action with appropriate parameters bound
-                act = func.curry(ad.a)(
-                    // responding to host should only be possible
-                    // when some operation is "ongoing"
-                    (msg) =>
-                        context.message ?
-                            respond(msg) :
-                            func.identity(msg)
-                )(...ad.args)()
-
-            // attach augmented action (act) to a message (ad.m):
-            // before an action is invoked a check is performed
-            // if another action is in progress - in such case a response
-            // is formed ({ error: "busy" })
-            messageHandler.handle(
-                ad.m,
-                async (...args) => {
-                    if (
-                        ad.m !== message.HEARTBEAT  &&
-                        ad.m !== message.CANCEL
-                    ) {
-                        if (type.isString(context.message)) {
-                            logger.warn(
-                                string.quote(ad.m),
-                                "requested while processing",
-                                string.quote(context.message)
-                            )
-                            return respond({ error: "busy" })
-                        }
-                        context.message = ad.m
-                        try {
-                            let { promise, cancel } = async.cancellable(
-                                act(...args)
-                            )
-                            context.cancelCurrentOperation = cancel
-                            await promise
-                        } catch (ex) {
-                            logger.error(ex)
-                        } finally {
-                            delete context.cancelCurrentOperation
-                            delete context.message
-                        }
-                    } else {
-                        await act(...args)
+        // attach augmented action (act) to a message (ad.m):
+        // before an action is invoked a check is performed
+        // if another action is in progress - in such case a response
+        // is formed ({ error: "busy" })
+        messageHandler.handle(
+            ad.m,
+            async (...args) => {
+                if (
+                    ad.m !== message.HEARTBEAT  &&
+                    ad.m !== message.CANCEL
+                ) {
+                    if (type.isString(context.message)) {
+                        logger.warn(
+                            string.quote(ad.m),
+                            "requested while processing",
+                            string.quote(context.message)
+                        )
+                        return respond({ error: "busy" })
                     }
+                    context.message = ad.m
+                    try {
+                        let { promise, cancel } = async.cancellable(
+                            act(...args)
+                        )
+                        context.cancelCurrentOperation = cancel
+                        await promise
+                    } catch (ex) {
+                        logger.error(ex)
+                    } finally {
+                        delete context.cancelCurrentOperation
+                        delete context.message
+                    }
+                } else {
+                    await act(...args)
                 }
-            )
-        })
-
-
-
-
-        // report readiness
-        messageHandler.postMessage(message.READY, {
-            hash: codec.bytesToHex(salt64()),
-        })
-
+            }
+        )
     })
 
-}
+
+
+
+    // report readiness
+    messageHandler.postMessage(message.READY, {
+        hash: codec.bytesToHex(salt64()),
+    })
+
+})
