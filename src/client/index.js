@@ -107,12 +107,6 @@ const devEnvLibs = async () => ({
 // gentle start
 run(async () => {
 
-    // greet
-    logger.info("Boom! 💥")
-
-
-
-
     const
         // local memory, volatile context/store
         context = {},
@@ -122,6 +116,12 @@ run(async () => {
 
         // backend url
         backend = clientDomain + registrationPath + restApiPrefix
+
+
+
+
+    // greet
+    logger.info("Boom! 💥")
 
 
 
