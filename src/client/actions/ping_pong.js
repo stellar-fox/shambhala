@@ -11,16 +11,12 @@
 
 
 import axios from "axios"
-import { sha512 } from "@stellar-fox/cryptops"
-import {
-    codec,
-    func
-} from "@xcmats/js-toolbox"
 import {
     registrationPath,
     restApiPrefix,
 } from "../../config/env"
 import { domain as clientDomain } from "../../config/client.json"
+import { version } from "../../../package.json"
 
 
 
@@ -51,15 +47,9 @@ export default function pingPong (respond, logger) {
 
         logger.info("-> PING")
 
-        let resp = await axios.get(backend)
-
         respond({
-            hash: func.pipe(resp.data)(
-                JSON.stringify,
-                codec.stringToBytes,
-                sha512,
-                codec.bytesToHex
-            ),
+            backend: (await axios.get(backend)).data,
+            version,
         })
 
         logger.info("<- PONG")
