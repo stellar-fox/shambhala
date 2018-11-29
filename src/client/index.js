@@ -13,7 +13,6 @@
 import {
     array,
     async,
-    codec,
     func,
     string,
     struct,
@@ -28,10 +27,10 @@ import {
     restApiPrefix,
 } from "../config/env"
 import { domain as clientDomain } from "../config/client.json"
+import { version } from "../../package.json"
 import * as message from "../lib/messages"
 
 import axios from "axios"
-import { salt64 } from "@stellar-fox/cryptops"
 import MessageHandler from "../lib/message.handler"
 import {
     consoleWrapper,
@@ -153,7 +152,7 @@ run(async () => {
     // attach all handlers to messageHandler allowing actions to execute
     // in response to messages - lazy logic load
     logger.info("Attaching handlers... ⏳");
-    (await import("./handlers").then(mDef))(
+    (await import(/* webpackChunkName: "handlers" */ "./handlers").then(mDef))(
         message, logger, forage, context, messageHandler,
         {
             cancellable: async.cancellable,
@@ -169,9 +168,7 @@ run(async () => {
 
 
     // report readiness
-    messageHandler.postMessage(message.READY, {
-        hash: codec.bytesToHex(salt64()),
-    })
+    messageHandler.postMessage(message.READY, { version })
     logger.info("Ready! ✅")
 
 })
