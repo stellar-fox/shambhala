@@ -69,18 +69,18 @@ const store = {
          * @returns {Promise.<String>}
          */
         ping: async () => {
-            store.messageHandler.postMessage(
+            store.ctx.messageHandler.postMessage(
                 message.PING_PONG
             )
 
             // first - client response (short waiting time)
-            let data = await store.messageHandler
+            let data = await store.ctx.messageHandler
                 .receiveMessage(
                     message.PING_PONG
                 )
 
             // second - server response (longer waiting time)
-            await store.messageHandler
+            await store.ctx.messageHandler
                 .receiveMessage(
                     message.PING_PONG,
                     defaultBackendPingTimeout
@@ -117,25 +117,25 @@ const store = {
             // but then closed and now it's gone
             } catch (_) {
 
-                if (!type.isString(store.windowName)) {
-                    store.windowName = store.fn.generateRandomWindowName()
+                if (!type.isString(store.ctx.windowName)) {
+                    store.ctx.windowName = store.fn.generateRandomWindowName()
                 }
 
                 // open shambhala window and set recipient in message handler
-                store.client = window.open(
+                store.ctx.client = window.open(
                     `${
-                        store.url.href
+                        store.ctx.url.href
                     }?${
                         miniHash(sha256)(window.location.origin)
                     }`,
-                    store.windowName
+                    store.ctx.windowName
                 )
-                store.messageHandler.setRecipient(
-                    store.client, store.windowName
+                store.ctx.messageHandler.setRecipient(
+                    store.ctx.client, store.ctx.windowName
                 )
 
                 // wait for 'message.READY' and resolve
-                return (await store.messageHandler.receiveMessage(
+                return (await store.ctx.messageHandler.receiveMessage(
                     message.READY, maximumWindowOpeningTime
                 )).version
 
@@ -165,14 +165,14 @@ const store = {
         ) => {
 
             // don't try to communicate if there is any ongoing operation
-            if (type.isString(store.currentlyProcessedMessage)) {
+            if (type.isString(store.ctx.currentlyProcessedMessage)) {
                 throw `busy with ${
-                    string.quote(store.currentlyProcessedMessage)
+                    string.quote(store.ctx.currentlyProcessedMessage)
                 }`
             }
 
             // save information about ongoing operation
-            store.currentlyProcessedMessage = msg
+            store.ctx.currentlyProcessedMessage = msg
 
             try {
 
@@ -180,20 +180,20 @@ const store = {
                 await store.fn.open()
 
                 // send message with appropriate payload
-                store.messageHandler.postMessage(msg, payload)
+                store.ctx.messageHandler.postMessage(msg, payload)
 
                 // make message receiving process cancellable
                 let { promise, cancel } = async.cancellable(
 
                     // receive message with "heartbeat" in background
-                    store.messageHandler.receiveMessageHB(msg, {
+                    store.ctx.messageHandler.receiveMessageHB(msg, {
                         ...opts,
 
                         // stop the heartbeat if there is no ongoing
                         // operation (if it was cancelled externally)
                         hbCallback: (hbPayload, abortReceiving) => {
                             if (!type.isString(
-                                store.currentlyProcessedMessage
+                                store.ctx.currentlyProcessedMessage
                             )) {
                                 abortReceiving()
                                 opts.hbCallback(hbPayload, func.identity)
@@ -205,7 +205,7 @@ const store = {
                 )
 
                 // allow current receiving process to be cancelled externally
-                store.cancelCurrentOperation = cancel
+                store.ctx.cancelCurrentOperation = cancel
 
                 // wait for the data-response from shambhala
                 var data = await promise
@@ -215,8 +215,8 @@ const store = {
                 // whatever happen - clear information about ongoing
                 // operation after it finishes work (either if it finish
                 // normally or through exception)
-                delete store.cancelCurrentOperation
-                delete store.currentlyProcessedMessage
+                delete store.ctx.cancelCurrentOperation
+                delete store.ctx.currentlyProcessedMessage
 
             }
 
@@ -226,6 +226,12 @@ const store = {
         },
 
     },
+
+
+
+
+    // private memory namespace
+    ctx : {},
 
 }
 
@@ -244,18 +250,18 @@ export class Shambhala {
     constructor (url, opts = {}) {
         let newurl = new URL(url)
         if (
-            !type.toBool(store.url)  ||
-            newurl.href !== store.url.href
-        ) { store.url = newurl }
-        if (!store.token) {
-            if (opts.token) { store.token = opts.token }
-            else { store.token = null }
+            !type.toBool(store.ctx.url)  ||
+            newurl.href !== store.ctx.url.href
+        ) { store.ctx.url = newurl }
+        if (!store.ctx.token) {
+            if (opts.token) { store.ctx.token = opts.token }
+            else { store.ctx.token = null }
         }
         if (
-            !type.toBool(store.messageHandler)  ||
-            newurl.href !== store.url.href
+            !type.toBool(store.ctx.messageHandler)  ||
+            newurl.href !== store.ctx.url.href
         ) {
-            store.messageHandler = new MessageHandler(store.url.origin)
+            store.ctx.messageHandler = new MessageHandler(store.ctx.url.origin)
         }
     }
 
@@ -315,7 +321,7 @@ export class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    getVersion = this.open
+    getVersion = store.fn.open
 
 
 
@@ -626,9 +632,9 @@ export class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     cancel = async (reason = "cancelled") => {
-        if (type.isFunction(store.cancelCurrentOperation)) {
-            store.messageHandler.postMessage(message.CANCEL)
-            store.cancelCurrentOperation(reason)
+        if (type.isFunction(store.ctx.cancelCurrentOperation)) {
+            store.ctx.messageHandler.postMessage(message.CANCEL)
+            store.ctx.cancelCurrentOperation(reason)
             return true
         }
         return false
