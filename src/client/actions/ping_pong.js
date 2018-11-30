@@ -10,6 +10,7 @@
 
 
 
+import { utils } from "@xcmats/js-toolbox"
 import axios from "axios"
 import {
     registrationPath,
@@ -47,8 +48,12 @@ export default function pingPong (respond, logger) {
 
         logger.info("🔄 🏓")
 
-        respond({ version })
-        respond({ backend: (await axios.get(backend)).data })
+        respond({ ok: true, version })
+        respond({
+            backend: await utils.handleRejection(
+                async () => (await axios.get(backend)).data
+            ),
+        })
 
     }
 

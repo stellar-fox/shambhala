@@ -16,6 +16,7 @@ import {
     func,
     string,
     type,
+    utils,
 } from "@xcmats/js-toolbox"
 import { sha256 } from "@stellar-fox/cryptops"
 import { miniHash } from "./utils"
@@ -43,18 +44,46 @@ import { version } from "../../package.json"
  */
 const store = {
 
+    // private consts namepace
+    c: Object.freeze({
+
+        wnPrefix: "shambhala-client-",
+
+        instanceClosedMsg:
+            "this instance has already been closed - create a new one",
+
+        busy: (m) => `busy with ${string.quote(m)}`,
+
+        singleton: [
+            "Communicating with multiple shambhala instances simultaneously",
+            "is currently not possible. If you wish to communicate with some",
+            "other shambhala instance, please invoke 'close()'",
+            "on a currently opened and then create a fresh one.",
+        ].join(string.space()),
+
+    }),
+
+
+
+
+    // private memory namespace
+    ctx: {},
+
+
+
+
     // private functions namespace
-    fn: {
+    fn: Object.freeze({
 
         /**
          * ...
          *
          * @private
          * @function generateRandomWindowName
-         * @returns {Promise.<String>}
+         * @returns {String}
          */
         generateRandomWindowName: () => {
-            return "shambhala-client-" // + string.random(6)
+            return store.c.wnPrefix // + string.random(6)
         },
 
 
@@ -66,9 +95,13 @@ const store = {
          * @async
          * @private
          * @function ping
-         * @returns {Promise.<String>}
+         * @returns {Promise.<Object>}
          */
         ping: async () => {
+            if (!type.isString(store.ctx.activeInstance)) {
+                throw new Error(store.c.instanceClosedMsg)
+            }
+
             store.ctx.messageHandler.postMessage(
                 message.PING_PONG
             )
@@ -80,15 +113,17 @@ const store = {
                 )
 
             // second - server response (longer waiting time)
-            await store.ctx.messageHandler
-                .receiveMessage(
-                    message.PING_PONG,
-                    defaultBackendPingTimeout
-                )
-                .then((backendData) => {
-                    if (type.isObject(data))
-                        Object.assign(data, backendData)
-                })
+            if (data.ok) {
+                await store.ctx.messageHandler
+                    .receiveMessage(
+                        message.PING_PONG,
+                        defaultBackendPingTimeout
+                    )
+                    .then((backendData) => {
+                        if (type.isObject(data))
+                            Object.assign(data, backendData)
+                    })
+            }
 
             return data
         },
@@ -102,18 +137,24 @@ const store = {
          * @async
          * @private
          * @function open
-         * @returns {Promise.<String>}
+         * @returns {Promise.<Object>}
          */
         open: async () => {
+
+            // if this instance was already closed by the `close()` method
+            // then don't do anything
+            if (!type.isString(store.ctx.activeInstance)) {
+                throw new Error(store.c.instanceClosedMsg)
+            }
 
             // maybe shambhala is already up-and-running?
             try {
 
-                return (await store.fn.ping()).version
+                return await store.fn.ping()
 
-            // 'ping' can throw because there was no recipient set
-            // for 'postMessage' to work or because 'receiveMessage'
-            // reached timeout which mean that shambhala was opened
+            // 'ping' can throw at this point because there was no recipient
+            // set for 'postMessage' to work or because 'receiveMessage'
+            // reached a timeout which mean that shambhala was opened
             // but then closed and now it's gone
             } catch (_) {
 
@@ -135,9 +176,9 @@ const store = {
                 )
 
                 // wait for 'message.READY' and resolve
-                return (await store.ctx.messageHandler.receiveMessage(
+                return await store.ctx.messageHandler.receiveMessage(
                     message.READY, maximumWindowOpeningTime
-                )).version
+                )
 
             }
 
@@ -166,9 +207,9 @@ const store = {
 
             // don't try to communicate if there is any ongoing operation
             if (type.isString(store.ctx.currentlyProcessedMessage)) {
-                throw `busy with ${
-                    string.quote(store.ctx.currentlyProcessedMessage)
-                }`
+                throw new Error(
+                    store.c.busy(store.ctx.currentlyProcessedMessage)
+                )
             }
 
             // save information about ongoing operation
@@ -225,13 +266,28 @@ const store = {
 
         },
 
-    },
 
 
 
+        /**
+         * Clean up all instance vars and remove message handling
+         * mechanism from `window`.
+         *
+         * @private
+         * @function cleanup
+         */
+        cleanup: () =>
+            utils.handleException(() => {
+                delete store.ctx.activeInstance
+                delete store.ctx.client
+                store.ctx.messageHandler.remove()
+                delete store.ctx.messageHandler
+                delete store.ctx.token
+                delete store.ctx.url
+                delete store.ctx.windowName
+            }),
 
-    // private memory namespace
-    ctx : {},
+    }),
 
 }
 
@@ -247,22 +303,43 @@ const store = {
  */
 export class Shambhala {
 
-    constructor (url, opts = {}) {
-        let newurl = new URL(url)
-        if (
-            !type.toBool(store.ctx.url)  ||
-            newurl.href !== store.ctx.url.href
-        ) { store.ctx.url = newurl }
-        if (!store.ctx.token) {
+    constructor (...args) {
+        let [url, opts] = args
+
+        if (!type.isObject(opts)) opts = {}
+
+        // no active instance exists
+        if (!type.isString(store.ctx.activeInstance)) {
+
+            // args can be omited only if there is an active instance
+            if (args.length === 0) throw new Error("URL needed")
+
+            // create all needed structures
+            store.ctx.url = new URL(url)
+            store.ctx.messageHandler =
+                new MessageHandler(store.ctx.url.origin)
+            store.ctx.activeInstance = utils.handleException(
+                () => func.pipe({ url, opts })(
+                    JSON.stringify, miniHash(sha256)
+                ),
+                (ex) => miniHash(sha256)(ex.message || string.empty())
+            )
+
+        // instance exists and user passed some arguments
+        } else if (args.length !== 0) {
+
+            // no multiple instances allowed
+            if (new URL(url).href !== store.ctx.url.href)
+                throw new Error(store.c.singleton)
+
+        }
+
+        // take care of options - token can be replaced for a live instance
+        if (args.length === 2) {
             if (opts.token) { store.ctx.token = opts.token }
             else { store.ctx.token = null }
         }
-        if (
-            !type.toBool(store.ctx.messageHandler)  ||
-            newurl.href !== store.ctx.url.href
-        ) {
-            store.ctx.messageHandler = new MessageHandler(store.ctx.url.origin)
-        }
+
     }
 
 
@@ -276,9 +353,17 @@ export class Shambhala {
      * @instance
      * @method open
      * @memberof module:client-lib~Shambhala
-     * @returns {Promise.<String>}
+     * @returns {Promise.<Object>}
      */
-    open = store.fn.open
+    open = async () => {
+        let data = await store.fn.open()
+
+        if (data.ok) return {
+            version: data.version,
+            backend: data.backend,
+        }
+        else throw new Error(data.error)
+    }
 
 
 
@@ -291,9 +376,14 @@ export class Shambhala {
      * @instance
      * @method ping
      * @memberof module:client-lib~Shambhala
-     * @returns {Promise.<String>}
+     * @returns {Promise.<Boolean>}
      */
-    ping = store.fn.ping
+    ping = async () => {
+        let data = await store.fn.ping()
+
+        if (data.error) throw new Error(data.error)
+        return true
+    }
 
 
 
@@ -321,7 +411,7 @@ export class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    getVersion = store.fn.open
+    getVersion = async () => (await this.open()).version
 
 
 
@@ -357,7 +447,7 @@ export class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<String>}
      */
-    associateAddress = async (accountId) => {
+    associateAddress = async (accountId = string.empty()) => {
         let data = await store.fn.communicate(
             message.ASSOCIATE_ADDRESS, {
                 payload: { G_PUBLIC: accountId },
@@ -382,7 +472,7 @@ export class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Object>}
      */
-    generateSigningKeys = async (accountId) => {
+    generateSigningKeys = async (accountId = string.empty()) => {
         let data = await store.fn.communicate(
             message.GENERATE_SIGNING_KEYS, {
                 payload: { G_PUBLIC: accountId },
@@ -414,7 +504,9 @@ export class Shambhala {
      * @returns {Promise.<String>} b64-encoded TransactionEnvelope XDR
      */
     generateSignedKeyAssocTX = async (
-        accountId, sequence, networkPassphrase
+        accountId = string.empty(),
+        sequence = string.empty(),
+        networkPassphrase = string.empty()
     ) => {
         let data = await store.fn.communicate(
             message.GENERATE_SIGNED_KEY_ASSOC_TX, {
@@ -448,7 +540,9 @@ export class Shambhala {
      * @returns {Promise.<String>} b64-encoded TransactionEnvelope XDR
      */
     generateKeyAssocTX = async (
-        accountId, sequence, networkPassphrase
+        accountId = string.empty(),
+        sequence = string.empty(),
+        networkPassphrase = string.empty()
     ) => {
         let data = await store.fn.communicate(
             message.GENERATE_KEY_ASSOC_TX, {
@@ -477,7 +571,7 @@ export class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Array>}
      */
-    getPublicKeys = async (accountId) => {
+    getPublicKeys = async (accountId = string.empty()) => {
         let data = await store.fn.communicate(
             message.GET_PUBLIC_KEYS, {
                 payload: { G_PUBLIC: accountId },
@@ -506,7 +600,7 @@ export class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<String>} base64-encoded, encrypted content
      */
-    backup = async (accountId) => {
+    backup = async (accountId = string.empty()) => {
         let data = await store.fn.communicate(
             message.BACKUP, {
                 payload: { G_PUBLIC: accountId },
@@ -532,7 +626,7 @@ export class Shambhala {
      * @param {String} backup output of the `backup` method
      * @returns {Promise.<Object>}
      */
-    restore = async (accountId, backup) => {
+    restore = async (accountId = string.empty(), backup = string.empty()) => {
         let data = await store.fn.communicate(
             message.RESTORE, {
                 payload: { G_PUBLIC: accountId, backup },
@@ -560,7 +654,7 @@ export class Shambhala {
      * @param {String} accountId
      * @returns {Promise.<Boolean>}
      */
-    canSignFor = async (accountId) => {
+    canSignFor = async (accountId = string.empty()) => {
         let data = await store.fn.communicate(
             message.CAN_SIGN_FOR, {
                 payload: { G_PUBLIC: accountId },
@@ -602,7 +696,10 @@ export class Shambhala {
      * @param {Uint8Array} tspXDR XDR-encoded `TransactionSignaturePayload`
      * @returns {Promise.<Array>} Array of b64-XDR-ecoded `DecoratedSignature`.
      */
-    signTransaction = async (accountId, tspXDR) => {
+    signTransaction = async (
+        accountId = string.empty(),
+        tspXDR = Uint8Array.from([])
+    ) => {
         let data = await store.fn.communicate(
             message.SIGN_TRANSACTION, {
                 payload: {
@@ -632,6 +729,9 @@ export class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     cancel = async (reason = "cancelled") => {
+        if (!type.isString(store.ctx.activeInstance)) {
+            throw new Error(store.c.instanceClosedMsg)
+        }
         if (type.isFunction(store.ctx.cancelCurrentOperation)) {
             store.ctx.messageHandler.postMessage(message.CANCEL)
             store.ctx.cancelCurrentOperation(reason)
@@ -653,14 +753,42 @@ export class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     close = async () => {
-        try { await store.fn.ping() }
-        catch (_) { return true }
-        let data = await store.fn.communicate(
-            message.CLOSE
-        )
+        // if there is no active instance, there is nothing to do
+        if (!type.isString(store.ctx.activeInstance)) {
+            throw new Error(store.c.instanceClosedMsg)
+        }
 
-        if (data.ok) return true
-        else throw new Error(data.error)
+        // is shambhala window opened ?
+        try { await this.ping() }
+        catch (_) {
+
+            // ping has thrown, so either some message is being processed ...
+            if (store.ctx.currentlyProcessedMessage) {
+                throw new Error(
+                    store.c.busy(store.ctx.currentlyProcessedMessage)
+                )
+
+            // ... or shambhala window is closed but instance is active ...
+            } else {
+
+                // ... so just do cleanup
+                store.fn.cleanup()
+                return true
+            }
+
+        }
+
+        // yes - it has responded to `ping`, so let's gently ask
+        store.ctx.messageHandler.postMessage(message.CLOSE)
+        let data = await store.ctx.messageHandler
+            .receiveMessage(message.CLOSE)
+
+        if (data.error) throw new Error(data.error)
+
+        // and then do cleanup
+        store.fn.cleanup()
+
+        return true
     }
 
 }

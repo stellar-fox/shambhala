@@ -234,7 +234,7 @@ run(async () => {
 
 
     // report readiness
-    messageHandler.postMessage(message.READY, { version })
+    messageHandler.postMessage(message.READY, { ok: true, version })
     logger.info("Ready! ✅")
 
 })

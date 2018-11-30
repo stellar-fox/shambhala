@@ -89,6 +89,14 @@ export const maximumWindowOpeningTime = 8 * timeUnit.second
 
 
 /**
+ * @constant {Number} windowClosingDelay ...
+ */
+export const windowClosingDelay = 0.2 * timeUnit.second
+
+
+
+
+/**
  * @constant {Array.<String>} devOriginWhitelist
  */
 export const devOriginWhitelist = [

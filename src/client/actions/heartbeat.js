@@ -24,7 +24,7 @@ export default function heartbeat (respond, logger) {
     return async () => {
 
         logger.info("❤")
-        respond({ message: "still alive" })
+        respond({ ok: true, message: "still alive" })
 
     }
 

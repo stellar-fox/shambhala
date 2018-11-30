@@ -10,6 +10,12 @@
 
 
 
+import { async } from "@xcmats/js-toolbox"
+import { windowClosingDelay } from "../../config/env"
+
+
+
+
 /**
  * Close.
  *
@@ -26,7 +32,7 @@ export default function close (respond, logger) {
         logger.info("⛔")
 
         respond({ ok: true })
-        window.close()
+        async.timeout(() => window.close(), windowClosingDelay)
 
     }
 

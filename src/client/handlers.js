@@ -179,7 +179,9 @@ export default function attach (
                             "requested while processing",
                             quote(context.message)
                         )
-                        return respond({ error: "busy" })
+                        return respond({
+                            error: `busy with ${quote(context.message)}`,
+                        })
                     }
                     context.message = ad.m
                     try {
