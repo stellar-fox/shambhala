@@ -61,7 +61,7 @@ const store = {
 
 
         /**
-         * Ping-Pong.
+         * Ping - pong.
          *
          * @async
          * @private
@@ -79,7 +79,7 @@ const store = {
                     defaultBackendPingTimeout
                 )
 
-            return data.hash
+            return data.version
         },
 
 
@@ -124,9 +124,9 @@ const store = {
                 )
 
                 // wait for 'message.READY' and resolve
-                return await store.messageHandler.receiveMessage(
+                return (await store.messageHandler.receiveMessage(
                     message.READY, maximumWindowOpeningTime
-                )
+                )).version
 
             }
 
@@ -255,6 +255,21 @@ export class Shambhala {
      * @returns {Promise.<String>}
      */
     open = store.fn.open
+
+
+
+
+    /**
+     * Ping - pong.
+     * Dev. - test.
+     *
+     * @async
+     * @instance
+     * @method ping
+     * @memberof module:client-lib~Shambhala
+     * @returns {Promise.<String>}
+     */
+    ping = store.fn.ping
 
 
 
