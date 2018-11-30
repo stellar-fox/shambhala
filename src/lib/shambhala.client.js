@@ -647,6 +647,8 @@ export class Shambhala {
      * @returns {Promise.<Boolean>}
      */
     close = async () => {
+        try { await store.fn.ping() }
+        catch (_) { return true }
         let data = await store.fn.communicate(
             message.CLOSE
         )
