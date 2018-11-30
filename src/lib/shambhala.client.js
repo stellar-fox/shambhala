@@ -90,10 +90,10 @@ const store = {
          *
          * @async
          * @private
-         * @function openShambhala
+         * @function open
          * @returns {Promise.<String>}
          */
-        openShambhala: async () => {
+        open: async () => {
 
             // maybe shambhala is already up-and-running?
             try {
@@ -166,7 +166,7 @@ const store = {
             try {
 
                 // ensure shambhala is opened
-                await store.fn.openShambhala()
+                await store.fn.open()
 
                 // send message with appropriate payload
                 store.messageHandler.postMessage(msg, payload)
@@ -246,16 +246,15 @@ export class Shambhala {
 
     /**
      * Handle shambhala target window opening.
-     * Exposed only in dev. purposes - to be removed later.
+     * Dev. - test.
      *
      * @async
      * @instance
-     * @private
-     * @method _openShambhala
+     * @method open
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    _openShambhala = store.fn.openShambhala
+    open = store.fn.open
 
 
 

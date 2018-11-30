@@ -147,7 +147,7 @@ run(async () => {
     // do meaningful stuff
     await testing.setEnv()
     await testing.instantiate()
-    await context.shambhala._openShambhala()
+    await context.shambhala.open()
 
 
 
