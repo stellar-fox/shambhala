@@ -313,7 +313,7 @@ export class Shambhala {
      * @memberof module:client-lib~Shambhala
      * @returns {Promise.<String>}
      */
-    getVersion = () => Promise.reject("NOT IMPLEMENTED")
+    getVersion = this.open
 
 
 
