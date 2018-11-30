@@ -246,12 +246,19 @@ const store = {
 export class Shambhala {
 
     constructor (url, opts = {}) {
-        if (!store.url) { store.url = new URL(url) }
+        let newurl = new URL(url)
+        if (
+            !type.toBool(store.url)  ||
+            newurl.href !== store.url.href
+        ) { store.url = newurl }
         if (!store.token) {
             if (opts.token) { store.token = opts.token }
             else { store.token = null }
         }
-        if (!store.messageHandler) {
+        if (
+            !type.toBool(store.messageHandler)  ||
+            newurl.href !== store.url.href
+        ) {
             store.messageHandler = new MessageHandler(store.url.origin)
         }
     }
