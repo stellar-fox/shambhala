@@ -152,11 +152,15 @@ run(async () => {
     // and some convenience shortcuts
     if (utils.devEnv()) {
         window.sf = {
-            axios, cryptops, functions, forage,
-            context, message, logger,
+            axios, cryptops, functions,
+            forage, message, logger,
             ...await devEnvLibs(),
         }
         window.to_ = utils.to_
+    }
+    // strict devEnv check for exposing 'context'
+    if (utils.devEnv(true) && type.isObject(window.sf)) {
+        window.sf.context = context
     }
 
 
