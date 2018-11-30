@@ -51,7 +51,7 @@ export const restApiPrefix = `${restApiRoot}v1/`
 /**
  * @constant {Number} defaultMessageTimeout ...
  */
-export const defaultMessageTimeout = 0.8 * timeUnit.second
+export const defaultMessageTimeout = 0.4 * timeUnit.second
 
 
 
@@ -75,7 +75,7 @@ export const defaultLongReceivingTimeout = 2 * timeUnit.hour
 /**
  * @constant {Number} defaultBackendPingTimeout ...
  */
-export const defaultBackendPingTimeout = 5 * timeUnit.second
+export const defaultBackendPingTimeout = 4 * timeUnit.second
 
 
 
@@ -83,7 +83,7 @@ export const defaultBackendPingTimeout = 5 * timeUnit.second
 /**
  * @constant {Number} maximumWindowOpeningTime ...
  */
-export const maximumWindowOpeningTime = 10 * timeUnit.second
+export const maximumWindowOpeningTime = 8 * timeUnit.second
 
 
 

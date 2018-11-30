@@ -66,20 +66,35 @@ const store = {
          * @async
          * @private
          * @function ping
+         * @param {Function} cb backend-confirmation callback
          * @returns {Promise.<String>}
          */
-        ping: async () => {
+        ping: async (cb = func.identity) => {
             store.messageHandler.postMessage(
                 message.PING_PONG
             )
 
             let data = await store.messageHandler
                 .receiveMessage(
+                    message.PING_PONG
+                )
+
+            // wait "in background" for a second response
+            store.messageHandler
+                .receiveMessage(
                     message.PING_PONG,
                     defaultBackendPingTimeout
                 )
+                .then((backendData) => {
+                    if (type.isObject(data))
+                        Object.assign(data, backendData)
+                    cb({ ok: true, ...backendData })
+                })
+                .catch((ex) => {
+                    cb({ error: ex })
+                })
 
-            return data.version
+            return data
         },
 
 
@@ -98,7 +113,7 @@ const store = {
             // maybe shambhala is already up-and-running?
             try {
 
-                return await store.fn.ping()
+                return (await store.fn.ping()).version
 
             // 'ping' can throw because there was no recipient set
             // for 'postMessage' to work or because 'receiveMessage'
@@ -267,6 +282,7 @@ export class Shambhala {
      * @instance
      * @method ping
      * @memberof module:client-lib~Shambhala
+     * @param {Function} cb backend-confirmation callback
      * @returns {Promise.<String>}
      */
     ping = store.fn.ping

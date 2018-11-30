@@ -45,14 +45,10 @@ export default function pingPong (respond, logger) {
 
     return async () => {
 
-        logger.info("-> PING")
+        logger.info("🔄 🏓")
 
-        respond({
-            backend: (await axios.get(backend)).data,
-            version,
-        })
-
-        logger.info("<- PONG")
+        respond({ version })
+        respond({ backend: (await axios.get(backend)).data })
 
     }
 
