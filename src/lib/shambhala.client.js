@@ -66,21 +66,21 @@ const store = {
          * @async
          * @private
          * @function ping
-         * @param {Function} cb backend-confirmation callback
          * @returns {Promise.<String>}
          */
-        ping: async (cb = func.identity) => {
+        ping: async () => {
             store.messageHandler.postMessage(
                 message.PING_PONG
             )
 
+            // first - client response (short waiting time)
             let data = await store.messageHandler
                 .receiveMessage(
                     message.PING_PONG
                 )
 
-            // wait "in background" for a second response
-            store.messageHandler
+            // second - server response (longer waiting time)
+            await store.messageHandler
                 .receiveMessage(
                     message.PING_PONG,
                     defaultBackendPingTimeout
@@ -88,10 +88,6 @@ const store = {
                 .then((backendData) => {
                     if (type.isObject(data))
                         Object.assign(data, backendData)
-                    cb({ ok: true, ...backendData })
-                })
-                .catch((ex) => {
-                    cb({ error: ex })
                 })
 
             return data
@@ -289,7 +285,6 @@ export class Shambhala {
      * @instance
      * @method ping
      * @memberof module:client-lib~Shambhala
-     * @param {Function} cb backend-confirmation callback
      * @returns {Promise.<String>}
      */
     ping = store.fn.ping
@@ -637,6 +632,27 @@ export class Shambhala {
             return true
         }
         return false
+    }
+
+
+
+
+    /**
+     * Close shambhala target window.
+     *
+     * @async
+     * @instance
+     * @method close
+     * @memberof module:client-lib~Shambhala
+     * @returns {Promise.<Boolean>}
+     */
+    close = async () => {
+        let data = await store.fn.communicate(
+            message.CLOSE
+        )
+
+        if (data.ok) return true
+        else throw new Error(data.error)
     }
 
 }

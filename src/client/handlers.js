@@ -12,6 +12,7 @@
 
 import heartbeat from "./actions/heartbeat"
 import cancel from "./actions/cancel"
+import close from "./actions/close"
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import associateAddress from "./actions/associate_address"
@@ -58,6 +59,13 @@ export default function attach (
         {
             m: message.CANCEL,
             a: cancel,
+            args: [logger, context],
+        },
+
+        // close client
+        {
+            m: message.CLOSE,
+            a: close,
             args: [logger, context],
         },
 
