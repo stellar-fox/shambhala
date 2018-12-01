@@ -72,14 +72,28 @@ export default function generateSigningKeys (
         // and check if it has been associated before
         try {
 
-            Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
-            ({ G_PUBLIC, C_UUID } = await forage.getItem(p.G_PUBLIC))
+            Keypair.fromPublicKey(p.G_PUBLIC).publicKey()
+            let lsData = await forage.getItem(p.G_PUBLIC);
+            ({ G_PUBLIC, C_UUID } = lsData)
+
+            // do not engage the generation procedure if signing keys
+            // has been already generated
+            if (
+                type.isString(lsData.C_PUBLIC)  &&
+                type.isString(lsData.S_PUBLIC)
+            ) {
+                // report error
+                respond({ error: "client:[signing keys already generated]" })
+                logger.error("Signing keys has been already generated before.")
+
+                // don't do anything else
+                return
+            }
 
         } catch (_) {
 
             // report error
             respond({ error: "client:[invalid or not associated G_PUBLIC]" })
-
             logger.error("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else
