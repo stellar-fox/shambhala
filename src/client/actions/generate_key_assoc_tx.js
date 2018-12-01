@@ -88,6 +88,7 @@ export default function generateKeyAssocTX (
             !type.isString(p.sequence)  ||
             !p.sequence.split(string.empty())
                 .every(func.flow(Number, type.isNumber))  ||
+            p.sequence === string.empty()  ||
             !type.isString(p.networkPassphrase)
         ) {
 
