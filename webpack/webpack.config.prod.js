@@ -108,7 +108,7 @@ module.exports = {
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - client",
             template: path.resolve(
-                appDirectory, "src/client/index.html"
+                appDirectory, "src/client/ui/index.html"
             ),
         }),
 

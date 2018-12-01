@@ -37,7 +37,7 @@ import {
     run,
 } from "../lib/utils"
 
-import "./index.css"
+import "./ui/index.css"
 
 
 
