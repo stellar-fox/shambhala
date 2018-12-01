@@ -29,15 +29,20 @@ export default function cancel (_respond, logger, context) {
 
     return async () => {
 
-        if (type.isObject(context.promptMutex)) {
-            context.promptMutex.reject("cancelled")
-        }
-
         if (type.isFunction(context.cancelCurrentOperation)) {
-            context.cancelCurrentOperation("cancelled by host")
-        }
 
-        logger.warn("host has cancelled current operation")
+            if (type.isObject(context.promptMutex)) {
+                context.promptMutex.reject("cancelled")
+            }
+
+            context.cancelCurrentOperation("cancelled by host")
+            logger.warn("host has cancelled current operation")
+
+        } else {
+
+            logger.warn("cancel requested during idling - no effect")
+
+        }
 
     }
 

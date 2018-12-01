@@ -11,8 +11,6 @@
 
 
 import heartbeat from "./actions/heartbeat"
-import cancel from "./actions/cancel"
-import close from "./actions/close"
 import pingPong from "./actions/ping_pong"
 import generateAddress from "./actions/generate_address"
 import associateAddress from "./actions/associate_address"
@@ -24,6 +22,8 @@ import backup from "./actions/backup"
 import restore from "./actions/restore"
 import canSignFor from "./actions/can_sign_for"
 import signTransaction from "./actions/sign_transaction"
+import cancel from "./actions/cancel"
+import close from "./actions/close"
 
 
 
@@ -53,20 +53,6 @@ export default function attach (
             m: message.HEARTBEAT,
             a: heartbeat,
             args: [logger],
-        },
-
-        // cancel ongoing operation action
-        {
-            m: message.CANCEL,
-            a: cancel,
-            args: [logger, context],
-        },
-
-        // close client
-        {
-            m: message.CLOSE,
-            a: close,
-            args: [logger, context],
         },
 
         // ping-pong action
@@ -144,6 +130,20 @@ export default function attach (
             m: message.SIGN_TRANSACTION,
             a: signTransaction,
             args: [cryptops, forage, logger, context],
+        },
+
+        // cancel ongoing operation action
+        {
+            m: message.CANCEL,
+            a: cancel,
+            args: [logger, context],
+        },
+
+        // close client
+        {
+            m: message.CLOSE,
+            a: close,
+            args: [logger, context],
         },
 
     // for each "action definition" (ad) ...
