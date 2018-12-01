@@ -84,6 +84,7 @@ export default function generateAddress (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PASSPHRASE. Operation aborted.")
+
             return
         }
 
@@ -129,7 +130,6 @@ export default function generateAddress (
 
             // report error
             respond({ error: "client:[failure]" })
-
             logger.error(
                 "Address generation failure.",
                 localResponse.error
@@ -159,7 +159,6 @@ export default function generateAddress (
 
             // confirm address creation to the host application
             respond({ ok: true, G_PUBLIC })
-
             logger.info(
                 "Address succesfully generated:",
                 G_PUBLIC
@@ -175,7 +174,6 @@ export default function generateAddress (
 
             // report error
             respond({ error: `server:[${serverResponse.status}]` })
-
             logger.error(
                 "Address generation failure.",
                 serverResponse.data.error

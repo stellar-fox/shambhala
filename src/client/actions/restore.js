@@ -76,10 +76,7 @@ export default function restore (
         } catch (_) {
 
             // report error
-            respond({
-                error: "client:[invalid G_PUBLIC]",
-            })
-
+            respond({ error: "client:[invalid G_PUBLIC]" })
             logger.error("Invalid G_PUBLIC received.")
 
             // don't do anything else
@@ -128,7 +125,6 @@ export default function restore (
             respond({
                 error: "client:[decryption not possible or garbage received]",
             })
-
             logger.info("(Epic) fail.")
 
             // don't do anything else
@@ -155,7 +151,6 @@ export default function restore (
 
             // report error
             respond({ error: "client:[local storage failure]" })
-
             logger.error(
                 "Restoring from backup has failed.",
                 localResponse.error
@@ -170,7 +165,6 @@ export default function restore (
                 C_PUBLIC: unpacked.C_PUBLIC,
                 S_PUBLIC: unpacked.S_PUBLIC,
             })
-
             logger.info("Restoring from backup succeeded.")
 
         }

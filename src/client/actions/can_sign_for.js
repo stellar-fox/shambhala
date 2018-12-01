@@ -44,7 +44,6 @@ export default function canSignFor (respond, forage, logger) {
 
             // report error
             respond({ error: "client:[invalid G_PUBLIC]" })
-
             logger.error("Invalid G_PUBLIC received.")
 
             // don't do anything else
@@ -68,7 +67,6 @@ export default function canSignFor (respond, forage, logger) {
                 ok: true,
                 answer: true,
             })
-
             logger.info(`Yay! Can sign for ${G_PUBLIC}.`)
 
         } catch (_) {
@@ -78,7 +76,6 @@ export default function canSignFor (respond, forage, logger) {
                 ok: true,
                 answer: false,
             })
-
             logger.info(`Oh no. Can't sign for ${p.G_PUBLIC}.`)
         }
 

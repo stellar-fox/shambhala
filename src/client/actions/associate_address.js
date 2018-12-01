@@ -86,7 +86,6 @@ export default function associateAddress (
             respond({
                 error: "client:[invalid or already associated G_PUBLIC]",
             })
-
             logger.error("Invalid or already associated G_PUBLIC received.")
 
             // don't do anything else
@@ -108,6 +107,7 @@ export default function associateAddress (
                 "User doesn't want to associate this address.",
                 "Operation aborted.",
             ].join(string.space()))
+
             return
         }
 
@@ -134,7 +134,6 @@ export default function associateAddress (
 
             // report error
             respond({ error: "client:[failure]" })
-
             logger.error(
                 "Address association failure.",
                 localResponse.error
@@ -164,7 +163,6 @@ export default function associateAddress (
 
             // confirm address association to the host application
             respond({ ok: true, G_PUBLIC })
-
             logger.info(
                 "Address succesfully associated:",
                 G_PUBLIC
@@ -180,7 +178,6 @@ export default function associateAddress (
 
             // report error
             respond({ error: `server:[${serverResponse.status}]` })
-
             logger.error(
                 "Address association failure.",
                 serverResponse.data.error

@@ -73,7 +73,6 @@ export default function generateKeyAssocTX (
 
             // report error
             respond({ error: "client:[invalid or not associated G_PUBLIC]" })
-
             logger.error("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else
@@ -94,7 +93,6 @@ export default function generateKeyAssocTX (
 
             // report error
             respond({ error: "client:[invalid sequence or network]" })
-
             logger.error("Invalid sequence or network received.")
 
             // don't do anything else
@@ -157,7 +155,6 @@ export default function generateKeyAssocTX (
 
             // report error
             respond({ error: "client:[transaction build error]" })
-
             logger.error("Transaction build failed.")
 
             // don't do anything else
@@ -177,7 +174,6 @@ export default function generateKeyAssocTX (
                 codec.b64enc
             ),
         })
-
         logger.info("Generated.")
 
     }

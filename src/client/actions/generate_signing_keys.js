@@ -123,6 +123,7 @@ export default function generateSigningKeys (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")
+
             return
         }
 
@@ -162,7 +163,6 @@ export default function generateSigningKeys (
 
             // report error
             respond({ error: `server:[${serverResponse.status}]` })
-
             logger.error(
                 "Signing keys generation failure.",
                 serverResponse.data.error
@@ -239,7 +239,6 @@ export default function generateSigningKeys (
 
             // report error
             respond({ error: "client:[failure]" })
-
             logger.error(
                 "Signing keys generation failure.",
                 localResponse.error
@@ -250,7 +249,6 @@ export default function generateSigningKeys (
 
             // respond to the host application
             respond({ ok: true, C_PUBLIC, S_PUBLIC })
-
             logger.info(
                 "Signing keys succesfully generated:",
                 string.shorten(C_PUBLIC, 11),

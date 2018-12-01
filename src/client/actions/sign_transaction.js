@@ -92,7 +92,6 @@ export default function signTransaction (
 
             // report error
             respond({ error: "client:[invalid G_PUBLIC or TX_PAYLOAD]" })
-
             logger.error("Invalid G_PUBLIC or TX_PAYLOAD received.")
 
             // don't do anything else
@@ -119,6 +118,7 @@ export default function signTransaction (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")
+
             return
         }
 
@@ -163,7 +163,6 @@ export default function signTransaction (
                     serverResponse.data.error :
                     serverResponse.status
             }]` })
-
             logger.error(
                 "Transaction signing failure.",
                 serverResponse.data.error
@@ -216,7 +215,6 @@ export default function signTransaction (
             C_SIGNATURE,
             S_SIGNATURE: serverResponse.data.S_SIGNATURE,
         })
-
         logger.info("Transaction signatures succesfully generated:")
         logger.info(
             "C_SIGNATURE:",

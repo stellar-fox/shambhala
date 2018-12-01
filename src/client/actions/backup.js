@@ -87,7 +87,6 @@ export default function backup (
             respond({
                 error: "client:[invalid or not associated G_PUBLIC]",
             })
-
             logger.error("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else

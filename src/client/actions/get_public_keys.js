@@ -48,7 +48,6 @@ export default function getPublicKeys (respond, forage, logger) {
 
             // report error
             respond({ error: "client:[invalid or not associated G_PUBLIC]" })
-
             logger.error("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else
@@ -60,7 +59,6 @@ export default function getPublicKeys (respond, forage, logger) {
 
         // respond to the host application
         respond({ ok: true, G_PUBLIC: p.G_PUBLIC, C_PUBLIC, S_PUBLIC })
-
         logger.info(
             "Public keys succesfully retrieved:",
             string.shorten(C_PUBLIC, 11),

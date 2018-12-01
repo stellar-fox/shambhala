@@ -64,7 +64,7 @@ export default function generateSignedKeyAssocTx (
         // check if it has been associated before
         // and compare it with public part of GKP
         // (implicit check if GKP is present in memory
-        // and of appropriate type)
+        // and of an appropriate type)
         try {
 
             Keypair.fromPublicKey(p.G_PUBLIC).publicKey();
@@ -80,7 +80,6 @@ export default function generateSignedKeyAssocTx (
 
             // report error
             respond({ error: "client:[can't do that]" })
-
             logger.error("Invalid, not associated G_PUBLIC or no secret.")
 
             // don't do anything else
@@ -95,12 +94,12 @@ export default function generateSignedKeyAssocTx (
             !type.isString(p.sequence)  ||
             !p.sequence.split(string.empty())
                 .every(func.flow(Number, type.isNumber))  ||
+            p.sequence === string.empty()  ||
             !type.isString(p.networkPassphrase)
         ) {
 
             // report error
             respond({ error: "client:[invalid sequence or network]" })
-
             logger.error("Invalid sequence or network received.")
 
             // don't do anything else
@@ -166,7 +165,6 @@ export default function generateSignedKeyAssocTx (
 
             // report error
             respond({ error: "client:[transaction build error]" })
-
             logger.error("Transaction build failed.")
 
             // don't do anything else
@@ -189,7 +187,6 @@ export default function generateSignedKeyAssocTx (
                 codec.b64enc
             ),
         })
-
         logger.info("Generated.")
 
     }
