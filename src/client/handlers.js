@@ -32,17 +32,17 @@ import close from "./actions/close"
  * Message handlers - load and attach.
  *
  * @function attach
- * @param {Object} message
  * @param {Function} logger
  * @param {Object} context
  * @param {Object} messageHandler
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
+ * @param {Object} message
  * @param {Object} toolbox
  */
 export default function attach (
-    message, logger, context, messageHandler,
-    cryptops, forage,
+    logger, context, messageHandler,
+    cryptops, forage, message,
     { cancellable, curry, identity, isString, partial, quote }
 ) {
 

@@ -225,8 +225,8 @@ run(async () => {
         /* webpackChunkName: "handlers" */
         "./handlers"
     ).then(mDef))(
-        message, logger, context, messageHandler,
-        cryptops, forage,
+        logger, context, messageHandler,
+        cryptops, forage, message,
         {
             cancellable: async.cancellable,
             curry: func.curry,
