@@ -37,8 +37,6 @@ import {
     run,
 } from "../lib/utils"
 
-import "./ui/index.css"
-
 
 
 
@@ -108,11 +106,11 @@ const devEnvLibs = async () => ({
 run(async () => {
 
     const
-        // local memory, volatile context/store
-        context = {},
-
         // console logger
         logger = consoleWrapper("🎭"),
+
+        // local memory, volatile context/store
+        context = {},
 
         // backend url
         backend = clientDomain + registrationPath + restApiPrefix
@@ -132,6 +130,15 @@ run(async () => {
         window.location.replace(homepage)
         return null
     }
+
+
+
+
+    // load and run User Interface
+    (await import(
+        /* webpackChunkName: "ui_main" */
+        "./ui/main"
+    ).then(mDef))(logger, context)
 
 
 
