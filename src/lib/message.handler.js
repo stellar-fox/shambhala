@@ -161,7 +161,7 @@ export default class MessageHandler {
                 // remove message handler and reject promise when...
                 () => {
                     this.unhandle(message)
-                    reject("receiveMessage: timeout exceeded")
+                    reject(new Error("receiveMessage: timeout exceeded"))
                 },
 
                 // ... `timeout` miliseconds has passed ...
@@ -179,7 +179,7 @@ export default class MessageHandler {
                     cancel((reason) => {
                         this.unhandle(message)
                         cancelTimeout("receiveMessage cancelled externally.")
-                        reject(reason)
+                        reject(new Error(reason))
                     })
 
                     // wait for message and when it'll arrive
