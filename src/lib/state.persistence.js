@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Persisting redux state in browser's sessionStorage.
+ * Persisting redux state in `sessionStorage`.
  *
  * @module state-persistence
  * @license Apache-2.0

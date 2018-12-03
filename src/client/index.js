@@ -158,7 +158,9 @@ run(async () => {
     // expose `sf` dev. namespace
     // and some convenience shortcuts
     if (utils.devEnv()) {
+        if (!type.isObject(window.sf)) window.sf = {}
         window.sf = {
+            ...window.sf,
             axios, cryptops, functions,
             forage, message, logger,
             ...await devEnvLibs(),

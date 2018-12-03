@@ -17,7 +17,9 @@ import { version } from "../../package.json"
 
 
 /**
- * @constant {String} appRootDomId DOM attach point
+ * DOM attach point.
+ *
+ * @constant {String} appRootDomId
  */
 export const appRootDomId = "app"
 
