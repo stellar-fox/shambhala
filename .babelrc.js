@@ -31,24 +31,7 @@ var
         "not dead",
         "not ie <= 11",
         "not op_mini all",
-    ],
-
-    // ES6 environment config - frontend
-    frontendEsEnv = {
-        presets: [
-            [
-                "@babel/preset-env",
-                {
-                    modules: false,
-                    shippedProposals: true,
-                    targets: frontendTargets,
-                    forceAllTransforms: true,
-                },
-            ],
-        ],
-        plugins: commonPlugins,
-        comments: false,
-    }
+    ]
 
 
 
@@ -63,11 +46,57 @@ module.exports = function (api) {
         env: {
 
             // shambhala-frontend production environment
-            production: frontendEsEnv,
+            production: {
+                presets: [
+                    [
+                        "@babel/preset-env",
+                        {
+                            modules: false,
+                            shippedProposals: true,
+                            targets: frontendTargets,
+                            forceAllTransforms: true,
+                        },
+                    ],
+                ],
+                plugins: commonPlugins.concat([
+                    ["@babel/plugin-transform-react-jsx", {
+                        "pragma": "React.createElement",
+                        "pragmaFrag": "React.Fragment",
+                        "throwIfNamespace": true,
+                    }],
+                    ["transform-react-remove-prop-types", {
+                        "mode": "remove",
+                        "removeImport": true,
+                        "ignoreFilenames": ["node_modules"]
+                    }],
+                ]),
+                comments: false,
+            },
 
 
             // shambhala-frontend development environment (webpack-dev-server)
-            development: frontendEsEnv,
+            development: {
+                presets: [
+                    [
+                        "@babel/preset-env",
+                        {
+                            modules: false,
+                            shippedProposals: true,
+                            targets: frontendTargets,
+                            forceAllTransforms: true,
+                        },
+                    ],
+                ],
+                plugins: commonPlugins.concat([
+                    ["@babel/plugin-transform-react-jsx", {
+                        "pragma": "React.createElement",
+                        "pragmaFrag": "React.Fragment",
+                        "throwIfNamespace": true,
+                    }],
+                ]),
+                comments: false,
+            },
+
 
             // shambhala-backend production environment
             prodserver: {
@@ -84,6 +113,7 @@ module.exports = function (api) {
                 plugins: commonPlugins,
                 comments: false,
             },
+
 
             // shambhala-backend development environment (devApiServer)
             devserver: {

@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es6"
+        "target": "es6",
+        "jsx": "react"
+    },
+    "compilerOptions.jsx": {
+        "target": "es6",
+        "jsx": "react"
     },
     "checkJs" : true,
     "typingOptions" : {

@@ -56,6 +56,7 @@
         "import/no-amd": "error",
         "import/no-webpack-loader-syntax": "error",
 
+        "react/forbid-foreign-prop-types": "error",
         "react/jsx-closing-bracket-location": ["error", "line-aligned"],
         "react/jsx-indent-props": ["error", 4],
         "react/jsx-no-duplicate-props": ["error", { "ignoreCase": false }],
