@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Frontend environment variables.
+ * Persisting redux state in browser's sessionStorage.
  *
  * @module state-persistence
  * @license Apache-2.0
