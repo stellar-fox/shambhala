@@ -143,6 +143,24 @@ module.exports = function (api) {
                 comments: false,
             },
 
+
+            // shambhala-client library production environment
+            prodlib: {
+                presets: [
+                    [
+                        "@babel/preset-env",
+                        {
+                            modules: false,
+                            shippedProposals: true,
+                            targets: frontendTargets,
+                            forceAllTransforms: true,
+                        },
+                    ],
+                ],
+                plugins: commonPlugins,
+                comments: false,
+            },
+
         },
 
     }
