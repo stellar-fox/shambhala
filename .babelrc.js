@@ -70,7 +70,7 @@ module.exports = function (api) {
                         "ignoreFilenames": ["node_modules"]
                     }],
                 ]),
-                comments: false,
+                comments: true,
             },
 
 

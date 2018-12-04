@@ -33,31 +33,46 @@ module.exports = {
         "static/host": path.resolve(
             appDirectory, "src/host/index.js"
         ),
-        "static/client": path.resolve(
-            appDirectory, "src/client/index.js"
-        ),
     },
 
 
     output: {
         filename: "[name].bundle.js",
-        chunkFilename: "static/[name].chunk.js",
+        chunkFilename: "static/[name].c.js",
         sourceMapFilename: "[name].map",
-        path: path.resolve(__dirname, "../dist"),
+        path: path.resolve(__dirname, "../dist.host"),
         publicPath,
         globalObject: "self",
     },
 
 
     optimization: {
+        concatenateModules: true,
         minimize: true,
         mergeDuplicateChunks: true,
-        sideEffects: true,
-        providedExports: true,
-        concatenateModules: true,
         occurrenceOrder: true,
-        removeEmptyChunks: true,
+        providedExports: true,
         removeAvailableModules: true,
+        removeEmptyChunks: true,
+        sideEffects: true,
+        splitChunks: {
+            automaticNameDelimiter: ".",
+            chunks: "all",
+            maxAsyncRequests: 8,
+            maxInitialRequests: 2,
+            minChunks: 1,
+            minSize: 32768,
+            maxSize: 262140,
+            name: true,
+            cacheGroups: {
+                vendors: false,
+                d: {
+                    minChunks: 2,
+                    priority: 0,
+                    reuseExistingChunk: true,
+                },
+            },
+        },
         minimizer: [
             new MinifyPlugin({}, {
                 comments: false,
@@ -103,26 +118,21 @@ module.exports = {
         }),
 
         new HtmlWebpackPlugin({
-            chunks: ["static/host"],
             filename: "index.html",
             inject: true,
             hash: true,
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true,
+            },
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - host",
             template: path.resolve(
                 appDirectory, "src/host/index.html"
-            ),
-        }),
-
-        new HtmlWebpackPlugin({
-            chunks: ["static/client"],
-            filename: "shambhala.html",
-            inject: true,
-            hash: true,
-            realPublicPath: path.join(publicPath, publicDirectory),
-            title: "Shambhala - client",
-            template: path.resolve(
-                appDirectory, "src/client/ui/index.html"
             ),
         }),
 

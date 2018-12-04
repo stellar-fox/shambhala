@@ -13,6 +13,7 @@ package-lock.json
 /src/config/server.json
 
 # builds
-/dist
+/dist.client
+/dist.host
 /dist.lib
 /dist.server

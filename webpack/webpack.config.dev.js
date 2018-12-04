@@ -147,6 +147,7 @@ module.exports = {
             filename: "index.html",
             inject: true,
             hash: true,
+            minify: false,
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - host",
             template: path.resolve(
@@ -159,6 +160,7 @@ module.exports = {
             filename: "shambhala.html",
             inject: true,
             hash: true,
+            minify: false,
             realPublicPath: path.join(publicPath, publicDirectory),
             title: "Shambhala - client",
             template: path.resolve(
