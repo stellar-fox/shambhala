@@ -16,6 +16,8 @@ import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import { withStyles } from "@material-ui/core/styles"
 
+import Https from "@material-ui/icons/Https"
+
 
 
 
@@ -25,6 +27,10 @@ const styles = (theme) => ({
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
+    },
+    icon: {
+        marginBottom: theme.spacing.unit,
+        fontSize: 64,
     },
 })
 
@@ -39,9 +45,10 @@ const styles = (theme) => ({
  */
 const Layout = ({ classes }) =>
     <Paper className={classes.root} elevation={2}>
+        <Https className={classes.icon} />
         <Typography variant="h5">shambhala</Typography>
         <br />
-        <Typography variant="body1">
+        <Typography component="p">
             With
             &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
             to the

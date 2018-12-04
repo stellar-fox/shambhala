@@ -35,17 +35,17 @@ import throttle from "lodash.throttle"
 import {
     loadState,
     saveState,
-} from "../../lib/state.persistence"
-import { ssSaveThrottlingTime } from"../../config/frontend"
+} from "../../../lib/state.persistence"
+import { ssSaveThrottlingTime } from "../../../config/frontend"
 
-import reducers from "./reducers"
+import reducers from "../reducers"
 
 import { MuiThemeProvider } from "@material-ui/core/styles"
-import muiTheme from "./theme"
+import muiTheme from "../theme"
 import CssBaseline from "@material-ui/core/CssBaseline"
 
 import "typeface-roboto"
-import "./index.css"
+import "../../index.css"
 
 import Layout from "./layout"
 
