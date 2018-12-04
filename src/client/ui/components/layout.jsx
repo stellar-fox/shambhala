@@ -49,11 +49,18 @@ const styles = (t) => ({
 
     icon: {
         fontSize: 64,
+        color: "rgb(114, 222, 255)",
+        filter: "drop-shadow(0px 0px 7px rgb(29, 36, 46))",
         margin: t.spacing.unit,
     },
 
+    head: {
+        textShadow: "0px 0px 7px rgb(29, 36, 46)",
+    },
+
     text: {
-        margin: t.spacing.unit,
+        marginTop: 4 * t.spacing.unit,
+        marginBottom: t.spacing.unit,
     },
 
 })
@@ -69,9 +76,9 @@ const styles = (t) => ({
  */
 const Layout = ({ classes }) =>
     <main className={classes.layout}>
-        <Paper className={classes.paper} elevation={2}>
+        <Paper className={classes.paper} elevation={4}>
             <LockIcon className={classes.icon} />
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" className={classes.head} variant="h5">
                 shambhala
             </Typography>
             <Typography component="p" className={classes.text}>
