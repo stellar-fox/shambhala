@@ -3,7 +3,7 @@
  *
  * Main frontend application component.
  *
- * @module components
+ * @module client-ui-components
  * @license Apache-2.0
  */
 
@@ -40,6 +40,12 @@ import { ssSaveThrottlingTime } from"../../config/frontend"
 
 import reducers from "./reducers"
 
+import { MuiThemeProvider } from "@material-ui/core/styles"
+import muiTheme from "./theme"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Typography from "@material-ui/core/Typography"
+
+import "typeface-roboto"
 import "./index.css"
 
 
@@ -89,7 +95,16 @@ export const store = (() => {
  */
 export default () =>
     <Provider store={store}>
-        <span role="img" aria-label="rocket">🚀</span>
+        <MuiThemeProvider theme={muiTheme}>
+            <CssBaseline />
+            <Typography variant="body1" gutterBottom>
+                With
+                &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
+                to the
+                &nbsp;<span role="img" aria-label="stars">🌟</span>&nbsp;
+                !
+            </Typography>
+        </MuiThemeProvider>
     </Provider>
 
 

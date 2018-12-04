@@ -3,7 +3,7 @@
  *
  * Reducers.
  *
- * @module reducers
+ * @module client-ui-reducers
  * @license Apache-2.0
  */
 

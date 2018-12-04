@@ -89,13 +89,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                ],
-            },
-            {
                 enforce: "pre",
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
@@ -106,6 +99,20 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: "babel-loader",
                 sideEffects: false,
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                ],
+            },
+            {
+                exclude: [/\.jsx?$/, /\.css$/, /\.html$/, /\.json$/],
+                loader: "file-loader",
+                options: {
+                    name: "static/media/[name].[hash:8].[ext]",
+                },
             },
         ],
     },

@@ -40,7 +40,7 @@ module.exports = {
 
     output: {
         filename: "[name].bundle.js",
-        chunkFilename: "[name].chunk.js",
+        chunkFilename: "[name].c.js",
         sourceMapFilename: "[name].map",
         publicPath,
         globalObject: "self",
@@ -55,10 +55,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"],
-            },
-            {
                 enforce: "pre",
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
@@ -68,6 +64,17 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
                 loader: "babel-loader",
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                exclude: [/\.jsx?$/, /\.css$/, /\.html$/, /\.json$/],
+                loader: "file-loader",
+                options: {
+                    name: "static/media/[name].[hash:8].[ext]",
+                },
             },
         ],
     },
