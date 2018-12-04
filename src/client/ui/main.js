@@ -41,7 +41,7 @@ import {
 import reducers from "./reducers"
 import theme from "./theme"
 
-import { ShambhalaUi } from "./components/root"
+import ShambhalaUi from "./components/root"
 
 import {
     appRootDomId,
@@ -109,7 +109,7 @@ export default async function ui (logger, _context) {
 
     // render application's root into the DOM
     ReactDOM.render(
-        React.createElement(ShambhalaUi(store, theme)),
+        React.createElement(ShambhalaUi, { store, theme }),
         document.getElementById(appRootDomId)
     )
 

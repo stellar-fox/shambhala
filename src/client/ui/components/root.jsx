@@ -11,12 +11,12 @@
 
 
 import React from "react"
+import PropTypes from "prop-types"
 import { Provider } from "react-redux"
+
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-
 import "typeface-roboto"
-import "../../index.css"
 
 import Layout from "./layout"
 
@@ -27,14 +27,28 @@ import Layout from "./layout"
  * <ShambhalaUi> - 'root' component.
  *
  * @function ShambhalaUi
- * @param {Object} store redux store
- * @param {Object} theme mui theme
- * @returns {Function} (store, theme) => {React.ReactElement}
+ * @param {Object} props (redux store, mui theme)
+ * @returns {React.ReactElement}
  */
-export const ShambhalaUi = (store, theme) => () =>
+const ShambhalaUi = ({ store, theme }) =>
     <Provider store={store}>
         <MuiThemeProvider theme={theme}>
             <CssBaseline />
             <Layout />
         </MuiThemeProvider>
     </Provider>
+
+
+
+
+// ...
+ShambhalaUi.propTypes = {
+    store: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired,
+}
+
+
+
+
+// ...
+export default ShambhalaUi
