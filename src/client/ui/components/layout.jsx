@@ -52,7 +52,7 @@ const Layout = ({ classes }) =>
             With
             &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
             to the
-            &nbsp;<span role="img" aria-label="stars">🌟</span>&nbsp;
+            &nbsp;<span role="img" aria-label="stars">🌟🌟🌟</span>&nbsp;
             !
         </Typography>
     </Paper>
