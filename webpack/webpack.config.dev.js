@@ -9,7 +9,6 @@ const
     path = require("path"),
     express = require("express"),
     chalk = require("chalk"),
-    // webpack = require("webpack"),
     HtmlWebpackPlugin = require("html-webpack-plugin"),
     appDirectory = fs.realpathSync(process.cwd()),
     publicDirectory = "public/",

@@ -40,7 +40,7 @@ module.exports = {
         filename: "[name].bundle.js",
         chunkFilename: "static/[name].c.js",
         sourceMapFilename: "[name].map",
-        path: path.resolve(__dirname, "../dist.host"),
+        path: path.resolve(__dirname, "../dist.host/shambhala"),
         publicPath,
         globalObject: "self",
     },
