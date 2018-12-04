@@ -37,7 +37,7 @@ import "./index.css"
  */
 const importLibs = async () => ({
     shambhala: await import(
-        /* webpackChunkName: "shambhala_library" */
+        /* webpackChunkName: "shc" */
         "../lib/shambhala.client"
     ),
 })
@@ -54,31 +54,31 @@ const importLibs = async () => ({
  */
 const devEnvLibs = async () => ({
     axios: await import(
-        /* webpackChunkName: "axios" */
+        /* webpackChunkName: "axs" */
         "axios"
     ).then(mDef),
     cryptops: await import(
-        /* webpackChunkName: "cryptops" */
+        /* webpackChunkName: "cps" */
         "@stellar-fox/cryptops"
     ),
     redshift: await import(
-        /* webpackChunkName: "redshift" */
+        /* webpackChunkName: "rs" */
         "@stellar-fox/redshift"
     ),
     stellar: await import(
-        /* webpackChunkName: "stellar" */
+        /* webpackChunkName: "slr" */
         "stellar-sdk"
     ),
     toolbox: await import(
-        /* webpackChunkName: "toolbox" */
+        /* webpackChunkName: "tbx" */
         "@xcmats/js-toolbox"
     ),
     txops: await import(
-        /* webpackChunkName: "txops" */
+        /* webpackChunkName: "tps" */
         "../lib/txops"
     ),
     utils: await import(
-        /* webpackChunkName: "utils" */
+        /* webpackChunkName: "ut" */
         "../lib/utils"
     ),
 })

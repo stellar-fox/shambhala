@@ -49,19 +49,19 @@ import {
  */
 const importLibs = async () => ({
     axios: await import(
-        /* webpackChunkName: "axios" */
+        /* webpackChunkName: "axs" */
         "axios"
     ).then(mDef),
     cryptops: await import(
-        /* webpackChunkName: "cryptops" */
+        /* webpackChunkName: "cps" */
         "@stellar-fox/cryptops"
     ),
     functions: await import(
-        /* webpackChunkName: "functions" */
+        /* webpackChunkName: "fns" */
         "./functions"
     ),
     MessageHandler: await import(
-        /* webpackChunkName: "message_handler" */
+        /* webpackChunkName: "mh" */
         "../lib/message.handler"
     ).then(mDef),
 })
@@ -78,23 +78,23 @@ const importLibs = async () => ({
  */
 const devEnvLibs = async () => ({
     redshift: await import(
-        /* webpackChunkName: "redshift" */
+        /* webpackChunkName: "rs" */
         "@stellar-fox/redshift"
     ),
     stellar: await import(
-        /* webpackChunkName: "stellar" */
+        /* webpackChunkName: "slr" */
         "stellar-sdk"
     ),
     toolbox: await import(
-        /* webpackChunkName: "toolbox" */
+        /* webpackChunkName: "tbx" */
         "@xcmats/js-toolbox"
     ),
     txops: await import(
-        /* webpackChunkName: "txops" */
+        /* webpackChunkName: "tps" */
         "../lib/txops"
     ),
     utils: await import(
-        /* webpackChunkName: "utils" */
+        /* webpackChunkName: "ut" */
         "../lib/utils"
     ),
 })
@@ -136,7 +136,7 @@ run(async () => {
 
     // load and run User Interface
     (await import(
-        /* webpackChunkName: "ui_main" */
+        /* webpackChunkName: "ui" */
         "./ui/main"
     ).then(mDef))(logger, context)
 
@@ -210,7 +210,6 @@ run(async () => {
 
 
 
-
     // instantiate message handler
     const messageHandler = new MessageHandler(originDict[hostDomainHash])
     messageHandler.setRecipient(window.opener, "root")
@@ -224,7 +223,7 @@ run(async () => {
     // in response to messages - lazy logic load
     logger.info("Attaching handlers... ⏳");
     (await import(
-        /* webpackChunkName: "handlers" */
+        /* webpackChunkName: "hns" */
         "./handlers"
     ).then(mDef))(
         logger, context, messageHandler,
