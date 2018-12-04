@@ -12,7 +12,7 @@
 
 import React from "react"
 import ReactDOM from "react-dom"
-import Shambhala from "./shambhala"
+import { Shambhala } from "./shambhala"
 import { appRootDomId } from "../../config/frontend"
 
 

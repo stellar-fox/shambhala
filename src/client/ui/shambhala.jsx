@@ -43,10 +43,11 @@ import reducers from "./reducers"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import muiTheme from "./theme"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import Typography from "@material-ui/core/Typography"
 
 import "typeface-roboto"
 import "./index.css"
+
+import Layout from "./layout"
 
 
 
@@ -93,17 +94,11 @@ export const store = (() => {
  * @function Shambhala
  * @returns {React.ReactElement}
  */
-export default () =>
+export const Shambhala = () =>
     <Provider store={store}>
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <Typography variant="body1" gutterBottom>
-                With
-                &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
-                to the
-                &nbsp;<span role="img" aria-label="stars">🌟</span>&nbsp;
-                !
-            </Typography>
+            <Layout />
         </MuiThemeProvider>
     </Provider>
 
