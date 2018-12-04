@@ -98,8 +98,9 @@ export default async function ui (logger, _context) {
         if (!type.isObject(window.sf)) window.sf = {}
         window.sf = {
             ...window.sf,
-            store, React, ReactDOM,
-            dispatch: store.dispatch,
+            React, ReactDOM,
+            store, dispatch: store.dispatch,
+            theme,
         }
     }
 
