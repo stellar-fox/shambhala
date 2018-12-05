@@ -11,11 +11,10 @@
 
 
 import React from "react"
-import PropTypes from "prop-types"
 
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
-import { withStyles } from "@material-ui/core/styles"
+import { makeStyles } from "@material-ui/styles"
 
 import LockIcon from "@material-ui/icons/Lock"
 
@@ -23,7 +22,7 @@ import LockIcon from "@material-ui/icons/Lock"
 
 
 // ...
-const styles = (t) => ({
+const useStyles = makeStyles((t) => ({
 
     layout: {
         width: "auto",
@@ -42,6 +41,7 @@ const styles = (t) => ({
         flexDirection: "column",
         alignItems: "center",
         marginTop: t.spacing.unit * 8,
+        marginBottom: t.spacing.unit * 8,
         ...t.mixins.gutters(),
         paddingTop: t.spacing.unit * 2,
         paddingBottom: t.spacing.unit * 2,
@@ -63,7 +63,7 @@ const styles = (t) => ({
         marginBottom: t.spacing.unit,
     },
 
-})
+}))
 
 
 
@@ -74,7 +74,7 @@ const styles = (t) => ({
  * @function Layout
  * @returns {React.ReactElement}
  */
-const Layout = ({ classes }) =>
+const Layout = () => ((classes) =>
     <main className={classes.layout}>
         <Paper className={classes.paper} elevation={4}>
             <LockIcon className={classes.icon} />
@@ -90,17 +90,10 @@ const Layout = ({ classes }) =>
             </Typography>
         </Paper>
     </main>
+)(useStyles())
 
 
 
 
 // ...
-Layout.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
-
-
-
-
-// ...
-export default withStyles(styles)(Layout)
+export default Layout

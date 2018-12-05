@@ -14,6 +14,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Provider } from "react-redux"
 
+import { ThemeProvider } from "@material-ui/styles"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import "typeface-roboto"
@@ -33,8 +34,10 @@ import Layout from "./layout"
 const ShambhalaUi = ({ store, theme }) =>
     <Provider store={store}>
         <MuiThemeProvider theme={theme}>
-            <CssBaseline />
-            <Layout />
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Layout />
+            </ThemeProvider>
         </MuiThemeProvider>
     </Provider>
 

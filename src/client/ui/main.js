@@ -39,7 +39,9 @@ import {
 } from "../../lib/state.persistence"
 
 import reducers from "./reducers"
-import theme from "./theme"
+
+import { install as newMuiStylesApi } from "@material-ui/styles"
+import { theme } from "./theme"
 
 import ShambhalaUi from "./components/root"
 
@@ -103,6 +105,12 @@ export default async function ui (logger, _context) {
             theme,
         }
     }
+
+
+
+
+    // switch from default material-ui style implementation to the newest one
+    newMuiStylesApi()
 
 
 

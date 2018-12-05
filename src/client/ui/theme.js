@@ -20,7 +20,7 @@ import { createMuiTheme } from "@material-ui/core/styles"
  *
  * @constant {Object} theme
  */
-export default createMuiTheme({
+export const theme = createMuiTheme({
 
     palette: {
 
