@@ -37,7 +37,7 @@
                 "functions": "ignore"
             }
         ],
-        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "indent": ["warn", 4, { "SwitchCase": 1 }],
         "linebreak-style": ["error", "unix"],
         "no-console": "warn",
         "no-dupe-args": "error",
@@ -46,7 +46,7 @@
         "no-redeclare": "error",
         "no-undef": "error",
         "no-unexpected-multiline": "error",
-        "no-unused-vars": [2, {"args": "all", "argsIgnorePattern": "^_"}],
+        "no-unused-vars": ["warn", {"args": "all", "argsIgnorePattern": "^_"}],
         "quotes": ["error", "double"],
         "semi": ["error", "never"],
         "space-before-function-paren": ["error", "always"],
