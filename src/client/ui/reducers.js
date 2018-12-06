@@ -21,7 +21,9 @@ import { createReducer } from "@xcmats/js-toolbox"
  * @private
  * @constant {Object} initState
  */
-const initState = {}
+const initState = {
+    ready: false,
+}
 
 
 
