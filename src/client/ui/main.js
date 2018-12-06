@@ -97,7 +97,7 @@ export default async function ui (logger, _context) {
     // because of save-restore session mechanism we need to take care of
     // initial application-readiness state (at this point it's not ready)
     store.dispatch(thunks.setAppReady(false))
-    store.dispatch(thunks.setInfoMessage("Loading UI ... ⏳"))
+    store.dispatch(thunks.setInfoMessage("Loading UI ..."))
 
 
 

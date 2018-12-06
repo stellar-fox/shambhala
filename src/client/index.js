@@ -145,14 +145,24 @@ run(async () => {
 
     // load and run User Interface
     let
+        // get created redux-store and thunk-actions
         { store, thunks }  = await (await import(
             /* webpackChunkName: "ui" */
             "./ui/main"
         ).then(mDef))(logger, context),
+
+        // augment normal logger so it's capable of modifying redux state
         uiLogger = consoleAugmenter(logger, (_, ...args) =>
-            store.dispatch(thunks.setInfoMessage(
-                args.map((a) => String(a)).join(string.space())
-            ))
+            func.pipe(args)(
+                (args) => args.map((a) =>
+                    String(a)
+                        .replace(/[^A-Za-z0-9 .,!?]/g, string.empty())
+                        .trim()
+                ),
+                (arr) => arr.join(string.space()),
+                thunks.setInfoMessage,
+                store.dispatch
+            )
         )
 
 
