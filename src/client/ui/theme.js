@@ -31,7 +31,9 @@ export const theme = createMuiTheme({
 
         primary: { main: "rgb(39, 51, 119)" },
 
-        text: { primary: "rgba(237, 242, 244, 0.87)" },
+        secondary: { main: "rgb(219, 51, 39)" },
+
+        text: { primary: "rgba(237, 242, 244, 0.85)" },
 
     },
 

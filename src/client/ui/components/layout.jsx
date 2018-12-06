@@ -26,9 +26,7 @@ import LockIcon from "@material-ui/icons/Lock"
 // ...
 const useStyles = makeStyles((t) => ({
 
-    appBar: {
-        position: "relative",
-    },
+    appBar: { position: "relative" },
 
     layout: {
         width: "auto",
@@ -60,9 +58,7 @@ const useStyles = makeStyles((t) => ({
         margin: t.spacing.unit,
     },
 
-    head: {
-        textShadow: "0px 0px 7px rgb(29, 36, 46)",
-    },
+    head: { textShadow: "0px 0px 7px rgb(29, 36, 46)" },
 
     text: {
         marginTop: 4 * t.spacing.unit,
