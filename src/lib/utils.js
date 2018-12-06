@@ -48,6 +48,28 @@ export const consoleWrapper = (() => {
 
 
 /**
+ * Take console-like object and "augment" all its methods in a way
+ * that all arguments passed to them are also passed to function given
+ * as an argument.
+ *
+ * @function consoleAugmenter
+ * @param {Object} con console-like object
+ * @param {Function} f
+ * @returns {Object}
+ */
+export const consoleAugmenter = (() => {
+    let
+        methods = ["log", "info", "warn", "error"],
+        c = (con, f) => struct.dict(methods.map(
+            (m) => [m, (...args) => { f(m, ...args); con[m](...args) }]
+        ))
+    return c
+})()
+
+
+
+
+/**
  * Return array of `windowSize` random emojis.
  *
  * @function drawEmojis
