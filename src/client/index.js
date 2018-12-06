@@ -135,14 +135,14 @@ run(async () => {
 
 
 
-    // switch from default material-ui style implementation to the newest one
-    // temporary call enabling hooks api - has to be invoked before
+    // Switch from default material-ui style implementation to the newest one.
+    // Temporary call enabling hooks api - has to be invoked before
     // any of the material-ui component is imported
     // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
-    newMuiStylesApi();
+    newMuiStylesApi()
 
     // load and run User Interface
-    (await import(
+    let { store, thunks }  = await (await import(
         /* webpackChunkName: "ui" */
         "./ui/main"
     ).then(mDef))(logger, context)
@@ -248,8 +248,15 @@ run(async () => {
 
 
 
-    // report readiness
+    // report readiness:
+
+    // 1. let host know (cross-window communication)
     messageHandler.postMessage(message.READY, { ok: true, version })
+
+    // 2. let user know (UI)
+    store.dispatch(thunks.setAppReady(true))
+
+    // 3. let dev know (console)
     logger.info("Ready! ✅")
 
 })

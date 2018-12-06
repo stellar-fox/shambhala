@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Application layout.
+ * Full-screen loader.
  *
  * @module client-ui-components
  * @license Apache-2.0
@@ -11,9 +11,13 @@
 
 
 import React from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
 import { makeStyles } from "@material-ui/styles"
+
+import Layout from "./layout"
 
 
 
@@ -45,14 +49,26 @@ const useStyles = makeStyles((t) => ({
  * @function Loader
  * @returns {React.ReactElement}
  */
-const Loader = () => ((classes) =>
-    <main className={classes.layout}>
-        <CircularProgress color="secondary" />
-    </main>
+const Loader = ({ ready }) => ((classes) =>
+    ready ?
+        <Layout /> :
+        <main className={classes.layout}>
+            <CircularProgress color="secondary" />
+        </main>
 )(useStyles())
 
 
 
 
 // ...
-export default Loader
+Loader.propTypes = {
+    ready: PropTypes.bool.isRequired,
+}
+
+
+
+
+// ...
+export default connect(
+    (s) => ({ ready: s.App.ready })
+)(Loader)

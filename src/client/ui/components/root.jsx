@@ -18,7 +18,7 @@ import { ThemeProvider } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import "typeface-roboto"
 
-import Layout from "./layout"
+import Loader from "./loader"
 
 
 
@@ -34,7 +34,7 @@ const ShambhalaUi = ({ store, theme }) =>
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout />
+            <Loader />
         </ThemeProvider>
     </Provider>
 

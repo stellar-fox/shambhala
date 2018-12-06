@@ -38,6 +38,7 @@ import {
     saveState,
 } from "../../lib/state.persistence"
 
+import * as thunks from "./thunks"
 import reducers from "./reducers"
 import { theme } from "./theme"
 import ShambhalaUi from "./components/root"
@@ -57,6 +58,7 @@ import {
  * @function ui
  * @param {Function} logger
  * @param {Object} _context
+ * @returns {Object} { store, thunks }
  */
 export default async function ui (logger, _context) {
 
@@ -92,6 +94,13 @@ export default async function ui (logger, _context) {
 
 
 
+    // because of save-restore session mechanism we need to take care of
+    // initial application-readiness state (at this point it's not ready)
+    store.dispatch(thunks.setAppReady(false))
+
+
+
+
     // add some elements to 'sf' dev. namespace
     if (utils.devEnv()) {
         if (!type.isObject(window.sf)) window.sf = {}
@@ -118,4 +127,8 @@ export default async function ui (logger, _context) {
     // greet
     logger.info("UI Loaded 🌈")
 
+
+
+
+    return { store, thunks }
 }
