@@ -12,6 +12,8 @@
 
 import React from "react"
 
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/styles"
@@ -23,6 +25,10 @@ import LockIcon from "@material-ui/icons/Lock"
 
 // ...
 const useStyles = makeStyles((t) => ({
+
+    appBar: {
+        position: "relative",
+    },
 
     layout: {
         width: "auto",
@@ -41,7 +47,7 @@ const useStyles = makeStyles((t) => ({
         flexDirection: "column",
         alignItems: "center",
         marginTop: t.spacing.unit * 8,
-        marginBottom: t.spacing.unit * 8,
+        marginBottom: t.spacing.unit * 4,
         ...t.mixins.gutters(),
         paddingTop: t.spacing.unit * 2,
         paddingBottom: t.spacing.unit * 2,
@@ -63,6 +69,15 @@ const useStyles = makeStyles((t) => ({
         marginBottom: t.spacing.unit,
     },
 
+    footerText: {
+        color: "rgba(255, 255, 255, 0.25)",
+        "textAlign": "center",
+    },
+
+    footerHeart: { color: "rgba(255, 0, 0, 0.65)" },
+
+    footerEmoji: { color: "rgba(255, 255, 255, 0.65)" },
+
 }))
 
 
@@ -75,21 +90,43 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const Layout = () => ((classes) =>
-    <main className={classes.layout}>
-        <Paper className={classes.paper} elevation={4}>
-            <LockIcon className={classes.icon} />
-            <Typography component="h1" className={classes.head} variant="h5">
-                shambhala
+    <>
+        <AppBar className={classes.appBar}>
+            <Toolbar>
+                <Typography variant="h6" color="inherit" noWrap>
+                    Stellar Fox
+                </Typography>
+            </Toolbar>
+        </AppBar>
+        <main className={classes.layout}>
+            <Paper className={classes.paper} elevation={4}>
+                <LockIcon className={classes.icon} />
+                <Typography component="h1" className={classes.head} variant="h5">
+                    shambhala
+                </Typography>
+                <Typography component="p" className={classes.text}>
+                    With
+                    &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
+                    to the
+                    &nbsp;<span role="img" aria-label="stars">🌟🌟🌟</span>&nbsp;
+                    !
+                </Typography>
+            </Paper>
+            <Typography component="p" className={classes.footerText}>
+                Made with
+                &nbsp;<span
+                    className={classes.footerHeart}
+                    role="img" aria-label="love"
+                >❤</span>&nbsp;
+                on
+                &nbsp;<span
+                    className={classes.footerEmoji}
+                    role="img" aria-label="earth"
+                >🌍</span>&nbsp;
+                .
             </Typography>
-            <Typography component="p" className={classes.text}>
-                With
-                &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
-                to the
-                &nbsp;<span role="img" aria-label="stars">🌟🌟🌟</span>&nbsp;
-                !
-            </Typography>
-        </Paper>
-    </main>
+        </main>
+    </>
 )(useStyles())
 
 

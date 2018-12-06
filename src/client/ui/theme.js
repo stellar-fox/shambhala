@@ -29,14 +29,12 @@ export const theme = createMuiTheme({
             paper: "rgb(49, 55, 65)",
         },
 
-        text: {
-            primary: "rgba(237, 242, 244, 0.87)",
-        },
+        primary: { main: "rgb(39, 51, 119)" },
+
+        text: { primary: "rgba(237, 242, 244, 0.87)" },
 
     },
 
-    typography: {
-        useNextVariants: true,
-    },
+    typography: { useNextVariants: true },
 
 })
