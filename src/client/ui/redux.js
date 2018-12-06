@@ -10,7 +10,10 @@
 
 
 
-import { createReducer } from "@xcmats/js-toolbox"
+import {
+    createReducer,
+    string,
+} from "@xcmats/js-toolbox"
 
 
 
@@ -23,6 +26,7 @@ import { createReducer } from "@xcmats/js-toolbox"
  */
 const initState = {
     ready: false,
+    infoMessage: string.empty(),
 }
 
 

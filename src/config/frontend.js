@@ -27,18 +27,28 @@ export const appRootDomId = "app"
 
 
 /**
- * Session Storage save throttling time - finest possible granularity.
- *
- * @constant {Number} ssSaveThrottlingTime
- */
-export const ssSaveThrottlingTime = timeUnit.second
-
-
-
-
-/**
  * Session Storage application state key.
  *
  * @constant {String} ssAppStateKey
  */
 export const ssAppStateKey = `Shambhala.${version}`
+
+
+
+
+/**
+ * Sometimes a small delay is improving overall UX.
+ *
+ * @constant {Number} fancyDelay
+ */
+export const fancyDelay = 0.3 * timeUnit.second
+
+
+
+
+/**
+ * Session Storage save throttling time - finest possible granularity.
+ *
+ * @constant {Number} ssSaveThrottlingTime
+ */
+export const ssSaveThrottlingTime = timeUnit.second

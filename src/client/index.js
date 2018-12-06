@@ -22,21 +22,23 @@ import {
 import forage from "localforage"
 import { install as newMuiStylesApi } from "@material-ui/styles"
 import {
+    consoleAugmenter,
+    consoleWrapper,
+    mDef,
+    miniHash,
+    run,
+} from "../lib/utils"
+import {
     devOriginWhitelist,
     entrypoint,
     homepage,
     registrationPath,
     restApiPrefix,
 } from "../config/env"
+import { fancyDelay } from "../config/frontend"
 import { domain as clientDomain } from "../config/client.json"
 import { version } from "../../package.json"
 import * as message from "../lib/messages"
-import {
-    consoleWrapper,
-    mDef,
-    miniHash,
-    run,
-} from "../lib/utils"
 
 
 
@@ -142,16 +144,22 @@ run(async () => {
     newMuiStylesApi()
 
     // load and run User Interface
-    let { store, thunks }  = await (await import(
-        /* webpackChunkName: "ui" */
-        "./ui/main"
-    ).then(mDef))(logger, context)
+    let
+        { store, thunks }  = await (await import(
+            /* webpackChunkName: "ui" */
+            "./ui/main"
+        ).then(mDef))(logger, context),
+        uiLogger = consoleAugmenter(logger, (_, ...args) =>
+            store.dispatch(thunks.setInfoMessage(
+                args.map((a) => String(a)).join(string.space())
+            ))
+        )
 
 
 
 
     // lazy-load some heavy libs
-    logger.info("Loading libs... ⏳")
+    uiLogger.info("Loading libs... ⏳")
     const {
         axios,
         cryptops,
@@ -189,7 +197,7 @@ run(async () => {
         originWhitelist = null, originDict = null
 
     // get origin whitelist
-    logger.info("Getting origin whitelist... ⏳")
+    uiLogger.info("Getting origin whitelist... ⏳")
     originWhitelist = array.removeDuplicates(
         struct.access(
             await axios.get(backend + entrypoint.WHITELIST),
@@ -228,12 +236,12 @@ run(async () => {
 
     // attach all handlers to messageHandler allowing actions to execute
     // in response to messages - lazy logic load
-    logger.info("Attaching handlers... ⏳");
+    uiLogger.info("Attaching handlers... ⏳");
     (await import(
         /* webpackChunkName: "hns" */
         "./handlers"
     ).then(mDef))(
-        logger, context, messageHandler,
+        uiLogger, context, messageHandler,
         cryptops, forage, message,
         {
             cancellable: async.cancellable,
@@ -254,9 +262,9 @@ run(async () => {
     messageHandler.postMessage(message.READY, { ok: true, version })
 
     // 2. let user know (UI)
-    store.dispatch(thunks.setAppReady(true))
+    store.dispatch(thunks.setAppReady(true, fancyDelay))
 
     // 3. let dev know (console)
-    logger.info("Ready! ✅")
+    uiLogger.info("Ready! ✅")
 
 })
