@@ -15,6 +15,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
+import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/styles"
 
 import Layout from "./layout"
@@ -27,15 +28,23 @@ const useStyles = makeStyles((t) => ({
 
     layout: {
         position: "absolute",
-        width: t.spacing.unit * 8,
-        height: t.spacing.unit * 8,
+        width: t.spacing.unit * 32,
+        height: t.spacing.unit * 16,
         left: "50%",
         top: "50%",
-        marginLeft: -1 * t.spacing.unit * 4,
-        marginTop: -1 * t.spacing.unit * 4,
+        marginLeft: -1 * t.spacing.unit * 16,
+        marginTop: -1 * t.spacing.unit * 8,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: "column",
+    },
+
+    rect: { padding: 2 * t.spacing.unit },
+
+    infoMessage: {
+        textAlign: "center",
+        color: "rgba(115, 125, 112, 0.75)",
     },
 
 }))
@@ -47,13 +56,21 @@ const useStyles = makeStyles((t) => ({
  * <Loader> component.
  *
  * @function Loader
+ * @param {Object} props
  * @returns {React.ReactElement}
  */
-const Loader = ({ ready }) => ((classes) =>
+const Loader = ({ infoMessage, ready }) => ((classes) =>
     ready ?
         <Layout /> :
         <main className={classes.layout}>
-            <CircularProgress color="secondary" />
+            <div className={classes.rect}>
+                <CircularProgress color="secondary" />
+            </div>
+            <div className={classes.rect}>
+                <Typography component="p" className={classes.infoMessage}>
+                    { infoMessage }
+                </Typography>
+            </div>
         </main>
 )(useStyles())
 
@@ -62,6 +79,7 @@ const Loader = ({ ready }) => ((classes) =>
 
 // ...
 Loader.propTypes = {
+    infoMessage: PropTypes.string.isRequired,
     ready: PropTypes.bool.isRequired,
 }
 
@@ -70,5 +88,8 @@ Loader.propTypes = {
 
 // ...
 export default connect(
-    (s) => ({ ready: s.App.ready })
+    (s) => ({
+        infoMessage: s.App.infoMessage,
+        ready: s.App.ready,
+    })
 )(Loader)

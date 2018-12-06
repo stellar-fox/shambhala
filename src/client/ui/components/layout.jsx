@@ -12,11 +12,11 @@
 
 import React from "react"
 
+import { makeStyles } from "@material-ui/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/styles"
 
 import LockIcon from "@material-ui/icons/Lock"
 
@@ -67,12 +67,12 @@ const useStyles = makeStyles((t) => ({
 
     footerText: {
         color: "rgba(255, 255, 255, 0.25)",
-        "textAlign": "center",
+        textAlign: "center",
     },
 
-    footerHeart: { color: "rgba(255, 0, 0, 0.65)" },
+    footerHeart: { color: "rgba(219, 51, 39, 0.75)" },
 
-    footerEmoji: { color: "rgba(255, 255, 255, 0.65)" },
+    footerEmoji: { color: "rgba(255, 255, 255, 0.75)" },
 
 }))
 
