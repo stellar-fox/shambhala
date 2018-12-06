@@ -156,7 +156,7 @@ run(async () => {
             func.pipe(args)(
                 (args) => args.map((a) =>
                     String(a)
-                        .replace(/[^A-Za-z0-9 .,!?]/g, string.empty())
+                        .replace(/[^A-Za-z0-9 .,!?:()]/g, string.empty())
                         .trim()
                 ),
                 (arr) => arr.join(string.space()),
