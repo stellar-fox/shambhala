@@ -186,8 +186,7 @@ run(async () => {
     // is imported in "actions"). See the explanation in the jsdoc comment
     // to this function definition.
     functions.setImperativeData({
-        logger: uiLogger,
-        context, thunkActions,
+        logger, context, thunkActions,
     })
 
 
@@ -200,7 +199,7 @@ run(async () => {
         window.sf = {
             ...window.sf,
             axios, cryptops, functions,
-            forage, message, logger,
+            forage, message, logger, uiLogger,
             thunkActions,
             ...await devEnvLibs(),
         }
@@ -265,7 +264,7 @@ run(async () => {
         /* webpackChunkName: "hns" */
         "./handlers"
     ).then(mDef))(
-        uiLogger, context, messageHandler,
+        logger, context, messageHandler,
         cryptops, forage, message,
         {
             cancellable: async.cancellable,
