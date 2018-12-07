@@ -11,6 +11,7 @@
 
 
 import React from "react"
+import PropTypes from "prop-types"
 import classNames from "classnames"
 
 import { connect } from "react-redux"
@@ -113,7 +114,11 @@ const useStyles = makeStyles((t) => ({
  * @function Layout
  * @returns {React.ReactElement}
  */
-const Layout = ({ basicReject, basicResolve }) => ((classes) =>
+const Layout = ({
+    basicReject,
+    basicResolve,
+    disabled,
+}) => ((classes) =>
 
     /* <> */  // jsdoc doesn't support this notation now
     <React.Fragment>
@@ -141,11 +146,13 @@ const Layout = ({ basicReject, basicResolve }) => ((classes) =>
                     <Button
                         className={classNames(classes.button, classes.yes)}
                         variant="outlined"
+                        disabled={disabled}
                         onClick={() => basicResolve()}
                     >Yes</Button>
                     <Button
                         className={classNames(classes.button, classes.no)}
                         variant="outlined"
+                        disabled={disabled}
                         onClick={() => basicReject("ui")}
                     >No</Button>
                 </div>
@@ -176,8 +183,20 @@ const Layout = ({ basicReject, basicResolve }) => ((classes) =>
 
 
 // ...
+Layout.propTypes = {
+    basicReject: PropTypes.func.isRequired,
+    basicResolve: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+}
+
+
+
+
+// ...
 export default connect(
-    null,
+    (s) => ({
+        disabled: s.App.promptMutexResolveValue === null,
+    }),
     (dispatch) => bindActionCreators({
         basicReject,
         basicResolve,
