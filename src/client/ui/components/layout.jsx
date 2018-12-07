@@ -13,6 +13,13 @@
 import React from "react"
 import classNames from "classnames"
 
+import { connect } from "react-redux"
+import { bindActionCreators } from "redux"
+import {
+    basicReject,
+    basicResolve,
+} from "../thunks"
+
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
@@ -106,8 +113,11 @@ const useStyles = makeStyles((t) => ({
  * @function Layout
  * @returns {React.ReactElement}
  */
-const Layout = () => ((classes) =>
-    <>
+const Layout = ({ basicReject, basicResolve }) => ((classes) =>
+
+    /* <> */  // jsdoc doesn't support this notation now
+    <React.Fragment>
+
         <AppBar className={classes.appBar}>
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
@@ -131,10 +141,12 @@ const Layout = () => ((classes) =>
                     <Button
                         className={classNames(classes.button, classes.yes)}
                         variant="outlined"
+                        onClick={() => basicResolve()}
                     >Yes</Button>
                     <Button
                         className={classNames(classes.button, classes.no)}
                         variant="outlined"
+                        onClick={() => basicReject("ui")}
                     >No</Button>
                 </div>
             </Paper>
@@ -154,11 +166,20 @@ const Layout = () => ((classes) =>
             </Typography>
 
         </main>
-    </>
+
+    </React.Fragment>
+    /* </> */  // jsdoc doesn't support this notation now
+
 )(useStyles())
 
 
 
 
 // ...
-export default Layout
+export default connect(
+    null,
+    (dispatch) => bindActionCreators({
+        basicReject,
+        basicResolve,
+    }, dispatch)
+)(Layout)

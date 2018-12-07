@@ -112,7 +112,9 @@ run(async () => {
         // console logger
         logger = consoleWrapper("🎭"),
 
-        // local memory, volatile context/store
+        // local memory, volatile, imperative context/store
+        // used to temporary store fragile data which are to be
+        // immediately deleted after usage
         context = {},
 
         // backend url
@@ -145,8 +147,8 @@ run(async () => {
 
     // load and run User Interface
     let
-        // get created redux-store and thunk-actions
-        { store, thunks }  = await (await import(
+        // get created thunk-actions
+        { thunkActions }  = await (await import(
             /* webpackChunkName: "ui" */
             "./ui/main"
         ).then(mDef))(logger, context),
@@ -156,12 +158,11 @@ run(async () => {
             func.pipe(args)(
                 (args) => args.map((a) =>
                     String(a)
-                        .replace(/[^A-Za-z0-9 .,!?:()]/g, string.empty())
+                        .replace(/[^A-Za-z0-9 _.,!?:(")]/g, string.empty())
                         .trim()
                 ),
                 (arr) => arr.join(string.space()),
-                thunks.setInfoMessage,
-                store.dispatch
+                thunkActions.setInfoMessage
             )
         )
 
@@ -180,6 +181,18 @@ run(async () => {
 
 
 
+    // Pass references to all data required by "functions"
+    // (so that they are available when any of the functions
+    // is imported in "actions"). See the explanation in the jsdoc comment
+    // to this function definition.
+    functions.setImperativeData({
+        logger: uiLogger,
+        context, thunkActions,
+    })
+
+
+
+
     // expose `sf` dev. namespace
     // and some convenience shortcuts
     if (utils.devEnv()) {
@@ -188,6 +201,7 @@ run(async () => {
             ...window.sf,
             axios, cryptops, functions,
             forage, message, logger,
+            thunkActions,
             ...await devEnvLibs(),
         }
         window.to_ = utils.to_
@@ -272,7 +286,7 @@ run(async () => {
     messageHandler.postMessage(message.READY, { ok: true, version })
 
     // 2. let user know (UI)
-    store.dispatch(thunks.setAppReady(true, fancyDelay))
+    thunkActions.setAppReady(true, fancyDelay)
 
     // 3. let dev know (console)
     uiLogger.info("Ready! ✅")

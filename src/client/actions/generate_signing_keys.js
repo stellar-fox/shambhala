@@ -50,13 +50,12 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} context
  * @returns {Function} Message action.
  */
 export default function generateSigningKeys (
     respond,
     { deriveKey, encrypt, salt64 }, forage,
-    logger, context
+    logger
 ) {
 
     return async (p) => {
@@ -119,7 +118,7 @@ export default function generateSigningKeys (
 
         // read PIN from the user
         try {
-            PIN = String(await getPin(logger, context))
+            PIN = String(await getPin())
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")

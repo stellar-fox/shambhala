@@ -50,13 +50,12 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
- * @param {Object} context
  * @returns {Function} Message action.
  */
 export default function associateAddress (
     respond,
     { genUUID }, forage,
-    logger, context
+    logger
 ) {
 
     return async (p) => {
@@ -98,7 +97,6 @@ export default function associateAddress (
         // confirm that user wishes to associate this address
         if (
             !await promptUser(
-                logger, context,
                 `Do you wish to associate ${string.quote(p.G_PUBLIC)}?`
             )
         ) {

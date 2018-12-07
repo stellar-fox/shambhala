@@ -80,7 +80,7 @@ export default function generateAddress (
 
         // read PASSPHRASE from the user
         try {
-            PASSPHRASE = String(await getPassphrase(logger, context))
+            PASSPHRASE = String(await getPassphrase())
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PASSPHRASE. Operation aborted.")

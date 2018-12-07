@@ -25,8 +25,16 @@ import {
  * @constant {Object} initState
  */
 const initState = {
+
+    // is whole application ready ?
     ready: false,
+
+    // last info message coming from logger/uiLogger
     infoMessage: string.empty(),
+
+    // how to resolve mutex if user provided no value? (DEV. PROTO.)
+    promptMutexResolveValue: null,
+
 }
 
 

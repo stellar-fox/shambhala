@@ -22,6 +22,7 @@ import {
 
 import {
     applyMiddleware,
+    bindActionCreators,
     createStore,
     combineReducers,
 } from "redux"
@@ -57,10 +58,10 @@ import {
  * @async
  * @function ui
  * @param {Function} logger
- * @param {Object} _context
- * @returns {Object} { store, thunks }
+ * @param {Object} context
+ * @returns {Object} { store, thunkActions }
  */
-export default async function ui (logger, _context) {
+export default async function ui (logger, context) {
 
     // create redux store with thunk-middleware and redux-devtools-extension
     const store = (() => {
@@ -102,13 +103,20 @@ export default async function ui (logger, _context) {
 
 
 
+    // pass a reference to the "imperative context"
+    // so it'll become available to all thunks
+    store.dispatch(thunks.setImperativeContext(context))
+
+
+
+
     // add some elements to 'sf' dev. namespace
     if (utils.devEnv()) {
         if (!type.isObject(window.sf)) window.sf = {}
         window.sf = {
             ...window.sf,
             React, ReactDOM,
-            store, dispatch: store.dispatch,
+            store, dispatch: store.dispatch, thunks,
             theme,
         }
     }
@@ -131,5 +139,8 @@ export default async function ui (logger, _context) {
 
 
 
-    return { store, thunks }
+    return {
+        store,
+        thunkActions: bindActionCreators(thunks, store.dispatch),
+    }
 }

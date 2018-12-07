@@ -73,14 +73,14 @@ export default function attach (
         {
             m: message.ASSOCIATE_ADDRESS,
             a: associateAddress,
-            args: [cryptops, forage, logger, context],
+            args: [cryptops, forage, logger],
         },
 
         // signing keys generation action
         {
             m: message.GENERATE_SIGNING_KEYS,
             a: generateSigningKeys,
-            args: [cryptops, forage, logger, context],
+            args: [cryptops, forage, logger],
         },
 
         // automatic keys association action
@@ -129,7 +129,7 @@ export default function attach (
         {
             m: message.SIGN_TRANSACTION,
             a: signTransaction,
-            args: [cryptops, forage, logger, context],
+            args: [cryptops, forage, logger],
         },
 
         // cancel ongoing operation action
@@ -143,7 +143,7 @@ export default function attach (
         {
             m: message.CLOSE,
             a: close,
-            args: [logger, context],
+            args: [logger],
         },
 
     // for each "action definition" (ad) ...
