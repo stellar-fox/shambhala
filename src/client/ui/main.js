@@ -39,8 +39,9 @@ import {
     saveState,
 } from "../../lib/state.persistence"
 
+import reducers, { action } from "./redux"
 import * as thunks from "./thunks"
-import reducers from "./redux"
+
 import { theme } from "./theme"
 import ShambhalaUi from "./components/root"
 
@@ -63,31 +64,29 @@ import {
  */
 export default async function ui (logger, context) {
 
-    // create redux store with thunk-middleware and redux-devtools-extension
+    // create redux store with thunk-middleware
+    // and redux-devtools-extension
     const store = (() => {
         let
-            composeWithDevTools =
-                !utils.devEnv() ?
-                    composeWithDevTools_prod :
-                    composeWithDevTools_dev,
-            s =
-                createStore(
-                    combineReducers(reducers),
-                    loadState(),
-                    composeWithDevTools(
-                        applyMiddleware(
-                            thunk
-                        )
+            composeWithDevTools = !utils.devEnv() ?
+                composeWithDevTools_prod :
+                composeWithDevTools_dev,
+            s = createStore(
+                combineReducers(reducers),
+                loadState(),
+                composeWithDevTools(
+                    applyMiddleware(
+                        thunk
                     )
                 )
-
-        // save state in session storage in 'ssSaveThrottlingTime' intervals
-        s.subscribe(
-            throttle(
-                () => saveState(s.getState()),
-                ssSaveThrottlingTime
             )
-        )
+
+        // save state in session storage
+        // in 'ssSaveThrottlingTime' intervals
+        s.subscribe(throttle(
+            () => saveState(s.getState()),
+            ssSaveThrottlingTime
+        ))
 
         return s
     })()
@@ -98,6 +97,7 @@ export default async function ui (logger, context) {
     // because of save-restore session mechanism we need to take care of
     // initial application-readiness state (at this point it's not ready)
     store.dispatch(thunks.setAppReady(false))
+    store.dispatch(action.resetState())
     store.dispatch(thunks.setInfoMessage("Loading UI ..."))
 
 
