@@ -19,6 +19,7 @@
         "@xcmats/js-toolbox": "^0.6.17",
         "axios": "^0.18.0",
         "chalk": "^2.4.1",
+        "classnames": "^2.2.6",
         "express": "^4.16.4",
         "localforage": "^1.7.3",
         "lodash.throttle": "^4.1.1",
