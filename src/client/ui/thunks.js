@@ -88,6 +88,21 @@ export const setInfoMessage = (infoMessage = string.empty()) =>
 
 
 /**
+ * Set message that is currently being processed.
+ *
+ * @function setMessage
+ * @param {String} message
+ * @returns {Function} thunk action
+ */
+export const setMessage = (message) =>
+    async (dispatch, _getState) => {
+        await dispatch(action.setState({ message }))
+    }
+
+
+
+
+/**
  * Reject promptMutex if it exists in imperative context.
  *
  * @function basicReject

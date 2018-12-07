@@ -32,6 +32,9 @@ const initState = {
     // last info message coming from logger/uiLogger
     infoMessage: string.empty(),
 
+    // a message that is currently being processed (src/lib/messages.js)
+    message: null,
+
     // how to resolve mutex if user provided no value? (DEV. PROTO.)
     promptMutexResolveValue: null,
 

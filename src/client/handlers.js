@@ -35,13 +35,14 @@ import close from "./actions/close"
  * @param {Function} logger
  * @param {Object} context
  * @param {Object} messageHandler
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Object} message
  * @param {Object} toolbox
  */
 export default function attach (
-    logger, context, messageHandler,
+    logger, context, messageHandler, thunkActions,
     cryptops, forage, message,
     { cancellable, curry, identity, isString, partial, quote }
 ) {
@@ -183,6 +184,7 @@ export default function attach (
                             error: `busy with ${quote(context.message)}`,
                         })
                     }
+                    thunkActions.setMessage(ad.m)
                     context.message = ad.m
                     try {
                         let { promise, cancel } = cancellable(
@@ -195,6 +197,7 @@ export default function attach (
                     } finally {
                         delete context.cancelCurrentOperation
                         delete context.message
+                        thunkActions.setMessage(null)
                     }
                 } else {
                     await act(...args)

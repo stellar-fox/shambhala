@@ -264,7 +264,7 @@ run(async () => {
         /* webpackChunkName: "hns" */
         "./handlers"
     ).then(mDef))(
-        logger, context, messageHandler,
+        logger, context, messageHandler, thunkActions,
         cryptops, forage, message,
         {
             cancellable: async.cancellable,
