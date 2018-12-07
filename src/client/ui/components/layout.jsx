@@ -20,6 +20,7 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
+import { humanize } from "../helpers"
 
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
@@ -39,6 +40,8 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     appBar: { position: "relative" },
+
+    grow: { flexGrow: 1 },
 
     layout: {
         width: "auto",
@@ -118,6 +121,7 @@ const Layout = ({
     basicReject,
     basicResolve,
     disabled,
+    message,
 }) => ((classes) =>
 
     /* <> */  // jsdoc doesn't support this notation now
@@ -127,6 +131,10 @@ const Layout = ({
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
                     Stellar Fox
+                </Typography>
+                <div className={classes.grow} />
+                <Typography variant="subtitle2" color="textSecondary" noWrap>
+                    { message }
                 </Typography>
             </Toolbar>
         </AppBar>
@@ -187,6 +195,7 @@ Layout.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
+    message: PropTypes.string.isRequired,
 }
 
 
@@ -196,6 +205,7 @@ Layout.propTypes = {
 export default connect(
     (s) => ({
         disabled: s.App.promptMutexResolveValue === null,
+        message: humanize(s.App.message),
     }),
     (dispatch) => bindActionCreators({
         basicReject,
