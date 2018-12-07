@@ -11,14 +11,18 @@
 
 
 import React from "react"
+import classNames from "classnames"
 
 import { makeStyles } from "@material-ui/styles"
+import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
+import Button from "@material-ui/core/Button"
+import green from "@material-ui/core/colors/green"
+import LockIcon from "@material-ui/icons/Lock"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
+import red from "@material-ui/core/colors/red"
 import Typography from "@material-ui/core/Typography"
-
-import LockIcon from "@material-ui/icons/Lock"
 
 
 
@@ -60,7 +64,24 @@ const useStyles = makeStyles((t) => ({
 
     head: { textShadow: "0px 0px 7px rgb(29, 36, 46)" },
 
-    text: {
+    button: {
+        marginLeft: 2 * t.spacing.unit,
+        marginRight: 2 * t.spacing.unit,
+    },
+
+    yes: {
+        "&:hover": {
+            backgroundColor: fade(green[500], t.palette.action.hoverOpacity),
+        },
+    },
+
+    no: {
+        "&:hover": {
+            backgroundColor: fade(red[500], t.palette.action.hoverOpacity),
+        },
+    },
+
+    buttons: {
         marginTop: 4 * t.spacing.unit,
         marginBottom: t.spacing.unit,
     },
@@ -94,20 +115,30 @@ const Layout = () => ((classes) =>
                 </Typography>
             </Toolbar>
         </AppBar>
+
         <main className={classes.layout}>
+
             <Paper className={classes.paper} elevation={4}>
                 <LockIcon className={classes.icon} />
-                <Typography component="h1" className={classes.head} variant="h5">
+                <Typography
+                    component="h1"
+                    className={classes.head}
+                    variant="h5"
+                >
                     shambhala
                 </Typography>
-                <Typography component="p" className={classes.text}>
-                    With
-                    &nbsp;<span role="img" aria-label="rocket">🚀</span>&nbsp;
-                    to the
-                    &nbsp;<span role="img" aria-label="stars">🌟🌟🌟</span>&nbsp;
-                    !
-                </Typography>
+                <div className={classes.buttons}>
+                    <Button
+                        className={classNames(classes.button, classes.yes)}
+                        variant="outlined"
+                    >Yes</Button>
+                    <Button
+                        className={classNames(classes.button, classes.no)}
+                        variant="outlined"
+                    >No</Button>
+                </div>
             </Paper>
+
             <Typography component="p" className={classes.footerText}>
                 Made with
                 &nbsp;<span
@@ -121,6 +152,7 @@ const Layout = () => ((classes) =>
                 >🌍</span>&nbsp;
                 .
             </Typography>
+
         </main>
     </>
 )(useStyles())
