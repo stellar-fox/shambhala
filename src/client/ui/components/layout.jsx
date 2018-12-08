@@ -156,13 +156,13 @@ const Layout = ({
 
             <Paper className={classes.paper} elevation={4}>
                 { func.choose(currentMessage, {
-                    [message.ASSOCIATE_ADDRESS]: () => <IconSecurity className={classes.icon} />,
-                    [message.BACKUP]: () => <IconBackup className={classes.icon} />,
-                    [message.GENERATE_ADDRESS]: () => <IconAccountBalanceWallet className={classes.icon} />,
-                    [message.GENERATE_SIGNING_KEYS]: () => <IconVpnKey className={classes.icon} />,
-                    [message.RESTORE]: () => <IconRestore className={classes.icon} />,
-                    [message.SIGN_TRANSACTION]: () => <IconFingerprint className={classes.icon} />,
-                }, () => <IconLock className={classes.icon} />) }
+                    [message.ASSOCIATE_ADDRESS]: (p) => <IconSecurity {...p} />,
+                    [message.BACKUP]: (p) => <IconBackup {...p} />,
+                    [message.GENERATE_ADDRESS]: (p) => <IconAccountBalanceWallet {...p} />,
+                    [message.GENERATE_SIGNING_KEYS]: (p) => <IconVpnKey {...p} />,
+                    [message.RESTORE]: (p) => <IconRestore {...p} />,
+                    [message.SIGN_TRANSACTION]: (p) => <IconFingerprint {...p} />,
+                }, (p) => <IconLock {...p} />, [{ className: classes.icon }]) }
                 <Typography
                     component="h1"
                     className={classes.head}
