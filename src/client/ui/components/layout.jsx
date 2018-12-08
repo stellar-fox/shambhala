@@ -13,6 +13,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
+import {
+    func,
+    string,
+} from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -27,11 +31,19 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import green from "@material-ui/core/colors/green"
-import LockIcon from "@material-ui/icons/Lock"
+import IconAccountBalanceWallet from "@material-ui/icons/AccountBalanceWallet"
+import IconBackup from "@material-ui/icons/Backup"
+import IconFingerprint from "@material-ui/icons/Fingerprint"
+import IconLock from "@material-ui/icons/Lock"
+import IconRestore from "@material-ui/icons/Restore"
+import IconSecurity from "@material-ui/icons/Security"
+import IconVpnKey from "@material-ui/icons/VpnKey"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
 import red from "@material-ui/core/colors/red"
 import Typography from "@material-ui/core/Typography"
+
+import * as message from "../../../lib/messages"
 
 
 
@@ -120,8 +132,9 @@ const useStyles = makeStyles((t) => ({
 const Layout = ({
     basicReject,
     basicResolve,
+    currentMessage,
     disabled,
-    message,
+    humanMessage,
 }) => ((classes) =>
 
     /* <> */  // jsdoc doesn't support this notation now
@@ -134,7 +147,7 @@ const Layout = ({
                 </Typography>
                 <div className={classes.grow} />
                 <Typography variant="subtitle2" color="textSecondary" noWrap>
-                    { message }
+                    { humanMessage }
                 </Typography>
             </Toolbar>
         </AppBar>
@@ -142,7 +155,14 @@ const Layout = ({
         <main className={classes.layout}>
 
             <Paper className={classes.paper} elevation={4}>
-                <LockIcon className={classes.icon} />
+                { func.choose(currentMessage, {
+                    [message.ASSOCIATE_ADDRESS]: () => <IconSecurity className={classes.icon} />,
+                    [message.BACKUP]: () => <IconBackup className={classes.icon} />,
+                    [message.GENERATE_ADDRESS]: () => <IconAccountBalanceWallet className={classes.icon} />,
+                    [message.GENERATE_SIGNING_KEYS]: () => <IconVpnKey className={classes.icon} />,
+                    [message.RESTORE]: () => <IconRestore className={classes.icon} />,
+                    [message.SIGN_TRANSACTION]: () => <IconFingerprint className={classes.icon} />,
+                }, () => <IconLock className={classes.icon} />) }
                 <Typography
                     component="h1"
                     className={classes.head}
@@ -194,8 +214,9 @@ const Layout = ({
 Layout.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
+    currentMessage: PropTypes.string.isRequired,
     disabled: PropTypes.bool.isRequired,
-    message: PropTypes.string.isRequired,
+    humanMessage: PropTypes.string.isRequired,
 }
 
 
@@ -205,7 +226,8 @@ Layout.propTypes = {
 export default connect(
     (s) => ({
         disabled: s.App.promptMutexResolveValue === null,
-        message: humanize(s.App.message),
+        currentMessage: s.App.message || string.empty(),
+        humanMessage: humanize(s.App.message),
     }),
     (dispatch) => bindActionCreators({
         basicReject,
