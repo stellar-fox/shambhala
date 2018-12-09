@@ -31,12 +31,12 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import green from "@material-ui/core/colors/green"
-import IconAccountBalanceWallet from "@material-ui/icons/AccountBalanceWallet"
+import IconAutorenew from "@material-ui/icons/Autorenew"
 import IconBackup from "@material-ui/icons/Backup"
 import IconFingerprint from "@material-ui/icons/Fingerprint"
 import IconLock from "@material-ui/icons/Lock"
+import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
 import IconRestore from "@material-ui/icons/Restore"
-import IconSecurity from "@material-ui/icons/Security"
 import IconVpnKey from "@material-ui/icons/VpnKey"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
@@ -156,9 +156,9 @@ const Layout = ({
 
             <Paper className={classes.paper} elevation={4}>
                 { func.choose(currentMessage, {
-                    [message.ASSOCIATE_ADDRESS]: (p) => <IconSecurity {...p} />,
+                    [message.ASSOCIATE_ADDRESS]: (p) => <IconAutorenew {...p} />,
                     [message.BACKUP]: (p) => <IconBackup {...p} />,
-                    [message.GENERATE_ADDRESS]: (p) => <IconAccountBalanceWallet {...p} />,
+                    [message.GENERATE_ADDRESS]: (p) => <IconPlaylistAdd {...p} />,
                     [message.GENERATE_SIGNING_KEYS]: (p) => <IconVpnKey {...p} />,
                     [message.RESTORE]: (p) => <IconRestore {...p} />,
                     [message.SIGN_TRANSACTION]: (p) => <IconFingerprint {...p} />,
