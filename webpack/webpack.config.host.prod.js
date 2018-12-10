@@ -30,7 +30,7 @@ module.exports = {
 
 
     entry: {
-        "static/host": path.resolve(
+        "host": path.resolve(
             appDirectory, "src/host/index.js"
         ),
     },
