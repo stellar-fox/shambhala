@@ -59,20 +59,22 @@ const useStyles = makeStyles((t) => ({
  * @param {Object} props
  * @returns {React.ReactElement}
  */
-const Loader = ({ infoMessage, ready }) => ((classes) =>
+const Loader = ({
+    infoMessage, ready,
+}) => ((css) =>
 
     ready ?
 
         <Layout /> :
 
-        <main className={classes.layout}>
-            <div className={classes.rect}>
+        <main className={css.layout}>
+            <div className={css.rect}>
                 <CircularProgress color="secondary" />
             </div>
-            <div className={classes.rect}>
+            <div className={css.rect}>
                 <Typography
                     component="p"
-                    className={classes.infoMessage}
+                    className={css.infoMessage}
                 >
                     { infoMessage }
                 </Typography>
