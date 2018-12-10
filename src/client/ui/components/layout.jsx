@@ -31,6 +31,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import green from "@material-ui/core/colors/green"
+import Grid from "@material-ui/core/Grid"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
 import red from "@material-ui/core/colors/red"
@@ -42,85 +43,123 @@ import Typography from "@material-ui/core/Typography"
 // ...
 const useStyles = makeStyles((t) => ({
 
-    appBar: { position: "relative" },
-
-    grow: {
-        paddingLeft: t.spacing.unit * 2,
-        flexGrow: 1,
-    },
-
     layout: {
-        width: "auto",
-        display: "block",
-        marginLeft: t.spacing.unit * 3,
-        marginRight: t.spacing.unit * 3,
-        [t.breakpoints.up(400 + t.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: "auto",
-            marginRight: "auto",
-        },
+        position: "absolute",
+        width: "100%",
+        height: "100%",
     },
 
-    paper: {
+    appBarCenterPane: {
+        flexGrow: 1,
+        paddingLeft: t.spacing.unit * 2,
+        paddingRight: t.spacing.unit * 2,
+
+    },
+
+    main: {
+        maxHeight: 400,
+        flexGrow: 1,
+        display: "flex",
+        "justifyContent": "center",
+    },
+
+    content: {
+        maxWidth: 500,
+        flexGrow: 1,
+        marginTop: t.spacing.unit * 4,
+        marginRight: t.spacing.unit * 4,
+        marginLeft: t.spacing.unit * 4,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: t.spacing.unit * 8,
+        justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 2,
-        paddingBottom: t.spacing.unit * 2,
-    },
+        paddingTop: t.spacing.unit * 3,
+        paddingBottom: t.spacing.unit * 3,
 
-    icon: {
-        fontSize: 64,
-        color: "rgb(114, 222, 255)",
-        filter: "drop-shadow(0px 0px 7px rgb(29, 36, 46))",
-        margin: t.spacing.unit,
-    },
+        "& $icon": {
+            fontSize: 64,
+            color: "rgb(114, 222, 255)",
+            filter: "drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5))",
+            marginBottom: t.spacing.unit,
+        },
 
-    head: { textShadow: "0px 0px 7px rgb(29, 36, 46)" },
+        "& $headingStrecher": {
+            marginBottom: t.spacing.unit,
+            minHeight: 80,
+            display: "flex",
+            direction: "column",
+            alignItems: "center",
 
-    buttons: {
-        marginTop: 4 * t.spacing.unit,
-        marginBottom: t.spacing.unit,
-    },
+            "& $heading": {
+                display: "block",
+                textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
+            },
 
-    button: {
-        marginLeft: 2 * t.spacing.unit,
-        marginRight: 2 * t.spacing.unit,
-    },
+        },
 
-    buttonDisabled: { backgroundColor: "transparent !important" },
+        "& $button": {
+            marginLeft: 2 * t.spacing.unit,
+            marginRight: 2 * t.spacing.unit,
 
-    yes: {
-        backgroundColor: fade(green[500], t.palette.action.hoverOpacity),
-        "&:hover": {
-            backgroundColor: fade(green[500], 3 * t.palette.action.hoverOpacity),
+            "&$disabled": { backgroundColor: "transparent !important" },
+
+            "&$yes": {
+                backgroundColor: fade(
+                    green[500], t.palette.action.hoverOpacity
+                ),
+                "&:hover": {
+                    backgroundColor: fade(
+                        green[500], 3 * t.palette.action.hoverOpacity
+                    ),
+                },
+            },
+
+            "&$no": {
+                backgroundColor: fade(
+                    red[500], t.palette.action.hoverOpacity
+                ),
+                "&:hover": {
+                    backgroundColor: fade(
+                        red[500], 3 * t.palette.action.hoverOpacity
+                    ),
+                },
+            },
         },
     },
 
-    no: {
-        backgroundColor: fade(red[500], t.palette.action.hoverOpacity),
-        "&:hover": {
-            backgroundColor: fade(red[500], 3 * t.palette.action.hoverOpacity),
-        },
-    },
+    icon: {},
+
+    headingStrecher: {},
+
+    heading: {},
+
+    button: {},
+
+    disabled: {},
+
+    yes: {},
+
+    no: {},
 
     footer: {
-        position: "fixed",
-        width: "100%",
-        bottom: 0,
         padding: t.spacing.unit,
+
+        "& $text": {
+            color: "rgba(255, 255, 255, 0.25)",
+            textAlign: "center",
+        },
+
+        "& $heart": { color: "rgba(219, 51, 39, 0.75)" },
+
+        "& $emoji": { color: "rgba(255, 255, 255, 0.75)" },
     },
 
-    footerText: {
-        color: "rgba(255, 255, 255, 0.25)",
-        textAlign: "center",
-    },
+    text: {},
 
-    footerHeart: { color: "rgba(219, 51, 39, 0.75)" },
+    heart: {},
 
-    footerEmoji: { color: "rgba(255, 255, 255, 0.75)" },
+    emoji: {},
 
 }))
 
@@ -141,70 +180,83 @@ const Layout = ({
     humanMessage,
 }) => ((css) =>
 
-    /* <> */  // jsdoc doesn't support this notation now
-    <React.Fragment>
+    <Grid
+        container
+        direction="column"
+        justify="space-between"
+        alignItems="stretch"
+        className={css.layout}
+    >
 
-        <AppBar className={css.appBar}>
-            <Toolbar>
-                <Typography variant="h6" color="inherit" noWrap>
-                    shambhala
-                </Typography>
-                <div className={css.grow}>
-                    { iconizeMessage(currentMessage) }
-                </div>
-                <Typography variant="subtitle2" color="textSecondary" noWrap>
-                    { humanMessage }
-                </Typography>
-            </Toolbar>
-        </AppBar>
+        <Grid item>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" color="inherit">
+                        shambhala
+                    </Typography>
+                    <div className={css.appBarCenterPane}>
+                        { iconizeMessage(currentMessage) }
+                    </div>
+                    <Typography
+                        variant="subtitle2"
+                        color="textSecondary"
+                        align="right"
+                    >
+                        { humanMessage }
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+        </Grid>
 
-        <main className={css.layout}>
-            <Paper className={css.paper} elevation={4}>
+        <Grid item component="main" className={css.main}>
+            <Paper className={css.content}>
                 { iconizeMessage(currentMessage, [{ className: css.icon }]) }
-                <Typography
-                    component="h1"
-                    className={css.head}
-                    variant="h5"
-                >
-                    { humanMessage }
-                </Typography>
-                <div className={css.buttons}>
+                <div className={css.headingStrecher}>
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        align="center"
+                        className={css.heading}
+                    >
+                        { humanMessage }
+                    </Typography>
+                </div>
+                <div>
                     <Button
                         className={classNames(css.button, css.yes)}
-                        classes={{ disabled: css.buttonDisabled }}
+                        classes={{ disabled: css.disabled }}
                         variant="outlined"
                         disabled={disabled}
                         onClick={() => basicResolve()}
                     >Yes</Button>
                     <Button
                         className={classNames(css.button, css.no)}
-                        classes={{ disabled: css.buttonDisabled }}
+                        classes={{ disabled: css.disabled }}
                         variant="outlined"
                         disabled={disabled}
                         onClick={() => basicReject("ui")}
                     >No</Button>
                 </div>
             </Paper>
-        </main>
+        </Grid>
 
-        <div className={css.footer}>
-            <Typography component="p" className={css.footerText}>
+        <Grid item className={css.footer}>
+            <Typography component="p" className={css.text}>
                 Made with
                 &nbsp;<span
-                    className={css.footerHeart}
+                    className={css.heart}
                     role="img" aria-label="love"
                 >❤</span>&nbsp;
                 on
                 &nbsp;<span
-                    className={css.footerEmoji}
+                    className={css.emoji}
                     role="img" aria-label="earth"
                 >🌍</span>&nbsp;
                 .
             </Typography>
-        </div>
+        </Grid>
 
-    </React.Fragment>
-    /* </> */  // jsdoc doesn't support this notation now
+    </Grid>
 
 )(useStyles())
 
