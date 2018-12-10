@@ -19,11 +19,11 @@ import * as message from "../../lib/messages"
 /**
  * Convert message to a "human readable" one.
  *
- * @function humanize
+ * @function humanizeMessage
  * @param {String} message
  * @returns {String}
  */
-export const humanize = func.partial(
+export const humanizeMessage = func.partial(
     func.rearg(func.choose)(1, 2, 0, 3)
 )({
     [message.ASSOCIATE_ADDRESS]: () => "Existing Address Association",

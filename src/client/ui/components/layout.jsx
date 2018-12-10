@@ -24,7 +24,7 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
-import { humanize } from "../helpers"
+import { humanizeMessage } from "../helpers"
 
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
@@ -92,15 +92,19 @@ const useStyles = makeStyles((t) => ({
         marginRight: 2 * t.spacing.unit,
     },
 
+    buttonDisabled: { backgroundColor: "transparent !important" },
+
     yes: {
+        backgroundColor: fade(green[500], t.palette.action.hoverOpacity),
         "&:hover": {
-            backgroundColor: fade(green[500], t.palette.action.hoverOpacity),
+            backgroundColor: fade(green[500], 3 * t.palette.action.hoverOpacity),
         },
     },
 
     no: {
+        backgroundColor: fade(red[500], t.palette.action.hoverOpacity),
         "&:hover": {
-            backgroundColor: fade(red[500], t.palette.action.hoverOpacity),
+            backgroundColor: fade(red[500], 3 * t.palette.action.hoverOpacity),
         },
     },
 
@@ -135,26 +139,26 @@ const Layout = ({
     currentMessage,
     disabled,
     humanMessage,
-}) => ((classes) =>
+}) => ((css) =>
 
     /* <> */  // jsdoc doesn't support this notation now
     <React.Fragment>
 
-        <AppBar className={classes.appBar}>
+        <AppBar className={css.appBar}>
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
                     Stellar Fox
                 </Typography>
-                <div className={classes.grow} />
+                <div className={css.grow} />
                 <Typography variant="subtitle2" color="textSecondary" noWrap>
                     { humanMessage }
                 </Typography>
             </Toolbar>
         </AppBar>
 
-        <main className={classes.layout}>
+        <main className={css.layout}>
 
-            <Paper className={classes.paper} elevation={4}>
+            <Paper className={css.paper} elevation={4}>
                 { func.choose(currentMessage, {
                     [message.ASSOCIATE_ADDRESS]: (p) => <IconAutorenew {...p} />,
                     [message.BACKUP]: (p) => <IconBackup {...p} />,
@@ -162,23 +166,25 @@ const Layout = ({
                     [message.GENERATE_SIGNING_KEYS]: (p) => <IconVpnKey {...p} />,
                     [message.RESTORE]: (p) => <IconRestore {...p} />,
                     [message.SIGN_TRANSACTION]: (p) => <IconFingerprint {...p} />,
-                }, (p) => <IconLock {...p} />, [{ className: classes.icon }]) }
+                }, (p) => <IconLock {...p} />, [{ className: css.icon }]) }
                 <Typography
                     component="h1"
-                    className={classes.head}
+                    className={css.head}
                     variant="h5"
                 >
                     shambhala
                 </Typography>
-                <div className={classes.buttons}>
+                <div className={css.buttons}>
                     <Button
-                        className={classNames(classes.button, classes.yes)}
+                        className={classNames(css.button, css.yes)}
+                        classes={{ disabled: css.buttonDisabled }}
                         variant="outlined"
                         disabled={disabled}
                         onClick={() => basicResolve()}
                     >Yes</Button>
                     <Button
-                        className={classNames(classes.button, classes.no)}
+                        className={classNames(css.button, css.no)}
+                        classes={{ disabled: css.buttonDisabled }}
                         variant="outlined"
                         disabled={disabled}
                         onClick={() => basicReject("ui")}
@@ -186,15 +192,15 @@ const Layout = ({
                 </div>
             </Paper>
 
-            <Typography component="p" className={classes.footerText}>
+            <Typography component="p" className={css.footerText}>
                 Made with
                 &nbsp;<span
-                    className={classes.footerHeart}
+                    className={css.footerHeart}
                     role="img" aria-label="love"
                 >❤</span>&nbsp;
                 on
                 &nbsp;<span
-                    className={classes.footerEmoji}
+                    className={css.footerEmoji}
                     role="img" aria-label="earth"
                 >🌍</span>&nbsp;
                 .
@@ -227,7 +233,7 @@ export default connect(
     (s) => ({
         disabled: s.App.promptMutexResolveValue === null,
         currentMessage: s.App.message || string.empty(),
-        humanMessage: humanize(s.App.message),
+        humanMessage: humanizeMessage(s.App.message),
     }),
     (dispatch) => bindActionCreators({
         basicReject,
