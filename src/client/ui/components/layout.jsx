@@ -178,6 +178,7 @@ const Layout = ({
     currentMessage,
     disabled,
     humanMessage,
+    style,
 }) => ((css) =>
 
     <Grid
@@ -186,6 +187,7 @@ const Layout = ({
         justify="space-between"
         alignItems="stretch"
         className={css.layout}
+        style={style}
     >
 
         <Grid item>
@@ -270,6 +272,7 @@ Layout.propTypes = {
     currentMessage: PropTypes.string.isRequired,
     disabled: PropTypes.bool.isRequired,
     humanMessage: PropTypes.string.isRequired,
+    style: PropTypes.object.isRequired,
 }
 
 

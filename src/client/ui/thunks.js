@@ -15,6 +15,7 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
+import { duration } from "@material-ui/core/styles/transitions"
 import { action } from "./redux"
 
 
@@ -62,7 +63,17 @@ export const setImperativeContext = (context) =>
 export const setAppReady = (ready, delay = 0) =>
     async (dispatch, _getState) => {
         if (delay > 0) { await async.delay(delay) }
-        await dispatch(action.setState({ ready }))
+        if (ready) {
+            await dispatch(action.setState({ showLoader: !ready }))
+            await async.delay(duration.leavingScreen * 1.1)
+            await dispatch(action.setState({ ready }))
+            await dispatch(action.setState({ showUi: ready }))
+        } else {
+            await dispatch(action.setState({ showUi: ready }))
+            await async.delay(duration.leavingScreen * 1.1)
+            await dispatch(action.setState({ ready }))
+            await dispatch(action.setState({ showLoader: !ready }))
+        }
     }
 
 

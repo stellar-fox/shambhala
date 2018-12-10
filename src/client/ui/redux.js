@@ -29,6 +29,12 @@ const initState = {
     // is whole application ready ?
     ready: false,
 
+    // should the application loader be shown ?
+    showLoader: true,
+
+    // can the application UI be shown ?
+    showUi: false,
+
     // last info message coming from logger/uiLogger
     infoMessage: string.empty(),
 

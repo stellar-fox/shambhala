@@ -15,6 +15,7 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
+import Fade from "@material-ui/core/Fade"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/styles"
 
@@ -60,26 +61,31 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const Loader = ({
-    infoMessage, ready,
+    infoMessage,
+    ready,
+    showLoader,
+    showUi,
 }) => ((css) =>
 
     ready ?
 
-        <Layout /> :
+        <Fade in={showUi}><Layout /></Fade> :
 
-        <main className={css.layout}>
-            <div className={css.rect}>
-                <CircularProgress color="secondary" />
-            </div>
-            <div className={css.rect}>
-                <Typography
-                    component="p"
-                    className={css.infoMessage}
-                >
-                    { infoMessage }
-                </Typography>
-            </div>
-        </main>
+        <Fade in={showLoader}>
+            <main className={css.layout}>
+                <div className={css.rect}>
+                    <CircularProgress color="secondary" />
+                </div>
+                <div className={css.rect}>
+                    <Typography
+                        component="p"
+                        className={css.infoMessage}
+                    >
+                        { infoMessage }
+                    </Typography>
+                </div>
+            </main>
+        </Fade>
 
 )(useStyles())
 
@@ -90,6 +96,8 @@ const Loader = ({
 Loader.propTypes = {
     infoMessage: PropTypes.string.isRequired,
     ready: PropTypes.bool.isRequired,
+    showLoader: PropTypes.bool.isRequired,
+    showUi: PropTypes.bool.isRequired,
 }
 
 
@@ -100,5 +108,7 @@ export default connect(
     (s) => ({
         infoMessage: s.App.infoMessage,
         ready: s.App.ready,
+        showLoader: s.App.showLoader,
+        showUi: s.App.showUi,
     })
 )(Loader)
