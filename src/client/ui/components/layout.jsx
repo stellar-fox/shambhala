@@ -44,7 +44,10 @@ const useStyles = makeStyles((t) => ({
 
     appBar: { position: "relative" },
 
-    grow: { flexGrow: 1 },
+    grow: {
+        paddingLeft: t.spacing.unit * 2,
+        flexGrow: 1,
+    },
 
     layout: {
         width: "auto",
@@ -63,7 +66,6 @@ const useStyles = makeStyles((t) => ({
         flexDirection: "column",
         alignItems: "center",
         marginTop: t.spacing.unit * 8,
-        marginBottom: t.spacing.unit * 4,
         ...t.mixins.gutters(),
         paddingTop: t.spacing.unit * 2,
         paddingBottom: t.spacing.unit * 2,
@@ -77,6 +79,11 @@ const useStyles = makeStyles((t) => ({
     },
 
     head: { textShadow: "0px 0px 7px rgb(29, 36, 46)" },
+
+    buttons: {
+        marginTop: 4 * t.spacing.unit,
+        marginBottom: t.spacing.unit,
+    },
 
     button: {
         marginLeft: 2 * t.spacing.unit,
@@ -99,9 +106,11 @@ const useStyles = makeStyles((t) => ({
         },
     },
 
-    buttons: {
-        marginTop: 4 * t.spacing.unit,
-        marginBottom: t.spacing.unit,
+    footer: {
+        position: "fixed",
+        width: "100%",
+        bottom: 0,
+        padding: t.spacing.unit,
     },
 
     footerText: {
@@ -138,9 +147,11 @@ const Layout = ({
         <AppBar className={css.appBar}>
             <Toolbar>
                 <Typography variant="h6" color="inherit" noWrap>
-                    Stellar Fox
+                    shambhala
                 </Typography>
-                <div className={css.grow} />
+                <div className={css.grow}>
+                    { iconizeMessage(currentMessage) }
+                </div>
                 <Typography variant="subtitle2" color="textSecondary" noWrap>
                     { humanMessage }
                 </Typography>
@@ -148,7 +159,6 @@ const Layout = ({
         </AppBar>
 
         <main className={css.layout}>
-
             <Paper className={css.paper} elevation={4}>
                 { iconizeMessage(currentMessage, [{ className: css.icon }]) }
                 <Typography
@@ -156,7 +166,7 @@ const Layout = ({
                     className={css.head}
                     variant="h5"
                 >
-                    shambhala
+                    { humanMessage }
                 </Typography>
                 <div className={css.buttons}>
                     <Button
@@ -175,7 +185,9 @@ const Layout = ({
                     >No</Button>
                 </div>
             </Paper>
+        </main>
 
+        <div className={css.footer}>
             <Typography component="p" className={css.footerText}>
                 Made with
                 &nbsp;<span
@@ -189,8 +201,7 @@ const Layout = ({
                 >🌍</span>&nbsp;
                 .
             </Typography>
-
-        </main>
+        </div>
 
     </React.Fragment>
     /* </> */  // jsdoc doesn't support this notation now
