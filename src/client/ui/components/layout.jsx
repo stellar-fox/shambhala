@@ -13,10 +13,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import {
-    func,
-    string,
-} from "@xcmats/js-toolbox"
+import { string } from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -24,26 +21,20 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
-import { humanizeMessage } from "../helpers"
+import {
+    humanizeMessage,
+    iconizeMessage,
+} from "../helpers"
 
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import green from "@material-ui/core/colors/green"
-import IconAutorenew from "@material-ui/icons/Autorenew"
-import IconBackup from "@material-ui/icons/Backup"
-import IconFingerprint from "@material-ui/icons/Fingerprint"
-import IconLock from "@material-ui/icons/Lock"
-import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
-import IconRestore from "@material-ui/icons/Restore"
-import IconVpnKey from "@material-ui/icons/VpnKey"
 import Toolbar from "@material-ui/core/Toolbar"
 import Paper from "@material-ui/core/Paper"
 import red from "@material-ui/core/colors/red"
 import Typography from "@material-ui/core/Typography"
-
-import * as message from "../../../lib/messages"
 
 
 
@@ -159,14 +150,7 @@ const Layout = ({
         <main className={css.layout}>
 
             <Paper className={css.paper} elevation={4}>
-                { func.choose(currentMessage, {
-                    [message.ASSOCIATE_ADDRESS]: (p) => <IconAutorenew {...p} />,
-                    [message.BACKUP]: (p) => <IconBackup {...p} />,
-                    [message.GENERATE_ADDRESS]: (p) => <IconPlaylistAdd {...p} />,
-                    [message.GENERATE_SIGNING_KEYS]: (p) => <IconVpnKey {...p} />,
-                    [message.RESTORE]: (p) => <IconRestore {...p} />,
-                    [message.SIGN_TRANSACTION]: (p) => <IconFingerprint {...p} />,
-                }, (p) => <IconLock {...p} />, [{ className: css.icon }]) }
+                { iconizeMessage(currentMessage, [{ className: css.icon }]) }
                 <Typography
                     component="h1"
                     className={css.head}

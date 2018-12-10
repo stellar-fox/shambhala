@@ -10,14 +10,23 @@
 
 
 
+import { createElement as rce } from "react"
 import { func } from "@xcmats/js-toolbox"
 import * as message from "../../lib/messages"
+
+import IconAutorenew from "@material-ui/icons/Autorenew"
+import IconBackup from "@material-ui/icons/Backup"
+import IconFingerprint from "@material-ui/icons/Fingerprint"
+import IconLock from "@material-ui/icons/Lock"
+import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
+import IconRestore from "@material-ui/icons/Restore"
+import IconVpnKey from "@material-ui/icons/VpnKey"
 
 
 
 
 /**
- * Convert message to a "human readable" one.
+ * Convert a message to a "human readable" one.
  *
  * @function humanizeMessage
  * @param {String} message
@@ -33,3 +42,24 @@ export const humanizeMessage = func.partial(
     [message.RESTORE]: () => "Client Key Information Restore",
     [message.SIGN_TRANSACTION]: () => "Transaction Signing",
 }, () => "Idle")
+
+
+
+
+/**
+ * Convert a message to an icon.
+ *
+ * @param {String} message
+ * @param {Array} iconProps
+ * @returns {React.ReactElement}
+ */
+export const iconizeMessage = func.partial(
+    func.rearg(func.choose)(1, 2, 0, 3)
+)({
+    [message.ASSOCIATE_ADDRESS]: func.partial(rce)(IconAutorenew),
+    [message.BACKUP]: func.partial(rce)(IconBackup),
+    [message.GENERATE_ADDRESS]: func.partial(rce)(IconPlaylistAdd),
+    [message.GENERATE_SIGNING_KEYS]: func.partial(rce)(IconVpnKey),
+    [message.RESTORE]: func.partial(rce)(IconRestore),
+    [message.SIGN_TRANSACTION]: func.partial(rce)(IconFingerprint),
+}, func.partial(rce)(IconLock))
