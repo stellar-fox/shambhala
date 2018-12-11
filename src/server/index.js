@@ -67,7 +67,8 @@ app.use((req, _res, next) => {
 
 
 
-// basic middlewares
+// basic middlewares and configuration
+app.enable("trust proxy")
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use((_req, res, next) => {
