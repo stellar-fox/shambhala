@@ -49,12 +49,18 @@ const useStyles = makeStyles((t) => ({
         height: "100%",
     },
 
-    appBarCenterPane: {
-        flexGrow: 1,
-        paddingLeft: t.spacing.unit * 2,
-        paddingRight: t.spacing.unit * 2,
+    header: {
+        "@media (max-height: 345px)": { display: "none" },
 
+        "& $appBarCenterPane": {
+            flexGrow: 1,
+            paddingLeft: t.spacing.unit * 2,
+            paddingRight: t.spacing.unit * 2,
+
+        },
     },
+
+    appBarCenterPane: {},
 
     main: {
         maxHeight: 400,
@@ -64,6 +70,19 @@ const useStyles = makeStyles((t) => ({
     },
 
     content: {
+        "@media (max-height: 380px)": {
+            marginTop: t.spacing.unit,
+            marginBottom: t.spacing.unit,
+            marginLeft: t.spacing.unit,
+            marginRight: t.spacing.unit,
+        },
+
+        "@media (max-width: 412px)": {
+            marginLeft: t.spacing.unit,
+            marginRight: t.spacing.unit,
+        },
+
+        minWidth: 240,
         maxWidth: 500,
         flexGrow: 1,
         marginTop: t.spacing.unit * 4,
@@ -143,6 +162,9 @@ const useStyles = makeStyles((t) => ({
     no: {},
 
     footer: {
+
+        "@media (max-height: 380px)": { display: "none" },
+
         padding: t.spacing.unit,
 
         "& $text": {
@@ -190,7 +212,7 @@ const Layout = ({
         style={style}
     >
 
-        <Grid item>
+        <Grid item className={css.header}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" color="inherit">
