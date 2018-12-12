@@ -80,6 +80,10 @@ const importLibs = async () => ({
  * @returns {Object}
  */
 const devEnvLibs = async () => ({
+    classNames: await import(
+        /* webpackChunkName: "csnms" */
+        "classnames"
+    ).then(mDef),
     redshift: await import(
         /* webpackChunkName: "rs" */
         "@stellar-fox/redshift"
