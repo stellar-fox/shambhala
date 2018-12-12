@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="41cm" height="38cm" viewBox="262 716 802 759" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="270.88" y="725" width="785.258" height="742.63"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff" x="270.88" y="725" width="785.258" height="742.63"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="663.509" y="1100.21">
+      <tspan x="663.509" y="1100.21"></tspan>
+    </text>
+  </g>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="263.708" y="717.958" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1056.21" y="717.956" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="263.724" y="1467.74" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1056.21" y="1467.75" width="7.13002" height="7.13002"/>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" x1="557.102" y1="861.512" x2="557.102" y2="1449.45"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="552.102,1441.68 557.102,1451.68 562.102,1441.68 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="504.906" y="1014.29" width="106.986" height="22.6273"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff" x="504.906" y="1014.29" width="106.986" height="22.6273"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="505.326" y="982.56" width="106.986" height="22.6273"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff" x="505.326" y="982.56" width="106.986" height="22.6273"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="366.722" y1="988.359" x2="766.114" y2="988.282"/>
+    <polygon style="fill: #000000" points="366.721,983.359 350.722,988.362 366.723,993.359 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="366.721,983.359 350.722,988.362 366.723,993.359 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="557.116" y="1001.34">request for PIN</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="749.488" y1="908.186" x2="567.572" y2="908.163"/>
+    <polygon style="fill: #000000" points="749.487,913.186 765.488,908.188 749.489,903.186 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="749.487,913.186 765.488,908.188 749.489,903.186 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="667.03" y="921.799">generateSigningKeys()</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="533.89" y1="890.437" x2="348.374" y2="890.51"/>
+    <polygon style="fill: #000000" points="533.892,895.437 549.89,890.43 533.888,885.437 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="533.892,895.437 549.89,890.43 533.888,885.437 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="449.632" y="902.808">request keys</text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" x1="341.4" y1="860.254" x2="341.4" y2="1451.32"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="336.4,1443.55 341.4,1453.55 346.4,1443.55 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" x1="776.646" y1="862.768" x2="776.646" y2="1450.07"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="771.646,1442.31 776.646,1452.31 781.646,1442.31 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 8; stroke: #000000" x1="987.254" y1="862.14" x2="987.254" y2="1450.69"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="982.254,1442.93 987.254,1452.93 992.254,1442.93 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="749.82" y1="1018.73" x2="349.722" y2="1018.64"/>
+    <polygon style="fill: #000000" points="749.819,1023.73 765.82,1018.73 749.821,1013.73 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="749.819,1023.73 765.82,1018.73 749.821,1013.73 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="558.272" y="1032.31">provide PIN</text>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="745.642" y="1098.48">
+    <tspan x="745.642" y="1098.48"></tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="963.381" y1="1079.81" x2="784.794" y2="1079.88"/>
+    <polygon style="fill: #000000" points="963.383,1084.81 979.381,1079.8 963.379,1074.81 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="963.383,1084.81 979.381,1079.8 963.379,1074.81 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="871.533" y="1093.68">request for C_PASSPHRASE</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="979.106,1103.85 870.056,1103.85 870.084,1130.63 970.154,1130.58 "/>
+    <polygon style="fill: #000000" points="977.654,1130.58 967.657,1135.58 970.154,1130.58 967.651,1125.58 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="977.654,1130.58 967.657,1135.58 970.154,1130.58 967.651,1125.58 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="877.664" y="1125.04">
+    <tspan x="877.664" y="1125.04">generate SKP</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="923.698" y="1133.5">
+    <tspan x="923.698" y="1133.5"></tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="978.512,1146.07 869.462,1146.07 869.46,1172.79 969.558,1172.79 "/>
+    <polygon style="fill: #000000" points="977.058,1172.79 967.058,1177.79 969.558,1172.79 967.058,1167.79 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="977.058,1172.79 967.058,1177.79 969.558,1172.79 967.058,1167.79 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="880.334" y="1167.8">
+    <tspan x="880.334" y="1167.8">encrypt SKP</tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="977.916,1187.1 795.832,1187.1 795.904,1213.91 968.532,1213.97 "/>
+    <polygon style="fill: #000000" points="976.032,1213.97 966.031,1218.97 968.532,1213.97 966.034,1208.97 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="976.032,1213.97 966.031,1218.97 968.532,1213.97 966.034,1208.97 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="802.332" y="1207.84">
+    <tspan x="802.332" y="1207.84">compute C_PASSPHRASE</tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="837.58" y="1072.6">
+    <tspan x="837.58" y="1072.6">pass S_KEY</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="803.254" y1="1243.89" x2="979.318" y2="1243.96"/>
+    <polygon style="fill: #000000" points="803.256,1238.89 787.254,1243.88 803.252,1248.89 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="803.256,1238.89 787.254,1243.88 803.252,1248.89 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="881.984" y="1256.93">pass S_PUBLIC</text>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="821.932" y="1237.56">
+    <tspan x="821.932" y="1237.56">pass C_PASSPHRASE</tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="766.64,1263.62 657.592,1263.62 657.618,1290.4 756.67,1290.39 "/>
+    <polygon style="fill: #000000" points="764.17,1290.39 754.17,1295.39 756.67,1290.39 754.169,1285.39 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="764.17,1290.39 754.17,1295.39 756.67,1290.39 754.169,1285.39 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="664.852" y="1284.4">
+    <tspan x="664.852" y="1284.4">derive C_KEY</tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="765.992,1307.06 656.944,1307.06 656.97,1333.84 757.04,1333.79 "/>
+    <polygon style="fill: #000000" points="764.54,1333.78 754.543,1338.79 757.04,1333.79 754.537,1328.79 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="764.54,1333.78 754.543,1338.79 757.04,1333.79 754.537,1328.79 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="662.755" y="1328.5">
+    <tspan x="662.755" y="1328.5">generate CKP</tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="765.346,1347.26 656.296,1347.26 656.294,1373.99 756.394,1373.98 "/>
+    <polygon style="fill: #000000" points="763.894,1373.98 753.894,1378.98 756.394,1373.98 753.894,1368.98 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="763.894,1373.98 753.894,1378.98 756.394,1373.98 753.894,1368.98 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="668.201" y="1369.07">
+    <tspan x="668.201" y="1369.07">encrypt CKP</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="585.116" y1="1403.55" x2="760.58" y2="1403.62"/>
+    <polygon style="fill: #000000" points="585.118,1398.55 569.116,1403.55 585.114,1408.55 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="585.118,1398.55 569.116,1403.55 585.114,1408.55 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="663.546" y="1416.6">pass S_PUBLIC</text>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="617.321" y="1397.36">
+    <tspan x="617.321" y="1397.36">pass C_PUBLIC</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="370.136" y1="1425.3" x2="545.6" y2="1425.37"/>
+    <polygon style="fill: #000000" points="370.138,1420.3 354.136,1425.3 370.134,1430.3 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="370.138,1420.3 354.136,1425.3 370.134,1430.3 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="448.566" y="1438.35">success</text>
+  </g>
+  <g>
+    <g>
+      <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="765.82,1040.64 656.772,1040.64 656.798,1067.42 755.848,1067.41 "/>
+      <polygon style="fill: #000000" points="763.348,1067.41 753.348,1072.41 755.848,1067.41 753.348,1062.41 "/>
+      <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="763.348,1067.41 753.348,1072.41 755.848,1067.41 753.348,1062.41 "/>
+    </g>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="664.032" y="1061.42">
+      <tspan x="664.032" y="1061.42">derive S_KEY</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <rect style="fill: #ffffff" x="288.112" y="737.7" width="106.337" height="127.735"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="288.112" y="737.7" width="106.337" height="127.735"/>
+    </g>
+    <g>
+      <ellipse style="fill: #ffffff" cx="341" cy="763.134" rx="6" ry="6"/>
+      <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="341" cy="763.134" rx="6" ry="6"/>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="317" y1="775.134" x2="365" y2="775.134"/>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="341" y1="769.134" x2="341" y2="799.134"/>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="341" y1="799.134" x2="317" y2="825.134"/>
+      <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="341" y1="799.134" x2="365" y2="825.134"/>
+      <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="341" y="849.034">
+        <tspan x="341" y="849.034"></tspan>
+      </text>
+    </g>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="341.282" y="846.934">
+      <tspan x="341.282" y="846.934">user</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <rect style="fill: #ffffff" x="506.39" y="737.7" width="319.893" height="127.735"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="506.39" y="737.7" width="319.893" height="127.735"/>
+    </g>
+    <g>
+      <path style="fill: #c9c9b6" d="M 654.013 804.124 L 694.624,804.124 L 677.549,821.257 L 636.938,821.257 L 654.013,804.124z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 654.013 804.124 L 694.624,804.124 L 677.549,821.257 L 636.938,821.257 L 654.013,804.124"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 655.572 818.363 L 655.572,818.454 L 655.589,818.529 L 655.614,818.628 L 655.647,818.728 L 655.697,818.803 L 655.755,818.894 L 655.829,818.977 L 655.904,819.051 L 655.979,819.143 L 656.078,819.234 L 656.178,819.309 L 656.285,819.375 L 656.41,819.441 L 656.526,819.516 L 656.675,819.574 L 656.808,819.649 L 656.957,819.707 L 657.123,819.765 L 657.289,819.814 L 657.447,819.864 L 657.621,819.914 L 657.795,819.964 L 657.977,819.989 L 658.176,820.022 L 658.367,820.038 L 658.566,820.071 L 658.748,820.096 L 658.956,820.121 L 659.163,820.13 L 659.362,820.138 L 659.561,820.138"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 659.122 820.138 L 659.321,820.138 L 659.511,820.13 L 659.702,820.113 L 659.901,820.088 L 660.1,820.071 L 660.283,820.038 L 660.465,820.022 L 660.656,819.98 L 660.83,819.939 L 661.012,819.889 L 661.17,819.839 L 661.336,819.79 L 661.493,819.731 L 661.643,819.673 L 661.775,819.615 L 661.916,819.549 L 662.049,819.474 L 662.165,819.408 L 662.281,819.325 L 662.381,819.242 L 662.472,819.159 L 662.547,819.085 L 662.63,818.993 L 662.696,818.902 L 662.746,818.828 L 662.804,818.736 L 662.829,818.628 L 662.854,818.537 L 662.878,818.454 L 662.887,818.363"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 660.001 815.038 L 659.793,815.038 L 659.594,815.046 L 659.387,815.046 L 659.205,815.063 L 659.006,815.087 L 658.807,815.104 L 658.616,815.121 L 658.417,815.162 L 658.243,815.195 L 658.068,815.22 L 657.894,815.262 L 657.72,815.311 L 657.563,815.353 L 657.413,815.403 L 657.264,815.469 L 657.098,815.519 L 656.982,815.577 L 656.849,815.626 L 656.725,815.693 L 656.625,815.767 L 656.518,815.834 L 656.426,815.892 L 656.335,815.966 L 656.269,816.041 L 656.203,816.124 L 656.136,816.199 L 656.103,816.265 L 656.062,816.348 L 656.037,816.414 L 656.028,816.505 L 656.02,816.572"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 663.318 816.572 L 663.318,816.497 L 663.31,816.414 L 663.276,816.34 L 663.243,816.248 L 663.202,816.182 L 663.135,816.091 L 663.069,816.025 L 663.003,815.942 L 662.903,815.884 L 662.829,815.801 L 662.729,815.734 L 662.596,815.676 L 662.489,815.593 L 662.364,815.552 L 662.232,815.485 L 662.082,815.419 L 661.925,815.369 L 661.767,815.32 L 661.61,815.278 L 661.444,815.245 L 661.27,815.204 L 661.087,815.162 L 660.913,815.137 L 660.731,815.104 L 660.548,815.087 L 660.357,815.063 L 660.158,815.046 L 659.951,815.046 L 659.752,815.038 L 659.561,815.038"/>
+      <path style="fill: #a5a585" d="M 636.938 823.032 L 677.549,823.032 L 677.549,821.257 L 636.938,821.257 L 636.938,823.032z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 636.938 823.032 L 677.549,823.032 L 677.549,821.257 L 636.938,821.257 L 636.938,823.032"/>
+      <path style="fill: #a5a585" d="M 654.013 804.124 L 694.624,804.124 L 694.624,776.343 L 654.013,776.343 L 654.013,804.124z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 654.013 804.124 L 694.624,804.124 L 694.624,776.343 L 654.013,776.343 L 654.013,804.124"/>
+      <path style="fill: #7a7a5a" d="M 695.735 803.029 L 695.735,775.248 L 694.624,776.343 L 694.624,804.124 L 695.735,803.029z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 695.735 803.029 L 695.735,775.248 L 694.624,776.343 L 694.624,804.124 L 695.735,803.029"/>
+      <path style="fill: #ffffff" d="M 656.02 802.358 L 692.634,802.358 L 692.634,778.573 L 656.02,778.573 L 656.02,802.358z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 656.02 802.358 L 692.634,802.358 L 692.634,778.573 L 656.02,778.573 L 656.02,802.358"/>
+      <path style="fill: #93936c" d="M 656.02 805.468 L 690.179,805.468 L 681.305,814.366 L 647.147,814.366 L 656.02,805.468z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 656.02 805.468 L 690.179,805.468 L 681.305,814.366 L 647.147,814.366 L 656.02,805.468"/>
+      <path style="fill: #7a7a5a" d="M 661.336 817.799 L 661.336,817.749 L 661.328,817.7 L 661.319,817.65 L 661.294,817.592 L 661.286,817.542 L 661.253,817.501 L 661.236,817.451 L 661.195,817.418 L 661.153,817.368 L 661.129,817.318 L 661.087,817.277 L 661.037,817.235 L 660.988,817.186 L 660.93,817.144 L 660.88,817.119 L 660.822,817.078 L 660.755,817.045 L 660.681,817.02 L 660.623,816.978 L 660.548,816.962 L 660.473,816.928 L 660.407,816.912 L 660.324,816.887 L 660.25,816.87 L 660.158,816.854 L 660.084,816.829 L 660.001,816.821 L 659.926,816.821 L 659.843,816.812 L 659.744,816.812 L 659.677,816.812 L 659.677,816.812 L 659.586,816.812 L 659.495,816.812 L 659.42,816.821 L 659.337,816.821 L 659.263,816.829 L 659.171,816.854 L 659.097,816.87 L 659.014,816.887 L 658.939,816.912 L 658.865,816.928 L 658.798,816.962 L 658.715,816.978 L 658.657,817.02 L 658.591,817.045 L 658.525,817.078 L 658.467,817.119 L 658.417,817.144 L 658.359,817.186 L 658.309,817.235 L 658.268,817.277 L 658.209,817.318 L 658.185,817.368 L 658.135,817.418 L 658.11,817.451 L 658.085,817.501 L 658.06,817.542 L 658.044,817.592 L 658.035,817.65 L 658.019,817.7 L 658.002,817.749 L 658.002,817.799 L 658.002,817.799 L 658.002,817.857 L 658.019,817.907 L 658.035,817.957 L 658.044,818.007 L 658.06,818.056 L 658.085,818.098 L 658.11,818.156 L 658.135,818.197 L 658.185,818.247 L 658.209,818.28 L 658.268,818.33 L 658.309,818.371 L 658.359,818.421 L 658.417,818.454 L 658.467,818.488 L 658.525,818.529 L 658.591,818.562 L 658.657,818.587 L 658.715,818.628 L 658.798,818.645 L 658.865,818.678 L 658.939,818.695 L 659.014,818.72 L 659.097,818.736 L 659.171,818.753 L 659.263,818.769 L 659.337,818.786 L 659.42,818.786 L 659.495,818.786 L 659.586,818.794 L 659.677,818.794 L 659.677,818.794 L 659.744,818.794 L 659.843,818.786 L 659.926,818.786 L 660.001,818.786 L 660.084,818.769 L 660.158,818.753 L 660.25,818.736 L 660.324,818.72 L 660.407,818.695 L 660.473,818.678 L 660.548,818.645 L 660.623,818.628 L 660.681,818.587 L 660.755,818.562 L 660.822,818.529 L 660.88,818.488 L 660.93,818.454 L 660.988,818.421 L 661.037,818.371 L 661.087,818.33 L 661.129,818.28 L 661.153,818.247 L 661.195,818.197 L 661.236,818.156 L 661.253,818.098 L 661.286,818.056 L 661.294,818.007 L 661.319,817.957 L 661.328,817.907 L 661.336,817.857 L 661.336,817.799z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 661.12 817.7 L 661.12,817.65 L 661.112,817.6 L 661.112,817.559 L 661.087,817.526 L 661.071,817.459 L 661.062,817.434 L 661.021,817.385 L 660.988,817.335 L 660.963,817.302 L 660.93,817.268 L 660.88,817.235 L 660.838,817.177 L 660.789,817.144 L 660.739,817.119 L 660.697,817.078 L 660.631,817.045 L 660.581,817.028 L 660.523,816.986 L 660.465,816.97 L 660.391,816.937 L 660.324,816.92 L 660.25,816.904 L 660.183,816.879 L 660.109,816.862 L 660.034,816.854 L 659.951,816.829 L 659.885,816.821 L 659.793,816.812 L 659.727,816.812 L 659.644,816.812 L 659.57,816.812 L 659.57,816.812 L 659.487,816.812 L 659.412,816.812 L 659.329,816.812 L 659.263,816.821 L 659.18,816.829 L 659.113,816.854 L 659.022,816.862 L 658.956,816.879 L 658.898,816.904 L 658.815,816.92 L 658.748,816.937 L 658.666,816.97 L 658.624,816.986 L 658.549,817.028 L 658.5,817.045 L 658.442,817.078 L 658.392,817.119 L 658.342,817.144 L 658.292,817.177 L 658.251,817.235 L 658.209,817.268 L 658.176,817.302 L 658.135,817.335 L 658.118,817.385 L 658.085,817.434 L 658.068,817.459 L 658.052,817.526 L 658.035,817.559 L 658.027,817.6 L 658.019,817.65 L 658.019,817.7 L 658.019,817.7 L 658.019,817.741 L 658.027,817.791 L 658.035,817.841 L 658.052,817.866 L 658.068,817.915 L 658.085,817.965 L 658.118,818.007 L 658.135,818.048 L 658.176,818.098 L 658.209,818.123 L 658.251,818.164 L 658.292,818.206 L 658.342,818.247 L 658.392,818.272 L 658.442,818.313 L 658.5,818.338 L 658.549,818.371 L 658.624,818.405 L 658.666,818.421 L 658.748,818.454 L 658.815,818.479 L 658.898,818.488 L 658.956,818.512 L 659.022,818.529 L 659.113,818.537 L 659.18,818.562 L 659.263,818.579 L 659.329,818.579 L 659.412,818.579 L 659.487,818.579 L 659.57,818.579 L 659.57,818.579 L 659.644,818.579 L 659.727,818.579 L 659.793,818.579 L 659.885,818.579 L 659.951,818.562 L 660.034,818.537 L 660.109,818.529 L 660.183,818.512 L 660.25,818.488 L 660.324,818.479 L 660.391,818.454 L 660.465,818.421 L 660.523,818.405 L 660.581,818.371 L 660.631,818.338 L 660.697,818.313 L 660.739,818.272 L 660.789,818.247 L 660.838,818.206 L 660.88,818.164 L 660.93,818.123 L 660.963,818.098 L 660.988,818.048 L 661.021,818.007 L 661.062,817.965 L 661.071,817.915 L 661.087,817.866 L 661.112,817.841 L 661.112,817.791 L 661.12,817.741 L 661.12,817.7"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 655.804 818.579 L 655.804,818.678 L 655.821,818.753 L 655.854,818.844 L 655.879,818.944 L 655.929,819.027 L 655.979,819.101 L 656.053,819.192 L 656.128,819.284 L 656.211,819.358 L 656.294,819.441 L 656.402,819.516 L 656.501,819.599 L 656.634,819.665 L 656.758,819.731 L 656.891,819.79 L 657.032,819.864 L 657.189,819.922 L 657.33,819.98 L 657.513,820.03 L 657.679,820.08 L 657.853,820.138 L 658.027,820.179 L 658.209,820.204 L 658.392,820.237 L 658.591,820.271 L 658.782,820.287 L 658.972,820.32 L 659.171,820.337 L 659.379,820.345 L 659.578,820.345 L 659.777,820.345"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 659.329 820.345 L 659.536,820.345 L 659.727,820.345 L 659.934,820.329 L 660.117,820.304 L 660.308,820.287 L 660.507,820.271 L 660.681,820.237 L 660.871,820.196 L 661.037,820.154 L 661.22,820.121 L 661.394,820.071 L 661.552,820.022 L 661.709,819.964 L 661.858,819.889 L 662.008,819.831 L 662.132,819.765 L 662.265,819.698 L 662.381,819.615 L 662.489,819.549 L 662.596,819.458 L 662.688,819.391 L 662.779,819.309 L 662.854,819.209 L 662.903,819.118 L 662.978,819.043 L 663.011,818.944 L 663.053,818.852 L 663.086,818.753 L 663.086,818.678 L 663.102,818.579"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 660.216 815.253 L 660.026,815.253 L 659.827,815.262 L 659.628,815.262 L 659.429,815.278 L 659.221,815.303 L 659.022,815.311 L 658.848,815.344 L 658.649,815.369 L 658.467,815.419 L 658.292,815.436 L 658.118,815.485 L 657.952,815.519 L 657.787,815.577 L 657.637,815.626 L 657.488,815.676 L 657.33,815.726 L 657.206,815.784 L 657.073,815.842 L 656.957,815.917 L 656.849,815.983 L 656.75,816.041 L 656.65,816.124 L 656.551,816.182 L 656.493,816.248 L 656.426,816.34 L 656.368,816.406 L 656.319,816.489 L 656.285,816.555 L 656.261,816.63 L 656.252,816.721 L 656.244,816.804"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 663.55 816.804 L 663.534,816.713 L 663.525,816.63 L 663.509,816.555 L 663.467,816.472 L 663.417,816.398 L 663.359,816.315 L 663.293,816.248 L 663.218,816.174 L 663.135,816.091 L 663.036,816.025 L 662.936,815.95 L 662.829,815.884 L 662.696,815.825 L 662.58,815.767 L 662.439,815.709 L 662.306,815.643 L 662.157,815.593 L 661.999,815.552 L 661.825,815.502 L 661.659,815.469 L 661.493,815.419 L 661.319,815.386 L 661.137,815.353 L 660.938,815.32 L 660.764,815.303 L 660.573,815.278 L 660.374,815.262 L 660.167,815.262 L 659.984,815.253 L 659.777,815.253"/>
+      <path style="fill: #7a7a5a" d="M 694.624 805.683 L 677.549,822.816 L 677.549,821.257 L 694.624,804.124 L 694.624,805.683z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 694.624 805.683 L 677.549,822.816 L 677.549,821.257 L 694.624,804.124 L 694.624,805.683"/>
+      <path style="fill: #7a7a5a" d="M 688.86 802.814 L 688.86,803.237 L 692.186,803.237 L 692.186,802.814 L 688.86,802.814z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 688.86 802.814 L 688.86,803.237 L 692.186,803.237 L 692.186,802.814 L 688.86,802.814"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 687.948 807.69 L 654.013,807.69"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 685.742 809.921 L 651.807,809.921"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 683.528 812.143 L 649.585,812.143"/>
+      <path style="fill: #c9c9b6" d="M 655.124 775.248 L 695.735,775.248 L 694.624,776.343 L 654.013,776.343 L 655.124,775.248z"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 655.124 775.248 L 695.735,775.248 L 694.624,776.343 L 654.013,776.343 L 655.124,775.248"/>
+    </g>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="558.568" y="847.952">
+      <tspan x="558.568" y="847.952">host</tspan>
+    </text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="776.758" y="846.312">
+      <tspan x="776.758" y="846.312">client</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <rect style="fill: #ffffff" x="934.982" y="737.7" width="106.337" height="127.735"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="934.982" y="737.7" width="106.337" height="127.735"/>
+    </g>
+    <g>
+      <rect style="fill: #b3b3b3" x="975.143" y="759.332" width="24.366" height="56.8541"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 1.6; stroke: #000000" x="975.143" y="759.332" width="24.366" height="56.8541"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="977.58" y="762.743" width="19.4928" height="6.49761"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="977.58" y="769.241" width="19.4928" height="6.49761"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="977.58" y="775.738" width="19.4928" height="6.49761"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="977.58" y="782.236" width="19.4928" height="6.49761"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="977.58" y="790.033" width="12.183" height="3.89856"/>
+      <ellipse style="fill: #00ff00" cx="995.854" cy="790.683" rx="0.852811" ry="0.852811"/>
+      <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="995.854" cy="790.683" rx="0.852811" ry="0.852811"/>
+      <ellipse style="fill: #ffff00" cx="995.854" cy="793.282" rx="0.852811" ry="0.852811"/>
+      <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="995.854" cy="793.282" rx="0.852811" ry="0.852811"/>
+      <rect style="fill: #ffffff" x="990.981" y="791.333" width="2.92392" height="2.59904"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="990.981" y="791.333" width="2.92392" height="2.59904"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 979.204 799.13 L 979.204,813.343"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 983.265 799.13 L 983.265,813.343"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 987.326 799.13 L 987.326,813.343"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 991.387 799.13 L 991.387,813.343"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 995.448 799.13 L 995.448,813.343"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 999.509 799.13 L 999.509,813.343"/>
+      <polygon style="fill: #999999" points="970.27,821.059 975.143,811.313 975.143,816.186 999.509,816.186 999.509,811.313 1006.01,821.059 "/>
+      <polygon style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" points="970.27,821.059 975.143,811.313 975.143,816.186 999.509,816.186 999.509,811.313 1006.01,821.059 "/>
+      <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="988.138" y="834.684">
+        <tspan x="988.138" y="834.684"></tspan>
+      </text>
+    </g>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="988.152" y="841.744">
+      <tspan x="988.152" y="841.744">server</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="764.171,937.359 621.657,937.359 621.645,964.139 755.219,964.085 "/>
+    <polygon style="fill: #000000" points="762.719,964.082 752.721,969.086 755.219,964.085 752.717,959.086 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="762.719,964.082 752.721,969.086 755.219,964.085 752.717,959.086 "/>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="630.185" y="957.793">
+    <tspan x="630.185" y="957.793">validate G_PUBLIC</tspan>
+  </text>
+</svg>
