@@ -17,3 +17,6 @@ package-lock.json
 /dist.host
 /dist.lib
 /dist.server
+
+# dia backup files
+*.dia~
