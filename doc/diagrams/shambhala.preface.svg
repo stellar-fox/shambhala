@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="39cm" height="25cm" viewBox="-1 11 778 497" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="7.82885" y="20.0358" width="760.753" height="480.071"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ffffff" x="7.82885" y="20.0358" width="760.753" height="480.071"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="388.205" y="263.971">
+      <tspan x="388.205" y="263.971"></tspan>
+    </text>
+  </g>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="0.513816" y="12.8598" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="768.55" y="13.0107" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="0.682715" y="500.246" width="7.13002" height="7.13002"/>
+  <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="768.548" y="500.254" width="7.13002" height="7.13002"/>
+  <g>
+    <rect style="fill: #ffffff" x="451.949" y="235.258" width="140.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="451.949" y="235.258" width="140.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="522.399" y="254.258">Transaction</text>
+    <rect style="fill: #ffffff" x="451.949" y="263.258" width="140.9" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="451.949" y="263.258" width="140.9" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="277.258">+CLIENT SIGNATURE</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="293.258">+SERVER SIGNATURE</text>
+    <rect style="fill: #ffffff" x="451.949" y="299.258" width="140.9" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="451.949" y="299.258" width="140.9" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="313.258">+Operation 1()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="329.258">+Operation 2()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="345.258">+...()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.949" y="361.258">+Operation N()</text>
+  </g>
+  <g>
+    <path style="fill: #ffffff" d="M 248.117 224.382 C 234.251,223.78 207.359,236.423 211.141,263.516 C 214.922,290.609 232.99,296.629 240.554,288.803 C 248.117,280.976 228.788,326.732 265.765,338.774 C 302.741,350.815 321.65,331.549 316.187,317.701 C 310.725,303.854 348.542,350.213 366.19,323.722 C 383.838,297.231 348.122,271.945 355.685,275.557 C 363.249,279.17 386.359,274.353 378.796,229.199 C 371.232,184.044 303.162,218.964 310.725,212.341 C 318.288,205.718 299.38,172.605 275.85,179.227 C 252.319,185.85 250.65,197.868 248.129,224.359 L 248.117,224.382z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 248.117 224.382 C 234.251,223.78 207.359,236.423 211.141,263.516 C 214.922,290.609 232.99,296.629 240.554,288.803 C 248.117,280.976 228.788,326.732 265.765,338.774 C 302.741,350.815 321.65,331.549 316.187,317.701 C 310.725,303.854 348.542,350.213 366.19,323.722 C 383.838,297.231 348.122,271.945 355.685,275.557 C 363.249,279.17 386.359,274.353 378.796,229.199 C 371.232,184.044 303.162,218.964 310.725,212.341 C 318.288,205.718 299.38,172.605 275.85,179.227 C 252.319,185.85 250.65,197.868 248.129,224.359 L 248.117,224.382"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="301.657" y="260.851">
+      <tspan x="301.657" y="260.851">stellar</tspan>
+      <tspan x="301.657" y="276.851">network</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <g>
+        <rect style="fill: #ffffff" x="351.022" y="42.4599" width="106.337" height="127.735"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="351.022" y="42.4599" width="106.337" height="127.735"/>
+      </g>
+      <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="404.192" y="136.562">
+        <tspan x="404.192" y="136.562">user's</tspan>
+        <tspan x="404.192" y="152.562">device</tspan>
+      </text>
+      <g>
+        <path style="fill: #c9c9b6" d="M 391.867 89.9422 L 432.477,89.9422 L 415.402,107.075 L 374.792,107.075 L 391.867,89.9422z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 391.867 89.9422 L 432.477,89.9422 L 415.402,107.075 L 374.792,107.075 L 391.867,89.9422"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 393.426 104.181 L 393.426,104.272 L 393.442,104.347 L 393.467,104.447 L 393.501,104.546 L 393.55,104.621 L 393.608,104.712 L 393.683,104.795 L 393.758,104.87 L 393.832,104.961 L 393.932,105.052 L 394.031,105.127 L 394.139,105.193 L 394.263,105.259 L 394.38,105.334 L 394.529,105.392 L 394.662,105.467 L 394.811,105.525 L 394.977,105.583 L 395.143,105.632 L 395.3,105.682 L 395.474,105.732 L 395.648,105.782 L 395.831,105.807 L 396.03,105.84 L 396.221,105.856 L 396.42,105.89 L 396.602,105.914 L 396.809,105.939 L 397.017,105.948 L 397.216,105.956 L 397.415,105.956"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 396.975 105.956 L 397.174,105.956 L 397.365,105.948 L 397.556,105.931 L 397.755,105.906 L 397.954,105.89 L 398.136,105.856 L 398.319,105.84 L 398.509,105.798 L 398.684,105.757 L 398.866,105.707 L 399.024,105.657 L 399.189,105.608 L 399.347,105.55 L 399.496,105.491 L 399.629,105.433 L 399.77,105.367 L 399.903,105.292 L 400.019,105.226 L 400.135,105.143 L 400.234,105.06 L 400.326,104.977 L 400.4,104.903 L 400.483,104.811 L 400.55,104.72 L 400.599,104.646 L 400.657,104.554 L 400.682,104.447 L 400.707,104.355 L 400.732,104.272 L 400.74,104.181"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 397.854 100.856 L 397.647,100.856 L 397.448,100.864 L 397.241,100.864 L 397.058,100.881 L 396.859,100.905 L 396.66,100.922 L 396.469,100.939 L 396.27,100.98 L 396.096,101.013 L 395.922,101.038 L 395.748,101.08 L 395.574,101.129 L 395.416,101.171 L 395.267,101.221 L 395.118,101.287 L 394.952,101.337 L 394.836,101.395 L 394.703,101.445 L 394.579,101.511 L 394.479,101.585 L 394.371,101.652 L 394.28,101.71 L 394.189,101.785 L 394.122,101.859 L 394.056,101.942 L 393.99,102.017 L 393.957,102.083 L 393.915,102.166 L 393.89,102.232 L 393.882,102.324 L 393.874,102.39"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 401.172 102.39 L 401.172,102.315 L 401.163,102.232 L 401.13,102.158 L 401.097,102.066 L 401.055,102 L 400.989,101.909 L 400.923,101.843 L 400.856,101.76 L 400.757,101.702 L 400.682,101.619 L 400.583,101.552 L 400.45,101.494 L 400.342,101.411 L 400.218,101.37 L 400.085,101.304 L 399.936,101.237 L 399.778,101.187 L 399.621,101.138 L 399.463,101.096 L 399.297,101.063 L 399.123,101.022 L 398.941,100.98 L 398.767,100.955 L 398.584,100.922 L 398.402,100.905 L 398.211,100.881 L 398.012,100.864 L 397.805,100.864 L 397.606,100.856 L 397.415,100.856"/>
+        <path style="fill: #a5a585" d="M 374.792 108.85 L 415.402,108.85 L 415.402,107.075 L 374.792,107.075 L 374.792,108.85z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 374.792 108.85 L 415.402,108.85 L 415.402,107.075 L 374.792,107.075 L 374.792,108.85"/>
+        <path style="fill: #a5a585" d="M 391.867 89.9422 L 432.477,89.9422 L 432.477,62.1607 L 391.867,62.1607 L 391.867,89.9422z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 391.867 89.9422 L 432.477,89.9422 L 432.477,62.1607 L 391.867,62.1607 L 391.867,89.9422"/>
+        <path style="fill: #7a7a5a" d="M 433.589 88.8475 L 433.589,61.0661 L 432.477,62.1607 L 432.477,89.9422 L 433.589,88.8475z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 433.589 88.8475 L 433.589,61.0661 L 432.477,62.1607 L 432.477,89.9422 L 433.589,88.8475"/>
+        <path style="fill: #ffffff" d="M 393.874 88.1758 L 430.487,88.1758 L 430.487,64.3915 L 393.874,64.3915 L 393.874,88.1758z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 393.874 88.1758 L 430.487,88.1758 L 430.487,64.3915 L 393.874,64.3915 L 393.874,88.1758"/>
+        <path style="fill: #93936c" d="M 393.874 91.2856 L 428.032,91.2856 L 419.159,100.184 L 385,100.184 L 393.874,91.2856z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 393.874 91.2856 L 428.032,91.2856 L 419.159,100.184 L 385,100.184 L 393.874,91.2856"/>
+        <path style="fill: #7a7a5a" d="M 399.189 103.617 L 399.189,103.568 L 399.181,103.518 L 399.173,103.468 L 399.148,103.41 L 399.14,103.36 L 399.107,103.319 L 399.09,103.269 L 399.049,103.236 L 399.007,103.186 L 398.982,103.136 L 398.941,103.095 L 398.891,103.053 L 398.841,103.004 L 398.783,102.962 L 398.733,102.937 L 398.675,102.896 L 398.609,102.863 L 398.534,102.838 L 398.476,102.796 L 398.402,102.78 L 398.327,102.747 L 398.261,102.73 L 398.178,102.705 L 398.103,102.688 L 398.012,102.672 L 397.937,102.647 L 397.854,102.639 L 397.78,102.639 L 397.697,102.63 L 397.597,102.63 L 397.531,102.63 L 397.531,102.63 L 397.44,102.63 L 397.348,102.63 L 397.274,102.639 L 397.191,102.639 L 397.116,102.647 L 397.025,102.672 L 396.95,102.688 L 396.867,102.705 L 396.793,102.73 L 396.718,102.747 L 396.652,102.78 L 396.569,102.796 L 396.511,102.838 L 396.445,102.863 L 396.378,102.896 L 396.32,102.937 L 396.27,102.962 L 396.212,103.004 L 396.163,103.053 L 396.121,103.095 L 396.063,103.136 L 396.038,103.186 L 395.988,103.236 L 395.964,103.269 L 395.939,103.319 L 395.914,103.36 L 395.897,103.41 L 395.889,103.468 L 395.872,103.518 L 395.856,103.568 L 395.856,103.617 L 395.856,103.617 L 395.856,103.675 L 395.872,103.725 L 395.889,103.775 L 395.897,103.825 L 395.914,103.874 L 395.939,103.916 L 395.964,103.974 L 395.988,104.015 L 396.038,104.065 L 396.063,104.098 L 396.121,104.148 L 396.163,104.189 L 396.212,104.239 L 396.27,104.272 L 396.32,104.306 L 396.378,104.347 L 396.445,104.38 L 396.511,104.405 L 396.569,104.447 L 396.652,104.463 L 396.718,104.496 L 396.793,104.513 L 396.867,104.538 L 396.95,104.554 L 397.025,104.571 L 397.116,104.588 L 397.191,104.604 L 397.274,104.604 L 397.348,104.604 L 397.44,104.612 L 397.531,104.612 L 397.531,104.612 L 397.597,104.612 L 397.697,104.604 L 397.78,104.604 L 397.854,104.604 L 397.937,104.588 L 398.012,104.571 L 398.103,104.554 L 398.178,104.538 L 398.261,104.513 L 398.327,104.496 L 398.402,104.463 L 398.476,104.447 L 398.534,104.405 L 398.609,104.38 L 398.675,104.347 L 398.733,104.306 L 398.783,104.272 L 398.841,104.239 L 398.891,104.189 L 398.941,104.148 L 398.982,104.098 L 399.007,104.065 L 399.049,104.015 L 399.09,103.974 L 399.107,103.916 L 399.14,103.874 L 399.148,103.825 L 399.173,103.775 L 399.181,103.725 L 399.189,103.675 L 399.189,103.617z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #dbdbce" d="M 398.974 103.518 L 398.974,103.468 L 398.966,103.418 L 398.966,103.377 L 398.941,103.344 L 398.924,103.277 L 398.916,103.252 L 398.874,103.203 L 398.841,103.153 L 398.816,103.12 L 398.783,103.087 L 398.733,103.053 L 398.692,102.995 L 398.642,102.962 L 398.592,102.937 L 398.551,102.896 L 398.485,102.863 L 398.435,102.846 L 398.377,102.805 L 398.319,102.788 L 398.244,102.755 L 398.178,102.738 L 398.103,102.722 L 398.037,102.697 L 397.962,102.68 L 397.887,102.672 L 397.805,102.647 L 397.738,102.639 L 397.647,102.63 L 397.581,102.63 L 397.498,102.63 L 397.423,102.63 L 397.423,102.63 L 397.34,102.63 L 397.266,102.63 L 397.183,102.63 L 397.116,102.639 L 397.033,102.647 L 396.967,102.672 L 396.876,102.68 L 396.809,102.697 L 396.751,102.722 L 396.668,102.738 L 396.602,102.755 L 396.519,102.788 L 396.478,102.805 L 396.403,102.846 L 396.353,102.863 L 396.295,102.896 L 396.245,102.937 L 396.196,102.962 L 396.146,102.995 L 396.105,103.053 L 396.063,103.087 L 396.03,103.12 L 395.988,103.153 L 395.972,103.203 L 395.939,103.252 L 395.922,103.277 L 395.905,103.344 L 395.889,103.377 L 395.881,103.418 L 395.872,103.468 L 395.872,103.518 L 395.872,103.518 L 395.872,103.559 L 395.881,103.609 L 395.889,103.659 L 395.905,103.684 L 395.922,103.733 L 395.939,103.783 L 395.972,103.825 L 395.988,103.866 L 396.03,103.916 L 396.063,103.941 L 396.105,103.982 L 396.146,104.024 L 396.196,104.065 L 396.245,104.09 L 396.295,104.131 L 396.353,104.156 L 396.403,104.189 L 396.478,104.223 L 396.519,104.239 L 396.602,104.272 L 396.668,104.297 L 396.751,104.306 L 396.809,104.33 L 396.876,104.347 L 396.967,104.355 L 397.033,104.38 L 397.116,104.397 L 397.183,104.397 L 397.266,104.397 L 397.34,104.397 L 397.423,104.397 L 397.423,104.397 L 397.498,104.397 L 397.581,104.397 L 397.647,104.397 L 397.738,104.397 L 397.805,104.38 L 397.887,104.355 L 397.962,104.347 L 398.037,104.33 L 398.103,104.306 L 398.178,104.297 L 398.244,104.272 L 398.319,104.239 L 398.377,104.223 L 398.435,104.189 L 398.485,104.156 L 398.551,104.131 L 398.592,104.09 L 398.642,104.065 L 398.692,104.024 L 398.733,103.982 L 398.783,103.941 L 398.816,103.916 L 398.841,103.866 L 398.874,103.825 L 398.916,103.783 L 398.924,103.733 L 398.941,103.684 L 398.966,103.659 L 398.966,103.609 L 398.974,103.559 L 398.974,103.518"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 393.658 104.397 L 393.658,104.496 L 393.675,104.571 L 393.708,104.662 L 393.733,104.762 L 393.782,104.845 L 393.832,104.919 L 393.907,105.01 L 393.982,105.102 L 394.064,105.176 L 394.147,105.259 L 394.255,105.334 L 394.355,105.417 L 394.487,105.483 L 394.612,105.55 L 394.744,105.608 L 394.885,105.682 L 395.043,105.74 L 395.184,105.798 L 395.366,105.848 L 395.532,105.898 L 395.706,105.956 L 395.881,105.997 L 396.063,106.022 L 396.245,106.055 L 396.445,106.089 L 396.635,106.105 L 396.826,106.138 L 397.025,106.155 L 397.232,106.163 L 397.431,106.163 L 397.63,106.163"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 397.183 106.163 L 397.39,106.163 L 397.581,106.163 L 397.788,106.147 L 397.97,106.122 L 398.161,106.105 L 398.36,106.089 L 398.534,106.055 L 398.725,106.014 L 398.891,105.972 L 399.073,105.939 L 399.248,105.89 L 399.405,105.84 L 399.563,105.782 L 399.712,105.707 L 399.861,105.649 L 399.986,105.583 L 400.118,105.516 L 400.234,105.433 L 400.342,105.367 L 400.45,105.276 L 400.541,105.21 L 400.632,105.127 L 400.707,105.027 L 400.757,104.936 L 400.831,104.861 L 400.865,104.762 L 400.906,104.67 L 400.939,104.571 L 400.939,104.496 L 400.956,104.397"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 398.07 101.071 L 397.879,101.071 L 397.68,101.08 L 397.481,101.08 L 397.282,101.096 L 397.075,101.121 L 396.876,101.129 L 396.702,101.163 L 396.503,101.187 L 396.32,101.237 L 396.146,101.254 L 395.972,101.304 L 395.806,101.337 L 395.64,101.395 L 395.491,101.445 L 395.342,101.494 L 395.184,101.544 L 395.06,101.602 L 394.927,101.66 L 394.811,101.735 L 394.703,101.801 L 394.603,101.859 L 394.504,101.942 L 394.404,102 L 394.346,102.066 L 394.28,102.158 L 394.222,102.224 L 394.172,102.307 L 394.139,102.373 L 394.114,102.448 L 394.106,102.539 L 394.098,102.622"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #626248" d="M 401.404 102.622 L 401.387,102.531 L 401.379,102.448 L 401.362,102.373 L 401.321,102.29 L 401.271,102.216 L 401.213,102.133 L 401.147,102.066 L 401.072,101.992 L 400.989,101.909 L 400.89,101.843 L 400.79,101.768 L 400.682,101.702 L 400.55,101.644 L 400.433,101.585 L 400.292,101.527 L 400.16,101.461 L 400.01,101.411 L 399.853,101.37 L 399.679,101.32 L 399.513,101.287 L 399.347,101.237 L 399.173,101.204 L 398.99,101.171 L 398.791,101.138 L 398.617,101.121 L 398.427,101.096 L 398.228,101.08 L 398.02,101.08 L 397.838,101.071 L 397.63,101.071"/>
+        <path style="fill: #7a7a5a" d="M 432.477 91.5012 L 415.402,108.635 L 415.402,107.075 L 432.477,89.9422 L 432.477,91.5012z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 432.477 91.5012 L 415.402,108.635 L 415.402,107.075 L 432.477,89.9422 L 432.477,91.5012"/>
+        <path style="fill: #7a7a5a" d="M 426.714 88.6319 L 426.714,89.0548 L 430.039,89.0548 L 430.039,88.6319 L 426.714,88.6319z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 426.714 88.6319 L 426.714,89.0548 L 430.039,89.0548 L 430.039,88.6319 L 426.714,88.6319"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 425.802 93.5081 L 391.867,93.5081"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 423.596 95.7389 L 389.661,95.7389"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #000000" d="M 421.381 97.9615 L 387.438,97.9615"/>
+        <path style="fill: #c9c9b6" d="M 392.978 61.0661 L 433.589,61.0661 L 432.477,62.1607 L 391.867,62.1607 L 392.978,61.0661z"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke: #494936" d="M 392.978 61.0661 L 433.589,61.0661 L 432.477,62.1607 L 391.867,62.1607 L 392.978,61.0661"/>
+      </g>
+    </g>
+    <g>
+      <rect style="fill: #ffffff" x="438.014" y="115.594" width="60.0017" height="52.9427"/>
+      <ellipse style="fill: #ffffff" cx="468.015" cy="168.537" rx="30.0008" ry="8.82378"/>
+      <ellipse style="fill: #ffffff" cx="468.015" cy="115.594" rx="30.0008" ry="8.82378"/>
+      <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="468.015" cy="115.594" rx="30.0008" ry="8.82378"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 498.016 115.594 L 498.016,168.537 C 498.016,173.41 484.584,177.361 468.015,177.361 C 451.446,177.361 438.014,173.41 438.014,168.537 L 438.014,115.594"/>
+      <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="468.015" y="189.361">
+        <tspan x="468.015" y="189.361"></tspan>
+      </text>
+    </g>
+    <text font-size="9.03097" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="468.015" y="140.807">
+      <tspan x="468.015" y="140.807">encrypted</tspan>
+      <tspan x="468.015" y="152.096">client</tspan>
+      <tspan x="468.015" y="163.385">signing key</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <g>
+        <rect style="fill: #ffffff" x="595.72" y="58.5627" width="106.337" height="127.735"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="595.72" y="58.5627" width="106.337" height="127.735"/>
+      </g>
+      <g>
+        <rect style="fill: #b3b3b3" x="635.881" y="80.1947" width="24.366" height="56.8541"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 1.6; stroke: #000000" x="635.881" y="80.1947" width="24.366" height="56.8541"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="638.318" y="83.606" width="19.4928" height="6.49761"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="638.318" y="90.1036" width="19.4928" height="6.49761"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="638.318" y="96.6012" width="19.4928" height="6.49761"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="638.318" y="103.099" width="19.4928" height="6.49761"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="638.318" y="110.896" width="12.183" height="3.89856"/>
+        <ellipse style="fill: #00ff00" cx="656.592" cy="111.546" rx="0.852811" ry="0.852811"/>
+        <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="656.592" cy="111.546" rx="0.852811" ry="0.852811"/>
+        <ellipse style="fill: #ffff00" cx="656.592" cy="114.145" rx="0.852811" ry="0.852811"/>
+        <ellipse style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" cx="656.592" cy="114.145" rx="0.852811" ry="0.852811"/>
+        <rect style="fill: #ffffff" x="651.719" y="112.195" width="2.92392" height="2.59904"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" x="651.719" y="112.195" width="2.92392" height="2.59904"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 639.942 119.993 L 639.942,134.206"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 644.003 119.993 L 644.003,134.206"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 648.064 119.993 L 648.064,134.206"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 652.125 119.993 L 652.125,134.206"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 656.186 119.993 L 656.186,134.206"/>
+        <path style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" d="M 660.247 119.993 L 660.247,134.206"/>
+        <polygon style="fill: #999999" points="631.008,141.922 635.881,132.176 635.881,137.049 660.247,137.049 660.247,132.176 666.745,141.922 "/>
+        <polygon style="fill: none; fill-opacity:0; stroke-width: 0.2; stroke: #000000" points="631.008,141.922 635.881,132.176 635.881,137.049 660.247,137.049 660.247,132.176 666.745,141.922 "/>
+        <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="648.876" y="155.546">
+          <tspan x="648.876" y="155.546"></tspan>
+        </text>
+      </g>
+      <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="648.89" y="162.607">
+        <tspan x="648.89" y="162.607">server</tspan>
+      </text>
+    </g>
+    <g>
+      <rect style="fill: #ffffff" x="681.242" y="132.475" width="60.0017" height="52.9427"/>
+      <ellipse style="fill: #ffffff" cx="711.243" cy="185.418" rx="30.0008" ry="8.82378"/>
+      <ellipse style="fill: #ffffff" cx="711.243" cy="132.475" rx="30.0008" ry="8.82378"/>
+      <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="711.243" cy="132.475" rx="30.0008" ry="8.82378"/>
+      <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 741.244 132.475 L 741.244,185.418 C 741.244,190.291 727.812,194.242 711.243,194.242 C 694.674,194.242 681.242,190.291 681.242,185.418 L 681.242,132.475"/>
+      <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="711.243" y="206.242">
+        <tspan x="711.243" y="206.242"></tspan>
+      </text>
+    </g>
+    <text font-size="9.03097" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="711.243" y="157.688">
+      <tspan x="711.243" y="157.688">encrypted</tspan>
+      <tspan x="711.243" y="168.977">server</tspan>
+      <tspan x="711.243" y="180.266">signing key</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <polygon style="fill: #ffffff" points="67.6304,324.799 110.901,324.799 125.325,339.222 125.325,396.917 67.6304,396.917 "/>
+      <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="67.6304,324.799 110.901,324.799 125.325,339.222 125.325,396.917 67.6304,396.917 "/>
+      <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="110.901,324.799 110.901,339.222 125.325,339.222 125.325,339.222 "/>
+    </g>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="96.4777" y="349.283">
+      <tspan x="96.4777" y="349.283">safe</tspan>
+      <tspan x="96.4777" y="365.283">paper</tspan>
+      <tspan x="96.4777" y="381.283">wallet</tspan>
+    </text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="96.7768" y="418.257">
+      <tspan x="96.7768" y="418.257">cold storage</tspan>
+    </text>
+  </g>
+  <g>
+    <g>
+      <g>
+        <rect style="fill: #ffffff" x="87.2812" y="42.4685" width="106.337" height="127.735"/>
+        <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="87.2812" y="42.4685" width="106.337" height="127.735"/>
+      </g>
+      <g>
+        <ellipse style="fill: #ffffff" cx="140.169" cy="67.9025" rx="6" ry="6"/>
+        <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="140.169" cy="67.9025" rx="6" ry="6"/>
+        <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="116.169" y1="79.9025" x2="164.169" y2="79.9025"/>
+        <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="140.169" y1="73.9025" x2="140.169" y2="103.902"/>
+        <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="140.169" y1="103.902" x2="116.169" y2="129.902"/>
+        <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="140.169" y1="103.902" x2="164.169" y2="129.902"/>
+        <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="140.169" y="153.802">
+          <tspan x="140.169" y="153.802"></tspan>
+        </text>
+      </g>
+      <text font-size="12.8" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="140.451" y="151.702">
+        <tspan x="140.451" y="151.702">user</tspan>
+      </text>
+    </g>
+    <g>
+      <rect style="fill: #ffffff" x="171.707" y="150.411" width="43.1" height="38"/>
+      <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="171.707" y="150.411" width="43.1" height="38"/>
+      <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="193.257" y="173.311">
+        <tspan x="193.257" y="173.311">PIN</tspan>
+      </text>
+    </g>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="193.619,106.336 272.32,106.336 272.32,106.327 341.286,106.327 "/>
+    <polygon style="fill: #000000" points="348.786,106.327 338.786,111.327 341.286,106.327 338.786,101.327 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="348.786,106.327 338.786,111.327 341.286,106.327 338.786,101.327 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="468.015,177.361 468.015,198.361 421.443,198.361 421.443,273.258 442.213,273.258 "/>
+    <polygon style="fill: #000000" points="449.713,273.258 439.713,278.258 442.213,273.258 439.713,268.258 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="449.713,273.258 439.713,278.258 442.213,273.258 439.713,268.258 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="711.243,194.242 711.243,289.258 602.585,289.258 "/>
+    <polygon style="fill: #000000" points="595.085,289.258 605.085,284.258 602.585,289.258 605.085,294.258 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="595.085,289.258 605.085,284.258 602.585,289.258 605.085,294.258 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="522.399,367.258 522.399,431.332 287.685,431.332 287.685,352.383 "/>
+    <polygon style="fill: #000000" points="287.685,344.883 292.685,354.883 287.685,352.383 282.685,354.883 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="287.685,344.883 292.685,354.883 287.685,352.383 282.685,354.883 "/>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 10; stroke: #000000" points="27.4507,143.352 284.876,480.253 "/>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="457.495,60.8273 532.889,60.8273 532.889,78.5672 585.243,78.5672 "/>
+    <polygon style="fill: #000000" points="592.743,78.5672 582.743,83.5672 585.243,78.5672 582.743,73.5672 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="592.743,78.5672 582.743,83.5672 585.243,78.5672 582.743,73.5672 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="467.453,80.7385 515.613,80.7385 515.613,98.4784 595.201,98.4784 "/>
+    <polygon style="fill: #000000" points="459.953,80.7385 469.953,75.7385 467.453,80.7385 469.953,85.7385 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="459.953,80.7385 469.953,75.7385 467.453,80.7385 469.953,85.7385 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="223.187" y="100.319">
+    <tspan x="223.187" y="100.319">authentication</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="260.582" y="121.143">
+    <tspan x="260.582" y="121.143">PIN</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="536.913" y="112.806">
+    <tspan x="536.913" y="112.806">comm.</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="470.511" y="55.2691">
+    <tspan x="470.511" y="55.2691">comm.</tspan>
+  </text>
+</svg>
