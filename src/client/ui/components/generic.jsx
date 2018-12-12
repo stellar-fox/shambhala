@@ -41,15 +41,18 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     content: {
+
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
         paddingTop: t.spacing.unit * 3,
         paddingBottom: t.spacing.unit * 3,
 
         "& $icon": {
+            display: "block",
+            margin: "0 auto",
             fontSize: 64,
             color: "rgb(114, 222, 255)",
             filter: "drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5))",
@@ -64,54 +67,57 @@ const useStyles = makeStyles((t) => ({
             alignItems: "center",
 
             "& $heading": {
+                margin: "0 auto",
                 display: "block",
                 textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
             },
 
         },
 
-        "& $button": {
-            marginLeft: 2 * t.spacing.unit,
-            marginRight: 2 * t.spacing.unit,
+        "& $buttonBar": {
+            display: "flex",
 
-            "&$disabled": { backgroundColor: "transparent !important" },
+            "& $button": {
+                flexGrow: 1,
+                marginLeft: 2 * t.spacing.unit,
+                marginRight: 2 * t.spacing.unit,
 
-            "&$yes": {
-                backgroundColor: fade(
-                    green[500], t.palette.action.hoverOpacity
-                ),
-                "&:hover": {
+                "&$disabled": { backgroundColor: "transparent !important" },
+
+                "&$yes": {
                     backgroundColor: fade(
-                        green[500], 3 * t.palette.action.hoverOpacity
+                        green[500], t.palette.action.hoverOpacity
                     ),
+                    "&:hover": {
+                        backgroundColor: fade(
+                            green[500], 3 * t.palette.action.hoverOpacity
+                        ),
+                    },
+                },
+
+                "&$no": {
+                    backgroundColor: fade(
+                        red[500], t.palette.action.hoverOpacity
+                    ),
+                    "&:hover": {
+                        backgroundColor: fade(
+                            red[500], 3 * t.palette.action.hoverOpacity
+                        ),
+                    },
                 },
             },
 
-            "&$no": {
-                backgroundColor: fade(
-                    red[500], t.palette.action.hoverOpacity
-                ),
-                "&:hover": {
-                    backgroundColor: fade(
-                        red[500], 3 * t.palette.action.hoverOpacity
-                    ),
-                },
-            },
         },
+
     },
 
     icon: {},
-
     headingStrecher: {},
-
     heading: {},
-
+    buttonBar: {},
     button: {},
-
     disabled: {},
-
     yes: {},
-
     no: {},
 
 }))
@@ -146,7 +152,7 @@ const GenericChoice = ({
                 { humanMessage }
             </Typography>
         </div>
-        <div>
+        <div className={css.buttonBar}>
             <Button
                 className={classNames(css.button, css.yes)}
                 classes={{ disabled: css.disabled }}

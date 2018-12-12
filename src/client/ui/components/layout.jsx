@@ -98,9 +98,7 @@ const useStyles = makeStyles((t) => ({
     },
 
     text: {},
-
     heart: {},
-
     emoji: {},
 
 }))
