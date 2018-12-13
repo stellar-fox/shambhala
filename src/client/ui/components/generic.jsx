@@ -13,6 +13,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
+import { func } from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -21,7 +22,6 @@ import {
     basicResolve,
 } from "../thunks"
 import {
-    filterMessage,
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
@@ -134,14 +134,14 @@ const useStyles = makeStyles((t) => ({
 const GenericChoice = ({
     basicReject,
     basicResolve,
-    currentMessage,
     disabled,
     humanMessage,
+    icon,
     outerStyleClassName,
 }) => ((css) =>
 
     <Paper className={classNames(outerStyleClassName, css.content)}>
-        { iconizeMessage(currentMessage, [{ className: css.icon }]) }
+        { icon([{ className: css.icon }]) }
         <div className={css.headingStrecher}>
             <Typography
                 component="h1"
@@ -179,9 +179,9 @@ const GenericChoice = ({
 GenericChoice.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
-    currentMessage: PropTypes.string.isRequired,
     disabled: PropTypes.bool.isRequired,
     humanMessage: PropTypes.string.isRequired,
+    icon: PropTypes.func.isRequired,
     outerStyleClassName: PropTypes.string.isRequired,
 }
 
@@ -192,8 +192,8 @@ GenericChoice.propTypes = {
 export default connect(
     (s) => ({
         disabled: s.App.promptMutexResolveValue === null,
-        currentMessage: filterMessage(s.App.message),
         humanMessage: humanizeMessage(s.App.message),
+        icon: func.partial(iconizeMessage)(s.App.message),
     }),
     (dispatch) => bindActionCreators({
         basicReject,

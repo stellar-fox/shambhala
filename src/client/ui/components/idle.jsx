@@ -13,10 +13,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
+import { func } from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import {
-    filterMessage,
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
@@ -83,13 +83,13 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const Idle = ({
-    currentMessage,
     humanMessage,
+    icon,
     outerStyleClassName,
 }) => ((css) =>
 
     <Paper className={classNames(outerStyleClassName, css.content)}>
-        { iconizeMessage(currentMessage, [{ className: css.icon }]) }
+        { icon([{ className: css.icon }]) }
         <div className={css.headingStrecher}>
             <Typography
                 component="h1"
@@ -112,8 +112,8 @@ const Idle = ({
 
 // ...
 Idle.propTypes = {
-    currentMessage: PropTypes.string.isRequired,
     humanMessage: PropTypes.string.isRequired,
+    icon: PropTypes.func.isRequired,
     outerStyleClassName: PropTypes.string.isRequired,
 }
 
@@ -123,7 +123,7 @@ Idle.propTypes = {
 // ...
 export default connect(
     (s) => ({
-        currentMessage: filterMessage(s.App.message),
         humanMessage: humanizeMessage(s.App.message),
+        icon: func.partial(iconizeMessage)(s.App.message),
     })
 )(Idle)

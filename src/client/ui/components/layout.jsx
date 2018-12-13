@@ -118,6 +118,7 @@ const useStyles = makeStyles((t) => ({
 const Layout = ({
     currentMessage,
     humanMessage,
+    icon,
     style,
 }) => ((css) =>
 
@@ -136,9 +137,7 @@ const Layout = ({
                     <Typography variant="h6" color="inherit">
                         shambhala
                     </Typography>
-                    <div className={css.appBarCenterPane}>
-                        { iconizeMessage(currentMessage) }
-                    </div>
+                    <div className={css.appBarCenterPane}>{ icon() }</div>
                     <Typography
                         variant="subtitle2"
                         color="textSecondary"
@@ -187,6 +186,7 @@ const Layout = ({
 Layout.propTypes = {
     currentMessage: PropTypes.string.isRequired,
     humanMessage: PropTypes.string.isRequired,
+    icon: PropTypes.func.isRequired,
     style: PropTypes.object.isRequired,
 }
 
@@ -198,5 +198,6 @@ export default connect(
     (s) => ({
         currentMessage: filterMessage(s.App.message),
         humanMessage: humanizeMessage(s.App.message),
+        icon: func.partial(iconizeMessage)(s.App.message),
     })
 )(Layout)
