@@ -54,7 +54,7 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * <Loader> component.
+ * `<Loader>` component.
  *
  * @function Loader
  * @param {Object} props

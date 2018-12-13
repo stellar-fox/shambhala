@@ -77,7 +77,7 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * <Idle> component.
+ * `<Idle>` component.
  *
  * @function Idle
  * @returns {React.ReactElement}

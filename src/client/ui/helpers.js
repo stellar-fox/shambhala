@@ -74,6 +74,7 @@ export const humanizeMessage = func.partial(
 /**
  * Convert a message to an icon.
  *
+ * @function iconizeMessage
  * @param {String} message
  * @param {Array} iconProps
  * @returns {React.ReactElement}

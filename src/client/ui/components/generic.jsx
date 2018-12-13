@@ -126,7 +126,7 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * <GenericChoice> component.
+ * `<GenericChoice>` component.
  *
  * @function GenericChoice
  * @returns {React.ReactElement}

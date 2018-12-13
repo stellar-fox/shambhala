@@ -110,7 +110,7 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * <Layout> component.
+ * `<Layout>` component.
  *
  * @function Layout
  * @returns {React.ReactElement}

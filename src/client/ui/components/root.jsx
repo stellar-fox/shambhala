@@ -24,7 +24,7 @@ import Loader from "./loader"
 
 
 /**
- * <ShambhalaUi> - 'root' component.
+ * `<ShambhalaUi>` - 'root' component.
  *
  * @function ShambhalaUi
  * @param {Object} props (redux store, mui theme)
