@@ -41,6 +41,12 @@ const initState = {
     // a message that is currently being processed (src/lib/messages.js)
     message: null,
 
+    // window dimensions
+    dim: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+    },
+
     // how to resolve mutex if user provided no value? (DEV. PROTO.)
     promptMutexResolveValue: null,
 
@@ -52,6 +58,7 @@ const initState = {
 // action types
 const
     SET_STATE = "Shambhala/SET_STATE",
+    SET_DIMENSIONS = "Shambhala/SET_DIMENSIONS",
     RESET_STATE = "Shambhala/RESET_STATE"
 
 
@@ -68,6 +75,16 @@ export const action = {
     setState: (state) => ({
         type: SET_STATE,
         state,
+    }),
+
+
+    // ...
+    setDimensions: () => ({
+        type: SET_DIMENSIONS,
+        dim: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+        },
     }),
 
 
@@ -90,6 +107,13 @@ export const App = createReducer(initState)({
     [SET_STATE]: (state, action) => ({
         ...state,
         ...action.state,
+    }),
+
+
+    // ...
+    [SET_DIMENSIONS]: (state, action) => ({
+        ...state,
+        dim: { ...action.dim },
     }),
 
 

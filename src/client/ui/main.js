@@ -109,6 +109,16 @@ export default async function ui (logger, context) {
 
 
 
+    // add available window-dimensions event listener
+    // (needed for some hacky components)
+    window.addEventListener(
+        "resize",
+        () => store.dispatch(action.setDimensions())
+    )
+
+
+
+
     // add some elements to 'sf' dev. namespace
     if (utils.devEnv()) {
         if (!type.isObject(window.sf)) window.sf = {}
