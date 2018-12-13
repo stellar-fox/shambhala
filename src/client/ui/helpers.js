@@ -11,7 +11,10 @@
 
 
 import { createElement as rce } from "react"
-import { func } from "@xcmats/js-toolbox"
+import {
+    func,
+    string,
+} from "@xcmats/js-toolbox"
 import * as message from "../../lib/messages"
 
 import IconAutorenew from "@material-ui/icons/Autorenew"
@@ -21,6 +24,28 @@ import IconLock from "@material-ui/icons/Lock"
 import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
 import IconRestore from "@material-ui/icons/Restore"
 import IconVpnKey from "@material-ui/icons/VpnKey"
+
+
+
+
+/**
+ * Return only the "interesting" messages.
+ * Used to prevent unnecessary re-renders.
+ *
+ * @function filterMessage
+ * @param {String} message
+ * @returns {String}
+ */
+export const filterMessage = func.partial(
+    func.rearg(func.choose)(1, 2, 0, 3)
+)({
+    [message.ASSOCIATE_ADDRESS]: () => message.ASSOCIATE_ADDRESS,
+    [message.BACKUP]: () => message.BACKUP,
+    [message.GENERATE_ADDRESS]: () => message.GENERATE_ADDRESS,
+    [message.GENERATE_SIGNING_KEYS]: () => message.GENERATE_SIGNING_KEYS,
+    [message.RESTORE]: () => message.RESTORE,
+    [message.SIGN_TRANSACTION]: () => message.SIGN_TRANSACTION,
+}, () => string.empty())
 
 
 

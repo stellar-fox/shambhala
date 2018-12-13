@@ -13,7 +13,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import { string } from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -22,6 +21,7 @@ import {
     basicResolve,
 } from "../thunks"
 import {
+    filterMessage,
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
@@ -192,7 +192,7 @@ GenericChoice.propTypes = {
 export default connect(
     (s) => ({
         disabled: s.App.promptMutexResolveValue === null,
-        currentMessage: s.App.message || string.empty(),
+        currentMessage: filterMessage(s.App.message),
         humanMessage: humanizeMessage(s.App.message),
     }),
     (dispatch) => bindActionCreators({

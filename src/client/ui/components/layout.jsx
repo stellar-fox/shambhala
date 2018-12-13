@@ -12,10 +12,11 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { string } from "@xcmats/js-toolbox"
+import { func } from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import {
+    filterMessage,
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
@@ -26,7 +27,9 @@ import Grid from "@material-ui/core/Grid"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 
+import * as message from "../../../lib/messages"
 import GenericChoice from "./generic"
+import Idle from "./idle"
 
 
 
@@ -148,7 +151,13 @@ const Layout = ({
         </Grid>
 
         <Grid item component="main" className={css.main}>
-            <GenericChoice outerStyleClassName={css.contentOuterStyle} />
+            { func.choose(currentMessage, {
+                [message.ASSOCIATE_ADDRESS]: (p) => <GenericChoice { ...p } />,
+                [message.GENERATE_ADDRESS]: (p) => <GenericChoice { ...p } />,
+                [message.GENERATE_SIGNING_KEYS]: (p) => <GenericChoice { ...p } />,
+                [message.SIGN_TRANSACTION]: (p) => <GenericChoice { ...p } />,
+            }, (p) => <Idle { ...p } />,
+            [{ outerStyleClassName: css.contentOuterStyle}]) }
         </Grid>
 
         <Grid item className={css.footer}>
@@ -187,7 +196,7 @@ Layout.propTypes = {
 // ...
 export default connect(
     (s) => ({
-        currentMessage: s.App.message || string.empty(),
+        currentMessage: filterMessage(s.App.message),
         humanMessage: humanizeMessage(s.App.message),
     })
 )(Layout)
