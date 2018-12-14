@@ -138,9 +138,13 @@ const GenericChoice = ({
     humanMessage,
     icon,
     outerStyleClassName,
+    style = {},
 }) => ((css) =>
 
-    <Paper className={classNames(outerStyleClassName, css.content)}>
+    <Paper
+        className={classNames(outerStyleClassName, css.content)}
+        style={style}
+    >
         { icon([{ className: css.icon }]) }
         <div className={css.headingStrecher}>
             <Typography
