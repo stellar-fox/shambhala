@@ -10,7 +10,11 @@
 
 
 
-import React from "react"
+import React, {
+    createRef,
+    useLayoutEffect,
+    useState,
+} from "react"
 import PropTypes from "prop-types"
 import { func } from "@xcmats/js-toolbox"
 
@@ -40,89 +44,67 @@ import Info from "./info"
 // ...
 const
     noHeader = 345,
-
     noFooter = 380,
-
     maxMainHeight = 480,
 
-    mainHeight = (sh) =>
-        Math.min(
-            sh - (
-                (sh > noHeader ? 11 : 0) + (sh > noFooter ? 4 : 0)
-            ) * theme.spacing.unit,
-            maxMainHeight
-        ),
+    useStyles = makeStyles((t) => ({
 
-    slideHeight = (sh) =>
-        sh <= noHeader ?
-            mainHeight(sh) - 2 * theme.spacing.unit :
-            sh > noHeader  &&  sh <= noFooter ?
-                mainHeight(sh) - 2 * theme.spacing.unit :
-                mainHeight(sh) - (
-                    (sh > noHeader ? 1 : 1) + (sh > noFooter ? 1 : 1)
-                ) * theme.spacing.unit
+        layout: {
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
 
-
-
-
-// ...
-const useStyles = makeStyles((t) => ({
-
-    layout: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-
-        "& $header": {
-            [`@media (max-height: ${noHeader}px)`]: { display: "none" },
-            "& $appBarCenterPane": {
-                flexGrow: 1,
-                paddingLeft: t.spacing.unit * 2,
-                paddingRight: t.spacing.unit * 2,
-            },
-        },
-
-        "& $main": {
-            maxHeight: maxMainHeight,
-            display: "flex",
-            justifyContent: "center",
-            "& $slide": {
-                [`@media (max-height: ${noFooter}px)`]: {
-                    marginTop: t.spacing.unit,
-                    marginBotom: t.spacing.unit,
+            "& $header": {
+                [`@media (max-height: ${noHeader}px)`]: { display: "none" },
+                "& $appBarCenterPane": {
+                    flexGrow: 1,
+                    paddingLeft: t.spacing.unit * 2,
+                    paddingRight: t.spacing.unit * 2,
                 },
-                marginTop: 2 * t.spacing.unit,
-                marginBotom: 2 * t.spacing.unit,
-                marginLeft: "auto",
-                marginRight: "auto",
-                minWidth: 240,
-                maxWidth: 500,
+            },
+
+            "& $main": {
+                maxHeight: maxMainHeight,
+                display: "flex",
+                justifyContent: "center",
+                "& $slide": {
+                    [`@media (max-height: ${noFooter}px)`]: {
+                        marginTop: t.spacing.unit,
+                        marginBotom: t.spacing.unit,
+                    },
+                    marginTop: 2 * t.spacing.unit,
+                    marginBotom: 2 * t.spacing.unit,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    minWidth: 240,
+                    maxWidth: 500,
+                    padding: t.spacing.unit,
+                },
+            },
+
+            "& $footer": {
+                [`@media (max-height: ${noFooter}px)`]: { display: "none" },
                 padding: t.spacing.unit,
+                "& $text": {
+                    color: "rgba(255, 255, 255, 0.25)",
+                    textAlign: "center",
+                },
+                "& $heart": { color: "rgba(219, 51, 39, 0.75)" },
+                "& $emoji": { color: "rgba(255, 255, 255, 0.75)" },
             },
         },
 
-        "& $footer": {
-            [`@media (max-height: ${noFooter}px)`]: { display: "none" },
-            padding: t.spacing.unit,
-            "& $text": {
-                color: "rgba(255, 255, 255, 0.25)",
-                textAlign: "center",
-            },
-            "& $heart": { color: "rgba(219, 51, 39, 0.75)" },
-            "& $emoji": { color: "rgba(255, 255, 255, 0.75)" },
-        },
-    },
+        header: {},
+        appBarCenterPane: {},
+        main: {},
+        slide: {},
+        footer: {},
+        text: {},
+        heart: {},
+        emoji: {},
 
-    header: {},
-    appBarCenterPane: {},
-    main: {},
-    slide: {},
-    footer: {},
-    text: {},
-    heart: {},
-    emoji: {},
-
-}))
+    }))
 
 
 
@@ -140,102 +122,114 @@ const Layout = ({
     screenHeight,
     screenWidth,
     style = {},
-}) => ((css) =>
+}) => {
+    const css = useStyles()
 
-    <Grid
-        container
-        direction="column"
-        justify="space-between"
-        alignItems="stretch"
-        className={css.layout}
-        style={style}
-    >
+    // imperative ugliness just to obtain header height
+    // and properly compute heights of `<main>` and its descendants
+    let
+        refToHeader = createRef(),
+        customHeader = (props) => <header {...props} ref={refToHeader} />,
+        [headerHeight, setHeaderHeight] = useState(0),
+        mainHeight = () => Math.min(
+            screenHeight - headerHeight - (
+                screenHeight > noFooter ? 6 : 0
+            ) * theme.spacing.unit,
+            maxMainHeight
+        ),
+        slideHeight = () => mainHeight() - 2 * theme.spacing.unit,
+        slideContentHeight = () => slideHeight() - 2 * theme.spacing.unit
+    useLayoutEffect(() => {
+        let newHeight = refToHeader.current.getBoundingClientRect().height
+        if (newHeight !== headerHeight) setHeaderHeight(newHeight)
+    }, [screenHeight, screenWidth])
 
-        <Grid item className={css.header}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" color="inherit">
-                        shambhala
-                    </Typography>
-                    <div className={css.appBarCenterPane}>{ icon() }</div>
+    return (
+        <Grid
+            container
+            direction="column"
+            justify="space-between"
+            alignItems="stretch"
+            className={css.layout}
+            style={style}
+        >
+
+            <Grid item className={css.header}>
+                <AppBar position="static" component={customHeader}>
+                    <Toolbar>
+                        <Typography variant="h6" color="inherit">
+                            shambhala
+                        </Typography>
+                        <div className={css.appBarCenterPane}>{ icon() }</div>
+                        <Typography
+                            variant="subtitle2"
+                            color="textSecondary"
+                            align="right"
+                        >
+                            { humanMessage }
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+            </Grid>
+
+            <Grid item component="main" className={css.main}>
+                <SwipeableViews
+                    containerStyle={{
+                        width: screenWidth - 2 * theme.spacing.unit,
+                        height: mainHeight(),
+                    }}
+                    index={ func.choose(currentMessage, {
+                        [message.ASSOCIATE_ADDRESS]: () => 2,
+                        [message.BACKUP]: () => 0,
+                        [message.GENERATE_ADDRESS]: () => 2,
+                        [message.GENERATE_SIGNING_KEYS]: () => 2,
+                        [message.RESTORE]: () => 0,
+                        [message.SIGN_TRANSACTION]: () => 2,
+                    }, () => 1) }
+                >
                     <Typography
-                        variant="subtitle2"
-                        color="textSecondary"
-                        align="right"
+                        component="div"
+                        className={css.slide}
+                        style={{ height: slideHeight() }}
                     >
-                        { humanMessage }
+                        <Info style={{ height: slideContentHeight() }} />
                     </Typography>
-                </Toolbar>
-            </AppBar>
-        </Grid>
+                    <Typography
+                        component="div"
+                        className={css.slide}
+                        style={{ height: slideHeight() }}
+                    >
+                        <Idle style={{ height: slideContentHeight() }} />
+                    </Typography>
+                    <Typography
+                        component="div"
+                        className={css.slide}
+                        style={{ height: slideHeight() }}
+                    >
+                        <GenericChoice style={{ height: slideContentHeight() }} />
+                    </Typography>
+                </SwipeableViews>
+            </Grid>
 
-        <Grid item component="main" className={css.main}>
-            <SwipeableViews
-                containerStyle={{
-                    width: screenWidth - 2 * theme.spacing.unit,
-                    height: mainHeight(screenHeight),
-                }}
-                index={ func.choose(currentMessage, {
-                    [message.ASSOCIATE_ADDRESS]: () => 2,
-                    [message.BACKUP]: () => 0,
-                    [message.GENERATE_ADDRESS]: () => 2,
-                    [message.GENERATE_SIGNING_KEYS]: () => 2,
-                    [message.RESTORE]: () => 0,
-                    [message.SIGN_TRANSACTION]: () => 2,
-                }, () => 1) }
-            >
-                <Typography
-                    component="div"
-                    className={css.slide}
-                    style={{ height: slideHeight(screenHeight) }}
-                >
-                    <Info style={{
-                        height: slideHeight(screenHeight) -
-                            2 * theme.spacing.unit }}
-                    />
+            <Grid item className={css.footer}>
+                <Typography component="p" className={css.text}>
+                    Made with
+                    &nbsp;<span
+                        className={css.heart}
+                        role="img" aria-label="love"
+                    >❤</span>&nbsp;
+                    on
+                    &nbsp;<span
+                        className={css.emoji}
+                        role="img" aria-label="earth"
+                    >🌍</span>&nbsp;
+                    .
                 </Typography>
-                <Typography
-                    component="div"
-                    className={css.slide}
-                    style={{ height: slideHeight(screenHeight) }}
-                >
-                    <Idle style={{
-                        height: slideHeight(screenHeight) -
-                            2 * theme.spacing.unit }}
-                    />
-                </Typography>
-                <Typography
-                    component="div"
-                    className={css.slide}
-                    style={{ height: slideHeight(screenHeight) }}
-                >
-                    <GenericChoice style={{
-                        height: slideHeight(screenHeight) -
-                            2 * theme.spacing.unit }}
-                    />
-                </Typography>
-            </SwipeableViews>
+            </Grid>
+
         </Grid>
-
-        <Grid item className={css.footer}>
-            <Typography component="p" className={css.text}>
-                Made with
-                &nbsp;<span
-                    className={css.heart}
-                    role="img" aria-label="love"
-                >❤</span>&nbsp;
-                on
-                &nbsp;<span
-                    className={css.emoji}
-                    role="img" aria-label="earth"
-                >🌍</span>&nbsp;
-                .
-            </Typography>
-        </Grid>
-
-    </Grid>
-
-)(useStyles())
+    )
+}
 
 
 
