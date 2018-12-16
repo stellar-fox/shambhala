@@ -199,4 +199,4 @@ export default connect(
         basicReject,
         basicResolve,
     }, dispatch)
-)(GenericChoice)
+)(React.memo(GenericChoice))

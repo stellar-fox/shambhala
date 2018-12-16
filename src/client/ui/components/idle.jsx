@@ -115,4 +115,4 @@ Idle.propTypes = {
 
 
 // ...
-export default Idle
+export default React.memo(Idle)

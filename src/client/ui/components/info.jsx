@@ -132,4 +132,4 @@ export default connect(
         humanMessage: humanizeMessage(s.App.message),
         icon: func.partial(iconizeMessage)(s.App.message),
     })
-)(Info)
+)(React.memo(Info))

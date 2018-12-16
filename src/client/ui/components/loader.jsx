@@ -111,4 +111,4 @@ export default connect(
         showLoader: s.App.showLoader,
         showUi: s.App.showUi,
     })
-)(Loader)
+)(React.memo(Loader))
