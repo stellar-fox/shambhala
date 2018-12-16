@@ -138,11 +138,23 @@ const Layout = ({
             maxMainHeight
         ),
         slideHeight = () => mainHeight() - 2 * theme.spacing.unit,
-        slideContentHeight = () => slideHeight() - 2 * theme.spacing.unit
+        slideContentHeight = () => slideHeight() - 2 * theme.spacing.unit,
+        slide = (Content) =>
+            <Typography
+                component="div"
+                className={css.slide}
+                style={{ height: slideHeight() }}
+            >
+                <Content style={{ height: slideContentHeight() }} />
+            </Typography>
+
+    // measure header height only if screen dimensions change;
+    // if the height is changed then change `headerHeight` state and re-render
     useLayoutEffect(() => {
         let newHeight = refToHeader.current.getBoundingClientRect().height
         if (newHeight !== headerHeight) setHeaderHeight(newHeight)
     }, [screenHeight, screenWidth])
+
 
     return (
         <Grid
@@ -187,27 +199,9 @@ const Layout = ({
                         [message.SIGN_TRANSACTION]: () => 2,
                     }, () => 1) }
                 >
-                    <Typography
-                        component="div"
-                        className={css.slide}
-                        style={{ height: slideHeight() }}
-                    >
-                        <Info style={{ height: slideContentHeight() }} />
-                    </Typography>
-                    <Typography
-                        component="div"
-                        className={css.slide}
-                        style={{ height: slideHeight() }}
-                    >
-                        <Idle style={{ height: slideContentHeight() }} />
-                    </Typography>
-                    <Typography
-                        component="div"
-                        className={css.slide}
-                        style={{ height: slideHeight() }}
-                    >
-                        <GenericChoice style={{ height: slideContentHeight() }} />
-                    </Typography>
+                    { /* 0 */ slide(Info) }
+                    { /* 1 */ slide(Idle) }
+                    { /* 2 */ slide(GenericChoice) }
                 </SwipeableViews>
             </Grid>
 
