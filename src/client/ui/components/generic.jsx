@@ -13,7 +13,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import { func } from "@xcmats/js-toolbox"
+import {
+    func,
+    string,
+} from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -41,7 +44,7 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     content: {
-
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -65,25 +68,20 @@ const useStyles = makeStyles((t) => ({
             display: "flex",
             direction: "column",
             alignItems: "center",
-
             "& $heading": {
                 margin: "0 auto",
                 display: "block",
                 textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
             },
-
         },
 
         "& $buttonBar": {
             display: "flex",
-
             "& $button": {
                 flexGrow: 1,
                 marginLeft: 2 * t.spacing.unit,
                 marginRight: 2 * t.spacing.unit,
-
                 "&$disabled": { backgroundColor: "transparent !important" },
-
                 "&$yes": {
                     backgroundColor: fade(
                         green[500], t.palette.action.hoverOpacity
@@ -94,7 +92,6 @@ const useStyles = makeStyles((t) => ({
                         ),
                     },
                 },
-
                 "&$no": {
                     backgroundColor: fade(
                         red[500], t.palette.action.hoverOpacity
@@ -106,9 +103,7 @@ const useStyles = makeStyles((t) => ({
                     },
                 },
             },
-
         },
-
     },
 
     icon: {},
@@ -134,15 +129,15 @@ const useStyles = makeStyles((t) => ({
 const GenericChoice = ({
     basicReject,
     basicResolve,
+    className = string.empty(),
     disabled,
     humanMessage,
     icon,
-    outerStyleClassName,
     style = {},
 }) => ((css) =>
 
     <Paper
-        className={classNames(outerStyleClassName, css.content)}
+        className={classNames(className, css.content)}
         style={style}
     >
         { icon([{ className: css.icon }]) }
@@ -186,7 +181,8 @@ GenericChoice.propTypes = {
     disabled: PropTypes.bool.isRequired,
     humanMessage: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
-    outerStyleClassName: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    style: PropTypes.object,
 }
 
 

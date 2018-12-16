@@ -13,15 +13,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import { func } from "@xcmats/js-toolbox"
-
-import { connect } from "react-redux"
-import {
-    humanizeMessage,
-    iconizeMessage,
-} from "../helpers"
+import { string } from "@xcmats/js-toolbox"
 
 import { makeStyles } from "@material-ui/styles"
+import IconMood from "@material-ui/icons/Mood"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -32,7 +27,7 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     content: {
-
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -62,9 +57,7 @@ const useStyles = makeStyles((t) => ({
                 display: "block",
                 textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
             },
-
         },
-
     },
 
     icon: {},
@@ -83,17 +76,15 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const Idle = ({
-    humanMessage,
-    icon,
-    outerStyleClassName,
+    className = string.empty(),
     style = {},
 }) => ((css) =>
 
     <Paper
-        className={classNames(outerStyleClassName, css.content)}
+        className={classNames(className, css.content)}
         style={style}
     >
-        { icon([{ className: css.icon }]) }
+        <IconMood className={css.icon} />
         <div className={css.headingStrecher}>
             <Typography
                 component="h1"
@@ -101,7 +92,7 @@ const Idle = ({
                 align="center"
                 className={css.heading}
             >
-                { humanMessage }
+                <span role="img" aria-label="rocket">🚀</span>
             </Typography>
         </div>
         <Typography component="p" variant="body1" align="center">
@@ -116,18 +107,12 @@ const Idle = ({
 
 // ...
 Idle.propTypes = {
-    humanMessage: PropTypes.string.isRequired,
-    icon: PropTypes.func.isRequired,
-    outerStyleClassName: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    style: PropTypes.object,
 }
 
 
 
 
 // ...
-export default connect(
-    (s) => ({
-        humanMessage: humanizeMessage(s.App.message),
-        icon: func.partial(iconizeMessage)(s.App.message),
-    })
-)(Idle)
+export default Idle

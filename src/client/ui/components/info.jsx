@@ -13,7 +13,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import { func } from "@xcmats/js-toolbox"
+import {
+    func,
+    string,
+} from "@xcmats/js-toolbox"
 
 import { connect } from "react-redux"
 import {
@@ -32,7 +35,7 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     content: {
-
+        overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -62,9 +65,7 @@ const useStyles = makeStyles((t) => ({
                 display: "block",
                 textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
             },
-
         },
-
     },
 
     icon: {},
@@ -83,14 +84,14 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const Info = ({
+    className = string.empty(),
     humanMessage,
     icon,
-    outerStyleClassName,
     style = {},
 }) => ((css) =>
 
     <Paper
-        className={classNames(outerStyleClassName, css.content)}
+        className={classNames(className, css.content)}
         style={style}
     >
         { icon([{ className: css.icon }]) }
@@ -118,7 +119,8 @@ const Info = ({
 Info.propTypes = {
     humanMessage: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
-    outerStyleClassName: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    style: PropTypes.object,
 }
 
 
