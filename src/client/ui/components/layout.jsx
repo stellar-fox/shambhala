@@ -12,6 +12,7 @@
 
 import React, {
     createRef,
+    memo,
     useLayoutEffect,
     useState,
 } from "react"
@@ -242,12 +243,15 @@ Layout.propTypes = {
 
 
 // ...
-export default connect(
-    (s) => ({
-        currentMessage: filterMessage(s.App.message),
-        humanMessage: humanizeMessage(s.App.message),
-        icon: func.partial(iconizeMessage)(s.App.message),
-        screenHeight: s.App.dim.height,
-        screenWidth: s.App.dim.width,
-    })
+export default func.compose(
+    connect(
+        (s) => ({
+            currentMessage: filterMessage(s.App.message),
+            humanMessage: humanizeMessage(s.App.message),
+            icon: func.partial(iconizeMessage)(s.App.message),
+            screenHeight: s.App.dim.height,
+            screenWidth: s.App.dim.width,
+        })
+    ),
+    memo
 )(Layout)

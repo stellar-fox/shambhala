@@ -10,7 +10,7 @@
 
 
 
-import React from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
@@ -189,14 +189,17 @@ GenericChoice.propTypes = {
 
 
 // ...
-export default connect(
-    (s) => ({
-        disabled: s.App.promptMutexResolveValue === null,
-        humanMessage: humanizeMessage(s.App.message),
-        icon: func.partial(iconizeMessage)(s.App.message),
-    }),
-    (dispatch) => bindActionCreators({
-        basicReject,
-        basicResolve,
-    }, dispatch)
-)(React.memo(GenericChoice))
+export default func.compose(
+    connect(
+        (s) => ({
+            disabled: s.App.promptMutexResolveValue === null,
+            humanMessage: humanizeMessage(s.App.message),
+            icon: func.partial(iconizeMessage)(s.App.message),
+        }),
+        (dispatch) => bindActionCreators({
+            basicReject,
+            basicResolve,
+        }, dispatch)
+    ),
+    memo
+)(GenericChoice)

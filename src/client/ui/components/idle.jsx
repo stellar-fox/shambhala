@@ -10,7 +10,7 @@
 
 
 
-import React from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import { string } from "@xcmats/js-toolbox"
@@ -115,4 +115,4 @@ Idle.propTypes = {
 
 
 // ...
-export default React.memo(Idle)
+export default memo(Idle)

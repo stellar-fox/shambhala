@@ -10,7 +10,7 @@
 
 
 
-import React from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
@@ -127,9 +127,12 @@ Info.propTypes = {
 
 
 // ...
-export default connect(
-    (s) => ({
-        humanMessage: humanizeMessage(s.App.message),
-        icon: func.partial(iconizeMessage)(s.App.message),
-    })
-)(React.memo(Info))
+export default func.compose(
+    connect(
+        (s) => ({
+            humanMessage: humanizeMessage(s.App.message),
+            icon: func.partial(iconizeMessage)(s.App.message),
+        })
+    ),
+    memo
+)(Info)

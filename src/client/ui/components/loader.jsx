@@ -10,9 +10,10 @@
 
 
 
-import React from "react"
+import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
+import { func } from "@xcmats/js-toolbox"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
@@ -104,11 +105,14 @@ Loader.propTypes = {
 
 
 // ...
-export default connect(
-    (s) => ({
-        infoMessage: s.App.infoMessage,
-        ready: s.App.ready,
-        showLoader: s.App.showLoader,
-        showUi: s.App.showUi,
-    })
-)(React.memo(Loader))
+export default func.compose(
+    connect(
+        (s) => ({
+            infoMessage: s.App.infoMessage,
+            ready: s.App.ready,
+            showLoader: s.App.showLoader,
+            showUi: s.App.showUi,
+        })
+    ),
+    memo
+)(Loader)
