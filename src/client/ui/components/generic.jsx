@@ -193,8 +193,8 @@ export default func.compose(
     connect(
         (s) => ({
             disabled: s.App.promptMutexResolveValue === null,
-            humanMessage: humanizeMessage(s.App.message),
-            icon: func.partial(iconizeMessage)(s.App.message),
+            humanMessage: humanizeMessage(s.App.throttledMessage),
+            icon: func.partial(iconizeMessage)(s.App.throttledMessage),
         }),
         (dispatch) => bindActionCreators({
             basicReject,

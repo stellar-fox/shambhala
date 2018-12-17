@@ -41,6 +41,9 @@ const initState = {
     // a message that is currently being processed (src/lib/messages.js)
     message: null,
 
+    // throttled version of message that is currently being processed
+    throttledMessage: null,
+
     // window dimensions
     dim: {
         width: window.innerWidth,

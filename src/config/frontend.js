@@ -52,3 +52,13 @@ export const fancyDelay = 0.3 * timeUnit.second
  * @constant {Number} ssSaveThrottlingTime
  */
 export const ssSaveThrottlingTime = timeUnit.second
+
+
+
+
+/**
+ * How long layout shall wait before major change to avoid flickering?
+ *
+ * @constant {Number} messageThrottleTime
+ */
+export const messageThrottleTime = 0.5 * timeUnit.second

@@ -12,11 +12,14 @@
 
 import {
     async,
+    func,
     string,
     type,
 } from "@xcmats/js-toolbox"
+import throttle from "lodash.throttle"
 import { duration } from "@material-ui/core/styles/transitions"
 import { action } from "./redux"
+import { messageThrottleTime } from "../../config/frontend"
 
 
 
@@ -105,10 +108,16 @@ export const setInfoMessage = (infoMessage = string.empty()) =>
  * @param {String} message
  * @returns {Function} thunk action
  */
-export const setMessage = (message) =>
-    async (dispatch, _getState) => {
-        await dispatch(action.setState({ message }))
-    }
+export const setMessage = ((setThrottledMessage) =>
+    (message) =>
+        async (dispatch, _getState) => {
+            setThrottledMessage(func.flow(action.setState, dispatch), message)
+            return await dispatch(action.setState({ message }))
+        }
+)(throttle(
+    (setState, throttledMessage) => setState({ throttledMessage }),
+    messageThrottleTime, { leading: false }
+))
 
 
 

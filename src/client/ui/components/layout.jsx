@@ -17,14 +17,8 @@ import React, {
     useState,
 } from "react"
 import PropTypes from "prop-types"
-import { func } from "@xcmats/js-toolbox"
-
 import { connect } from "react-redux"
-import {
-    filterMessage,
-    humanizeMessage,
-    iconizeMessage,
-} from "../helpers"
+import { func } from "@xcmats/js-toolbox"
 
 import { makeStyles } from "@material-ui/styles"
 import AppBar from "@material-ui/core/AppBar"
@@ -33,11 +27,17 @@ import SwipeableViews from "react-swipeable-views"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 
-import * as message from "../../../lib/messages"
 import { theme } from "../theme"
+import {
+    filterMessage,
+    humanizeMessage,
+    iconizeMessage,
+} from "../helpers"
 import GenericChoice from "./generic"
 import Idle from "./idle"
 import Info from "./info"
+
+import * as message from "../../../lib/messages"
 
 
 
@@ -246,7 +246,7 @@ Layout.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            currentMessage: filterMessage(s.App.message),
+            currentMessage: filterMessage(s.App.throttledMessage),
             humanMessage: humanizeMessage(s.App.message),
             icon: func.partial(iconizeMessage)(s.App.message),
             screenHeight: s.App.dim.height,

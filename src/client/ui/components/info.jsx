@@ -130,8 +130,8 @@ Info.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            humanMessage: humanizeMessage(s.App.message),
-            icon: func.partial(iconizeMessage)(s.App.message),
+            humanMessage: humanizeMessage(s.App.throttledMessage),
+            icon: func.partial(iconizeMessage)(s.App.throttledMessage),
         })
     ),
     memo
