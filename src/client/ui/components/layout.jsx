@@ -207,7 +207,7 @@ const Layout = ({
             </Grid>
 
             <Grid item className={css.footer}>
-                <Typography component="p" className={css.text}>
+                <Typography component="footer" className={css.text}>
                     Made with
                     &nbsp;<span
                         className={css.heart}
