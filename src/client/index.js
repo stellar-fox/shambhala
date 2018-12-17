@@ -92,6 +92,10 @@ const devEnvLibs = async () => ({
         /* webpackChunkName: "slr" */
         "stellar-sdk"
     ),
+    throttle: await import(
+        /* webpackChunkName: "ttle" */
+        "lodash.throttle"
+    ).then(mDef),
     toolbox: await import(
         /* webpackChunkName: "tbx" */
         "@xcmats/js-toolbox"
