@@ -70,9 +70,9 @@ const Loader = ({
 
     ready ?
 
-        <Fade in={showUi}><Layout /></Fade> :
+        <Fade in={showUi} style={{ willChange: "unset" }}><Layout /></Fade> :
 
-        <Fade in={showLoader}>
+        <Fade in={showLoader} style={{ willChange: "unset" }}>
             <main className={css.layout}>
                 <div className={css.rect}>
                     <CircularProgress color="secondary" />
