@@ -167,3 +167,23 @@ export const rgb = (r, g, b) =>
  */
 export const rgba = (r, g, b, a) =>
     string.wrap([r, g, b, a].join(", "), "rgba(", ")")
+
+
+
+
+/**
+ * Lock the thing. Always return the first passed thing.
+ *
+ * @function locker
+ * @returns {Function} (any) => any
+ */
+export const locker = () => (
+    ({ memoized, value }) =>
+        (thing) => {
+            if (!memoized) {
+                memoized = true
+                value = thing
+            }
+            return value
+        }
+)({ memoized: false, value: null })
