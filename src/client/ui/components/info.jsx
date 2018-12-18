@@ -24,7 +24,10 @@ import {
     iconizeMessage,
 } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
-import { rgba } from "../../../lib/utils"
+import {
+    locker,
+    rgba,
+} from "../../../lib/utils"
 
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -127,16 +130,19 @@ Info.propTypes = {
 
 
 // ...
-export default func.compose(
-    connect(
-        (s) => ({
-            humanMessage: humanizeMessage(
-                array.head(s.App.throttledMessage)
-            ),
-            icon: func.partial(iconizeMessage)(
-                array.head(s.App.throttledMessage)
-            ),
-        })
-    ),
-    memo
-)(Info)
+export default () => {
+    const lock = locker()
+    return func.compose(
+        connect(
+            (s) => ({
+                humanMessage: humanizeMessage(
+                    lock(array.head(s.App.throttledMessage))
+                ),
+                icon: func.partial(iconizeMessage)(
+                    lock(array.head(s.App.throttledMessage))
+                ),
+            })
+        ),
+        memo
+    )(Info)
+}

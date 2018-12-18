@@ -31,7 +31,6 @@ import {
     iconizeMessage,
     messageToView,
 } from "../helpers"
-import * as message from "../../../lib/messages"
 
 import AppBar from "@material-ui/core/AppBar"
 import Grid from "@material-ui/core/Grid"

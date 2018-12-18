@@ -103,15 +103,18 @@ export const iconizeMessage = func.partial(
  * @function messageToView
  * @param {String} message
  * @param {Array} iconProps
- * @returns {React.ReactElement}
+ * @returns {Function}
  */
-export const messageToView = func.partial(
-    func.rearg(func.choose)(1, 2, 0, 3)
-)({
-    [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
-    [message.BACKUP]: () => Info,
-    [message.GENERATE_ADDRESS]: () => GenerateAddress,
-    [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
-    [message.RESTORE]: () => Info,
-    [message.SIGN_TRANSACTION]: () => GenericChoice,
-}, () => Idle)
+export const messageToView = (() => {
+    const Info1 = Info(), Info2 = Info()
+    return func.partial(
+        func.rearg(func.choose)(1, 2, 0, 3)
+    )({
+        [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
+        [message.BACKUP]: () => Info1,
+        [message.GENERATE_ADDRESS]: () => GenerateAddress,
+        [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
+        [message.RESTORE]: () => Info2,
+        [message.SIGN_TRANSACTION]: () => GenericChoice,
+    }, () => Idle)
+})()
