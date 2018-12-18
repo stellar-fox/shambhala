@@ -11,6 +11,7 @@
 
 
 import { createMuiTheme } from "@material-ui/core/styles"
+import { string } from "@xcmats/js-toolbox"
 import { rgb, rgba } from "../../lib/utils"
 
 
@@ -63,6 +64,17 @@ export const theme = createMuiTheme({
 
     },
 
-    typography: { useNextVariants: true },
+    typography: {
+
+        fontFamily: [
+            "Roboto",
+            "sans-serif",
+        ].map((f) => string.quote(f)).join(", "),
+
+        fontSize: 14,
+
+        useNextVariants: true,
+
+    },
 
 })

@@ -45,7 +45,9 @@ import Typography from "@material-ui/core/Typography"
 const
     noHeader = 345,
     noFooter = 380,
-    maxMainHeight = 632,
+    maxMainHeight = 638,
+
+    footerHeight = theme.typography.fontSize + 3 * theme.spacing.unit,
 
     useStyles = makeStyles((t) => ({
 
@@ -83,7 +85,7 @@ const
                 [`@media (max-height: ${noFooter}px)`]: { display: "none" },
                 background: rgba(0, 0, 0, 0.25),
                 boxShadow: `0px 0px 4px 0px ${rgba(0, 0, 0, 1.0)}`,
-                padding: t.spacing.unit,
+                padding: 0.5 * t.spacing.unit,
                 "& $text": {
                     color: rgba(255, 255, 255, 0.25),
                     textAlign: "center",
@@ -131,8 +133,8 @@ const Layout = ({
         [headerHeight, setHeaderHeight] = useState(0),
         mainHeight = () => Math.min(
             screenHeight - headerHeight - (
-                screenHeight > noFooter ? 5 : 0
-            ) * theme.spacing.unit,
+                screenHeight > noFooter  ?  footerHeight  :  0
+            ),
             maxMainHeight
         ),
         slideHeight = () => mainHeight() - 2 * theme.spacing.unit,
