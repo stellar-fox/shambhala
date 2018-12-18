@@ -14,6 +14,7 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
+    array,
     func,
     string,
 } from "@xcmats/js-toolbox"
@@ -129,8 +130,12 @@ Info.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            humanMessage: humanizeMessage(s.App.throttledMessage),
-            icon: func.partial(iconizeMessage)(s.App.throttledMessage),
+            humanMessage: humanizeMessage(
+                array.head(s.App.throttledMessage)
+            ),
+            icon: func.partial(iconizeMessage)(
+                array.head(s.App.throttledMessage)
+            ),
         })
     ),
     memo

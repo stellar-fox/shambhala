@@ -39,10 +39,12 @@ const initState = {
     infoMessage: string.empty(),
 
     // a message that is currently being processed (src/lib/messages.js)
-    message: null,
+    // `head(message)` is the current message,
+    // while `last(mesage)` is the previous message,
+    message: [null, null],
 
     // throttled version of message that is currently being processed
-    throttledMessage: null,
+    throttledMessage: [null, null],
 
     // window dimensions
     dim: {

@@ -11,6 +11,7 @@
 
 
 import {
+    array,
     async,
     func,
     string,
@@ -103,19 +104,31 @@ export const setInfoMessage = (infoMessage = string.empty()) =>
 
 /**
  * Set message that is currently being processed.
+ * Also take care of "throttled" version and previous messages.
  *
  * @function setMessage
- * @param {String} message
+ * @param {String} newMessage
  * @returns {Function} thunk action
  */
 export const setMessage = ((setThrottledMessage) =>
-    (message) =>
-        async (dispatch, _getState) => {
-            setThrottledMessage(func.flow(action.setState, dispatch), message)
-            return await dispatch(action.setState({ message }))
+    (newMessage) =>
+        async (dispatch, getState) => {
+            let
+                { message, throttledMessage } = getState().App,
+                setState = (key, nm, pm) => func.pipe(
+                    { [key]: [nm, array.head(pm)] }
+                )(action.setState, dispatch)
+            setThrottledMessage(
+                func.partial(setState)(
+                    "throttledMessage",
+                    newMessage,
+                    throttledMessage
+                )
+            )
+            return await setState("message", newMessage, message)
         }
 )(throttle(
-    (setState, throttledMessage) => setState({ throttledMessage }),
+    (setState) => setState(),
     messageThrottleTime, { leading: false }
 ))
 

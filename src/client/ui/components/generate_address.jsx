@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Generic screen with yes/no buttons.
+ * Address generation view.
  *
  * @module client-ui-components
  * @license Apache-2.0
@@ -14,7 +14,6 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
-    array,
     func,
     string,
 } from "@xcmats/js-toolbox"
@@ -24,15 +23,12 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
-import {
-    humanizeMessage,
-    iconizeMessage,
-} from "../helpers"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
 
 import Button from "@material-ui/core/Button"
+import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -124,18 +120,16 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * `<GenericChoice>` component.
+ * `<GenerateAddress>` component.
  *
- * @function GenericChoice
+ * @function GenerateAddress
  * @returns {React.ReactElement}
  */
-const GenericChoice = ({
+const GenerateAddress = ({
     basicReject,
     basicResolve,
     className = string.empty(),
     disabled,
-    humanMessage,
-    icon,
     style = {},
 }) => ((css) =>
 
@@ -143,7 +137,7 @@ const GenericChoice = ({
         className={classNames(className, css.content)}
         style={style}
     >
-        { icon([{ className: css.icon }]) }
+        <IconPlaylistAdd className={css.icon} />
         <div className={css.headingStrecher}>
             <Typography
                 component="h1"
@@ -151,7 +145,7 @@ const GenericChoice = ({
                 align="center"
                 className={css.heading}
             >
-                { humanMessage }
+                Do you wish to generate a new address?
             </Typography>
         </div>
         <div className={css.buttonBar}>
@@ -178,12 +172,10 @@ const GenericChoice = ({
 
 
 // ...
-GenericChoice.propTypes = {
+GenerateAddress.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
-    humanMessage: PropTypes.string.isRequired,
-    icon: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -196,12 +188,6 @@ export default func.compose(
     connect(
         (s) => ({
             disabled: s.App.promptMutexResolveValue === null,
-            humanMessage: humanizeMessage(
-                array.head(s.App.throttledMessage)
-            ),
-            icon: func.partial(iconizeMessage)(
-                array.head(s.App.throttledMessage)
-            ),
         }),
         (dispatch) => bindActionCreators({
             basicReject,
@@ -209,4 +195,4 @@ export default func.compose(
         }, dispatch)
     ),
     memo
-)(GenericChoice)
+)(GenerateAddress)

@@ -18,7 +18,10 @@ import React, {
 } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { func } from "@xcmats/js-toolbox"
+import {
+    array,
+    func,
+} from "@xcmats/js-toolbox"
 import { makeStyles } from "@material-ui/styles"
 import { theme } from "../theme"
 import { rgba } from "../../../lib/utils"
@@ -30,6 +33,7 @@ import {
 import * as message from "../../../lib/messages"
 
 import AppBar from "@material-ui/core/AppBar"
+import GenerateAddress from "./generate_address"
 import GenericChoice from "./generic"
 import Grid from "@material-ui/core/Grid"
 import Idle from "./idle"
@@ -83,8 +87,11 @@ const
 
             "& $footer": {
                 [`@media (max-height: ${noFooter}px)`]: { display: "none" },
-                background: rgba(0, 0, 0, 0.25),
-                boxShadow: `0px 0px 4px 0px ${rgba(0, 0, 0, 1.0)}`,
+                background: rgba(0, 0, 0, 0.2),
+                boxShadow: [
+                    `0px 0px 4px 0px ${rgba(0, 0, 0, 0.5)}`,
+                    `0px 0px 12px 0px ${rgba(0, 0, 0, 0.4)}`,
+                ].join(", "),
                 padding: 0.5 * t.spacing.unit,
                 "& $text": {
                     color: rgba(255, 255, 255, 0.25),
@@ -125,6 +132,7 @@ const Layout = ({
 }) => {
     const css = useStyles()
 
+
     // imperative ugliness just to obtain header height
     // and properly compute heights of `<main>` and its descendants
     let
@@ -139,8 +147,9 @@ const Layout = ({
         ),
         slideHeight = () => mainHeight() - 2 * theme.spacing.unit,
         slideContentHeight = () => slideHeight() - 2 * theme.spacing.unit,
-        slide = (Content) =>
+        slide = (Content, key) =>
             <Typography
+                key={key}
                 component="div"
                 className={css.slide}
                 style={{ height: slideHeight() }}
@@ -154,6 +163,26 @@ const Layout = ({
         let newHeight = refToHeader.current.getBoundingClientRect().height
         if (newHeight !== headerHeight) setHeaderHeight(newHeight)
     }, [screenHeight, screenWidth])
+
+
+    // some stateful logic for swipes
+    let
+        [displayed, setDisplayed] = useState([currentMessage]),
+        messageToComponent = func.partial(
+            func.rearg(func.choose)(1, 2, 0, 3)
+        )({
+            [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
+            [message.BACKUP]: () => Info,
+            [message.GENERATE_ADDRESS]: () => GenerateAddress,
+            [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
+            [message.RESTORE]: () => Info,
+            [message.SIGN_TRANSACTION]: () => GenericChoice,
+        }, () => Idle)
+
+    // if there is a change in the message then we should animate
+    if (currentMessage !== array.head(displayed)) {
+        setDisplayed([currentMessage, array.head(displayed)])
+    }
 
 
     return (
@@ -190,18 +219,13 @@ const Layout = ({
                         width: screenWidth - 2 * theme.spacing.unit,
                         height: mainHeight(),
                     }}
-                    index={ func.choose(currentMessage, {
-                        [message.ASSOCIATE_ADDRESS]: () => 2,
-                        [message.BACKUP]: () => 0,
-                        [message.GENERATE_ADDRESS]: () => 2,
-                        [message.GENERATE_SIGNING_KEYS]: () => 2,
-                        [message.RESTORE]: () => 0,
-                        [message.SIGN_TRANSACTION]: () => 2,
-                    }, () => 1) }
+                    disabled={true}
+                    index={displayed.length - 1}
+                    onTransitionEnd={() => setDisplayed([currentMessage])}
                 >
-                    { /* 0 */ slide(Info) }
-                    { /* 1 */ slide(Idle) }
-                    { /* 2 */ slide(GenericChoice) }
+                    { displayed
+                        .map((d) => slide(messageToComponent(d), d))
+                        .reverse() }
                 </SwipeableViews>
             </Grid>
 
@@ -245,9 +269,9 @@ Layout.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            currentMessage: filterMessage(s.App.throttledMessage),
-            humanMessage: humanizeMessage(s.App.message),
-            icon: func.partial(iconizeMessage)(s.App.message),
+            currentMessage: filterMessage(array.head(s.App.throttledMessage)),
+            humanMessage: humanizeMessage(array.head(s.App.message)),
+            icon: func.partial(iconizeMessage)(array.head(s.App.message)),
             screenHeight: s.App.dim.height,
             screenWidth: s.App.dim.width,
         })
