@@ -19,25 +19,24 @@ import React, {
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { func } from "@xcmats/js-toolbox"
-
 import { makeStyles } from "@material-ui/styles"
-import AppBar from "@material-ui/core/AppBar"
-import Grid from "@material-ui/core/Grid"
-import SwipeableViews from "react-swipeable-views"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
-
 import { theme } from "../theme"
+import { rgba } from "../../../lib/utils"
 import {
     filterMessage,
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
+import * as message from "../../../lib/messages"
+
+import AppBar from "@material-ui/core/AppBar"
 import GenericChoice from "./generic"
+import Grid from "@material-ui/core/Grid"
 import Idle from "./idle"
 import Info from "./info"
-
-import * as message from "../../../lib/messages"
+import SwipeableViews from "react-swipeable-views"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
 
 
 
@@ -82,14 +81,14 @@ const
 
             "& $footer": {
                 [`@media (max-height: ${noFooter}px)`]: { display: "none" },
-                background: "rgba(0, 0, 0, 0.25)",
+                background: rgba(0, 0, 0, 0.25),
                 padding: t.spacing.unit,
                 "& $text": {
-                    color: "rgba(255, 255, 255, 0.25)",
+                    color: rgba(255, 255, 255, 0.25),
                     textAlign: "center",
                 },
-                "& $heart": { color: "rgba(219, 51, 39, 0.75)" },
-                "& $emoji": { color: "rgba(255, 255, 255, 0.75)" },
+                "& $heart": { color: t.palette.custom.rallyRed },
+                "& $emoji": { color: rgba(255, 255, 255, 0.75) },
             },
         },
 

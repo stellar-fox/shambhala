@@ -17,7 +17,6 @@ import {
     func,
     string,
 } from "@xcmats/js-toolbox"
-
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 import {
@@ -28,13 +27,12 @@ import {
     humanizeMessage,
     iconizeMessage,
 } from "../helpers"
-
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
+import { rgba } from "../../../lib/utils"
+
 import Button from "@material-ui/core/Button"
-import green from "@material-ui/core/colors/green"
 import Paper from "@material-ui/core/Paper"
-import red from "@material-ui/core/colors/red"
 import Typography from "@material-ui/core/Typography"
 
 
@@ -57,8 +55,8 @@ const useStyles = makeStyles((t) => ({
             display: "block",
             margin: "0 auto",
             fontSize: 64,
-            color: "rgb(114, 222, 255)",
-            filter: "drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5))",
+            color: t.palette.custom.rallyBrightGreen,
+            filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
             marginBottom: t.spacing.unit,
         },
 
@@ -71,7 +69,7 @@ const useStyles = makeStyles((t) => ({
             "& $heading": {
                 margin: "0 auto",
                 display: "block",
-                textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
+                textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
         },
 
@@ -84,21 +82,25 @@ const useStyles = makeStyles((t) => ({
                 "&$disabled": { backgroundColor: "transparent !important" },
                 "&$yes": {
                     backgroundColor: fade(
-                        green[500], t.palette.action.hoverOpacity
+                        t.palette.custom.rallyGreen,
+                        t.palette.action.hoverOpacity
                     ),
                     "&:hover": {
                         backgroundColor: fade(
-                            green[500], 3 * t.palette.action.hoverOpacity
+                            t.palette.custom.rallyGreen,
+                            3 * t.palette.action.hoverOpacity
                         ),
                     },
                 },
                 "&$no": {
                     backgroundColor: fade(
-                        red[500], t.palette.action.hoverOpacity
+                        t.palette.custom.rallyRed,
+                        t.palette.action.hoverOpacity
                     ),
                     "&:hover": {
                         backgroundColor: fade(
-                            red[500], 3 * t.palette.action.hoverOpacity
+                            t.palette.custom.rallyRed,
+                            3 * t.palette.action.hoverOpacity
                         ),
                     },
                 },

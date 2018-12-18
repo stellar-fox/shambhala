@@ -14,13 +14,13 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { func } from "@xcmats/js-toolbox"
+import { makeStyles } from "@material-ui/styles"
+import { rgba } from "../../../lib/utils"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/styles"
-
 import Layout from "./layout"
+import Typography from "@material-ui/core/Typography"
 
 
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles((t) => ({
 
     infoMessage: {
         textAlign: "center",
-        color: "rgba(115, 125, 112, 0.75)",
+        color: rgba(115, 125, 112, 0.75),
     },
 
 }))
@@ -70,7 +70,9 @@ const Loader = ({
 
     ready ?
 
-        <Fade in={showUi} style={{ willChange: "unset" }}><Layout /></Fade> :
+        <Fade in={showUi} style={{ willChange: "unset" }}>
+            <Layout />
+        </Fade> :
 
         <Fade in={showLoader} style={{ willChange: "unset" }}>
             <main className={css.layout}>

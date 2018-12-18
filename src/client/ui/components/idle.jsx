@@ -14,8 +14,9 @@ import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import { string } from "@xcmats/js-toolbox"
-
 import { makeStyles } from "@material-ui/styles"
+import { rgba } from "../../../lib/utils"
+
 import IconMood from "@material-ui/icons/Mood"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -40,8 +41,8 @@ const useStyles = makeStyles((t) => ({
             display: "block",
             margin: "0 auto",
             fontSize: 64,
-            color: "rgb(114, 222, 255)",
-            filter: "drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5))",
+            color: t.palette.custom.rallyBrightGreen,
+            filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
             marginBottom: t.spacing.unit,
         },
 
@@ -55,7 +56,7 @@ const useStyles = makeStyles((t) => ({
             "& $heading": {
                 margin: "0 auto",
                 display: "block",
-                textShadow: "0px 0px 7px rgba(0, 0, 0, 0.5)",
+                textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
         },
     },
