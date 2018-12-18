@@ -46,7 +46,7 @@ import * as message from "../../../lib/messages"
 const
     noHeader = 345,
     noFooter = 380,
-    maxMainHeight = 480,
+    maxMainHeight = 632,
 
     useStyles = makeStyles((t) => ({
 
@@ -70,12 +70,8 @@ const
                 display: "flex",
                 justifyContent: "center",
                 "& $slide": {
-                    [`@media (max-height: ${noFooter}px)`]: {
-                        marginTop: t.spacing.unit,
-                        marginBotom: t.spacing.unit,
-                    },
-                    marginTop: 2 * t.spacing.unit,
-                    marginBotom: 2 * t.spacing.unit,
+                    marginTop: t.spacing.unit,
+                    marginBotom: t.spacing.unit,
                     marginLeft: "auto",
                     marginRight: "auto",
                     minWidth: 240,
@@ -86,6 +82,7 @@ const
 
             "& $footer": {
                 [`@media (max-height: ${noFooter}px)`]: { display: "none" },
+                background: "rgba(0, 0, 0, 0.25)",
                 padding: t.spacing.unit,
                 "& $text": {
                     color: "rgba(255, 255, 255, 0.25)",
@@ -134,7 +131,7 @@ const Layout = ({
         [headerHeight, setHeaderHeight] = useState(0),
         mainHeight = () => Math.min(
             screenHeight - headerHeight - (
-                screenHeight > noFooter ? 6 : 0
+                screenHeight > noFooter ? 5 : 0
             ) * theme.spacing.unit,
             maxMainHeight
         ),
