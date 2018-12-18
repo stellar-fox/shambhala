@@ -17,6 +17,8 @@ import {
 } from "@xcmats/js-toolbox"
 import * as message from "../../lib/messages"
 
+import GenericChoice from "./components/generic"
+import GenerateAddress from "./components/generate_address"
 import IconAutorenew from "@material-ui/icons/Autorenew"
 import IconBackup from "@material-ui/icons/Backup"
 import IconFingerprint from "@material-ui/icons/Fingerprint"
@@ -24,6 +26,8 @@ import IconLock from "@material-ui/icons/Lock"
 import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
 import IconRestore from "@material-ui/icons/Restore"
 import IconVpnKey from "@material-ui/icons/VpnKey"
+import Idle from "./components/idle"
+import Info from "./components/info"
 
 
 
@@ -89,3 +93,25 @@ export const iconizeMessage = func.partial(
     [message.RESTORE]: func.partial(rce)(IconRestore),
     [message.SIGN_TRANSACTION]: func.partial(rce)(IconFingerprint),
 }, func.partial(rce)(IconLock))
+
+
+
+
+/**
+ * Convert a message to a view.
+ *
+ * @function messageToView
+ * @param {String} message
+ * @param {Array} iconProps
+ * @returns {React.ReactElement}
+ */
+export const messageToView = func.partial(
+    func.rearg(func.choose)(1, 2, 0, 3)
+)({
+    [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
+    [message.BACKUP]: () => Info,
+    [message.GENERATE_ADDRESS]: () => GenerateAddress,
+    [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
+    [message.RESTORE]: () => Info,
+    [message.SIGN_TRANSACTION]: () => GenericChoice,
+}, () => Idle)

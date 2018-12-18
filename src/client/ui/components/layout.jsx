@@ -29,15 +29,12 @@ import {
     filterMessage,
     humanizeMessage,
     iconizeMessage,
+    messageToView,
 } from "../helpers"
 import * as message from "../../../lib/messages"
 
 import AppBar from "@material-ui/core/AppBar"
-import GenerateAddress from "./generate_address"
-import GenericChoice from "./generic"
 import Grid from "@material-ui/core/Grid"
-import Idle from "./idle"
-import Info from "./info"
 import SwipeableViews from "react-swipeable-views"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
@@ -166,18 +163,7 @@ const Layout = ({
 
 
     // some stateful logic for swipes
-    let
-        [displayed, setDisplayed] = useState([currentMessage]),
-        messageToComponent = func.partial(
-            func.rearg(func.choose)(1, 2, 0, 3)
-        )({
-            [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
-            [message.BACKUP]: () => Info,
-            [message.GENERATE_ADDRESS]: () => GenerateAddress,
-            [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
-            [message.RESTORE]: () => Info,
-            [message.SIGN_TRANSACTION]: () => GenericChoice,
-        }, () => Idle)
+    let [displayed, setDisplayed] = useState([currentMessage])
 
     // if there is a change in the message then we should animate
     if (currentMessage !== array.head(displayed)) {
@@ -224,7 +210,7 @@ const Layout = ({
                     onTransitionEnd={() => setDisplayed([currentMessage])}
                 >
                     { displayed
-                        .map((d) => slide(messageToComponent(d), d))
+                        .map((d) => slide(messageToView(d), d))
                         .reverse() }
                 </SwipeableViews>
             </Grid>
