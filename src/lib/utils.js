@@ -136,3 +136,34 @@ export const run = (main) => {
         window.addEventListener("load", main)
     }
 }
+
+
+
+
+/**
+ * JSS color.
+ *
+ * @function rgb
+ * @param {Number} r
+ * @param {Number} g
+ * @param {Number} b
+ * @returns {String}
+ */
+export const rgb = (r, g, b) =>
+    string.wrap([r, g, b].join(", "), "rgb(", ")")
+
+
+
+
+/**
+ * JSS color (with alpha).
+ *
+ * @function rgba
+ * @param {Number} r
+ * @param {Number} g
+ * @param {Number} b
+ * @param {Number} a
+ * @returns {String}
+ */
+export const rgba = (r, g, b, a) =>
+    string.wrap([r, g, b, a].join(", "), "rgba(", ")")
