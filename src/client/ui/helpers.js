@@ -106,15 +106,20 @@ export const iconizeMessage = func.partial(
  * @returns {Function}
  */
 export const messageToView = (() => {
-    const Info1 = Info(), Info2 = Info()
+    const
+        Info1 = Info(),
+        Info2 = Info(),
+        GenericChoice1 = GenericChoice(),
+        GenericChoice2 = GenericChoice(),
+        GenericChoice3 = GenericChoice()
     return func.partial(
         func.rearg(func.choose)(1, 2, 0, 3)
     )({
-        [message.ASSOCIATE_ADDRESS]: () => GenericChoice,
+        [message.ASSOCIATE_ADDRESS]: () => GenericChoice1,
         [message.BACKUP]: () => Info1,
         [message.GENERATE_ADDRESS]: () => GenerateAddress,
-        [message.GENERATE_SIGNING_KEYS]: () => GenericChoice,
+        [message.GENERATE_SIGNING_KEYS]: () => GenericChoice2,
         [message.RESTORE]: () => Info2,
-        [message.SIGN_TRANSACTION]: () => GenericChoice,
+        [message.SIGN_TRANSACTION]: () => GenericChoice3,
     }, () => Idle)
 })()

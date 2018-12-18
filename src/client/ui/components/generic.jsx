@@ -30,7 +30,10 @@ import {
 } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
-import { rgba } from "../../../lib/utils"
+import {
+    locker,
+    rgba,
+} from "../../../lib/utils"
 
 import Button from "@material-ui/core/Button"
 import Paper from "@material-ui/core/Paper"
@@ -192,21 +195,24 @@ GenericChoice.propTypes = {
 
 
 // ...
-export default func.compose(
-    connect(
-        (s) => ({
-            disabled: s.App.promptMutexResolveValue === null,
-            humanMessage: humanizeMessage(
-                array.head(s.App.throttledMessage)
-            ),
-            icon: func.partial(iconizeMessage)(
-                array.head(s.App.throttledMessage)
-            ),
-        }),
-        (dispatch) => bindActionCreators({
-            basicReject,
-            basicResolve,
-        }, dispatch)
-    ),
-    memo
-)(GenericChoice)
+export default () => {
+    const lock = locker()
+    return func.compose(
+        connect(
+            (s) => ({
+                disabled: s.App.promptMutexResolveValue === null,
+                humanMessage: humanizeMessage(
+                    lock(array.head(s.App.throttledMessage))
+                ),
+                icon: func.partial(iconizeMessage)(
+                    lock(array.head(s.App.throttledMessage))
+                ),
+            }),
+            (dispatch) => bindActionCreators({
+                basicReject,
+                basicResolve,
+            }, dispatch)
+        ),
+        memo
+    )(GenericChoice)
+}
