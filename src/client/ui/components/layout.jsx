@@ -82,6 +82,7 @@ const
             "& $footer": {
                 [`@media (max-height: ${noFooter}px)`]: { display: "none" },
                 background: rgba(0, 0, 0, 0.25),
+                boxShadow: `0px 0px 4px 0px ${rgba(0, 0, 0, 1.0)}`,
                 padding: t.spacing.unit,
                 "& $text": {
                     color: rgba(255, 255, 255, 0.25),
