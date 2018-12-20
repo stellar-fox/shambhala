@@ -20,6 +20,33 @@ import {
     type,
     utils,
 } from "@xcmats/js-toolbox"
+import {
+    decrypt,
+    encrypt,
+    salt64,
+} from "@stellar-fox/cryptops"
+
+
+
+
+/**
+ * Take console-like object and "augment" all its methods in a way
+ * that all arguments passed to them are also passed to function given
+ * as an argument.
+ *
+ * @function consoleAugmenter
+ * @param {Object} con console-like object
+ * @param {Function} f
+ * @returns {Object}
+ */
+export const consoleAugmenter = (() => {
+    let
+        methods = ["log", "info", "warn", "error"],
+        c = (con, f) => struct.dict(methods.map(
+            (m) => [m, (...args) => { f(m, ...args); con[m](...args) }]
+        ))
+    return c
+})()
 
 
 
@@ -48,28 +75,6 @@ export const consoleWrapper = (() => {
 
 
 /**
- * Take console-like object and "augment" all its methods in a way
- * that all arguments passed to them are also passed to function given
- * as an argument.
- *
- * @function consoleAugmenter
- * @param {Object} con console-like object
- * @param {Function} f
- * @returns {Object}
- */
-export const consoleAugmenter = (() => {
-    let
-        methods = ["log", "info", "warn", "error"],
-        c = (con, f) => struct.dict(methods.map(
-            (m) => [m, (...args) => { f(m, ...args); con[m](...args) }]
-        ))
-    return c
-})()
-
-
-
-
-/**
  * Return array of `windowSize` random emojis.
  *
  * @function drawEmojis
@@ -86,6 +91,19 @@ export const drawEmojis = ((emojis) =>
     "🐢", "👻", "🔨", "🍕", "🚀", "🚗", "⛅️", "🐼",
     "🍷", "🌹", "💰", "📷", "👍", "🍒", "⚽️", "⏳",
 ])
+
+
+
+
+/**
+ * Scrambler.
+ *
+ * @constant {Object} fuzz
+ */
+export const fuzz = ((k) => ({
+    in: func.flow(func.partial(encrypt)(k), codec.bytesToHex),
+    out: func.flow(codec.hexToBytes, func.partial(decrypt)(k)),
+}))(salt64())
 
 
 
@@ -123,24 +141,6 @@ export const miniHash = (sha256) => func.flow(
 
 
 /**
- * Run "main" function in browser on "load" event.
- *
- * @function run
- * @param {Function} main
- */
-export const run = (main) => {
-    if (
-        type.isObject(window)  &&
-        type.isFunction(window.addEventListener)
-    ) {
-        window.addEventListener("load", main)
-    }
-}
-
-
-
-
-/**
  * JSS color.
  *
  * @function rgb
@@ -167,3 +167,21 @@ export const rgb = (r, g, b) =>
  */
 export const rgba = (r, g, b, a) =>
     string.wrap([r, g, b, a].join(", "), "rgba(", ")")
+
+
+
+
+/**
+ * Run "main" function in browser on "load" event.
+ *
+ * @function run
+ * @param {Function} main
+ */
+export const run = (main) => {
+    if (
+        type.isObject(window)  &&
+        type.isFunction(window.addEventListener)
+    ) {
+        window.addEventListener("load", main)
+    }
+}
