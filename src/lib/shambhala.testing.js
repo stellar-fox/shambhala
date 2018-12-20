@@ -534,7 +534,7 @@ export function shambhalaTesting (
 
             logger.info("Signing received transaction.")
 
-            tx.sign(addr.keypair)
+            tx.sign(Keypair.fromSecret(addr.keypair.secret()))
 
             logger.info(
                 "OK:", codec.b64enc(array.head(tx.signatures).toXDR())
