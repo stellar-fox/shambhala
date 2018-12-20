@@ -123,9 +123,9 @@ export const getAllClientData = async () => {
  * @returns {Promise.<String>}
  */
 export const getValueFromUser = async (
-    promptText = "Enter ", name = "VALUE", defVal = null
+    promptText = "Enter", name = "VALUE", defVal = null
 ) => {
-    store.logger.warn(`${promptText}${name}`)
+    store.logger.warn(`${promptText} ${name}`)
     store.logger.info(`p.yes(${name})`, "p.no(optional:REASON)")
     store.context.promptMutex = async.createMutex()
     await store.thunkActions.setPromptMutexResolveValue(defVal)
@@ -174,8 +174,8 @@ export const promptUser = async (
  * @returns {Promise.<String>}
  */
 export const getPassphrase = func.partial(
-    func.rearg(getValueFromUser)(1, 2, 0)
-)("PASSPHRASE", string.random(10))
+    getValueFromUser
+)("Enter", "PASSPHRASE", string.random(10))
 
 
 
@@ -188,5 +188,5 @@ export const getPassphrase = func.partial(
  * @returns {Promise.<String>}
  */
 export const getPin = func.partial(
-    func.rearg(getValueFromUser)(1, 2, 0)
-)("PIN", "00000")
+    getValueFromUser
+)("Enter", "PIN", "00000")

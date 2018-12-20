@@ -276,7 +276,7 @@ run(async () => {
         cryptops, forage, message,
         {
             cancellable: async.cancellable,
-            curry: func.curry,
+            curryThunk: func.curryThunk,
             identity: func.identity,
             isString: type.isString,
             partial: func.partial,

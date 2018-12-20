@@ -44,7 +44,7 @@ import close from "./actions/close"
 export default function attach (
     logger, context, messageHandler, thunkActions,
     cryptops, forage, message,
-    { cancellable, curry, identity, isString, partial, quote }
+    { cancellable, curryThunk, identity, isString, partial, quote }
 ) {
 
     [
@@ -154,7 +154,7 @@ export default function attach (
             respond = partial(messageHandler.postMessage)(ad.m),
 
             // ... and create action with appropriate parameters bound
-            act = curry(ad.a)(
+            act = curryThunk(ad.a)(
                 // responding to host should only be possible
                 // when some operation is "ongoing"
                 (msg) =>

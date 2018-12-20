@@ -40,16 +40,14 @@ import Info from "./components/info"
  * @param {String} message
  * @returns {String}
  */
-export const filterMessage = func.partial(
-    func.rearg(func.choose)(1, 2, 0, 3)
-)({
+export const filterMessage = func.rearg(func.choose)(1, 2, 3, 0)({
     [message.ASSOCIATE_ADDRESS]: () => message.ASSOCIATE_ADDRESS,
     [message.BACKUP]: () => message.BACKUP,
     [message.GENERATE_ADDRESS]: () => message.GENERATE_ADDRESS,
     [message.GENERATE_SIGNING_KEYS]: () => message.GENERATE_SIGNING_KEYS,
     [message.RESTORE]: () => message.RESTORE,
     [message.SIGN_TRANSACTION]: () => message.SIGN_TRANSACTION,
-}, () => string.empty())
+}, () => string.empty(), [])
 
 
 
@@ -61,16 +59,14 @@ export const filterMessage = func.partial(
  * @param {String} message
  * @returns {String}
  */
-export const humanizeMessage = func.partial(
-    func.rearg(func.choose)(1, 2, 0, 3)
-)({
+export const humanizeMessage = func.rearg(func.choose)(1, 2, 3, 0)({
     [message.ASSOCIATE_ADDRESS]: () => "Existing Address Association",
     [message.BACKUP]: () => "Client Key Information Backup",
     [message.GENERATE_ADDRESS]: () => "New Address Generation",
     [message.GENERATE_SIGNING_KEYS]: () => "Signing Keys Generation",
     [message.RESTORE]: () => "Client Key Information Restore",
     [message.SIGN_TRANSACTION]: () => "Transaction Signing",
-}, () => "Idle")
+}, () => "Idle", [])
 
 
 
@@ -79,20 +75,19 @@ export const humanizeMessage = func.partial(
  * Convert a message to an icon.
  *
  * @function iconizeMessage
- * @param {String} message
+ * @param {String} msg
  * @param {Array} iconProps
  * @returns {React.ReactElement}
  */
-export const iconizeMessage = func.partial(
-    func.rearg(func.choose)(1, 2, 0, 3)
-)({
-    [message.ASSOCIATE_ADDRESS]: func.partial(rce)(IconAutorenew),
-    [message.BACKUP]: func.partial(rce)(IconBackup),
-    [message.GENERATE_ADDRESS]: func.partial(rce)(IconPlaylistAdd),
-    [message.GENERATE_SIGNING_KEYS]: func.partial(rce)(IconVpnKey),
-    [message.RESTORE]: func.partial(rce)(IconRestore),
-    [message.SIGN_TRANSACTION]: func.partial(rce)(IconFingerprint),
-}, func.partial(rce)(IconLock))
+export const iconizeMessage = (msg, iconProps = []) =>
+    func.choose(msg, {
+        [message.ASSOCIATE_ADDRESS]: func.partial(rce)(IconAutorenew),
+        [message.BACKUP]: func.partial(rce)(IconBackup),
+        [message.GENERATE_ADDRESS]: func.partial(rce)(IconPlaylistAdd),
+        [message.GENERATE_SIGNING_KEYS]: func.partial(rce)(IconVpnKey),
+        [message.RESTORE]: func.partial(rce)(IconRestore),
+        [message.SIGN_TRANSACTION]: func.partial(rce)(IconFingerprint),
+    }, func.partial(rce)(IconLock), iconProps)
 
 
 
@@ -112,14 +107,12 @@ export const messageToView = (() => {
         GenericChoice1 = GenericChoice(),
         GenericChoice2 = GenericChoice(),
         GenericChoice3 = GenericChoice()
-    return func.partial(
-        func.rearg(func.choose)(1, 2, 0, 3)
-    )({
+    return func.rearg(func.choose)(1, 2, 3, 0)({
         [message.ASSOCIATE_ADDRESS]: () => GenericChoice1,
         [message.BACKUP]: () => Info1,
         [message.GENERATE_ADDRESS]: () => GenerateAddress,
         [message.GENERATE_SIGNING_KEYS]: () => GenericChoice2,
         [message.RESTORE]: () => Info2,
         [message.SIGN_TRANSACTION]: () => GenericChoice3,
-    }, () => Idle)
+    }, () => Idle, [])
 })()
