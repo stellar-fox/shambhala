@@ -26,6 +26,7 @@ import {
     consoleWrapper,
     mDef,
     miniHash,
+    fuzz,
     run,
 } from "../lib/utils"
 import {
@@ -188,6 +189,9 @@ run(async () => {
 
 
 
+
+    // create a "global" `fuzz` instance
+    context.fuzz = fuzz(cryptops.encrypt, cryptops.decrypt, cryptops.salt64)
 
     // Pass references to all data required by "functions"
     // (so that they are available when any of the functions

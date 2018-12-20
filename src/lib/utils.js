@@ -20,11 +20,6 @@ import {
     type,
     utils,
 } from "@xcmats/js-toolbox"
-import {
-    decrypt,
-    encrypt,
-    salt64,
-} from "@stellar-fox/cryptops"
 
 
 
@@ -98,9 +93,12 @@ export const drawEmojis = ((emojis) =>
 /**
  * Scrambler.
  *
- * @constant {Object} fuzz
+ * @function fuzz
+ * @param {Function} encrypt
+ * @param {Function} decrypt
+ * @param {Function} salt64
  */
-export const fuzz = ((k) => ({
+export const fuzz = (encrypt, decrypt, salt64) => ((k) => ({
     in: func.flow(func.partial(encrypt)(k), codec.bytesToHex),
     out: func.flow(codec.hexToBytes, func.partial(decrypt)(k)),
 }))(salt64())

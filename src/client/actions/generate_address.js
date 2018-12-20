@@ -11,6 +11,7 @@
 
 
 import axios from "axios"
+import { Keypair } from "stellar-sdk"
 import {
     genKeypair,
     genMnemonic,
@@ -99,7 +100,9 @@ export default function generateAddress (
         // "genesis" key pair generation
         context.GKP = func.pipe(G_MNEMONIC, PASSPHRASE)(
             mnemonicToSeedHex,
-            genKeypair
+            genKeypair,
+            (kp) => kp.rawSecretKey(),
+            context.fuzz.in
         )
 
         // [💥] let's say this >>destroys<< G_MNEMONIC and PASSPHRASE
@@ -111,7 +114,11 @@ export default function generateAddress (
 
         let
             // extract user's new public address
-            G_PUBLIC = context.GKP.publicKey(),
+            G_PUBLIC = func.pipe(context.GKP)(
+                context.fuzz.out,
+                Keypair.fromRawEd25519Seed.bind(Keypair),
+                (kp) => kp.publicKey()
+            ),
 
             // generate user's new unique identifier
             C_UUID = codec.bytesToHex(genUUID()),

@@ -47,6 +47,11 @@ export default function generateSignedKeyAssocTx (
     logger, context
 ) {
 
+    // "defuzzing" helper
+    const defuzz = func.flow(
+        context.fuzz.out, Keypair.fromRawEd25519Seed.bind(Keypair)
+    )
+
     return async (p) => {
 
         let
@@ -72,7 +77,7 @@ export default function generateSignedKeyAssocTx (
                 { G_PUBLIC, C_PUBLIC, S_PUBLIC } =
                     await forage.getItem(p.G_PUBLIC)
             )
-            if (context.GKP.publicKey() !== G_PUBLIC) {
+            if (defuzz(context.GKP).publicKey() !== G_PUBLIC) {
                 throw new Error("Wrong G_PUBLIC.")
             }
 
@@ -159,7 +164,7 @@ export default function generateSignedKeyAssocTx (
                 .build()
 
             // sign the transaction with MASTER KEY ("genesis" keypair)
-            transaction.sign(context.GKP)
+            transaction.sign(defuzz(context.GKP))
 
         } catch (_) {
 
