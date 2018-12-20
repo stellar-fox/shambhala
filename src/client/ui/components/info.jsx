@@ -24,10 +24,7 @@ import {
     iconizeMessage,
 } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
-import {
-    locker,
-    rgba,
-} from "../../../lib/utils"
+import { rgba } from "../../../lib/utils"
 
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -131,7 +128,7 @@ Info.propTypes = {
 
 // ...
 export default () => {
-    const lock = locker()
+    const lock = func.locker()
     return func.compose(
         connect(
             (s) => ({
