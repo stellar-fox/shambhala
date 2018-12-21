@@ -174,8 +174,8 @@ export const promptUser = async (
  * @returns {Promise.<String>}
  */
 export const getPassphrase = func.partial(
-    getValueFromUser
-)("Enter", "PASSPHRASE", string.random(10))
+    func.rearg(getValueFromUser)(1, 2)
+)("PASSPHRASE", string.random(10))
 
 
 
@@ -188,5 +188,5 @@ export const getPassphrase = func.partial(
  * @returns {Promise.<String>}
  */
 export const getPin = func.partial(
-    getValueFromUser
-)("Enter", "PIN", "00000")
+    func.rearg(getValueFromUser)(1, 2)
+)("PIN", "00000")
