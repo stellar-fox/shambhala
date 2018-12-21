@@ -518,7 +518,9 @@ export function shambhalaTesting (
 
         try {
 
-            let addr = newAddress("TstHostGen")
+            let addr = func.rearg(newAddress)(0, 3)(
+                "TstHostGen", { Keypair }
+            )
 
             logger.info(
                 `(${string.quote(addr.mnemonic)},`,
@@ -534,7 +536,7 @@ export function shambhalaTesting (
 
             logger.info("Signing received transaction.")
 
-            tx.sign(Keypair.fromSecret(addr.keypair.secret()))
+            tx.sign(addr.keypair)
 
             logger.info(
                 "OK:", codec.b64enc(array.head(tx.signatures).toXDR())
