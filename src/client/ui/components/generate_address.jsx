@@ -73,6 +73,7 @@ const useStyles = makeStyles((t) => ({
             textAlign: "center",
             "& $chipFrame": {
                 display: "inline-block",
+                padding: 2,
                 margin: 0.5 * t.spacing.unit,
                 "& $chip": { height: 3 * t.spacing.unit },
             },
