@@ -10,11 +10,15 @@
 
 
 
-import React, { memo } from "react"
+import React, {
+    memo,
+    useState,
+} from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
     func,
+    math,
     string,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
@@ -23,12 +27,14 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
+import { genMnemonic } from "@stellar-fox/redshift"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
 
+import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
-import IconPlaylistAdd from "@material-ui/icons/PlaylistAdd"
+import Chip from "@material-ui/core/Chip"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -40,6 +46,7 @@ const useStyles = makeStyles((t) => ({
 
     content: {
         overflow: "hidden",
+        overflowY: "auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -47,15 +54,6 @@ const useStyles = makeStyles((t) => ({
         ...t.mixins.gutters(),
         paddingTop: t.spacing.unit * 3,
         paddingBottom: t.spacing.unit * 3,
-
-        "& $icon": {
-            display: "block",
-            margin: "0 auto",
-            fontSize: 64,
-            color: t.palette.custom.rallyBrightGreen,
-            filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
-            marginBottom: t.spacing.unit,
-        },
 
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
@@ -70,8 +68,18 @@ const useStyles = makeStyles((t) => ({
             },
         },
 
+        "& $chips": {
+            marginBottom: t.spacing.unit,
+            textAlign: "center",
+            "& $chipFrame": {
+                display: "inline-block",
+                margin: 0.5 * t.spacing.unit,
+            },
+        },
+
         "& $buttonBar": {
             display: "flex",
+            marginTop: t.spacing.unit,
             "& $button": {
                 flexGrow: 1,
                 marginLeft: 2 * t.spacing.unit,
@@ -105,9 +113,10 @@ const useStyles = makeStyles((t) => ({
         },
     },
 
-    icon: {},
     headingStrecher: {},
     heading: {},
+    chips: {},
+    chipFrame: {},
     buttonBar: {},
     button: {},
     disabled: {},
@@ -131,42 +140,60 @@ const GenerateAddress = ({
     className = string.empty(),
     disabled,
     style = {},
-}) => ((css) =>
+}) => {
+    const css = useStyles()
 
-    <Paper
-        className={classNames(className, css.content)}
-        style={style}
-    >
-        <IconPlaylistAdd className={css.icon} />
-        <div className={css.headingStrecher}>
-            <Typography
-                component="h1"
-                variant="h5"
-                align="center"
-                className={css.heading}
-            >
-                Do you wish to generate a new address?
-            </Typography>
-        </div>
-        <div className={css.buttonBar}>
-            <Button
-                className={classNames(css.button, css.yes)}
-                classes={{ disabled: css.disabled }}
-                variant="outlined"
-                disabled={disabled}
-                onClick={() => basicResolve()}
-            >Yes</Button>
-            <Button
-                className={classNames(css.button, css.no)}
-                classes={{ disabled: css.disabled }}
-                variant="outlined"
-                disabled={disabled}
-                onClick={() => basicReject("ui")}
-            >No</Button>
-        </div>
-    </Paper>
+    // memonic (re-)generation logic
 
-)(useStyles())
+    // eslint-disable-next-line no-unused-vars
+    let [mnemonic, setMnemonic] = useState(
+        genMnemonic().split(string.space())
+    )
+
+    return (
+        <Paper
+            className={classNames(className, css.content)}
+            style={style}
+        >
+            <div className={css.headingStrecher}>
+                <Typography
+                    component="h1"
+                    variant="h5"
+                    align="center"
+                    className={css.heading}
+                >
+                    Do you wish to generate a new address?
+                </Typography>
+            </div>
+            <div className={css.chips}>
+                { mnemonic.map((m, i) =>
+                    <div key={m} className={css.chipFrame}>
+                        <Chip
+                            avatar={<Avatar>{math.inc(i)}</Avatar>}
+                            label={m} color="primary"
+                        />
+                    </div>
+                ) }
+            </div>
+            <div className={css.buttonBar}>
+                <Button
+                    className={classNames(css.button, css.yes)}
+                    classes={{ disabled: css.disabled }}
+                    variant="outlined"
+                    disabled={disabled}
+                    onClick={() => basicResolve()}
+                >Yes</Button>
+                <Button
+                    className={classNames(css.button, css.no)}
+                    classes={{ disabled: css.disabled }}
+                    variant="outlined"
+                    disabled={disabled}
+                    onClick={() => basicReject("ui")}
+                >No</Button>
+            </div>
+        </Paper>
+    )
+}
 
 
 

@@ -113,7 +113,7 @@ export const getAllClientData = async () => {
 
 
 /**
- * Get value from user (console).
+ * Get value from user (not only console).
  *
  * @async
  * @function getValueFromUser
