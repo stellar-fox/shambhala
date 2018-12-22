@@ -74,6 +74,7 @@ const useStyles = makeStyles((t) => ({
             "& $chipFrame": {
                 display: "inline-block",
                 margin: 0.5 * t.spacing.unit,
+                "& $chip": { height: 3 * t.spacing.unit },
             },
         },
 
@@ -117,6 +118,7 @@ const useStyles = makeStyles((t) => ({
     heading: {},
     chips: {},
     chipFrame: {},
+    chip: {},
     buttonBar: {},
     button: {},
     disabled: {},
@@ -150,11 +152,13 @@ const GenerateAddress = ({
         genMnemonic().split(string.space())
     )
 
+
     return (
         <Paper
             className={classNames(className, css.content)}
             style={style}
         >
+
             <div className={css.headingStrecher}>
                 <Typography
                     component="h1"
@@ -165,16 +169,19 @@ const GenerateAddress = ({
                     Do you wish to generate a new address?
                 </Typography>
             </div>
+
             <div className={css.chips}>
                 { mnemonic.map((m, i) =>
                     <div key={m} className={css.chipFrame}>
                         <Chip
                             avatar={<Avatar>{math.inc(i)}</Avatar>}
-                            label={m} color="primary"
+                            label={m.toUpperCase()} color="primary"
+                            classes={{ root: css.chip }}
                         />
                     </div>
                 ) }
             </div>
+
             <div className={css.buttonBar}>
                 <Button
                     className={classNames(css.button, css.yes)}
@@ -191,6 +198,7 @@ const GenerateAddress = ({
                     onClick={() => basicReject("ui")}
                 >No</Button>
             </div>
+
         </Paper>
     )
 }
