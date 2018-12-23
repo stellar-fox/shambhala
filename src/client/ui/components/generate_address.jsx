@@ -35,6 +35,7 @@ import { rgba } from "../../../lib/utils"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import Chip from "@material-ui/core/Chip"
+import IconReplay from "@material-ui/icons/Replay"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -79,6 +80,11 @@ const useStyles = makeStyles((t) => ({
             },
         },
 
+        "& $fabBar": {
+            marginBottom: t.spacing.unit,
+            textAlign: "center",
+        },
+
         "& $buttonBar": {
             display: "flex",
             marginTop: t.spacing.unit,
@@ -120,6 +126,8 @@ const useStyles = makeStyles((t) => ({
     chips: {},
     chipFrame: {},
     chip: {},
+    fabBar: {},
+    buttonIcon: { marginRight: t.spacing.unit },
     buttonBar: {},
     button: {},
     disabled: {},
@@ -147,8 +155,6 @@ const GenerateAddress = ({
     const css = useStyles()
 
     // memonic (re-)generation logic
-
-    // eslint-disable-next-line no-unused-vars
     let [mnemonic, setMnemonic] = useState(
         genMnemonic().split(string.space())
     )
@@ -173,7 +179,7 @@ const GenerateAddress = ({
 
             <div className={css.chips}>
                 { mnemonic.map((m, i) =>
-                    <div key={m} className={css.chipFrame}>
+                    <div key={String(i) + m} className={css.chipFrame}>
                         <Chip
                             avatar={<Avatar>{math.inc(i)}</Avatar>}
                             label={m.toUpperCase()} color="primary"
@@ -181,6 +187,18 @@ const GenerateAddress = ({
                         />
                     </div>
                 ) }
+            </div>
+
+            <div className={css.fabBar}>
+                <Button
+                    size="medium" variant="outlined"
+                    onClick={ () => setMnemonic(
+                        genMnemonic().split(string.space())
+                    ) }
+                >
+                    <IconReplay className={css.buttonIcon} />
+                    draw new words
+                </Button>
             </div>
 
             <div className={css.buttonBar}>
