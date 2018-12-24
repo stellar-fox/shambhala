@@ -107,11 +107,11 @@ export const messageToView = (() => {
         GenericChoice2 = GenericChoice(),
         GenericChoice3 = GenericChoice()
     return func.rearg(func.choose)(1, 2, 0)({
-        [message.ASSOCIATE_ADDRESS]: () => GenericChoice1,
-        [message.BACKUP]: () => Info1,
-        [message.GENERATE_ADDRESS]: () => GenerateAddress,
-        [message.GENERATE_SIGNING_KEYS]: () => GenericChoice2,
-        [message.RESTORE]: () => Info2,
-        [message.SIGN_TRANSACTION]: () => GenericChoice3,
+        [message.ASSOCIATE_ADDRESS + ".01"]: () => GenericChoice1,
+        [message.BACKUP + ".01"]: () => Info1,
+        [message.GENERATE_ADDRESS + ".01"]: () => GenerateAddress,
+        [message.GENERATE_SIGNING_KEYS + ".01"]: () => GenericChoice2,
+        [message.RESTORE + ".01"]: () => Info2,
+        [message.SIGN_TRANSACTION + ".01"]: () => GenericChoice3,
     }, () => Idle)
 })()

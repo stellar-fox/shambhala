@@ -118,13 +118,14 @@ export const setMessage = ((setThrottledMessage) =>
                 setState = (key, nm, pm) => func.pipe(
                     { [key]: [nm, array.head(pm)] }
                 )(action.setState, dispatch)
-            setThrottledMessage(
-                func.partial(setState)(
+            setThrottledMessage(async () => {
+                setState(
                     "throttledMessage",
                     newMessage,
                     throttledMessage
                 )
-            )
+                dispatch(action.setView(1))
+            })
             return await setState("message", newMessage, message)
         }
 )(throttle(

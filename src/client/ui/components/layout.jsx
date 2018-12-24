@@ -21,6 +21,7 @@ import { connect } from "react-redux"
 import {
     array,
     func,
+    string,
 } from "@xcmats/js-toolbox"
 import { makeStyles } from "@material-ui/styles"
 import { theme } from "../theme"
@@ -254,9 +255,20 @@ Layout.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            currentMessage: filterMessage(array.head(s.App.throttledMessage)),
+            // `currentMessage` is a `throttledMessage` + `viewNumber`;
+            // it's a basis for all view changes (layout "swipes")
+            currentMessage: [
+                filterMessage(array.head(s.App.throttledMessage)),
+                ".", string.padLeft(String(s.App.viewNumber), 2, "0"),
+            ].join(string.empty()),
+
+            // just a text for user saying what's going on
             humanMessage: humanizeMessage(array.head(s.App.message)),
+
+            // icon representing current task
             icon: func.partial(iconizeMessage)(array.head(s.App.message)),
+
+            // screen dimensions
             screenHeight: s.App.dim.height,
             screenWidth: s.App.dim.width,
         })

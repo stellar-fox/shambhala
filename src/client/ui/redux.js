@@ -12,6 +12,7 @@
 
 import {
     createReducer,
+    math,
     string,
 } from "@xcmats/js-toolbox"
 
@@ -46,6 +47,15 @@ const initState = {
     // throttled version of message that is currently being processed
     throttledMessage: [null, null],
 
+    // some messages has multiple corresponding ui views needed
+    // for an user interaction - this variable holds a current view number
+    //
+    // current view number has to be "in sync" with `throttledMessage`,
+    // as on its basis layout is changing views, so `viewNumber` is being
+    // reset to `1` inside `setMessage` thunk when `throttledMessage` is
+    // being changed
+    viewNumber: 1,
+
     // window dimensions
     dim: {
         width: window.innerWidth,
@@ -64,6 +74,8 @@ const initState = {
 const
     SET_STATE = "Shambhala/SET_STATE",
     SET_DIMENSIONS = "Shambhala/SET_DIMENSIONS",
+    SET_VIEW = "Shambhala/SET_VIEW",
+    NEXT_VIEW = "Shambhala/NEXT_VIEW",
     RESET_STATE = "Shambhala/RESET_STATE"
 
 
@@ -94,6 +106,17 @@ export const action = {
 
 
     // ...
+    setView: (viewNumber) => ({
+        type: SET_VIEW,
+        viewNumber,
+    }),
+
+
+    // ...
+    nextView: () => ({ type: NEXT_VIEW }),
+
+
+    // ...
     resetState: () => ({ type: RESET_STATE }),
 
 }
@@ -119,6 +142,20 @@ export const App = createReducer(initState)({
     [SET_DIMENSIONS]: (state, action) => ({
         ...state,
         dim: { ...action.dim },
+    }),
+
+
+    // ...
+    [SET_VIEW]: (state, action) => ({
+        ...state,
+        viewNumber: action.viewNumber,
+    }),
+
+
+    // ...
+    [NEXT_VIEW]: (state) => ({
+        ...state,
+        viewNumber: math.inc(state.viewNumber),
     }),
 
 
