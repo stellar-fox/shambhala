@@ -18,7 +18,7 @@ import {
 import * as message from "../../lib/messages"
 
 import GenericChoice from "./components/generic"
-import GenerateAddress from "./components/generate_address"
+import GenerateMnemonic from "./components/generate_mnemonic"
 import IconAutorenew from "@material-ui/icons/Autorenew"
 import IconBackup from "@material-ui/icons/Backup"
 import IconFingerprint from "@material-ui/icons/Fingerprint"
@@ -109,7 +109,7 @@ export const messageToView = (() => {
     return func.rearg(func.choose)(1, 2, 0)({
         [message.ASSOCIATE_ADDRESS + ".01"]: () => GenericChoice1,
         [message.BACKUP + ".01"]: () => Info1,
-        [message.GENERATE_ADDRESS + ".01"]: () => GenerateAddress,
+        [message.GENERATE_ADDRESS + ".01"]: () => GenerateMnemonic,
         [message.GENERATE_SIGNING_KEYS + ".01"]: () => GenericChoice2,
         [message.RESTORE + ".01"]: () => Info2,
         [message.SIGN_TRANSACTION + ".01"]: () => GenericChoice3,

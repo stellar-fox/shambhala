@@ -1,7 +1,7 @@
 /**
  * Shambhala.
  *
- * Address generation view.
+ * Mnemonic generation view.
  *
  * @module client-ui-components
  * @license Apache-2.0
@@ -59,11 +59,9 @@ const useStyles = makeStyles((t) => ({
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
             minHeight: 80,
-            display: "flex",
-            direction: "column",
-            alignItems: "center",
             "& $heading": {
                 margin: "0 auto",
+                marginBottom: t.spacing.unit,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
@@ -140,12 +138,12 @@ const useStyles = makeStyles((t) => ({
 
 
 /**
- * `<GenerateAddress>` component.
+ * `<GenerateMnemonic>` component.
  *
- * @function GenerateAddress
+ * @function GenerateMnemonic
  * @returns {React.ReactElement}
  */
-const GenerateAddress = ({
+const GenerateMnemonic = ({
     basicReject,
     basicResolve,
     className = string.empty(),
@@ -173,7 +171,11 @@ const GenerateAddress = ({
                     align="center"
                     className={css.heading}
                 >
-                    Do you wish to generate a new address?
+                    Mnemonic Generation
+                </Typography>
+                <Typography component="p" variant="body1" align="center">
+                    Store the following words in a secure place.
+                    Don't show them to anyone. Don't loose them.
                 </Typography>
             </div>
 
@@ -226,7 +228,7 @@ const GenerateAddress = ({
 
 
 // ...
-GenerateAddress.propTypes = {
+GenerateMnemonic.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
@@ -249,4 +251,4 @@ export default func.compose(
         }, dispatch)
     ),
     memo
-)(GenerateAddress)
+)(GenerateMnemonic)
