@@ -113,20 +113,18 @@ export const setInfoMessage = (infoMessage = string.empty()) =>
 export const setMessage = ((setThrottledMessage) =>
     (newMessage) =>
         async (dispatch, getState) => {
-            let
-                { message, throttledMessage } = getState().App,
-                setState = (key, nm, pm) => func.pipe(
-                    { [key]: [nm, array.head(pm)] }
-                )(action.setState, dispatch)
-            setThrottledMessage(async () => {
-                setState(
-                    "throttledMessage",
-                    newMessage,
-                    throttledMessage
-                )
-                dispatch(action.setView(1))
-            })
-            return await setState("message", newMessage, message)
+            let { message, throttledMessage } = getState().App
+            setThrottledMessage(() =>
+                func.pipe({
+                    throttledMessage: [
+                        newMessage, array.head(throttledMessage),
+                    ],
+                    viewNumber: 1,
+                })(action.setState, dispatch)
+            )
+            return await func.pipe(
+                { message: [newMessage, array.head(message)] }
+            )(action.setState, dispatch)
         }
 )(throttle(
     (setState) => setState(),
