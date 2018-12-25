@@ -31,6 +31,7 @@ import { rgba } from "../../../lib/utils"
 
 import Button from "@material-ui/core/Button"
 import Paper from "@material-ui/core/Paper"
+import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 
 
@@ -58,6 +59,16 @@ const useStyles = makeStyles((t) => ({
                 marginBottom: t.spacing.unit,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
+            },
+        },
+
+        "& $inputs": {
+            display: "flex",
+            flexWrap: "wrap",
+            "& $textField": {
+                marginLeft: t.spacing.unit,
+                marginRight: t.spacing.unit,
+                width: "100%",
             },
         },
 
@@ -99,6 +110,8 @@ const useStyles = makeStyles((t) => ({
 
     headingStrecher: {},
     heading: {},
+    inputs: {},
+    textField: {},
     buttonBar: {},
     button: {},
     disabled: {},
@@ -147,6 +160,21 @@ const GeneratePassphrase = ({
                     Just learn it by heart.
                 </Typography>
             </div>
+
+            <form className={css.inputs} noValidate autoComplete="off">
+                <TextField
+                    id="passphrase-base"
+                    label="Passphrase"
+                    className={css.textField}
+                    margin="normal"
+                />
+                <TextField
+                    id="passphrase-repeat"
+                    label="Passphrase (repeat)"
+                    className={css.textField}
+                    margin="normal"
+                />
+            </form>
 
             <div className={css.buttonBar}>
                 <Button
