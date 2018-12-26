@@ -165,12 +165,14 @@ const GeneratePassphrase = ({
                 <TextField
                     id="passphrase-base"
                     label="Passphrase"
+                    type="password"
                     className={css.textField}
                     margin="normal"
                 />
                 <TextField
                     id="passphrase-repeat"
                     label="Passphrase (repeat)"
+                    type="password"
                     className={css.textField}
                     margin="normal"
                 />
