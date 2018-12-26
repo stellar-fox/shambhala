@@ -112,6 +112,7 @@ const useStyles = makeStyles((t) => ({
     heading: {},
     inputs: {},
     textField: {},
+    inputLabel: { color: fade(t.palette.text.primary, 0.4) },
     buttonBar: {},
     button: {},
     disabled: {},
@@ -168,6 +169,7 @@ const GeneratePassphrase = ({
                     type="password"
                     className={css.textField}
                     margin="normal"
+                    InputLabelProps={{ classes: { root: css.inputLabel }}}
                 />
                 <TextField
                     id="passphrase-repeat"
@@ -175,6 +177,7 @@ const GeneratePassphrase = ({
                     type="password"
                     className={css.textField}
                     margin="normal"
+                    InputLabelProps={{ classes: { root: css.inputLabel }}}
                 />
             </form>
 
