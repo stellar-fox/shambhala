@@ -180,19 +180,19 @@ const GeneratePassphrase = ({
 
             <div className={css.buttonBar}>
                 <Button
-                    className={classNames(css.button, css.yes)}
-                    classes={{ disabled: css.disabled }}
-                    variant="outlined"
-                    disabled={disabled}
-                    onClick={() => basicResolve()}
-                >Yes</Button>
-                <Button
                     className={classNames(css.button, css.no)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={disabled}
                     onClick={() => basicReject("ui")}
-                >No</Button>
+                >Abort</Button>
+                <Button
+                    className={classNames(css.button, css.yes)}
+                    classes={{ disabled: css.disabled }}
+                    variant="outlined"
+                    disabled={disabled}
+                    onClick={() => basicResolve()}
+                >Next</Button>
             </div>
 
         </Paper>
