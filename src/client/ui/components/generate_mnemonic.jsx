@@ -148,7 +148,7 @@ const GenerateMnemonic = ({
     basicReject,
     basicResolve,
     className = string.empty(),
-    disabled,
+    enabled,
     nextView,
     style = {},
 }) => {
@@ -210,14 +210,14 @@ const GenerateMnemonic = ({
                     className={classNames(css.button, css.no)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={disabled}
+                    disabled={!enabled}
                     onClick={() => basicReject("ui")}
                 >Abort</Button>
                 <Button
                     className={classNames(css.button, css.yes)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={disabled}
+                    disabled={!enabled}
                     onClick={() => {
                         basicResolve(mnemonic.join(string.space()))
                         nextView()
@@ -236,7 +236,7 @@ const GenerateMnemonic = ({
 GenerateMnemonic.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    enabled: PropTypes.bool.isRequired,
     nextView: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
@@ -248,9 +248,7 @@ GenerateMnemonic.propTypes = {
 // ...
 export default func.compose(
     connect(
-        (s) => ({
-            disabled: s.App.promptMutexResolveValue === null,
-        }),
+        (s) => ({ enabled: s.App.promptMutexLocked }),
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,

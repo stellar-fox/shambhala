@@ -133,7 +133,7 @@ const GenericChoice = ({
     basicReject,
     basicResolve,
     className = string.empty(),
-    disabled,
+    enabled,
     humanMessage,
     icon,
     style = {},
@@ -159,14 +159,14 @@ const GenericChoice = ({
                 className={classNames(css.button, css.yes)}
                 classes={{ disabled: css.disabled }}
                 variant="outlined"
-                disabled={disabled}
+                disabled={!enabled}
                 onClick={() => basicResolve()}
             >Yes</Button>
             <Button
                 className={classNames(css.button, css.no)}
                 classes={{ disabled: css.disabled }}
                 variant="outlined"
-                disabled={disabled}
+                disabled={!enabled}
                 onClick={() => basicReject("ui")}
             >No</Button>
         </div>
@@ -181,7 +181,7 @@ const GenericChoice = ({
 GenericChoice.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    enabled: PropTypes.bool.isRequired,
     humanMessage: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
     className: PropTypes.string,
@@ -197,7 +197,7 @@ export default () => {
     return func.compose(
         connect(
             (s) => ({
-                disabled: s.App.promptMutexResolveValue === null,
+                enabled: s.App.promptMutexLocked,
                 humanMessage: humanizeMessage(
                     lock(array.head(s.App.throttledMessage))
                 ),

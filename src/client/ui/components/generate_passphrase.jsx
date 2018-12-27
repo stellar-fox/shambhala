@@ -135,7 +135,7 @@ const GeneratePassphrase = ({
     basicReject,
     basicResolve,
     className = string.empty(),
-    disabled,
+    enabled,
     style = {},
 }) => {
     const css = useStyles()
@@ -202,14 +202,14 @@ const GeneratePassphrase = ({
                     className={classNames(css.button, css.no)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={disabled}
+                    disabled={!enabled}
                     onClick={() => basicReject("ui")}
                 >Abort</Button>
                 <Button
                     className={classNames(css.button, css.yes)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={disabled || t1 !== t2}
+                    disabled={!enabled || t1 !== t2}
                     onClick={() => basicResolve(t1)}
                 >{ t1 === string.empty() ? "Skip" : "Next" }</Button>
             </div>
@@ -225,7 +225,7 @@ const GeneratePassphrase = ({
 GeneratePassphrase.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    enabled: PropTypes.bool.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -236,9 +236,7 @@ GeneratePassphrase.propTypes = {
 // ...
 export default func.compose(
     connect(
-        (s) => ({
-            disabled: s.App.promptMutexResolveValue === null,
-        }),
+        (s) => ({ enabled: s.App.promptMutexLocked }),
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,

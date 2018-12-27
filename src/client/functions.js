@@ -120,17 +120,22 @@ export const getAllClientData = async () => {
  * @function getValueFromUser
  * @param {String} [promptText]
  * @param {String} [name]
- * @param {*} [defVal] default value
+ * @param {Function} [genDefVal] default value generator
  * @param {Function} [act]
  * @returns {Promise.<String>}
  */
 export const getValueFromUser = async (
-    promptText = "Enter", name = "VALUE", defVal = null, act = func.identity
+    promptText = "Enter",
+    name = "VALUE",
+    genDefVal = () => null,
+    act = func.identity
 ) => {
+    let defVal = genDefVal()
     store.logger.warn(`${promptText} ${name}`)
     store.logger.info(`p.yes(${name})`, "p.no(optional:REASON)")
     store.context.promptMutex = async.createMutex()
-    await store.thunkActions.setPromptMutexResolveValue(defVal)
+    store.context.promptMutexDefVal = defVal
+    await store.thunkActions.setPromptMutexLocked(true)
     if (type.isObject(window)) {
         window.p = {
             yes: (val = defVal) => {
@@ -143,8 +148,9 @@ export const getValueFromUser = async (
     try { var val = await store.context.promptMutex.lock() }
     finally {
         if (type.isObject(window)) delete window.p
+        await store.thunkActions.setPromptMutexLocked(false)
+        delete store.context.promptMutexDefVal
         delete store.context.promptMutex
-        await store.thunkActions.setPromptMutexResolveValue(null)
     }
     return val
 }
@@ -164,7 +170,9 @@ export const promptUser = async (
     promptText = "Yes or no?"
 ) =>
     await utils.handleRejection(
-        async () => await getValueFromUser(promptText, string.empty(), true),
+        async () => await getValueFromUser(
+            promptText, string.empty(), () => true
+        ),
         async () => false
     )
 
@@ -180,7 +188,7 @@ export const promptUser = async (
  */
 export const getMnemonic = func.partial(
     func.rearg(getValueFromUser)(1, 2, 3)
-)("MNEMONIC", genMnemonic(), () => store.thunkActions.nextView())
+)("MNEMONIC", genMnemonic, () => store.thunkActions.nextView())
 
 
 
@@ -194,7 +202,7 @@ export const getMnemonic = func.partial(
  */
 export const getPassphrase = func.partial(
     func.rearg(getValueFromUser)(1, 2)
-)("PASSPHRASE", string.random(10))
+)("PASSPHRASE", func.partial(string.random)(10))
 
 
 
@@ -208,4 +216,4 @@ export const getPassphrase = func.partial(
  */
 export const getPin = func.partial(
     func.rearg(getValueFromUser)(1, 2)
-)("PIN", "00000")
+)("PIN", () => "00000")

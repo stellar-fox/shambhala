@@ -135,6 +135,21 @@ export const setMessage = ((setThrottledMessage) =>
 
 
 /**
+ * Sets `promptMutexLocked` key in redux.
+ * Invoked from `getValueFromUser()` function in `functions.js`.
+ *
+ * @function setPromptMutexLocked
+ * @param {Boolean} promptMutexLocked
+ * @returns {Function} thunk action
+ */
+export const setPromptMutexLocked = (promptMutexLocked) =>
+    async (dispatch, _getState) =>
+        await dispatch(action.setState({ promptMutexLocked }))
+
+
+
+
+/**
  * Reject promptMutex if it exists in imperative context.
  *
  * @function basicReject
@@ -159,13 +174,12 @@ export const basicReject = (reason = string.empty()) =>
  * @param {String} val
  * @returns {Function} thunk action
  */
-export const basicResolve = (val = string.empty()) =>
-    async (_dispatch, getState) => {
+export const basicResolve = (val) =>
+    async (_dispatch, _getState) => {
         if (type.isObject(store.context.promptMutex)) {
             let value = null
-            if (val === string.empty()) {
-                let { promptMutexResolveValue } = getState().App
-                value = promptMutexResolveValue
+            if (typeof val === "undefined") {
+                value = store.context.promptMutexDefVal
             } else {
                 value = val
             }
@@ -188,18 +202,3 @@ export const basicResolve = (val = string.empty()) =>
 export const nextView = () =>
     async (dispatch, _getState) =>
         await dispatch(action.nextView())
-
-
-
-
-/**
- * To be deleted.
- * DEV. PROTO.
- *
- * @function setPromptMutexResolveValue
- * @param {String} val
- * @returns {Function} thunk action
- */
-export const setPromptMutexResolveValue = (promptMutexResolveValue) =>
-    async (dispatch, _getState) =>
-        await dispatch(action.setState({ promptMutexResolveValue }))

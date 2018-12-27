@@ -62,8 +62,8 @@ const initState = {
         height: window.innerHeight,
     },
 
-    // how to resolve mutex if user provided no value? (DEV. PROTO.)
-    promptMutexResolveValue: null,
+    // indicate if `promptMutex` in imperative `context` is locked
+    promptMutexLocked: false,
 
 }
 
