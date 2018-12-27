@@ -179,6 +179,20 @@ export const basicResolve = (val = string.empty()) =>
 
 
 /**
+ * redux -> action -> nextView() exposed to be used outside
+ * of a UI context (see getMnemonic() in functions.js file).
+ *
+ * @function nextView
+ * @returns {Function} thunk action
+ */
+export const nextView = () =>
+    async (dispatch, _getState) =>
+        await dispatch(action.nextView())
+
+
+
+
+/**
  * To be deleted.
  * DEV. PROTO.
  *

@@ -14,8 +14,8 @@ import axios from "axios"
 import { Keypair } from "stellar-sdk"
 import {
     genKeypair,
-    genMnemonic,
     mnemonicToSeedHex,
+    validateMnemonic,
 } from "@stellar-fox/redshift"
 import {
     access,
@@ -25,7 +25,10 @@ import {
     string,
     type,
 } from "@xcmats/js-toolbox"
-import { getPassphrase } from "../functions"
+import {
+    getMnemonic,
+    getPassphrase,
+} from "../functions"
 import * as message from "../../lib/messages"
 import {
     registrationPath,
@@ -72,12 +75,18 @@ export default function generateAddress (
 
 
 
-        let
-            // "genesis" mnemonic
-            // has to be presented to the user
-            G_MNEMONIC = genMnemonic(),
+        let G_MNEMONIC = null, PASSPHRASE = null
 
-            PASSPHRASE = null
+        // read "genesis" MNEMONIC from the user
+        try {
+            G_MNEMONIC = String(await getMnemonic())
+            if (!validateMnemonic(G_MNEMONIC)) throw new Error("bad mnemonic")
+        } catch (ex) {
+            respond({ error: `user:[${ex}]` })
+            logger.error("User refused to give MNEMONIC. Operation aborted.")
+
+            return
+        }
 
         // read PASSPHRASE from the user
         try {

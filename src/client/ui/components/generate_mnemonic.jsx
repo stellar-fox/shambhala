@@ -23,7 +23,10 @@ import {
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
-import { basicReject } from "../thunks"
+import {
+    basicReject,
+    basicResolve,
+} from "../thunks"
 import { action } from "../redux"
 import { genMnemonic } from "@stellar-fox/redshift"
 import { makeStyles } from "@material-ui/styles"
@@ -143,6 +146,7 @@ const useStyles = makeStyles((t) => ({
  */
 const GenerateMnemonic = ({
     basicReject,
+    basicResolve,
     className = string.empty(),
     disabled,
     nextView,
@@ -192,9 +196,9 @@ const GenerateMnemonic = ({
             <div className={css.fabBar}>
                 <Button
                     size="medium" variant="outlined"
-                    onClick={ () => setMnemonic(
+                    onClick={() => setMnemonic(
                         genMnemonic().split(string.space())
-                    ) }
+                    )}
                 >
                     <IconReplay className={css.buttonIcon} />
                     Draw new words
@@ -214,7 +218,10 @@ const GenerateMnemonic = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={disabled}
-                    onClick={() => nextView()}
+                    onClick={() => {
+                        basicResolve(mnemonic.join(string.space()))
+                        nextView()
+                    }}
                 >Next</Button>
             </div>
 
@@ -228,6 +235,7 @@ const GenerateMnemonic = ({
 // ...
 GenerateMnemonic.propTypes = {
     basicReject: PropTypes.func.isRequired,
+    basicResolve: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     nextView: PropTypes.func.isRequired,
     className: PropTypes.string,
@@ -245,6 +253,7 @@ export default func.compose(
         }),
         (dispatch) => bindActionCreators({
             basicReject,
+            basicResolve,
             nextView: action.nextView,
         }, dispatch)
     ),

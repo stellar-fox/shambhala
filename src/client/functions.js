@@ -21,6 +21,7 @@ import {
 } from "@xcmats/js-toolbox"
 import forage from "localforage"
 import { decodeUUID } from "@stellar-fox/cryptops"
+import { genMnemonic } from "@stellar-fox/redshift"
 
 
 
@@ -120,10 +121,11 @@ export const getAllClientData = async () => {
  * @param {String} [promptText]
  * @param {String} [name]
  * @param {*} [defVal] default value
+ * @param {Function} [act]
  * @returns {Promise.<String>}
  */
 export const getValueFromUser = async (
-    promptText = "Enter", name = "VALUE", defVal = null
+    promptText = "Enter", name = "VALUE", defVal = null, act = func.identity
 ) => {
     store.logger.warn(`${promptText} ${name}`)
     store.logger.info(`p.yes(${name})`, "p.no(optional:REASON)")
@@ -131,7 +133,10 @@ export const getValueFromUser = async (
     await store.thunkActions.setPromptMutexResolveValue(defVal)
     if (type.isObject(window)) {
         window.p = {
-            yes: (val = defVal) => store.context.promptMutex.resolve(val),
+            yes: (val = defVal) => {
+                store.context.promptMutex.resolve(val)
+                act()
+            },
             no: (r = string.empty()) => store.context.promptMutex.reject(r),
         }
     }
@@ -162,6 +167,20 @@ export const promptUser = async (
         async () => await getValueFromUser(promptText, string.empty(), true),
         async () => false
     )
+
+
+
+
+/**
+ * Get user MNEMONIC (from the console).
+ *
+ * @async
+ * @function getMnemonic
+ * @returns {Promise.<String>}
+ */
+export const getMnemonic = func.partial(
+    func.rearg(getValueFromUser)(1, 2, 3)
+)("MNEMONIC", genMnemonic(), () => store.thunkActions.nextView())
 
 
 

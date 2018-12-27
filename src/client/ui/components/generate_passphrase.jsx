@@ -140,7 +140,7 @@ const GeneratePassphrase = ({
 }) => {
     const css = useStyles()
 
-    // text fields states
+    // text field states
     let
         [t1, setT1] = useState(string.empty()),
         [t2, setT2] = useState(string.empty())
@@ -210,7 +210,7 @@ const GeneratePassphrase = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={disabled || t1 !== t2}
-                    onClick={() => basicResolve()}
+                    onClick={() => basicResolve(t1)}
                 >{ t1 === string.empty() ? "Skip" : "Next" }</Button>
             </div>
 
