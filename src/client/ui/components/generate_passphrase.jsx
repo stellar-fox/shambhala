@@ -12,6 +12,7 @@
 
 import React, {
     memo,
+    useState,
 } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
@@ -139,6 +140,11 @@ const GeneratePassphrase = ({
 }) => {
     const css = useStyles()
 
+    // text fields states
+    let
+        [t1, setT1] = useState(string.empty()),
+        [t2, setT2] = useState(string.empty())
+
     return (
         <Paper
             className={classNames(className, css.content)}
@@ -170,6 +176,8 @@ const GeneratePassphrase = ({
                     className={css.textField}
                     margin="normal"
                     InputLabelProps={{ classes: { root: css.inputLabel }}}
+                    value={t1}
+                    onChange={(e) => setT1(e.target.value)}
                 />
                 <TextField
                     id="passphrase-repeat"
@@ -178,6 +186,14 @@ const GeneratePassphrase = ({
                     className={css.textField}
                     margin="normal"
                     InputLabelProps={{ classes: { root: css.inputLabel }}}
+                    error={t1 !== t2}
+                    value={t2}
+                    onChange={(e) => setT2(e.target.value)}
+                    helperText={
+                        t1 !== t2 ?
+                            "passphrases doesn't match" :
+                            string.space()
+                    }
                 />
             </form>
 
@@ -193,9 +209,9 @@ const GeneratePassphrase = ({
                     className={classNames(css.button, css.yes)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={disabled}
+                    disabled={disabled || t1 !== t2}
                     onClick={() => basicResolve()}
-                >Next</Button>
+                >{ t1 === string.empty() ? "Skip" : "Next" }</Button>
             </div>
 
         </Paper>
