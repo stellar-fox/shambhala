@@ -31,6 +31,13 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
 
 import Button from "@material-ui/core/Button"
+import IconButton from "@material-ui/core/IconButton"
+import IconVisibility from "@material-ui/icons/Visibility"
+import IconVisibilityOff from "@material-ui/icons/VisibilityOff"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import InputLabel from "@material-ui/core/InputLabel"
+import FormControl from "@material-ui/core/FormControl"
 import Paper from "@material-ui/core/Paper"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
@@ -143,7 +150,8 @@ const GeneratePassphrase = ({
     // text field states
     let
         [t1, setT1] = useState(string.empty()),
-        [t2, setT2] = useState(string.empty())
+        [t2, setT2] = useState(string.empty()),
+        [visible, setVisible] = useState(false)
 
     return (
         <Paper
@@ -169,20 +177,36 @@ const GeneratePassphrase = ({
             </div>
 
             <form className={css.inputs} noValidate autoComplete="off">
-                <TextField
-                    id="passphrase-base"
-                    label="Passphrase"
-                    type="password"
-                    className={css.textField}
-                    margin="normal"
-                    InputLabelProps={{ classes: { root: css.inputLabel }}}
-                    value={t1}
-                    onChange={(e) => setT1(e.target.value)}
-                />
+                <FormControl className={css.textField}>
+                    <InputLabel
+                        htmlFor="passphrase-base"
+                        classes={{ root: css.inputLabel }}
+                    >
+                        Passphrase
+                    </InputLabel>
+                    <Input
+                        id="passphrase-base"
+                        type={visible ? "text" : "password"}
+                        value={t1}
+                        onChange={(e) => setT1(e.target.value)}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={() => setVisible(!visible)}
+                                >
+                                    { visible ?
+                                        <IconVisibility /> :
+                                        <IconVisibilityOff /> }
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
                 <TextField
                     id="passphrase-repeat"
                     label="Passphrase (repeat)"
-                    type="password"
+                    type={visible ? "text" : "password"}
                     className={css.textField}
                     margin="normal"
                     InputLabelProps={{ classes: { root: css.inputLabel }}}
