@@ -12,6 +12,7 @@
 
 import React, {
     memo,
+    useState,
 } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
@@ -30,7 +31,12 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
 
 import Button from "@material-ui/core/Button"
+import IconButton from "@material-ui/core/IconButton"
+import IconVisibility from "@material-ui/icons/Visibility"
+import IconVisibilityOff from "@material-ui/icons/VisibilityOff"
+import InputAdornment from "@material-ui/core/InputAdornment"
 import Paper from "@material-ui/core/Paper"
+import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
 
 
@@ -61,11 +67,16 @@ const useStyles = makeStyles((t) => ({
             },
         },
 
-        "& $pinpad": {
+        "& $inputs": {
             display: "flex",
-            textAlign: "center",
-            alignItems: "center",
-            justifyContent: "center",
+            flexWrap: "wrap",
+            "& $pinField": {
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: t.spacing.unit,
+                marginBottom: t.spacing.unit,
+                width: 30 * t.spacing.unit,
+            },
         },
 
         "& $buttonBar": {
@@ -106,8 +117,9 @@ const useStyles = makeStyles((t) => ({
 
     headingStrecher: {},
     heading: {},
-    pinpad: {},
-    inputLabel: { color: fade(t.palette.text.primary, 0.4) },
+    inputs: {},
+    pinField: {},
+    pinLabel: { color: fade(t.palette.text.primary, 0.4) },
     buttonBar: {},
     button: {},
     disabled: {},
@@ -134,6 +146,14 @@ const GeneratePin = ({
 }) => {
     const css = useStyles()
 
+    // pin states and logic
+    let
+        [pin1, setPin1] = useState(string.empty()),
+        [pin2, setPin2] = useState(string.empty()),
+        pinValid = (pin) => String(pin).length >= 5,
+        [visible, setVisible] = useState(false)
+
+
     return (
         <Paper
             className={classNames(className, css.content)}
@@ -152,12 +172,54 @@ const GeneratePin = ({
                 <Typography component="p" variant="body1" align="center">
                     Please type a number of minimum 5 digits.
                     This number is always needed to sign a transaction.
+                    You can use letters too.
                 </Typography>
             </div>
 
-            <div className={css.pinpad}>
-                ...
-            </div>
+            <form className={css.inputs} noValidate autoComplete="off">
+                <TextField
+                    id="pin-base"
+                    label="PIN"
+                    type={visible ? "text" : "password"}
+                    variant="outlined"
+                    className={css.pinField}
+                    value={pin1}
+                    onChange={(e) => setPin1(e.target.value)}
+                    helperText={
+                        !pinValid(pin1) && pin1 !== string.empty() ?
+                            "PIN is too short" : string.space()
+                    }
+                    InputLabelProps={{ classes: { root: css.pinLabel }}}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle PIN visibility"
+                                    onClick={() => setVisible(!visible)}
+                                >
+                                    { visible ?
+                                        <IconVisibility /> :
+                                        <IconVisibilityOff /> }
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    id="pin-repeat"
+                    label="PIN (repeat)"
+                    type={visible ? "text" : "password"}
+                    variant="outlined"
+                    className={css.pinField}
+                    error={pin1 !== pin2}
+                    value={pin2}
+                    onChange={(e) => setPin2(e.target.value)}
+                    helperText={
+                        pin1 !== pin2 ? "PINs doesn't match" : string.space()
+                    }
+                    InputLabelProps={{ classes: { root: css.pinLabel }}}
+                />
+            </form>
 
             <div className={css.buttonBar}>
                 <Button
@@ -171,8 +233,8 @@ const GeneratePin = ({
                     className={classNames(css.button, css.yes)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
-                    disabled={!enabled}
-                    onClick={() => basicResolve()}
+                    disabled={!enabled || !pinValid(pin1) || pin1 !== pin2}
+                    onClick={() => basicResolve(pin1)}
                 >Next</Button>
             </div>
 
