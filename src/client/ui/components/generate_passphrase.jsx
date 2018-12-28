@@ -74,8 +74,7 @@ const useStyles = makeStyles((t) => ({
             display: "flex",
             flexWrap: "wrap",
             "& $textField": {
-                marginLeft: t.spacing.unit,
-                marginRight: t.spacing.unit,
+                margin: t.spacing.unit,
                 width: "100%",
             },
         },
@@ -208,7 +207,6 @@ const GeneratePassphrase = ({
                     label="Passphrase (repeat)"
                     type={visible ? "text" : "password"}
                     className={css.textField}
-                    margin="normal"
                     InputLabelProps={{ classes: { root: css.inputLabel }}}
                     error={t1 !== t2}
                     value={t2}
