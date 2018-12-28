@@ -20,6 +20,7 @@ import * as message from "../../lib/messages"
 import GenericChoice from "./components/generic"
 import GenerateMnemonic from "./components/generate_mnemonic"
 import GeneratePassphrase from "./components/generate_passphrase"
+import GeneratePin from "./components/generate_pin"
 import IconAutorenew from "@material-ui/icons/Autorenew"
 import IconBackup from "@material-ui/icons/Backup"
 import IconFingerprint from "@material-ui/icons/Fingerprint"
@@ -105,15 +106,14 @@ export const messageToView = (() => {
         Info1 = Info(),
         Info2 = Info(),
         GenericChoice1 = GenericChoice(),
-        GenericChoice2 = GenericChoice(),
-        GenericChoice3 = GenericChoice()
+        GenericChoice2 = GenericChoice()
     return func.rearg(func.choose)(1, 2, 0)({
         [message.ASSOCIATE_ADDRESS + ".01"]: () => GenericChoice1,
         [message.BACKUP + ".01"]: () => Info1,
         [message.GENERATE_ADDRESS + ".01"]: () => GenerateMnemonic,
         [message.GENERATE_ADDRESS + ".02"]: () => GeneratePassphrase,
-        [message.GENERATE_SIGNING_KEYS + ".01"]: () => GenericChoice2,
+        [message.GENERATE_SIGNING_KEYS + ".01"]: () => GeneratePin,
         [message.RESTORE + ".01"]: () => Info2,
-        [message.SIGN_TRANSACTION + ".01"]: () => GenericChoice3,
+        [message.SIGN_TRANSACTION + ".01"]: () => GenericChoice2,
     }, () => Idle)
 })()
