@@ -192,7 +192,7 @@ const GeneratePassphrase = ({
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                    aria-label="Toggle password visibility"
+                                    aria-label="Toggle passphrase visibility"
                                     onClick={() => setVisible(!visible)}
                                 >
                                     { visible ?
