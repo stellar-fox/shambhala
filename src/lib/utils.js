@@ -94,13 +94,13 @@ export const drawEmojis = ((emojis) =>
  * Scrambler.
  *
  * @function fuzz
- * @param {Function} encrypt
- * @param {Function} decrypt
- * @param {Function} salt64
+ * @param {Function} encrypt @stellar-fox/cryptops.encrypt
+ * @param {Function} decrypt @stellar-fox/cryptops.decrypt
+ * @param {Function} salt64 @stellar-fox/cryptops.salt64
  */
 export const fuzz = (encrypt, decrypt, salt64) => ((k) => ({
-    in: func.flow(func.partial(encrypt)(k), codec.bytesToHex),
-    out: func.flow(codec.hexToBytes, func.partial(decrypt)(k)),
+    in: func.flow(encrypt(k), codec.bytesToHex),
+    out: func.flow(codec.hexToBytes, decrypt(k)),
 }))(salt64())
 
 
@@ -122,7 +122,7 @@ export const mDef = (m) => m.default
  * Returns hex representation of every 4th byte of sha256 hash of input string.
  *
  * @function miniHash
- * @param {Function} sha256
+ * @param {Function} sha256 @stellar-fox/cryptops.sha256
  * @param {String} str
  * @return {String} hex
  */
