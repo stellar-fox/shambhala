@@ -181,7 +181,7 @@ const GeneratePin = ({
                     id="pin-base"
                     label="PIN"
                     type={visible ? "text" : "password"}
-                    variant="outlined"
+                    variant="filled"
                     className={css.pinField}
                     value={pin1}
                     onChange={(e) => setPin1(e.target.value)}
@@ -209,7 +209,7 @@ const GeneratePin = ({
                     id="pin-repeat"
                     label="PIN (repeat)"
                     type={visible ? "text" : "password"}
-                    variant="outlined"
+                    variant="filled"
                     className={css.pinField}
                     error={pin1 !== pin2}
                     value={pin2}

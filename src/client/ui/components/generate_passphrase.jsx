@@ -34,10 +34,7 @@ import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import IconVisibility from "@material-ui/icons/Visibility"
 import IconVisibilityOff from "@material-ui/icons/VisibilityOff"
-import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import InputLabel from "@material-ui/core/InputLabel"
-import FormControl from "@material-ui/core/FormControl"
 import Paper from "@material-ui/core/Paper"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
@@ -176,19 +173,18 @@ const GeneratePassphrase = ({
             </div>
 
             <form className={css.inputs} noValidate autoComplete="off">
-                <FormControl className={css.textField}>
-                    <InputLabel
-                        htmlFor="passphrase-base"
-                        classes={{ root: css.inputLabel }}
-                    >
-                        Passphrase
-                    </InputLabel>
-                    <Input
-                        id="passphrase-base"
-                        type={visible ? "text" : "password"}
-                        value={t1}
-                        onChange={(e) => setT1(e.target.value)}
-                        endAdornment={
+                <TextField
+                    id="passphrase-base"
+                    label="Passphrase"
+                    type={visible ? "text" : "password"}
+                    variant="filled"
+                    className={css.textField}
+                    value={t1}
+                    onChange={(e) => setT1(e.target.value)}
+                    helperText={string.space()}
+                    InputLabelProps={{ classes: { root: css.inputLabel }}}
+                    InputProps={{
+                        endAdornment: (
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="Toggle passphrase visibility"
@@ -199,15 +195,15 @@ const GeneratePassphrase = ({
                                         <IconVisibilityOff /> }
                                 </IconButton>
                             </InputAdornment>
-                        }
-                    />
-                </FormControl>
+                        ),
+                    }}
+                />
                 <TextField
                     id="passphrase-repeat"
                     label="Passphrase (repeat)"
                     type={visible ? "text" : "password"}
+                    variant="filled"
                     className={css.textField}
-                    InputLabelProps={{ classes: { root: css.inputLabel }}}
                     error={t1 !== t2}
                     value={t2}
                     onChange={(e) => setT2(e.target.value)}
@@ -216,6 +212,7 @@ const GeneratePassphrase = ({
                             "passphrases doesn't match" :
                             string.space()
                     }
+                    InputLabelProps={{ classes: { root: css.inputLabel }}}
                 />
             </form>
 
