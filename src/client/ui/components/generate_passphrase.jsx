@@ -188,6 +188,7 @@ const GeneratePassphrase = ({
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="Toggle passphrase visibility"
+                                    tabIndex="-1"
                                     onClick={() => setVisible(!visible)}
                                 >
                                     { visible ?

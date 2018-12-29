@@ -195,6 +195,7 @@ const GeneratePin = ({
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="Toggle PIN visibility"
+                                    tabIndex="-1"
                                     onClick={() => setVisible(!visible)}
                                 >
                                     { visible ?
