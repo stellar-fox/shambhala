@@ -62,6 +62,7 @@ const useStyles = makeStyles((t) => ({
             "& $heading": {
                 margin: "0 auto",
                 marginBottom: t.spacing.unit,
+                color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
