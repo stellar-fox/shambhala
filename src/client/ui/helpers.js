@@ -30,6 +30,7 @@ import IconRestore from "@material-ui/icons/Restore"
 import IconVpnKey from "@material-ui/icons/VpnKey"
 import Idle from "./components/idle"
 import Info from "./components/info"
+import SignTransaction from "./components/sign_transaction"
 
 
 
@@ -105,8 +106,7 @@ export const messageToView = (() => {
     const
         Info1 = Info(),
         Info2 = Info(),
-        GenericChoice1 = GenericChoice(),
-        GenericChoice2 = GenericChoice()
+        GenericChoice1 = GenericChoice()
     return func.rearg(func.choose)(1, 2, 0)({
         [message.ASSOCIATE_ADDRESS + ".01"]: () => GenericChoice1,
         [message.BACKUP + ".01"]: () => Info1,
@@ -114,6 +114,6 @@ export const messageToView = (() => {
         [message.GENERATE_ADDRESS + ".02"]: () => GeneratePassphrase,
         [message.GENERATE_SIGNING_KEYS + ".01"]: () => GeneratePin,
         [message.RESTORE + ".01"]: () => Info2,
-        [message.SIGN_TRANSACTION + ".01"]: () => GenericChoice2,
+        [message.SIGN_TRANSACTION + ".01"]: () => SignTransaction,
     }, () => Idle)
 })()
