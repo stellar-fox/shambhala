@@ -130,7 +130,7 @@ export default function attach (
         {
             m: message.SIGN_TRANSACTION,
             a: signTransaction,
-            args: [cryptops, forage, logger],
+            args: [thunkActions, cryptops, forage, logger],
         },
 
         // cancel ongoing operation action

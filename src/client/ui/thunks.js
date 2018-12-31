@@ -202,3 +202,18 @@ export const basicResolve = (val) =>
 export const nextView = () =>
     async (dispatch, _getState) =>
         await dispatch(action.nextView())
+
+
+
+
+/**
+ * Sets `txPayload` key in redux.
+ * Invoked by `sign_transaction` action.
+ *
+ * @function setTxPayload
+ * @param {String|Null} txPayload
+ * @returns {Function} thunk action
+ */
+export const setTxPayload = (txPayload) =>
+    async (dispatch, _getState) =>
+        await dispatch(action.setState({ txPayload }))

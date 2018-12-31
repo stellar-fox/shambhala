@@ -51,6 +51,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function signTransaction
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
@@ -58,7 +59,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function signTransaction (
     respond,
-    { decrypt, deriveKey }, forage,
+    { setTxPayload }, { decrypt, deriveKey }, forage,
     logger
 ) {
 
@@ -105,6 +106,7 @@ export default function signTransaction (
             string.shorten(C_UUID, 7)
         )
         logger.info(inspectTSP(TX_PAYLOAD))
+        setTxPayload(p.TX_PAYLOAD)
 
 
 

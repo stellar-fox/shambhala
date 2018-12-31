@@ -65,6 +65,10 @@ const initState = {
     // indicate if `promptMutex` in imperative `context` is locked
     promptMutexLocked: false,
 
+    // transaction payload (b64-encoded `string` or `null`)
+    // used for visual inspection by the user
+    txPayload: null,
+
 }
 
 
