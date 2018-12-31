@@ -17,6 +17,7 @@ import React, {
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
+    array,
     func,
     math,
     string,
@@ -32,6 +33,7 @@ import { genMnemonic } from "@stellar-fox/redshift"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
+import { GENERATE_ADDRESS } from "../../../lib/messages"
 
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
@@ -249,7 +251,12 @@ GenerateMnemonic.propTypes = {
 // ...
 export default func.compose(
     connect(
-        (s) => ({ enabled: s.App.promptMutexLocked }),
+        (s) => ({
+            enabled:
+                s.App.promptMutexLocked  &&
+                array.head(s.App.message) === GENERATE_ADDRESS  &&
+                s.App.viewNumber === 1,
+        }),
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,

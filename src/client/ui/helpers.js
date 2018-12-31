@@ -95,7 +95,7 @@ export const iconizeMessage = func.rearg(func.choose)(1, 2, 0)({
 
 
 /**
- * Convert a message to a view.
+ * Convert a message to a view (ui "routing").
  *
  * @function messageToView
  * @param {String} message

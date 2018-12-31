@@ -17,6 +17,7 @@ import React, {
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
+    array,
     func,
     string,
 } from "@xcmats/js-toolbox"
@@ -29,6 +30,7 @@ import {
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
+import { GENERATE_SIGNING_KEYS } from "../../../lib/messages"
 
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
@@ -262,7 +264,12 @@ GeneratePin.propTypes = {
 // ...
 export default func.compose(
     connect(
-        (s) => ({ enabled: s.App.promptMutexLocked }),
+        (s) => ({
+            enabled:
+                s.App.promptMutexLocked  &&
+                array.head(s.App.message) === GENERATE_SIGNING_KEYS  &&
+                s.App.viewNumber === 1,
+        }),
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,
