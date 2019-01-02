@@ -18,8 +18,11 @@ import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
     array,
+    async,
+    codec,
     func,
     string,
+    utils,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
@@ -31,6 +34,7 @@ import {
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
+import { inspectTSP } from "../../../lib/txops"
 import { SIGN_TRANSACTION } from "../../../lib/messages"
 
 import Button from "@material-ui/core/Button"
@@ -72,6 +76,12 @@ const useStyles = makeStyles((t) => ({
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
             minHeight: 80,
+        },
+
+        "& $txInspector": {
+            fontFamily: "Roboto Condensed",
+            textAlign: "center",
+            color: t.palette.custom.rallyBrightGreen,
         },
 
         "& $inputs": {
@@ -124,6 +134,7 @@ const useStyles = makeStyles((t) => ({
 
     icon: {},
     headingStrecher: {},
+    txInspector: {},
     inputs: {},
     pinField: {},
     pinLabel: { color: fade(t.palette.text.primary, 0.4) },
@@ -151,6 +162,7 @@ const SignTransaction = ({
     enabled,
     setTxPayload,
     style = {},
+    txPayload,
 }) => {
     const css = useStyles()
 
@@ -172,6 +184,25 @@ const SignTransaction = ({
                 <Typography component="p" variant="body1" align="center">
                     Enter your PIN if you wish to sign a transaction.
                 </Typography>
+            </div>
+
+            <div className={css.txInspector}>
+                { utils.handleException(() => {
+                    let tx = inspectTSP(codec.b64dec(txPayload)).transaction
+                    return (
+                        <React.Fragment>
+                            { string.shorten(tx.source, 31) } <br />
+                            { tx.fee } <br />
+                            { tx.sequence } <br />
+                            { tx.operations
+                                .map((op) => op.type)
+                                .join(string.space()) } <br />
+                            { tx.memo.type === "text" ?
+                                codec.bytesToString(tx.memo.value) :
+                                codec.bytesToHex(tx.memo.value) }
+                        </React.Fragment>
+                    )
+                }, () => "...") }
             </div>
 
             <form className={css.inputs} noValidate autoComplete="off">
@@ -213,7 +244,7 @@ const SignTransaction = ({
                     variant="outlined"
                     disabled={!enabled}
                     onClick={() => {
-                        setTxPayload(null)
+                        async.timeout(() => setTxPayload(string.empty()))
                         basicReject("ui")
                     }}
                 >Abort</Button>
@@ -223,7 +254,7 @@ const SignTransaction = ({
                     variant="outlined"
                     disabled={!enabled || !pinValid(pin1)}
                     onClick={() => {
-                        setTxPayload(null)
+                        async.timeout(() => setTxPayload(string.empty()))
                         basicResolve(pin1)
                     }}
                 >Sign</Button>
@@ -242,6 +273,7 @@ SignTransaction.propTypes = {
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
     setTxPayload: PropTypes.func.isRequired,
+    txPayload: PropTypes.string.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -257,6 +289,7 @@ export default func.compose(
                 s.App.promptMutexLocked  &&
                 array.head(s.App.message) === SIGN_TRANSACTION  &&
                 s.App.viewNumber === 1,
+            txPayload: s.App.txPayload,
         }),
         (dispatch) => bindActionCreators({
             basicReject,

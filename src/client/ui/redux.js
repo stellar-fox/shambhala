@@ -67,7 +67,7 @@ const initState = {
 
     // transaction payload (b64-encoded `string` or `null`)
     // used for visual inspection by the user
-    txPayload: null,
+    txPayload: string.empty(),
 
 }
 
