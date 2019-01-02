@@ -75,13 +75,13 @@ const useStyles = makeStyles((t) => ({
 
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
-            minHeight: 80,
         },
 
         "& $txInspector": {
             fontFamily: "Roboto Condensed",
             textAlign: "center",
             color: t.palette.custom.rallyBrightGreen,
+            textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
         },
 
         "& $inputs": {
@@ -188,16 +188,30 @@ const SignTransaction = ({
 
             <div className={css.txInspector}>
                 { utils.handleException(() => {
-                    let tx = inspectTSP(codec.b64dec(txPayload)).transaction
+                    let {
+                        transaction: tx,
+                        networkId: net,
+                    } = inspectTSP(codec.b64dec(txPayload))
                     return (
                         <React.Fragment>
-                            { string.shorten(tx.source, 31) } <br />
-                            { tx.fee } <br />
-                            { tx.sequence } <br />
+                            <b>net:</b> { string.shorten(net, 37) } <br />
+                            <b>source:</b> { string.shorten(tx.source, 31) } <br />
+                            <b>fee:</b> { tx.fee } <b>seq:</b> { tx.sequence } <br />
                             { tx.operations
-                                .map((op) => op.type)
+                                .map((op) => func.choose(op.type, {
+                                    "createAccount": () => [
+                                        op.type, String(op.startingBalance),
+                                        "XLM", "->",
+                                        string.shorten(op.destination, 21),
+                                    ].join(string.space()),
+                                    "payment": () => [
+                                        op.type, String(op.amount),
+                                        String(op.asset.code), "->",
+                                        string.shorten(op.destination, 21),
+                                    ].join(string.space()),
+                                }, () => op.type))
                                 .join(string.space()) } <br />
-                            { tx.memo.type === "text" ?
+                            <b>memo:</b> { tx.memo.type === "text" ?
                                 codec.bytesToString(tx.memo.value) :
                                 codec.bytesToHex(tx.memo.value) }
                         </React.Fragment>
