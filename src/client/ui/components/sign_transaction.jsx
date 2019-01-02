@@ -26,6 +26,7 @@ import { bindActionCreators } from "redux"
 import {
     basicReject,
     basicResolve,
+    setTxPayload,
 } from "../thunks"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
@@ -148,6 +149,7 @@ const SignTransaction = ({
     basicResolve,
     className = string.empty(),
     enabled,
+    setTxPayload,
     style = {},
 }) => {
     const css = useStyles()
@@ -210,14 +212,20 @@ const SignTransaction = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled}
-                    onClick={() => basicReject("ui")}
+                    onClick={() => {
+                        setTxPayload(null)
+                        basicReject("ui")
+                    }}
                 >Abort</Button>
                 <Button
                     className={classNames(css.button, css.yes)}
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled || !pinValid(pin1)}
-                    onClick={() => basicResolve(pin1)}
+                    onClick={() => {
+                        setTxPayload(null)
+                        basicResolve(pin1)
+                    }}
                 >Sign</Button>
             </div>
 
@@ -233,6 +241,7 @@ SignTransaction.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
+    setTxPayload: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -252,6 +261,7 @@ export default func.compose(
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,
+            setTxPayload,
         }, dispatch)
     ),
     memo
