@@ -17,6 +17,7 @@ import { Provider } from "react-redux"
 import { ThemeProvider } from "@material-ui/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import "typeface-roboto"
+import "typeface-roboto-condensed"
 
 import Loader from "./loader"
 
