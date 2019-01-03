@@ -69,6 +69,9 @@ const initState = {
     // used for visual inspection by the user
     txPayload: string.empty(),
 
+    // key derivation / decryption / encryption: [0, 1]
+    progress: 0,
+
 }
 
 
@@ -80,6 +83,7 @@ const
     SET_DIMENSIONS = "Shambhala/SET_DIMENSIONS",
     SET_VIEW = "Shambhala/SET_VIEW",
     NEXT_VIEW = "Shambhala/NEXT_VIEW",
+    PROGRESS = "Shambhala/PROGRESS",
     RESET_STATE = "Shambhala/RESET_STATE"
 
 
@@ -118,6 +122,13 @@ export const action = {
 
     // ...
     nextView: () => ({ type: NEXT_VIEW }),
+
+
+    // ...
+    setProgress: (progress) => ({
+        type: PROGRESS,
+        progress,
+    }),
 
 
     // ...
@@ -160,6 +171,13 @@ export const App = createReducer(initState)({
     [NEXT_VIEW]: (state) => ({
         ...state,
         viewNumber: math.inc(state.viewNumber),
+    }),
+
+
+    // ...
+    [PROGRESS]: (state, action) => ({
+        ...state,
+        progress: action.progress,
     }),
 
 

@@ -62,3 +62,13 @@ export const ssSaveThrottlingTime = timeUnit.second
  * @constant {Number} messageThrottleTime
  */
 export const messageThrottleTime = 0.5 * timeUnit.second
+
+
+
+
+/**
+ * Prevent "progress flooding".
+ *
+ * @constant {Number} progressThrottleTime
+ */
+export const progressThrottleTime = 0.2 * timeUnit.second

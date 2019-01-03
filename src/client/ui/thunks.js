@@ -20,7 +20,10 @@ import {
 import throttle from "lodash.throttle"
 import { duration } from "@material-ui/core/styles/transitions"
 import { action } from "./redux"
-import { messageThrottleTime } from "../../config/frontend"
+import {
+    messageThrottleTime,
+    progressThrottleTime,
+} from "../../config/frontend"
 
 
 
@@ -193,8 +196,8 @@ export const basicResolve = (val) =>
 
 
 /**
- * redux -> action -> nextView() exposed to be used outside
- * of a UI context (see getMnemonic() in functions.js file).
+ * `redux -> action -> nextView()` exposed to be used outside
+ * of a UI context (see `getMnemonic()` in `functions.js` file).
  *
  * @function nextView
  * @returns {Function} thunk action
@@ -207,8 +210,26 @@ export const nextView = () =>
 
 
 /**
+ * `redux -> action -> setProgress()` exposed to be used outside
+ * of a UI context (`sign_trancation.js` and `generate_signing_keys.js`).
+ * Throttled.
+ *
+ * @function setProgress
+ * @param {Number} progress
+ * @returns {Function} thunk action
+ */
+export const setProgress = ((throttled) =>
+    (progress) =>
+        (dispatch, _getState) =>
+            throttled(() => dispatch(action.setProgress(progress)))
+)(throttle((act) => act(), progressThrottleTime))
+
+
+
+
+/**
  * Sets `txPayload` key in redux.
- * Invoked by `sign_transaction` action.
+ * Invoked by `sign_transaction.js` action.
  *
  * @function setTxPayload
  * @param {String|Null} txPayload
