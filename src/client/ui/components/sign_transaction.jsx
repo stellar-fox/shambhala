@@ -31,6 +31,7 @@ import {
     basicResolve,
     setTxPayload,
 } from "../thunks"
+import { action } from "../redux"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
@@ -160,6 +161,7 @@ const SignTransaction = ({
     basicResolve,
     className = string.empty(),
     enabled,
+    nextView,
     setTxPayload,
     style = {},
     txPayload,
@@ -195,8 +197,9 @@ const SignTransaction = ({
                     return (
                         <React.Fragment>
                             <b>net:</b> { string.shorten(net, 37) } <br />
-                            <b>source:</b> { string.shorten(tx.source, 31) } <br />
-                            <b>fee:</b> { tx.fee } <b>seq:</b> { tx.sequence } <br />
+                            <b>src:</b> { string.shorten(tx.source, 31) } <br />
+                            <b>fee:</b> { tx.fee } &nbsp;
+                            <b>seq:</b> { tx.sequence } <br />
                             { tx.operations
                                 .map((op) => func.choose(op.type, {
                                     "createAccount": () => [
@@ -270,6 +273,7 @@ const SignTransaction = ({
                     onClick={() => {
                         async.timeout(() => setTxPayload(string.empty()))
                         basicResolve(pin1)
+                        nextView()
                     }}
                 >Sign</Button>
             </div>
@@ -286,6 +290,7 @@ SignTransaction.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
+    nextView: PropTypes.func.isRequired,
     setTxPayload: PropTypes.func.isRequired,
     txPayload: PropTypes.string.isRequired,
     className: PropTypes.string,
@@ -308,6 +313,7 @@ export default func.compose(
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,
+            nextView: action.nextView,
             setTxPayload,
         }, dispatch)
     ),

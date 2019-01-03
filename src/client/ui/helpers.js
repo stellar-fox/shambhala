@@ -30,6 +30,7 @@ import IconRestore from "@material-ui/icons/Restore"
 import IconVpnKey from "@material-ui/icons/VpnKey"
 import Idle from "./components/idle"
 import Info from "./components/info"
+import Progress from "./components/progress"
 import SignTransaction from "./components/sign_transaction"
 
 
@@ -115,5 +116,6 @@ export const messageToView = (() => {
         [message.GENERATE_SIGNING_KEYS + ".01"]: () => GeneratePin,
         [message.RESTORE + ".01"]: () => Info2,
         [message.SIGN_TRANSACTION + ".01"]: () => SignTransaction,
+        [message.SIGN_TRANSACTION + ".02"]: () => Progress,
     }, () => Idle)
 })()
