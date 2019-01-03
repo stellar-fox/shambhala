@@ -172,7 +172,16 @@ const SignTransaction = ({
     // pin states and logic
     let
         [pin1, setPin1] = useState(string.empty()),
-        [visible, setVisible] = useState(false)
+        [visible, setVisible] = useState(false),
+        sign = (e) => {
+            e.preventDefault()
+            if (enabled && pinValid(pin1)) {
+                async.timeout(() => setTxPayload(string.empty()))
+                basicResolve(pin1)
+                nextView()
+            }
+            return false
+        }
 
 
     return (
@@ -226,7 +235,7 @@ const SignTransaction = ({
                 className={css.inputs}
                 noValidate
                 autoComplete="off"
-                onSubmit={(e) => e.preventDefault() && false}
+                onSubmit={sign}
             >
                 <TextField
                     id="pin-base"
@@ -275,11 +284,7 @@ const SignTransaction = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled || !pinValid(pin1)}
-                    onClick={() => {
-                        async.timeout(() => setTxPayload(string.empty()))
-                        basicResolve(pin1)
-                        nextView()
-                    }}
+                    onClick={sign}
                 >Sign</Button>
             </div>
 
