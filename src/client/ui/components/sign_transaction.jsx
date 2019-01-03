@@ -32,6 +32,7 @@ import {
     setTxPayload,
 } from "../thunks"
 import { action } from "../redux"
+import { pinValid } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
@@ -171,7 +172,6 @@ const SignTransaction = ({
     // pin states and logic
     let
         [pin1, setPin1] = useState(string.empty()),
-        pinValid = (pin) => String(pin).length >= 5,
         [visible, setVisible] = useState(false)
 
 

@@ -120,3 +120,14 @@ export const messageToView = (() => {
         [message.SIGN_TRANSACTION + ".02"]: () => Progress,
     }, () => Idle)
 })()
+
+
+
+
+/**
+ * Simple check for PIN validity (just a minimum length right now).
+ *
+ * @param {String|Number} pin
+ * @returns {Boolean}
+ */
+export const pinValid = (pin) => String(pin).length >= 5
