@@ -15,7 +15,6 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { func } from "@xcmats/js-toolbox"
 import { makeStyles } from "@material-ui/styles"
-import { rgba } from "../../../lib/utils"
 
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
@@ -46,7 +45,7 @@ const useStyles = makeStyles((t) => ({
 
     infoMessage: {
         textAlign: "center",
-        color: rgba(115, 125, 112, 0.75),
+        color: t.palette.custom.dirty,
     },
 
 }))

@@ -21,6 +21,7 @@ import { rgb, rgba } from "../../lib/utils"
 const
     darkGunmetal = rgb(29, 36, 46),
     onyx = rgb(44, 50, 60),
+    dirty = rgba(115, 125, 112, 0.75),
     rallyGreen = rgb(30, 185, 128),
     rallyDarkGreen = rgb(4, 93, 86),
     rallyBrightGreen = rgb(0, 255, 185),
@@ -42,6 +43,7 @@ export const theme = createMuiTheme({
         custom: {
             darkGunmetal,
             onyx,
+            dirty,
             rallyGreen,
             rallyDarkGreen,
             rallyBrightGreen,
