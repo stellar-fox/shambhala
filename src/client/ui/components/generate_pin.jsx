@@ -27,6 +27,7 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
+import { action } from "../redux"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
@@ -145,6 +146,7 @@ const GeneratePin = ({
     basicResolve,
     className = string.empty(),
     enabled,
+    nextView,
     style = {},
 }) => {
     const css = useStyles()
@@ -238,7 +240,10 @@ const GeneratePin = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled || !pinValid(pin1) || pin1 !== pin2}
-                    onClick={() => basicResolve(pin1)}
+                    onClick={() => {
+                        basicResolve(pin1)
+                        nextView()
+                    }}
                 >Next</Button>
             </div>
 
@@ -254,6 +259,7 @@ GeneratePin.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
+    nextView: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -273,6 +279,7 @@ export default func.compose(
         (dispatch) => bindActionCreators({
             basicReject,
             basicResolve,
+            nextView: action.nextView,
         }, dispatch)
     ),
     memo

@@ -54,6 +54,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function generateSigningKeys (
     respond,
+    { setProgress: ui_setProgress },
     { deriveKey, encrypt, salt64 }, forage,
     logger
 ) {
@@ -132,10 +133,14 @@ export default function generateSigningKeys (
 
 
 
+        // inform UI of actual progress state
+        ui_setProgress(0)
+
         let
             // compute S_KEY
             S_KEY = await deriveKey(
-                codec.stringToBytes(PIN), SALT
+                codec.stringToBytes(PIN), SALT,
+                { progressCallback: (p) => ui_setProgress(0.5 * p) && false }
             ),
 
             // send S_KEY to the server
@@ -182,7 +187,11 @@ export default function generateSigningKeys (
             // ... and compute C_KEY using C_PASSPHRASE from the server
             C_KEY = await deriveKey(
                 codec.b64dec(serverResponse.data.C_PASSPHRASE),
-                SALT
+                SALT,
+                {
+                    progressCallback: (p) =>
+                        ui_setProgress(0.5 + 0.5 * p) && false,
+                }
             )
 
         // [💥] destroy C_PASSPHRASE (it was needed only to derive C_KEY)

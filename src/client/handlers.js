@@ -81,7 +81,7 @@ export default function attach (
         {
             m: message.GENERATE_SIGNING_KEYS,
             a: generateSigningKeys,
-            args: [cryptops, forage, logger],
+            args: [thunkActions, cryptops, forage, logger],
         },
 
         // automatic keys association action

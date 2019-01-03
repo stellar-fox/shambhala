@@ -114,6 +114,7 @@ export const messageToView = (() => {
         [message.GENERATE_ADDRESS + ".01"]: () => GenerateMnemonic,
         [message.GENERATE_ADDRESS + ".02"]: () => GeneratePassphrase,
         [message.GENERATE_SIGNING_KEYS + ".01"]: () => GeneratePin,
+        [message.GENERATE_SIGNING_KEYS + ".02"]: () => Progress,
         [message.RESTORE + ".01"]: () => Info2,
         [message.SIGN_TRANSACTION + ".01"]: () => SignTransaction,
         [message.SIGN_TRANSACTION + ".02"]: () => Progress,

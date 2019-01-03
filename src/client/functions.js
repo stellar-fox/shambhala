@@ -215,5 +215,5 @@ export const getPassphrase = func.partial(
  * @returns {Promise.<String>}
  */
 export const getPin = func.partial(
-    func.rearg(getValueFromUser)(1, 2)
-)("PIN", () => "00000")
+    func.rearg(getValueFromUser)(1, 2, 3)
+)("PIN", () => "00000", () => store.thunkActions.nextView())
