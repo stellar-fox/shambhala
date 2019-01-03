@@ -59,7 +59,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function signTransaction (
     respond,
-    { setTxPayload }, { decrypt, deriveKey }, forage,
+    { setProgress, setTxPayload }, { decrypt, deriveKey }, forage,
     logger
 ) {
 
@@ -106,6 +106,8 @@ export default function signTransaction (
             string.shorten(C_UUID, 7)
         )
         logger.info(inspectTSP(TX_PAYLOAD))
+
+        // pass tx payload to UI
         setTxPayload(p.TX_PAYLOAD)
 
 
@@ -129,10 +131,14 @@ export default function signTransaction (
 
 
 
+        // inform UI of actual progress state
+        setProgress(0)
+
         let
             // compute S_KEY
             S_KEY = await deriveKey(
-                codec.stringToBytes(PIN), codec.b64dec(SALT)
+                codec.stringToBytes(PIN), codec.b64dec(SALT),
+                { progressCallback: (p) => setProgress(0.5 * p) && false }
             ),
 
             // send S_KEY with TX_PAYLOAD to the server
@@ -180,7 +186,8 @@ export default function signTransaction (
         // compute C_KEY based on received C_PASSPHRASE and stored SALT
         let C_KEY = await deriveKey(
             codec.b64dec(serverResponse.data.C_PASSPHRASE),
-            codec.b64dec(SALT)
+            codec.b64dec(SALT),
+            { progressCallback: (p) => setProgress(0.5 + 0.5 * p) && false }
         )
 
         // [💥] destroy C_PASSPHRASE
