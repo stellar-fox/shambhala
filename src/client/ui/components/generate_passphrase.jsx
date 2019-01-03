@@ -175,7 +175,12 @@ const GeneratePassphrase = ({
                 </Typography>
             </div>
 
-            <form className={css.inputs} noValidate autoComplete="off">
+            <form
+                className={css.inputs}
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => e.preventDefault() && false}
+            >
                 <TextField
                     id="passphrase-base"
                     label="Passphrase"
