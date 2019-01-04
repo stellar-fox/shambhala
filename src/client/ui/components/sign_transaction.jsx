@@ -216,6 +216,10 @@ const SignTransaction = ({
                             <b>seq:</b> {tx.sequence} <br />
                             { tx.operations
                                 .map((op) => func.choose(op.type, {
+                                    "accountMerge": () => <React.Fragment>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {string.shorten(op.destination, 21)}
+                                    </React.Fragment>,
                                     "createAccount": () => <React.Fragment>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.startingBalance)}&nbsp;
@@ -228,7 +232,7 @@ const SignTransaction = ({
                                         {String(op.asset.code)}&nbsp;->&nbsp;
                                         {string.shorten(op.destination, 21)}
                                     </React.Fragment>,
-                                }, () => <b>{op.type}:</b>)) } <br />
+                                }, () => <b>{op.type}</b>)) } <br />
                             <b>memo:</b> { tx.memo.type === "text" ?
                                 codec.bytesToString(tx.memo.value) :
                                 codec.bytesToHex(tx.memo.value) }
