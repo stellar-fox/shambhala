@@ -83,7 +83,13 @@ const useStyles = makeStyles((t) => ({
             fontFamily: "Roboto Condensed",
             textAlign: "center",
             color: t.palette.custom.rallyBrightGreen,
-            textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
+            textShadow: `0px 0px 7px ${
+                fade(t.palette.custom.rallyBrightGreen, 0.5)
+            }`,
+            backgroundColor: rgba(0, 0, 0, 0.3),
+            border: `1px solid ${rgba(0, 0, 0, 0.5)}`,
+            borderRadius: "3px",
+            padding: t.spacing.unit,
         },
 
         "& $inputs": {
@@ -204,24 +210,25 @@ const SignTransaction = ({
                     } = inspectTSP(codec.b64dec(txPayload))
                     return (
                         <React.Fragment>
-                            <b>net:</b> { string.shorten(net, 37) } <br />
-                            <b>src:</b> { string.shorten(tx.source, 31) } <br />
-                            <b>fee:</b> { tx.fee } &nbsp;
-                            <b>seq:</b> { tx.sequence } <br />
+                            <b>net:</b> {string.shorten(net, 37)} <br />
+                            <b>src:</b> {string.shorten(tx.source, 31)} <br />
+                            <b>fee:</b> {tx.fee} &nbsp;
+                            <b>seq:</b> {tx.sequence} <br />
                             { tx.operations
                                 .map((op) => func.choose(op.type, {
-                                    "createAccount": () => [
-                                        op.type, String(op.startingBalance),
-                                        "XLM", "->",
-                                        string.shorten(op.destination, 21),
-                                    ].join(string.space()),
-                                    "payment": () => [
-                                        op.type, String(op.amount),
-                                        String(op.asset.code), "->",
-                                        string.shorten(op.destination, 21),
-                                    ].join(string.space()),
-                                }, () => op.type))
-                                .join(string.space()) } <br />
+                                    "createAccount": () => <React.Fragment>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {String(op.startingBalance)}&nbsp;
+                                        XLM&nbsp;->&nbsp;
+                                        {string.shorten(op.destination, 21)}
+                                    </React.Fragment>,
+                                    "payment": () => <React.Fragment>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {String(op.amount)}&nbsp;
+                                        {String(op.asset.code)}&nbsp;->&nbsp;
+                                        {string.shorten(op.destination, 21)}
+                                    </React.Fragment>,
+                                }, () => <b>{op.type}:</b>)) } <br />
                             <b>memo:</b> { tx.memo.type === "text" ?
                                 codec.bytesToString(tx.memo.value) :
                                 codec.bytesToHex(tx.memo.value) }
