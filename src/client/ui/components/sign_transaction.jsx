@@ -183,7 +183,6 @@ const SignTransaction = ({
             return false
         }
 
-
     return (
         <Paper
             className={classNames(className, css.content)}

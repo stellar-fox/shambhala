@@ -146,11 +146,18 @@ const GeneratePassphrase = ({
 }) => {
     const css = useStyles()
 
-    // text field states
+    // text field states and logic
     let
         [t1, setT1] = useState(string.empty()),
         [t2, setT2] = useState(string.empty()),
-        [visible, setVisible] = useState(false)
+        [visible, setVisible] = useState(false),
+        resolve = (e) => {
+            e.preventDefault()
+            if (enabled && t1 === t2) {
+                basicResolve(t1)
+            }
+            return false
+        }
 
     return (
         <Paper
@@ -179,7 +186,7 @@ const GeneratePassphrase = ({
                 className={css.inputs}
                 noValidate
                 autoComplete="off"
-                onSubmit={(e) => e.preventDefault() && false}
+                onSubmit={resolve}
             >
                 <TextField
                     id="passphrase-base"
@@ -238,7 +245,7 @@ const GeneratePassphrase = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled || t1 !== t2}
-                    onClick={() => basicResolve(t1)}
+                    onClick={resolve}
                 >{ t1 === string.empty() ? "Skip" : "Next" }</Button>
             </div>
 

@@ -156,8 +156,15 @@ const GeneratePin = ({
     let
         [pin1, setPin1] = useState(string.empty()),
         [pin2, setPin2] = useState(string.empty()),
-        [visible, setVisible] = useState(false)
-
+        [visible, setVisible] = useState(false),
+        next = (e) => {
+            e.preventDefault()
+            if (enabled && pinValid(pin1) && pin1 === pin2) {
+                basicResolve(pin1)
+                nextView()
+            }
+            return false
+        }
 
     return (
         <Paper
@@ -185,7 +192,7 @@ const GeneratePin = ({
                 className={css.inputs}
                 noValidate
                 autoComplete="off"
-                onSubmit={(e) => e.preventDefault() && false}
+                onSubmit={next}
             >
                 <TextField
                     id="pin-base"
@@ -245,10 +252,7 @@ const GeneratePin = ({
                     classes={{ disabled: css.disabled }}
                     variant="outlined"
                     disabled={!enabled || !pinValid(pin1) || pin1 !== pin2}
-                    onClick={() => {
-                        basicResolve(pin1)
-                        nextView()
-                    }}
+                    onClick={next}
                 >Next</Button>
             </div>
 
