@@ -210,32 +210,42 @@ const SignTransaction = ({
                     } = inspectTSP(codec.b64dec(txPayload))
                     return (
                         <React.Fragment>
-                            <b>net:</b> {string.shorten(net, 37)} <br />
-                            <b>src:</b> {string.shorten(tx.source, 31)} <br />
-                            <b>fee:</b> {tx.fee} &nbsp;
-                            <b>seq:</b> {tx.sequence} <br />
+                            <div>
+                                <b>net:</b> {string.shorten(net, 37)}
+                            </div>
+                            <div>
+                                <b>src:</b> {string.shorten(tx.source, 31)}
+                            </div>
+                            <div>
+                                <b>fee:</b> {tx.fee} &nbsp;
+                                <b>seq:</b> {tx.sequence}
+                            </div>
                             { tx.operations
                                 .map((op) => func.choose(op.type, {
-                                    "accountMerge": () => <React.Fragment>
+                                    "accountMerge": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {string.shorten(op.destination, 21)}
-                                    </React.Fragment>,
-                                    "createAccount": () => <React.Fragment>
+                                    </div>,
+                                    "createAccount": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.startingBalance)}&nbsp;
                                         XLM&nbsp;->&nbsp;
                                         {string.shorten(op.destination, 21)}
-                                    </React.Fragment>,
-                                    "payment": () => <React.Fragment>
+                                    </div>,
+                                    "payment": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.amount)}&nbsp;
                                         {String(op.asset.code)}&nbsp;->&nbsp;
                                         {string.shorten(op.destination, 21)}
-                                    </React.Fragment>,
-                                }, () => <b>{op.type}</b>)) } <br />
-                            <b>memo:</b> { tx.memo.type === "text" ?
-                                codec.bytesToString(tx.memo.value) :
-                                codec.bytesToHex(tx.memo.value) }
+                                    </div>,
+                                }, () =>
+                                    <div key={op}><b>{op.type}</b></div>
+                                )) }
+                            <div>
+                                <b>memo:</b> { tx.memo.type === "text" ?
+                                    codec.bytesToString(tx.memo.value) :
+                                    codec.bytesToHex(tx.memo.value) }
+                            </div>
                         </React.Fragment>
                     )
                 }, () => "...") }
