@@ -17,7 +17,7 @@ import {
 } from "@xcmats/js-toolbox"
 import * as message from "../../lib/messages"
 
-import GenericChoice from "./components/generic"
+import AssociateAddress from "./components/associate_address"
 import GenerateMnemonic from "./components/generate_mnemonic"
 import GeneratePassphrase from "./components/generate_passphrase"
 import GeneratePin from "./components/generate_pin"
@@ -106,10 +106,9 @@ export const iconizeMessage = func.rearg(func.choose)(1, 2, 0)({
 export const messageToView = (() => {
     const
         Info1 = Info(),
-        Info2 = Info(),
-        GenericChoice1 = GenericChoice()
+        Info2 = Info()
     return func.rearg(func.choose)(1, 2, 0)({
-        [message.ASSOCIATE_ADDRESS + ".01"]: () => GenericChoice1,
+        [message.ASSOCIATE_ADDRESS + ".01"]: () => AssociateAddress,
         [message.BACKUP + ".01"]: () => Info1,
         [message.GENERATE_ADDRESS + ".01"]: () => GenerateMnemonic,
         [message.GENERATE_ADDRESS + ".02"]: () => GeneratePassphrase,
