@@ -24,12 +24,13 @@ import {
     basicReject,
     basicResolve,
 } from "../thunks"
-import { iconizeMessage } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { rgba } from "../../../lib/utils"
+import { ASSOCIATE_ADDRESS } from "../../../lib/messages"
 
 import Button from "@material-ui/core/Button"
+import IconAutorenew from "@material-ui/icons/Autorenew"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -131,7 +132,6 @@ const AssociateAddress = ({
     basicResolve,
     className = string.empty(),
     enabled,
-    icon,
     style = {},
 }) => ((css) =>
 
@@ -139,7 +139,7 @@ const AssociateAddress = ({
         className={classNames(className, css.content)}
         style={style}
     >
-        { icon([{ className: css.icon }]) }
+        <IconAutorenew className={css.icon} />
         <div className={css.headingStrecher}>
             <Typography
                 component="h5"
@@ -178,7 +178,6 @@ AssociateAddress.propTypes = {
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
-    icon: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -190,10 +189,10 @@ AssociateAddress.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
-            enabled: s.App.promptMutexLocked,
-            icon: func.partial(iconizeMessage)(
-                array.head(s.App.throttledMessage)
-            ),
+            enabled:
+                s.App.promptMutexLocked  &&
+                array.head(s.App.message) === ASSOCIATE_ADDRESS  &&
+                s.App.viewNumber === 1,
         }),
         (dispatch) => bindActionCreators({
             basicReject,
