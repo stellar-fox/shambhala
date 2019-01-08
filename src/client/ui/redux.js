@@ -65,11 +65,14 @@ const initState = {
     // indicate if `promptMutex` in imperative `context` is locked
     promptMutexLocked: false,
 
-    // transaction payload (b64-encoded `string` or `null`)
+    // "source" account for the operations (G_PUBLIC)
+    accountId: string.empty(),
+
+    // transaction payload (b64-encoded `string`)
     // used for visual inspection by the user
     txPayload: string.empty(),
 
-    // key derivation / decryption / encryption: [0, 1]
+    // key derivation / decryption / encryption: [0, 1] (percentage)
     progress: 0,
 
 }

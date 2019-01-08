@@ -210,6 +210,20 @@ export const nextView = () =>
 
 
 /**
+ * Sets `accountId` key in redux.
+ *
+ * @function setAccountId
+ * @param {String} accountId
+ * @returns {Function} thunk action
+ */
+export const setAccountId = (accountId) =>
+    async (dispatch, _getState) =>
+        await dispatch(action.setState({ accountId }))
+
+
+
+
+/**
  * `redux -> action -> setProgress()` exposed to be used outside
  * of a UI context (`sign_trancation.js` and `generate_signing_keys.js`).
  * Throttled.
@@ -232,7 +246,7 @@ export const setProgress = ((throttled) =>
  * Invoked by `sign_transaction.js` action.
  *
  * @function setTxPayload
- * @param {String|Null} txPayload
+ * @param {String} txPayload
  * @returns {Function} thunk action
  */
 export const setTxPayload = (txPayload) =>
