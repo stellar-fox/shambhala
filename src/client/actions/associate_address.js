@@ -47,6 +47,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function associateAddress
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
@@ -54,6 +55,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function associateAddress (
     respond,
+    { setAccountId: ui_setAccountId },
     { genUUID }, forage,
     logger
 ) {
@@ -94,6 +96,9 @@ export default function associateAddress (
 
 
 
+        // pass G_PUBLIC to the UI
+        ui_setAccountId(p.G_PUBLIC)
+
         // confirm that user wishes to associate this address
         if (
             !await promptUser(
@@ -105,6 +110,7 @@ export default function associateAddress (
                 "User doesn't want to associate this address.",
                 "Operation aborted.",
             ].join(string.space()))
+            ui_setAccountId(string.empty())
 
             return
         }
@@ -136,6 +142,7 @@ export default function associateAddress (
                 "Address association failure.",
                 localResponse.error
             )
+            ui_setAccountId(string.empty())
 
             // don't do anything else
             return
@@ -165,6 +172,7 @@ export default function associateAddress (
                 "Address succesfully associated:",
                 G_PUBLIC
             )
+            ui_setAccountId(string.empty())
 
         // unfortunately - an error occured
         } else {
@@ -180,6 +188,7 @@ export default function associateAddress (
                 "Address association failure.",
                 serverResponse.data.error
             )
+            ui_setAccountId(string.empty())
 
         }
 

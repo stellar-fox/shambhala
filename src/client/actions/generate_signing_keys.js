@@ -47,6 +47,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function generateSigningKeys
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger

@@ -74,7 +74,7 @@ export default function attach (
         {
             m: message.ASSOCIATE_ADDRESS,
             a: associateAddress,
-            args: [cryptops, forage, logger],
+            args: [thunkActions, cryptops, forage, logger],
         },
 
         // signing keys generation action
