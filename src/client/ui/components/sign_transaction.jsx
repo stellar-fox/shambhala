@@ -80,6 +80,7 @@ const useStyles = makeStyles((t) => ({
         },
 
         "& $txInspector": {
+            marginBottom: t.spacing.unit,
             fontFamily: "Roboto Condensed",
             textAlign: "center",
             color: t.palette.custom.rallyBrightGreen,

@@ -110,7 +110,6 @@ export default function associateAddress (
                 "User doesn't want to associate this address.",
                 "Operation aborted.",
             ].join(string.space()))
-            ui_setAccountId(string.empty())
 
             return
         }
@@ -142,7 +141,6 @@ export default function associateAddress (
                 "Address association failure.",
                 localResponse.error
             )
-            ui_setAccountId(string.empty())
 
             // don't do anything else
             return
@@ -172,7 +170,6 @@ export default function associateAddress (
                 "Address succesfully associated:",
                 G_PUBLIC
             )
-            ui_setAccountId(string.empty())
 
         // unfortunately - an error occured
         } else {
@@ -188,7 +185,6 @@ export default function associateAddress (
                 "Address association failure.",
                 serverResponse.data.error
             )
-            ui_setAccountId(string.empty())
 
         }
 

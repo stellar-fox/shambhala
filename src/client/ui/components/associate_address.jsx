@@ -15,6 +15,7 @@ import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
     array,
+    async,
     func,
     string,
 } from "@xcmats/js-toolbox"
@@ -23,6 +24,7 @@ import { bindActionCreators } from "redux"
 import {
     basicReject,
     basicResolve,
+    setAccountId,
 } from "../thunks"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
@@ -61,7 +63,6 @@ const useStyles = makeStyles((t) => ({
 
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
-            minHeight: 80,
             display: "flex",
             direction: "column",
             alignItems: "center",
@@ -70,6 +71,20 @@ const useStyles = makeStyles((t) => ({
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
+        },
+
+        "& $txInspector": {
+            marginBottom: t.spacing.unit,
+            fontFamily: "Roboto Condensed",
+            textAlign: "center",
+            color: t.palette.custom.rallyBrightGreen,
+            textShadow: `0px 0px 7px ${
+                fade(t.palette.custom.rallyBrightGreen, 0.5)
+            }`,
+            backgroundColor: rgba(0, 0, 0, 0.3),
+            border: `1px solid ${rgba(0, 0, 0, 0.5)}`,
+            borderRadius: "3px",
+            padding: t.spacing.unit,
         },
 
         "& $buttonBar": {
@@ -110,6 +125,7 @@ const useStyles = makeStyles((t) => ({
     icon: {},
     headingStrecher: {},
     heading: {},
+    txInspector: {},
     buttonBar: {},
     button: {},
     disabled: {},
@@ -128,10 +144,12 @@ const useStyles = makeStyles((t) => ({
  * @returns {React.ReactElement}
  */
 const AssociateAddress = ({
+    accountId,
     basicReject,
     basicResolve,
     className = string.empty(),
     enabled,
+    setAccountId,
     style = {},
 }) => ((css) =>
 
@@ -150,20 +168,32 @@ const AssociateAddress = ({
                 Do you wish to associate a new address?
             </Typography>
         </div>
+
+        <div className={css.txInspector}>
+            <div>{ array.take(28)(accountId) }</div>
+            <div>{ array.drop(28)(accountId) }</div>
+        </div>
+
         <div className={css.buttonBar}>
             <Button
                 className={classNames(css.button, css.no)}
                 classes={{ disabled: css.disabled }}
                 variant="outlined"
                 disabled={!enabled}
-                onClick={() => basicReject("ui")}
+                onClick={() => {
+                    async.timeout(() => setAccountId(string.empty()))
+                    basicReject("ui")
+                }}
             >No</Button>
             <Button
                 className={classNames(css.button, css.yes)}
                 classes={{ disabled: css.disabled }}
                 variant="outlined"
                 disabled={!enabled}
-                onClick={() => basicResolve()}
+                onClick={() => {
+                    async.timeout(() => setAccountId(string.empty()))
+                    basicResolve()
+                }}
             >Yes</Button>
         </div>
     </Paper>
@@ -175,9 +205,11 @@ const AssociateAddress = ({
 
 // ...
 AssociateAddress.propTypes = {
+    accountId: PropTypes.string.isRequired,
     basicReject: PropTypes.func.isRequired,
     basicResolve: PropTypes.func.isRequired,
     enabled: PropTypes.bool.isRequired,
+    setAccountId: PropTypes.func.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
 }
@@ -189,12 +221,14 @@ AssociateAddress.propTypes = {
 export default func.compose(
     connect(
         (s) => ({
+            accountId: s.App.accountId,
             enabled:
                 s.App.promptMutexLocked  &&
                 array.head(s.App.message) === ASSOCIATE_ADDRESS  &&
                 s.App.viewNumber === 1,
         }),
         (dispatch) => bindActionCreators({
+            setAccountId,
             basicReject,
             basicResolve,
         }, dispatch)
