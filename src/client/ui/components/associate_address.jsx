@@ -63,11 +63,10 @@ const useStyles = makeStyles((t) => ({
 
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
-            display: "flex",
-            direction: "column",
-            alignItems: "center",
             "& $heading": {
                 margin: "0 auto",
+                marginBottom: t.spacing.unit,
+                color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
             },
@@ -160,12 +159,16 @@ const AssociateAddress = ({
         <IconAutorenew className={css.icon} />
         <div className={css.headingStrecher}>
             <Typography
-                component="h5"
+                component="h1"
                 variant="h5"
                 align="center"
                 className={css.heading}
             >
-                Do you wish to associate a new address?
+                Do you wish to associate this address?
+            </Typography>
+            <Typography component="p" variant="body1" align="center">
+                Address association will allow you to sign transactions
+                with your new shambhala keys using this device and your PIN.
             </Typography>
         </div>
 

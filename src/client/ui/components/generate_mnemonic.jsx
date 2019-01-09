@@ -61,7 +61,6 @@ const useStyles = makeStyles((t) => ({
 
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
-            minHeight: 80,
             "& $heading": {
                 margin: "0 auto",
                 marginBottom: t.spacing.unit,
