@@ -173,8 +173,10 @@ const AssociateAddress = ({
         </div>
 
         <div className={css.txInspector}>
-            <div>{ array.take(28)(accountId) }</div>
-            <div>{ array.drop(28)(accountId) }</div>
+            <div>{ array.take(14)(accountId) }</div>
+            <div>{ array.take(14)(array.drop(14)(accountId)) }</div>
+            <div>{ array.take(14)(array.drop(28)(accountId)) }</div>
+            <div>{ array.takeLast(14)(accountId) }</div>
         </div>
 
         <div className={css.buttonBar}>
