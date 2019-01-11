@@ -233,6 +233,10 @@ const SignTransaction = ({
                                         {string.shorten(op.trustor, 21)}&nbsp;
                                         {String(op.assetCode)}
                                     </div>,
+                                    "bumpSequence": () => <div key={op}>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {String(op.bumpTo)}
+                                    </div>,
                                     "createAccount": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.startingBalance)}&nbsp;
