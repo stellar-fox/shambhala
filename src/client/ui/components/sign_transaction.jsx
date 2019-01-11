@@ -227,6 +227,12 @@ const SignTransaction = ({
                                         <b>{op.type}:</b>&nbsp;
                                         {string.shorten(op.destination, 21)}
                                     </div>,
+                                    "allowTrust": () => <div key={op}>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {op.authorize ? "auth" : "deauth"}&nbsp;
+                                        {string.shorten(op.trustor, 21)}&nbsp;
+                                        {String(op.assetCode)}
+                                    </div>,
                                     "createAccount": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.startingBalance)}&nbsp;
