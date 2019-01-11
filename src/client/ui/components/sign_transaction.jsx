@@ -237,6 +237,14 @@ const SignTransaction = ({
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.bumpTo)}
                                     </div>,
+                                    "changeTrust": () => <div key={op}>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {string.shorten(
+                                            op.asset.getIssuer(), 21
+                                        )}&nbsp;->&nbsp;
+                                        {op.asset.getCode()}&nbsp;
+                                        {op.limit || "0" }
+                                    </div>,
                                     "createAccount": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.startingBalance)}&nbsp;
