@@ -246,7 +246,7 @@ const SignTransaction = ({
                                     "payment": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
                                         {String(op.amount)}&nbsp;
-                                        {String(op.asset.code)}&nbsp;->&nbsp;
+                                        {op.asset.getCode()}&nbsp;->&nbsp;
                                         {string.shorten(op.destination, 21)}
                                     </div>,
                                 }, () =>
