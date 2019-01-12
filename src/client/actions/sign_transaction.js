@@ -59,7 +59,11 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function signTransaction (
     respond,
-    { setProgress: ui_setProgress, setTxPayload: ui_setTxPayload },
+    {
+        setProgress: ui_setProgress,
+        setTxPayload: ui_setTxPayload,
+        setError: ui_setError,
+    },
     { decrypt, deriveKey }, forage,
     logger
 ) {
@@ -175,6 +179,7 @@ export default function signTransaction (
                 "Transaction signing failure.",
                 serverResponse.data.error
             )
+            ui_setError(string.capitalize(serverResponse.data.error) + ".")
 
             // do nothing more
             return
