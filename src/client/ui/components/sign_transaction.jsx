@@ -22,6 +22,7 @@ import {
     codec,
     func,
     string,
+    type,
     utils,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
@@ -250,6 +251,16 @@ const SignTransaction = ({
                                         {String(op.startingBalance)}&nbsp;
                                         XLM&nbsp;->&nbsp;
                                         {string.shorten(op.destination, 21)}
+                                    </div>,
+                                    "manageData": () => <div key={op}>
+                                        <b>{op.type}:</b>&nbsp;
+                                        {op.name}&nbsp;-&nbsp;
+                                        {type.isString(op.value) ?
+                                            string.shorten(op.value, 41) :
+                                            string.shorten(
+                                                codec.bytesToHex(op.value),
+                                                41
+                                            )}
                                     </div>,
                                     "payment": () => <div key={op}>
                                         <b>{op.type}:</b>&nbsp;
