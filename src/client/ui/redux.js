@@ -75,6 +75,9 @@ const initState = {
     // key derivation / decryption / encryption: [0, 1] (percentage)
     progress: 0,
 
+    // last error
+    error: string.empty(),
+
 }
 
 

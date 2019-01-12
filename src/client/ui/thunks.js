@@ -21,6 +21,7 @@ import throttle from "lodash.throttle"
 import { duration } from "@material-ui/core/styles/transitions"
 import { action } from "./redux"
 import {
+    errorPersistenceDuration,
     messageThrottleTime,
     progressThrottleTime,
 } from "../../config/frontend"
@@ -44,7 +45,7 @@ const store = {}
  * Pass "context" to the private store.
  *
  * Thunk actions (which are dispatched from the "react ui world"
- * as well as from the "shambhala actions world") has to have access
+ * as well as from the "shambhala actions world") have to have access
  * to the volatile memory. See it's definition in src/client/ui/index.js.
  *
  * @function setImperativeContext
@@ -252,3 +253,22 @@ export const setProgress = ((throttled) =>
 export const setTxPayload = (txPayload) =>
     async (dispatch, _getState) =>
         await dispatch(action.setState({ txPayload }))
+
+
+
+
+/**
+ * Sets `error` key in redux (and automatically reset it after some time).
+ *
+ * @function setError
+ * @param {String} error
+ * @returns {Function} thunk action
+ */
+export const setError = (error) =>
+    async (dispatch, _getState) => {
+        async.timeout(
+            () => dispatch(action.setState({ error: string.empty() })),
+            errorPersistenceDuration + 0.1 * errorPersistenceDuration
+        )
+        await dispatch(action.setState({ error }))
+    }

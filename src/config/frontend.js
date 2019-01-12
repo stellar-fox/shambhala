@@ -72,3 +72,13 @@ export const messageThrottleTime = 0.5 * timeUnit.second
  * @constant {Number} progressThrottleTime
  */
 export const progressThrottleTime = 0.2 * timeUnit.second
+
+
+
+
+/**
+ * How long an error message should be displayed on screen?
+ *
+ * @constant {Number} errorPersistenceDuration
+ */
+export const errorPersistenceDuration = 4 * timeUnit.second
