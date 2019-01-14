@@ -267,8 +267,12 @@ export const setTxPayload = (txPayload) =>
 export const setError = (error) =>
     async (dispatch, _getState) => {
         async.timeout(
-            () => dispatch(action.setState({ error: string.empty() })),
+            () => dispatch(action.setState({
+                error: { message: error, show: false },
+            })),
             errorPersistenceDuration + 0.1 * errorPersistenceDuration
         )
-        await dispatch(action.setState({ error }))
+        await dispatch(action.setState({
+            error: { message: error, show: true },
+        }))
     }

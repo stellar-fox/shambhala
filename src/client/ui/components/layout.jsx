@@ -12,6 +12,7 @@
 
 import React, {
     createRef,
+    Fragment,
     memo,
     useLayoutEffect,
     useState,
@@ -32,9 +33,13 @@ import {
     iconizeMessage,
     messageToView,
 } from "../helpers"
+import { errorPersistenceDuration } from "../../../config/frontend"
 
 import AppBar from "@material-ui/core/AppBar"
 import Grid from "@material-ui/core/Grid"
+import IconError from "@material-ui/icons/Error"
+import Snackbar from "@material-ui/core/Snackbar"
+import SnackbarContent from "@material-ui/core/SnackbarContent"
 import SwipeableViews from "react-swipeable-views"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
@@ -108,6 +113,21 @@ const
         heart: {},
         emoji: {},
 
+        errorSnack: {
+            backgroundColor: t.palette.error.dark,
+            color: t.palette.error.contrastText,
+            marginBottom: 2 * t.spacing.unit,
+        },
+        errorSnackMessage: {
+            display: "flex",
+            alignItems: "center",
+        },
+        errorSnackIcon: {
+            fontSize: 20,
+            opacity: 0.9,
+            marginRight: theme.spacing.unit,
+        },
+
     }))
 
 
@@ -121,10 +141,12 @@ const
  */
 const Layout = ({
     currentMessage,
+    errorMessage,
     humanMessage,
     icon,
     screenHeight,
     screenWidth,
+    showErrorMesssage,
     style = {},
 }) => {
     const css = useStyles()
@@ -172,66 +194,91 @@ const Layout = ({
 
 
     return (
-        <Grid
-            container
-            direction="column"
-            justify="space-between"
-            alignItems="stretch"
-            className={css.layout}
-            style={style}
-        >
+        <Fragment>
 
-            <Grid item className={css.header}>
-                <AppBar position="static" component={customHeader}>
-                    <Toolbar>
-                        <Typography variant="h6" color="inherit">
-                            shambhala
-                        </Typography>
-                        <div className={css.appBarCenterPane}>{ icon() }</div>
-                        <Typography
-                            variant="subtitle2"
-                            color="textSecondary"
-                            align="right"
-                        >
-                            { humanMessage }
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
+            <Grid
+                container
+                direction="column"
+                justify="space-between"
+                alignItems="stretch"
+                className={css.layout}
+                style={style}
+            >
+
+                <Grid item className={css.header}>
+                    <AppBar position="static" component={customHeader}>
+                        <Toolbar>
+                            <Typography variant="h6" color="inherit">
+                                shambhala
+                            </Typography>
+                            <div className={css.appBarCenterPane}>
+                                { icon() }
+                            </div>
+                            <Typography
+                                variant="subtitle2"
+                                color="textSecondary"
+                                align="right"
+                            >
+                                { humanMessage }
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                </Grid>
+
+                <Grid item component="main" className={css.main}>
+                    <SwipeableViews
+                        containerStyle={{
+                            width: screenWidth - 2 * theme.spacing.unit,
+                            height: mainHeight(),
+                        }}
+                        disabled={true}
+                        index={displayed.length - 1}
+                        onTransitionEnd={() => setDisplayed([currentMessage])}
+                    >
+                        { displayed
+                            .map((d) => slide(messageToView(d), d))
+                            .reverse() }
+                    </SwipeableViews>
+                </Grid>
+
+                <Grid item className={css.footer}>
+                    <Typography component="footer" className={css.text}>
+                        Made with
+                        &nbsp;<span
+                            className={css.heart}
+                            role="img" aria-label="love"
+                        >❤</span>&nbsp;
+                        on
+                        &nbsp;<span
+                            className={css.emoji}
+                            role="img" aria-label="earth"
+                        >🌍</span>&nbsp;
+                        .
+                    </Typography>
+                </Grid>
+
             </Grid>
 
-            <Grid item component="main" className={css.main}>
-                <SwipeableViews
-                    containerStyle={{
-                        width: screenWidth - 2 * theme.spacing.unit,
-                        height: mainHeight(),
-                    }}
-                    disabled={true}
-                    index={displayed.length - 1}
-                    onTransitionEnd={() => setDisplayed([currentMessage])}
-                >
-                    { displayed
-                        .map((d) => slide(messageToView(d), d))
-                        .reverse() }
-                </SwipeableViews>
-            </Grid>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                }}
+                open={showErrorMesssage}
+                autoHideDuration={errorPersistenceDuration}
+            >
+                <SnackbarContent
+                    className={css.errorSnack}
+                    message={
+                        <span className={css.errorSnackMessage}>
+                            <IconError className={css.errorSnackIcon} />
+                            { errorMessage }
+                        </span>
+                    }
+                />
+            </Snackbar>
 
-            <Grid item className={css.footer}>
-                <Typography component="footer" className={css.text}>
-                    Made with
-                    &nbsp;<span
-                        className={css.heart}
-                        role="img" aria-label="love"
-                    >❤</span>&nbsp;
-                    on
-                    &nbsp;<span
-                        className={css.emoji}
-                        role="img" aria-label="earth"
-                    >🌍</span>&nbsp;
-                    .
-                </Typography>
-            </Grid>
-
-        </Grid>
+        </Fragment>
     )
 }
 
@@ -241,10 +288,12 @@ const Layout = ({
 // ...
 Layout.propTypes = {
     currentMessage: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired,
     humanMessage: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
     screenHeight: PropTypes.number.isRequired,
     screenWidth: PropTypes.number.isRequired,
+    showErrorMesssage: PropTypes.bool.isRequired,
     style: PropTypes.object,
 }
 
@@ -271,6 +320,10 @@ export default func.compose(
             // screen dimensions
             screenHeight: s.App.dim.height,
             screenWidth: s.App.dim.width,
+
+            // last error message
+            errorMessage: s.App.error.message,
+            showErrorMesssage: s.App.error.show,
         })
     ),
     memo
