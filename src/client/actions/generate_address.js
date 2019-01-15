@@ -56,6 +56,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  * @function generateAddress
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
@@ -64,6 +65,7 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function generateAddress (
     respond,
+    { setError: ui_setError },
     { genUUID }, forage,
     logger, context
 ) {
@@ -84,6 +86,7 @@ export default function generateAddress (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give MNEMONIC. Operation aborted.")
+            ui_setError("Mnemonic generation aborted.")
 
             return
         }
@@ -94,6 +97,7 @@ export default function generateAddress (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PASSPHRASE. Operation aborted.")
+            ui_setError("Passphrase generation aborted.")
 
             return
         }
@@ -150,6 +154,7 @@ export default function generateAddress (
                 "Address generation failure.",
                 localResponse.error
             )
+            ui_setError("Address generation client failure.")
 
             // don't do anything else
             return
@@ -194,6 +199,7 @@ export default function generateAddress (
                 "Address generation failure.",
                 serverResponse.data.error
             )
+            ui_setError("Address generation server failure.")
 
         }
 

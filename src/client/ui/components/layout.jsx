@@ -123,7 +123,6 @@ const
             color: t.palette.error.contrastText,
             marginBottom: 2 * t.spacing.unit,
             minWidth: 288,
-            maxWidth: 568,
             borderRadius: t.shape.borderRadius,
         },
         errorSnackMessage: {

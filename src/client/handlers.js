@@ -67,7 +67,7 @@ export default function attach (
         {
             m: message.GENERATE_ADDRESS,
             a: generateAddress,
-            args: [cryptops, forage, logger, context],
+            args: [thunkActions, cryptops, forage, logger, context],
         },
 
         // account association action
