@@ -82,7 +82,7 @@ const useStyles = makeStyles((t) => ({
             }`,
             backgroundColor: rgba(0, 0, 0, 0.3),
             border: `1px solid ${rgba(0, 0, 0, 0.5)}`,
-            borderRadius: "3px",
+            borderRadius: t.shape.borderRadius,
             padding: t.spacing.unit,
         },
 
