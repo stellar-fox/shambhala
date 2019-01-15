@@ -126,6 +126,7 @@ export default function signTransaction (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")
+            ui_setError("Signing operation aborted.")
 
             return
         }
