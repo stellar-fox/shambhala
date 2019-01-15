@@ -114,9 +114,17 @@ const
         emoji: {},
 
         errorSnack: {
+            left: "50%",
+            right: "auto",
+            transform: "translateX(-50%)",
+        },
+        errorSnackContent: {
             backgroundColor: t.palette.error.dark,
             color: t.palette.error.contrastText,
             marginBottom: 2 * t.spacing.unit,
+            minWidth: 288,
+            maxWidth: 568,
+            borderRadius: t.shape.borderRadius,
         },
         errorSnackMessage: {
             display: "flex",
@@ -125,7 +133,7 @@ const
         errorSnackIcon: {
             fontSize: 20,
             opacity: 0.9,
-            marginRight: theme.spacing.unit,
+            marginRight: t.spacing.unit,
         },
 
     }))
@@ -260,6 +268,7 @@ const Layout = ({
             </Grid>
 
             <Snackbar
+                className={css.errorSnack}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "center",
@@ -268,7 +277,7 @@ const Layout = ({
                 autoHideDuration={errorPersistenceDuration}
             >
                 <SnackbarContent
-                    className={css.errorSnack}
+                    className={css.errorSnackContent}
                     message={
                         <span className={css.errorSnackMessage}>
                             <IconError className={css.errorSnackIcon} />
