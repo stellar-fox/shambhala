@@ -55,7 +55,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function associateAddress (
     respond,
-    { setAccountId: ui_setAccountId },
+    {
+        setAccountId: ui_setAccountId,
+        setError: ui_setError,
+    },
     { genUUID }, forage,
     logger
 ) {
@@ -110,6 +113,7 @@ export default function associateAddress (
                 "User doesn't want to associate this address.",
                 "Operation aborted.",
             ].join(string.space()))
+            ui_setError("Address association rejected.")
 
             return
         }
@@ -141,6 +145,7 @@ export default function associateAddress (
                 "Address association failure.",
                 localResponse.error
             )
+            ui_setError("Address association failure.")
 
             // don't do anything else
             return
@@ -185,6 +190,7 @@ export default function associateAddress (
                 "Address association failure.",
                 serverResponse.data.error
             )
+            ui_setError("Address association failure.")
 
         }
 
