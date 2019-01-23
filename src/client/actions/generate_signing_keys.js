@@ -55,7 +55,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function generateSigningKeys (
     respond,
-    { setProgress: ui_setProgress },
+    {
+        setError: ui_setError,
+        setProgress: ui_setProgress,
+    },
     { deriveKey, encrypt, salt64 }, forage,
     logger
 ) {
@@ -86,6 +89,7 @@ export default function generateSigningKeys (
                 // report error
                 respond({ error: "client:[signing keys already generated]" })
                 logger.error("Signing keys has been already generated before.")
+                ui_setError("Signing keys has been already generated before.")
 
                 // don't do anything else
                 return
@@ -96,6 +100,7 @@ export default function generateSigningKeys (
             // report error
             respond({ error: "client:[invalid or not associated G_PUBLIC]" })
             logger.error("Invalid or not associated G_PUBLIC received.")
+            ui_setError("Invalid or not associated G_PUBLIC received.")
 
             // don't do anything else
             return
@@ -124,6 +129,7 @@ export default function generateSigningKeys (
         } catch (ex) {
             respond({ error: `user:[${ex}]` })
             logger.error("User refused to give PIN. Operation aborted.")
+            ui_setError("Signing keys generation aborted.")
 
             return
         }
@@ -172,6 +178,7 @@ export default function generateSigningKeys (
                 "Signing keys generation failure.",
                 serverResponse.data.error
             )
+            ui_setError(string.capitalize(serverResponse.data.error) + ".")
 
             // do nothing more
             return
@@ -252,6 +259,7 @@ export default function generateSigningKeys (
                 "Signing keys generation failure.",
                 localResponse.error
             )
+            ui_setError("Signing keys generation failure.")
 
         // all ok
         } else {
