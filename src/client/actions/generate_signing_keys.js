@@ -268,11 +268,11 @@ export default function generateSigningKeys (
             // respond to the host application
             respond({ ok: true, C_PUBLIC, S_PUBLIC })
             logger.info(
-                "Signing keys succesfully generated:",
+                "Signing keys successfully generated:",
                 string.shorten(C_PUBLIC, 11),
                 string.shorten(S_PUBLIC, 11)
             )
-            ui_setSuccess("Keys succesfully generated.")
+            ui_setSuccess("Keys successfully generated.")
 
         }
 

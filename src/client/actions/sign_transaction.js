@@ -230,7 +230,7 @@ export default function signTransaction (
             C_SIGNATURE,
             S_SIGNATURE: serverResponse.data.S_SIGNATURE,
         })
-        logger.info("Transaction signatures succesfully generated:")
+        logger.info("Transaction signatures successfully generated:")
         logger.info(
             "C_SIGNATURE:",
             string.quote(C_SIGNATURE)

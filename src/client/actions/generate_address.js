@@ -181,7 +181,7 @@ export default function generateAddress (
             // confirm address creation to the host application
             respond({ ok: true, G_PUBLIC })
             logger.info(
-                "Address succesfully generated:",
+                "Address successfully generated:",
                 G_PUBLIC
             )
 

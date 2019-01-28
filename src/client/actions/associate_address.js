@@ -172,7 +172,7 @@ export default function associateAddress (
             // confirm address association to the host application
             respond({ ok: true, G_PUBLIC })
             logger.info(
-                "Address succesfully associated:",
+                "Address successfully associated:",
                 G_PUBLIC
             )
 

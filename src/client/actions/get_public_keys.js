@@ -60,7 +60,7 @@ export default function getPublicKeys (respond, forage, logger) {
         // respond to the host application
         respond({ ok: true, G_PUBLIC: p.G_PUBLIC, C_PUBLIC, S_PUBLIC })
         logger.info(
-            "Public keys succesfully retrieved:",
+            "Public keys successfully retrieved:",
             string.shorten(C_PUBLIC, 11),
             string.shorten(S_PUBLIC, 11)
         )
