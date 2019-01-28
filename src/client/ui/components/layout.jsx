@@ -24,6 +24,7 @@ import {
     func,
     string,
 } from "@xcmats/js-toolbox"
+import classNames from "classnames"
 import { makeStyles } from "@material-ui/styles"
 import { theme } from "../theme"
 import { rgba } from "../../../lib/utils"
@@ -113,23 +114,29 @@ const
         heart: {},
         emoji: {},
 
-        errorSnack: {
+        statusSnack: {
             left: "50%",
             right: "auto",
             transform: "translateX(-50%)",
         },
-        errorSnackContent: {
-            backgroundColor: t.palette.error.dark,
-            color: t.palette.error.contrastText,
+        statusSnackContent: {
             marginBottom: 2 * t.spacing.unit,
             minWidth: 288,
             borderRadius: t.shape.borderRadius,
         },
-        errorSnackMessage: {
+        statusError: {
+            backgroundColor: t.palette.error.dark,
+            color: t.palette.error.contrastText,
+        },
+        statusSuccess: {
+            backgroundColor: t.palette.primary.main,
+            color: t.palette.primary.contrastText,
+        },
+        statusSnackMessage: {
             display: "flex",
             alignItems: "center",
         },
-        errorSnackIcon: {
+        statusSnackIcon: {
             fontSize: 20,
             opacity: 0.9,
             marginRight: t.spacing.unit,
@@ -148,12 +155,13 @@ const
  */
 const Layout = ({
     currentMessage,
-    errorMessage,
     humanMessage,
     icon,
     screenHeight,
     screenWidth,
-    showErrorMesssage,
+    showStatusMessage,
+    statusMessage,
+    statusType,
     style = {},
 }) => {
     const css = useStyles()
@@ -267,20 +275,24 @@ const Layout = ({
             </Grid>
 
             <Snackbar
-                className={css.errorSnack}
+                className={css.statusSnack}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "center",
                 }}
-                open={showErrorMesssage}
+                open={showStatusMessage}
                 autoHideDuration={errorPersistenceDuration}
             >
                 <SnackbarContent
-                    className={css.errorSnackContent}
+                    className={classNames(
+                        statusType === "success" ?
+                            css.statusSuccess : css.statusError,
+                        css.statusSnackContent
+                    )}
                     message={
-                        <span className={css.errorSnackMessage}>
-                            <IconError className={css.errorSnackIcon} />
-                            { errorMessage }
+                        <span className={css.statusSnackMessage}>
+                            <IconError className={css.statusSnackIcon} />
+                            { statusMessage }
                         </span>
                     }
                 />
@@ -296,12 +308,13 @@ const Layout = ({
 // ...
 Layout.propTypes = {
     currentMessage: PropTypes.string.isRequired,
-    errorMessage: PropTypes.string.isRequired,
     humanMessage: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
     screenHeight: PropTypes.number.isRequired,
     screenWidth: PropTypes.number.isRequired,
-    showErrorMesssage: PropTypes.bool.isRequired,
+    showStatusMessage: PropTypes.bool.isRequired,
+    statusMessage: PropTypes.string.isRequired,
+    statusType: PropTypes.string.isRequired,
     style: PropTypes.object,
 }
 
@@ -329,9 +342,10 @@ export default func.compose(
             screenHeight: s.App.dim.height,
             screenWidth: s.App.dim.width,
 
-            // last error message
-            errorMessage: s.App.error.message,
-            showErrorMesssage: s.App.error.show,
+            // last status message (error/success)
+            statusMessage: s.App.status.message,
+            statusType: s.App.status.type,
+            showStatusMessage: s.App.status.show,
         })
     ),
     memo

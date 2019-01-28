@@ -75,10 +75,11 @@ const initState = {
     // key derivation / decryption / encryption: [0, 1] (percentage)
     progress: 0,
 
-    // last error (used for displaying snackbar)
-    error: {
+    // last status (used for displaying snackbar success/error messages)
+    status: {
         message: string.empty(),
         show: false,
+        type: "error",  // or "success"
     },
 
 }

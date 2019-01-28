@@ -258,21 +258,45 @@ export const setTxPayload = (txPayload) =>
 
 
 /**
- * Sets `error` key in redux (and automatically reset it after some time).
+ * Sets `status` key in redux (and automatically reset it after some time).
  *
- * @function setError
- * @param {String} error
+ * @function setStatus
+ * @param {String} message
  * @returns {Function} thunk action
  */
-export const setError = (error) =>
+export const setStatus = (type, message) =>
     async (dispatch, _getState) => {
         async.timeout(
             () => dispatch(action.setState({
-                error: { message: error, show: false },
+                status: { message, show: false, type },
             })),
             errorPersistenceDuration + 0.1 * errorPersistenceDuration
         )
         await dispatch(action.setState({
-            error: { message: error, show: true },
+            status: { message, show: true, type },
         }))
     }
+
+
+
+
+/**
+ * Sets `status` key in redux - error.
+ *
+ * @function setError
+ * @param {String} message
+ * @returns {Function} thunk action
+ */
+export const setError = func.partial(setStatus)("error")
+
+
+
+
+/**
+ * Sets `status` key in redux - success.
+ *
+ * @function setSuccess
+ * @param {String} message
+ * @returns {Function} thunk action
+ */
+export const setSuccess = func.partial(setStatus)("success")
