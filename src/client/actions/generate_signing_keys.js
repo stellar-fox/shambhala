@@ -57,6 +57,7 @@ export default function generateSigningKeys (
     respond,
     {
         setError: ui_setError,
+        setSuccess: ui_setSuccess,
         setProgress: ui_setProgress,
     },
     { deriveKey, encrypt, salt64 }, forage,
@@ -271,6 +272,7 @@ export default function generateSigningKeys (
                 string.shorten(C_PUBLIC, 11),
                 string.shorten(S_PUBLIC, 11)
             )
+            ui_setSuccess("Keys succesfully generated.")
 
         }
 
