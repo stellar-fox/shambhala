@@ -39,6 +39,7 @@ import { errorPersistenceDuration } from "../../../config/frontend"
 import AppBar from "@material-ui/core/AppBar"
 import Grid from "@material-ui/core/Grid"
 import IconError from "@material-ui/icons/Error"
+import IconSuccess from "@material-ui/icons/CheckCircle"
 import Snackbar from "@material-ui/core/Snackbar"
 import SnackbarContent from "@material-ui/core/SnackbarContent"
 import SwipeableViews from "react-swipeable-views"
@@ -291,7 +292,13 @@ const Layout = ({
                     )}
                     message={
                         <span className={css.statusSnackMessage}>
-                            <IconError className={css.statusSnackIcon} />
+                            { statusType === "success" ?
+                                <IconSuccess
+                                    className={css.statusSnackIcon}
+                                /> :
+                                <IconError
+                                    className={css.statusSnackIcon}
+                                /> }
                             { statusMessage }
                         </span>
                     }
