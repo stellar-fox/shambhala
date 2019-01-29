@@ -63,6 +63,7 @@ export default function signTransaction (
         setProgress: ui_setProgress,
         setTxPayload: ui_setTxPayload,
         setError: ui_setError,
+        setSuccess: ui_setSuccess,
     },
     { decrypt, deriveKey }, forage,
     logger
@@ -239,6 +240,7 @@ export default function signTransaction (
             "S_SIGNATURE:",
             string.quote(serverResponse.data.S_SIGNATURE)
         )
+        ui_setSuccess("Signatures generated.")
 
     }
 
