@@ -58,6 +58,7 @@ export default function associateAddress (
     {
         setAccountId: ui_setAccountId,
         setError: ui_setError,
+        setSuccess: ui_setSuccess,
     },
     { genUUID }, forage,
     logger
@@ -175,6 +176,7 @@ export default function associateAddress (
                 "Address successfully associated:",
                 G_PUBLIC
             )
+            ui_setSuccess("Address associated.")
 
         // unfortunately - an error occured
         } else {

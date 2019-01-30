@@ -65,7 +65,10 @@ const backend = clientDomain + registrationPath + restApiPrefix
  */
 export default function generateAddress (
     respond,
-    { setError: ui_setError },
+    {
+        setError: ui_setError,
+        setSuccess: ui_setSuccess,
+    },
     { genUUID }, forage,
     logger, context
 ) {
@@ -184,6 +187,7 @@ export default function generateAddress (
                 "Address successfully generated:",
                 G_PUBLIC
             )
+            ui_setSuccess("Address generated.")
 
         // unfortunately - an error occured
         } else {
