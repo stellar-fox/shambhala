@@ -23,6 +23,7 @@ import {
 import { sql } from "../../lib/utils.backend"
 import signTransactionSQL from "./sign_transaction.sql"
 import incUsageCountSQL from "./inc_usage_count.sql"
+import incFailureCountSQL from "./inc_failure_count.sql"
 import { tables } from "../../config/server.json"
 
 
@@ -87,6 +88,13 @@ export default function signTransaction (db, logger) {
                     })
                 )
             )} catch (ex) {
+
+                // increment failure counter
+                await db.none(
+                    sql(__dirname, incFailureCountSQL), {
+                        key_table: tables.key_table,
+                        G_PUBLIC, C_UUID,
+                    })
 
                 res.status(400).send({ error: "bad decryption key" })
                 logger.warn("Bad decryption key.")
