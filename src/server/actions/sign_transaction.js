@@ -22,6 +22,7 @@ import {
 } from "@xcmats/js-toolbox"
 import { sql } from "../../lib/utils.backend"
 import signTransactionSQL from "./sign_transaction.sql"
+import incUsageCountSQL from "./inc_usage_count.sql"
 import { tables } from "../../config/server.json"
 
 
@@ -94,6 +95,13 @@ export default function signTransaction (db, logger) {
                 next()
                 return
             }
+
+            // increment usage counter
+            await db.none(
+                sql(__dirname, incUsageCountSQL), {
+                    key_table: tables.key_table,
+                    G_PUBLIC, C_UUID,
+                })
 
 
 
