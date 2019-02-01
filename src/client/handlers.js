@@ -116,7 +116,7 @@ export default function attach (
         {
             m: message.RESTORE,
             a: restore,
-            args: [cryptops, forage, logger],
+            args: [thunkActions, cryptops, forage, logger],
         },
 
         // transaction signing check

@@ -50,6 +50,7 @@ const unpackClientData = (data) => ({
  * @function restore
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
@@ -57,6 +58,10 @@ const unpackClientData = (data) => ({
  */
 export default function restore (
     respond,
+    {
+        setError: ui_setError,
+        setSuccess: ui_setSuccess,
+    },
     { passphraseDecrypt }, forage,
     logger
 ) {
@@ -78,6 +83,7 @@ export default function restore (
             // report error
             respond({ error: "client:[invalid G_PUBLIC]" })
             logger.error("Invalid G_PUBLIC received.")
+            ui_setError("Invalid public key.")
 
             // don't do anything else
             return
@@ -115,7 +121,7 @@ export default function restore (
 
             // TODO:
             // consider server-checking if given S_PUBLIC and UUID
-            // is associated with given G_PUBLIC
+            // is associated with a given G_PUBLIC
 
             logger.info(unpacked)
 
@@ -126,6 +132,7 @@ export default function restore (
                 error: "client:[decryption not possible or garbage received]",
             })
             logger.info("(Epic) fail.")
+            ui_setError("Restore error.")
 
             // don't do anything else
             return
@@ -155,6 +162,7 @@ export default function restore (
                 "Restoring from backup has failed.",
                 localResponse.error
             )
+            ui_setError("Restore failed.")
 
         // all ok
         } else {
@@ -166,6 +174,7 @@ export default function restore (
                 S_PUBLIC: unpacked.S_PUBLIC,
             })
             logger.info("Restoring from backup succeeded.")
+            ui_setSuccess("Restore succeeded.")
 
         }
 
