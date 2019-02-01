@@ -109,7 +109,7 @@ export default function attach (
         {
             m: message.BACKUP,
             a: backup,
-            args: [cryptops, forage, logger],
+            args: [thunkActions, cryptops, forage, logger],
         },
 
         // restore action

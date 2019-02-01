@@ -47,6 +47,7 @@ const packClientData = ({
  * @function backup
  * @param {Function} respond MessageHandler::postMessage() with first argument
  *      bound to an appropriate message type.
+ * @param {Object} thunkActions
  * @param {Object} cryptops "@stellar-fox/cryptops" module
  * @param {Object} forage "localforage" module
  * @param {Function} logger
@@ -54,6 +55,10 @@ const packClientData = ({
  */
 export default function backup (
     respond,
+    {
+        setError: ui_setError,
+        setSuccess: ui_setSuccess,
+    },
     { passphraseEncrypt }, forage,
     logger
 ) {
@@ -88,6 +93,7 @@ export default function backup (
                 error: "client:[invalid or not associated G_PUBLIC]",
             })
             logger.error("Invalid or not associated G_PUBLIC received.")
+            ui_setError("Invalid public key.")
 
             // don't do anything else
             return
@@ -126,6 +132,7 @@ export default function backup (
         BACKUP_PASSPHRASE = null
 
         logger.info("Done.")
+        ui_setSuccess("Backup succeeded.")
 
     }
 
