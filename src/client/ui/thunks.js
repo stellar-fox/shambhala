@@ -21,9 +21,9 @@ import throttle from "lodash.throttle"
 import { duration } from "@material-ui/core/styles/transitions"
 import { action } from "./redux"
 import {
-    errorPersistenceDuration,
     messageThrottleTime,
     progressThrottleTime,
+    snackPersistenceDuration,
 } from "../../config/frontend"
 
 
@@ -270,7 +270,7 @@ export const setStatus = (type, message) =>
             () => dispatch(action.setState({
                 status: { message, show: false, type },
             })),
-            errorPersistenceDuration + 0.1 * errorPersistenceDuration
+            snackPersistenceDuration + 0.1 * snackPersistenceDuration
         )
         await dispatch(action.setState({
             status: { message, show: true, type },

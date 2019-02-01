@@ -34,7 +34,7 @@ import {
     iconizeMessage,
     messageToView,
 } from "../helpers"
-import { errorPersistenceDuration } from "../../../config/frontend"
+import { snackPersistenceDuration } from "../../../config/frontend"
 
 import AppBar from "@material-ui/core/AppBar"
 import Grid from "@material-ui/core/Grid"
@@ -282,7 +282,7 @@ const Layout = ({
                     horizontal: "center",
                 }}
                 open={showStatusMessage}
-                autoHideDuration={errorPersistenceDuration}
+                autoHideDuration={snackPersistenceDuration}
             >
                 <SnackbarContent
                     className={classNames(

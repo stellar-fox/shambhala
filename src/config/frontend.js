@@ -77,8 +77,8 @@ export const progressThrottleTime = 0.2 * timeUnit.second
 
 
 /**
- * How long an error message should be displayed on screen?
+ * How long a snack message should be displayed on screen?
  *
- * @constant {Number} errorPersistenceDuration
+ * @constant {Number} snackPersistenceDuration
  */
-export const errorPersistenceDuration = 4 * timeUnit.second
+export const snackPersistenceDuration = 2 * timeUnit.second
