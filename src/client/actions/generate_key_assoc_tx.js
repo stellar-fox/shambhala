@@ -24,6 +24,7 @@ import {
     func,
     type,
     string,
+    timeUnit,
 } from "@xcmats/js-toolbox"
 
 
@@ -149,13 +150,14 @@ export default function generateKeyAssocTX (
                         weight: 10,
                     },
                 }))
+                .setTimeout(10 * timeUnit.second)
                 .build()
 
-        } catch (_) {
+        } catch (ex) {
 
             // report error
             respond({ error: "client:[transaction build error]" })
-            logger.error("Transaction build failed.")
+            logger.error("Transaction build failed.", ex)
 
             // don't do anything else
             return

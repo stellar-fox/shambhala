@@ -17,6 +17,7 @@ import {
     handleRejection,
     string,
     type,
+    timeUnit,
 } from "@xcmats/js-toolbox"
 import axios from "axios"
 import {
@@ -371,6 +372,9 @@ export function shambhalaTesting (
 
                 // ... and then add memo ...
                 (tb) => tb.addMemo(Memo.text(memoText)),
+
+                // ... with some time bounds ...
+                (tb) => tb.setTimeout(10 * timeUnit.second),
 
                 // ... and finally build the transaction
                 (tb) => tb.build(),
