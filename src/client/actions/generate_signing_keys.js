@@ -190,10 +190,8 @@ export default function generateSigningKeys (
 
 
         let
-            // receive S_PUBLIC ...
-            { S_PUBLIC } = serverResponse.data,
 
-            // ... and compute C_KEY using C_PASSPHRASE from the server
+            // compute C_KEY using C_PASSPHRASE from the server ...
             C_KEY = await deriveKey(
                 codec.b64dec(serverResponse.data.C_PASSPHRASE),
                 SALT,
@@ -201,7 +199,10 @@ export default function generateSigningKeys (
                     progressCallback: (p) =>
                         ui_setProgress(0.5 + 0.5 * p) && false,
                 }
-            )
+            ),
+
+            // ... and receive S_PUBLIC
+            { S_PUBLIC } = serverResponse.data
 
         // [💥] destroy C_PASSPHRASE (it was needed only to derive C_KEY)
         delete serverResponse.data.C_PASSPHRASE

@@ -155,9 +155,9 @@ run(async () => {
     newMuiStylesApi()
 
     // load and run User Interface
-    let
+    const
         // get created thunk-actions
-        { thunkActions }  = await (await import(
+        { thunkActions } = await (await import(
             /* webpackChunkName: "ui" */
             "./ui/main"
         ).then(mDef))(logger, context),

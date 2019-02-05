@@ -42,11 +42,11 @@ export default function signTransaction (db, logger) {
     return async (req, res, next) => {
 
         let
-            // receive G_PUBLIC, C_UUID
-            { G_PUBLIC, C_UUID } = req.body,
-
             // base64 decode S_KEY
             S_KEY = codec.b64dec(req.body.S_KEY),
+
+            // receive G_PUBLIC, C_UUID
+            { G_PUBLIC, C_UUID } = req.body,
 
             // base64 decode TX_PAYLOAD
             TX_PAYLOAD = codec.b64dec(req.body.TX_PAYLOAD)
@@ -64,14 +64,15 @@ export default function signTransaction (db, logger) {
         try {
 
             let
+                PEPPER = null, S_SECRET = null,
+
                 // get encrypted server keypair structure
                 { ENC_SKP } = await db.one(
                     sql(__dirname, signTransactionSQL), {
                         key_table: tables.key_table,
                         G_PUBLIC, C_UUID,
-                    }),
-
-                PEPPER = null, S_SECRET = null
+                    }
+                )
 
             // try PEPPER and S_SECRET decryption and extraction
             try {(

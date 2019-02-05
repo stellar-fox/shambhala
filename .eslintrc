@@ -47,6 +47,7 @@
         "no-undef": "error",
         "no-unexpected-multiline": "error",
         "no-unused-vars": ["warn", {"args": "all", "argsIgnorePattern": "^_"}],
+        "object-curly-newline": "off",
         "quotes": ["error", "double"],
         "semi": ["error", "never"],
         "space-before-function-paren": ["error", "always"],

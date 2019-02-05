@@ -41,11 +41,12 @@ export default function generateSigningKeys (db, logger) {
     return async (req, res, next) => {
 
         let
-            // receive G_PUBLIC, C_UUID
-            { G_PUBLIC, C_UUID } = req.body,
 
             // base64 decode S_KEY
-            S_KEY = codec.b64dec(req.body.S_KEY)
+            S_KEY = codec.b64dec(req.body.S_KEY),
+
+            // receive G_PUBLIC, C_UUID
+            { G_PUBLIC, C_UUID } = req.body
 
 
 
