@@ -70,7 +70,19 @@ const useStyles = makeStyles((t) => ({
 
         "& $chips": {
             marginBottom: t.spacing.unit,
-            textAlign: "center",
+            display: "flex",
+            overflowX: "hidden",
+            overflowY: "auto",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: t.shape.borderRadius,
+            boxShadow: [
+                `inset 0px 1px 5px 0px ${rgba(0, 0, 0, 0.2)}`,
+                `inset 0px 2px 2px 0px ${rgba(0, 0, 0, 0.14)}`,
+                `inset 0px 3px 1px -2px ${rgba(0, 0, 0, 0.12)}`,
+            ].join(", "),
+            backgroundColor: t.palette.custom.darkGunmetal,
             "& $chipFrame": {
                 display: "inline-block",
                 padding: 2,
@@ -159,7 +171,6 @@ const GenerateMnemonic = ({
         genMnemonic().split(string.space())
     )
 
-
     return (
         <Paper
             className={classNames(className, css.content)}
@@ -181,7 +192,10 @@ const GenerateMnemonic = ({
                 </Typography>
             </div>
 
-            <div className={css.chips}>
+            <div
+                className={css.chips}
+                style={{ height: style.minHeight - 280 }}
+            >
                 { mnemonic.map((m, i) =>
                     <div key={String(i) + m} className={css.chipFrame}>
                         <Chip
