@@ -57,8 +57,6 @@ import Typography from "@material-ui/core/Typography"
 const useStyles = makeStyles((t) => ({
 
     content: {
-        overflow: "hidden",
-        overflowY: "auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
@@ -84,6 +82,7 @@ const useStyles = makeStyles((t) => ({
             marginBottom: t.spacing.unit,
             fontFamily: "Roboto Condensed",
             textAlign: "center",
+            wordBreak: "break-all",
             color: t.palette.custom.rallyBrightGreen,
             textShadow: `0px 0px 7px ${
                 fade(t.palette.custom.rallyBrightGreen, 0.5)
@@ -213,10 +212,10 @@ const SignTransaction = ({
                     return (
                         <React.Fragment>
                             <div>
-                                <b>net:</b> {string.shorten(net, 37)}
+                                <b>net:</b> {string.shorten(net, 23)}
                             </div>
                             <div>
-                                <b>src:</b> {string.shorten(tx.source, 31)}
+                                <b>src:</b> {string.shorten(tx.source, 27)}
                             </div>
                             <div>
                                 <b>fee:</b> {tx.fee} &nbsp;

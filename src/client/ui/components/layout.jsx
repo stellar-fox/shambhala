@@ -189,7 +189,15 @@ const Layout = ({
                 className={css.slide}
                 style={{ height: slideHeight() }}
             >
-                <Content style={{ height: slideContentHeight() }} />
+                <div
+                    style={{
+                        height: slideContentHeight(),
+                        overflowX: "hidden",
+                        overflowY: "auto",
+                    }}
+                >
+                    <Content style={{ minHeight: slideContentHeight() }} />
+                </div>
             </Typography>
 
     // measure header height only if screen dimensions change;
