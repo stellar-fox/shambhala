@@ -173,8 +173,7 @@ const GeneratePassphrase = ({
                     Passphrase Generation
                 </Typography>
                 <Typography component="p" variant="body1" align="center">
-                    In addition to the previously generated 24 words,
-                    please invent some passphrase known only to you.
+                    Please invent some passphrase known only to you.
                     Don't store it anywhere. Don't tell anyone about it.
                     Just learn it by heart.
                 </Typography>
