@@ -36,7 +36,7 @@ import { action } from "../redux"
 import { pinValid } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
-import { rgba } from "../../../lib/utils"
+import { rgba, consoleAugmenter } from "../../../lib/utils"
 import { inspectTSP } from "../../../lib/txops"
 import { SIGN_TRANSACTION } from "../../../lib/messages"
 
@@ -75,10 +75,16 @@ const useStyles = makeStyles((t) => ({
         },
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: 2 * t.spacing.unit,
         },
 
         "& $txInspector": {
+            display: "flex",
+            overflowX: "hidden",
+            overflowY: "auto",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             marginBottom: t.spacing.unit,
             fontFamily: "Roboto Condensed",
             textAlign: "center",
@@ -87,8 +93,12 @@ const useStyles = makeStyles((t) => ({
             textShadow: `0px 0px 7px ${
                 fade(t.palette.custom.rallyBrightGreen, 0.5)
             }`,
-            backgroundColor: rgba(0, 0, 0, 0.3),
-            border: `1px solid ${rgba(0, 0, 0, 0.5)}`,
+            boxShadow: [
+                `inset 0px 1px 5px 0px ${rgba(0, 0, 0, 0.2)}`,
+                `inset 0px 2px 2px 0px ${rgba(0, 0, 0, 0.14)}`,
+                `inset 0px 3px 1px -2px ${rgba(0, 0, 0, 0.12)}`,
+            ].join(", "),
+            backgroundColor: t.palette.custom.darkGunmetal,
             borderRadius: t.shape.borderRadius,
             padding: t.spacing.unit,
         },
@@ -107,7 +117,6 @@ const useStyles = makeStyles((t) => ({
 
         "& $buttonBar": {
             display: "flex",
-            marginTop: t.spacing.unit,
             "& $button": {
                 flexGrow: 1,
                 marginLeft: 2 * t.spacing.unit,
@@ -199,11 +208,14 @@ const SignTransaction = ({
             <IconFingerprint className={css.icon} />
             <div className={css.headingStrecher}>
                 <Typography component="p" variant="body1" align="center">
-                    Enter your PIN if you wish to sign a transaction.
+                    Please enter your PIN.
                 </Typography>
             </div>
 
-            <div className={css.txInspector}>
+            <div
+                className={css.txInspector}
+                style={{ height: style.minHeight - 300 }}
+            >
                 { utils.handleException(() => {
                     let {
                         transaction: tx,
@@ -212,7 +224,7 @@ const SignTransaction = ({
                     return (
                         <React.Fragment>
                             <div>
-                                <b>net:</b> {string.shorten(net, 23)}
+                                <b>net:</b> {string.shorten(net, 25)}
                             </div>
                             <div>
                                 <b>src:</b> {string.shorten(tx.source, 27)}
