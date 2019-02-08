@@ -32,7 +32,6 @@ import { rgba } from "../../../lib/utils"
 import { ASSOCIATE_ADDRESS } from "../../../lib/messages"
 
 import Button from "@material-ui/core/Button"
-import IconAutorenew from "@material-ui/icons/Autorenew"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 
@@ -51,20 +50,11 @@ const useStyles = makeStyles((t) => ({
         paddingTop: t.spacing.unit * 3,
         paddingBottom: t.spacing.unit * 3,
 
-        "& $icon": {
-            display: "block",
-            margin: "0 auto",
-            fontSize: 64,
-            color: t.palette.custom.rallyBrightGreen,
-            filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
-            marginBottom: t.spacing.unit,
-        },
-
         "& $headingStrecher": {
             marginBottom: t.spacing.unit,
             "& $heading": {
                 margin: "0 auto",
-                marginBottom: t.spacing.unit,
+                marginBottom: 2 * t.spacing.unit,
                 color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
@@ -72,15 +62,26 @@ const useStyles = makeStyles((t) => ({
         },
 
         "& $txInspector": {
+            display: "flex",
+            overflowX: "hidden",
+            overflowY: "auto",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             marginBottom: t.spacing.unit,
             fontFamily: "Roboto Condensed",
             textAlign: "center",
+            wordBreak: "break-all",
             color: t.palette.custom.rallyBrightGreen,
             textShadow: `0px 0px 7px ${
                 fade(t.palette.custom.rallyBrightGreen, 0.5)
             }`,
-            backgroundColor: rgba(0, 0, 0, 0.3),
-            border: `1px solid ${rgba(0, 0, 0, 0.5)}`,
+            boxShadow: [
+                `inset 0px 1px 5px 0px ${rgba(0, 0, 0, 0.2)}`,
+                `inset 0px 2px 2px 0px ${rgba(0, 0, 0, 0.14)}`,
+                `inset 0px 3px 1px -2px ${rgba(0, 0, 0, 0.12)}`,
+            ].join(", "),
+            backgroundColor: t.palette.custom.darkGunmetal,
             borderRadius: t.shape.borderRadius,
             padding: t.spacing.unit,
         },
@@ -120,7 +121,6 @@ const useStyles = makeStyles((t) => ({
         },
     },
 
-    icon: {},
     headingStrecher: {},
     heading: {},
     txInspector: {},
@@ -155,7 +155,6 @@ const AssociateAddress = ({
         className={classNames(className, css.content)}
         style={style}
     >
-        <IconAutorenew className={css.icon} />
         <div className={css.headingStrecher}>
             <Typography
                 component="h1"
