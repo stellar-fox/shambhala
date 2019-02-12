@@ -30,6 +30,19 @@ Secure and convenient **transaction signing** for the _stellar network_.
 
 
 
+## features
+
+* open (architecture, design, source and API),
+* mobile-first (seriously),
+* multisignature (security cornerstone),
+* modern web technologies (web storage, in-browser cross-origin communication),
+* strong cryptography (scrypt, aes, salsa, poly1305),
+
+<br />
+
+
+
+
 ## documentation
 
 * [intro](./doc/01.intro.md)
