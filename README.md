@@ -1,6 +1,6 @@
 <p align="center">
     <br />
-    <img src="https://raw.githubusercontent.com/stellar-fox/shambhala/master/public/logo.png" alt="Shambhala Logo" />
+    <img src="https://raw.githubusercontent.com/stellar-fox/shambhala/master/public/logo.png" alt="shambhala logo" />
 </p>
 
 <br />
@@ -10,10 +10,20 @@
 
 # shambhala
 
-Mystery.
+Secure and convenient **transaction signing** for the _stellar network_.
 
 [![GitHub top language](https://img.shields.io/github/languages/top/stellar-fox/shambhala.svg)](https://github.com/stellar-fox/shambhala)
 [![GitHub code size](https://img.shields.io/github/languages/code-size/stellar-fox/shambhala.svg)](https://github.com/stellar-fox/shambhala)
+
+<br />
+
+
+
+
+<p align="center">
+    <br />
+    <img src="./doc/uiux/sign.gif" alt="shambhala signing" />
+</p>
 
 <br />
 
