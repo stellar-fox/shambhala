@@ -32,11 +32,11 @@ Secure and convenient **transaction signing** for the _stellar network_.
 
 ## features
 
-* open (architecture, design, source and API),
-* mobile-first (seriously),
-* multisignature (security cornerstone),
-* modern web technologies (web storage, in-browser cross-origin communication),
-* strong cryptography (scrypt, aes, salsa, poly1305),
+* **open** (_architecture_, _design_, _source_ and _API_),
+* **mobile-first** (_seriously_),
+* **multisignature** (_security cornerstone_),
+* **modern web technologies** (_web storage_, _in-browser cross-origin communication_),
+* **strong cryptography** (_scrypt_, _pbkdf2_, _aes_, _salsa_, _poly1305_),
 
 <br />
 
