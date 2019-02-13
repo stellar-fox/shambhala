@@ -69,13 +69,13 @@ const useStyles = makeStyles((t) => ({
         },
 
         "& $chips": {
-            marginBottom: t.spacing.unit,
             display: "flex",
-            overflowX: "hidden",
-            overflowY: "auto",
             flexWrap: "wrap",
             justifyContent: "center",
             alignItems: "center",
+            marginBottom: t.spacing.unit,
+            overflowX: "hidden",
+            overflowY: "auto",
             borderRadius: t.shape.borderRadius,
             boxShadow: [
                 `inset 0px 1px 5px 0px ${rgba(0, 0, 0, 0.2)}`,
@@ -83,11 +83,19 @@ const useStyles = makeStyles((t) => ({
                 `inset 0px 3px 1px -2px ${rgba(0, 0, 0, 0.12)}`,
             ].join(", "),
             backgroundColor: t.palette.custom.darkGunmetal,
-            "& $chipFrame": {
-                display: "inline-block",
-                padding: 2,
-                margin: 0.5 * t.spacing.unit,
-                "& $chip": { height: 3 * t.spacing.unit },
+            "& $chipScroll": {
+                paddingTop: t.spacing.unit,
+                paddingBottom: t.spacing.unit,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                alignItems: "center",
+                "& $chipFrame": {
+                    display: "inline-block",
+                    padding: 2,
+                    margin: 0.5 * t.spacing.unit,
+                    "& $chip": { height: 3 * t.spacing.unit },
+                },
             },
         },
 
@@ -135,6 +143,7 @@ const useStyles = makeStyles((t) => ({
     headingStrecher: {},
     heading: {},
     chips: {},
+    chipScroll: {},
     chipFrame: {},
     chip: {},
     fabBar: {},
@@ -196,15 +205,17 @@ const GenerateMnemonic = ({
                 className={css.chips}
                 style={{ height: style.minHeight - 280 }}
             >
-                { mnemonic.map((m, i) =>
-                    <div key={String(i) + m} className={css.chipFrame}>
-                        <Chip
-                            avatar={<Avatar>{math.inc(i)}</Avatar>}
-                            label={m.toUpperCase()} color="primary"
-                            classes={{ root: css.chip }}
-                        />
-                    </div>
-                ) }
+                <div className={css.chipScroll}>
+                    { mnemonic.map((m, i) =>
+                        <div key={String(i) + m} className={css.chipFrame}>
+                            <Chip
+                                avatar={<Avatar>{math.inc(i)}</Avatar>}
+                                label={m.toUpperCase()} color="primary"
+                                classes={{ root: css.chip }}
+                            />
+                        </div>
+                    ) }
+                </div>
             </div>
 
             <div className={css.fabBar}>
