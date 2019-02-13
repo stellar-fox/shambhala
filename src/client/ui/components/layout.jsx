@@ -189,13 +189,7 @@ const Layout = ({
                 className={css.slide}
                 style={{ height: slideHeight() }}
             >
-                <div
-                    style={{
-                        height: slideContentHeight(),
-                        overflowX: "hidden",
-                        overflowY: "auto",
-                    }}
-                >
+                <div style={{ height: slideContentHeight() }}>
                     <Content style={{ minHeight: slideContentHeight() }} />
                 </div>
             </Typography>
