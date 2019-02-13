@@ -45,11 +45,12 @@ Secure and convenient **transaction signing** for the _stellar network_.
 
 ## documentation
 
-* [intro](./doc/01.intro.md)
-* [api](./doc/02.api.md)
-* [datatypes](./doc/03.datatypes.md)
-* [rest api](./doc/04.rest.api.md)
-* [installation](./doc/05.install.md)
+* 📰 [intro](./doc/01.intro.md)
+* 🌈 [user interface](./doc/02.user.interface.md)
+* 💻 [api](./doc/03.api.md)
+* 🏦 [datatypes](./doc/04.datatypes.md)
+* 💡 [rest api](./doc/05.rest.api.md)
+* 🔧 [installation](./doc/06.install.md)
 
 <br />
 
