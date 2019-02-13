@@ -59,5 +59,5 @@ Secure and convenient **transaction signing** for the _stellar network_.
 
 ## license
 
-**shambhala** is released under the Apache License, Version 2.0. See the
+**shambhala** is released under the _Apache License, Version 2.0_. See the
 [LICENSE](./LICENSE) for more details.
