@@ -11,8 +11,11 @@
 
 
 import { createMuiTheme } from "@material-ui/core/styles"
-import { string } from "@xcmats/js-toolbox"
-import { rgb, rgba } from "../../lib/utils"
+import {
+    rgb,
+    rgba,
+    string
+} from "@xcmats/js-toolbox"
 
 
 

@@ -22,12 +22,12 @@ import { connect } from "react-redux"
 import {
     array,
     func,
+    rgba,
     string,
 } from "@xcmats/js-toolbox"
 import classNames from "classnames"
 import { makeStyles } from "@material-ui/styles"
 import { theme } from "../theme"
-import { rgba } from "../../../lib/utils"
 import {
     filterMessage,
     humanizeMessage,

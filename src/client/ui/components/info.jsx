@@ -16,6 +16,7 @@ import classNames from "classnames"
 import {
     array,
     func,
+    rgba,
     string,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
@@ -24,7 +25,6 @@ import {
     iconizeMessage,
 } from "../helpers"
 import { makeStyles } from "@material-ui/styles"
-import { rgba } from "../../../lib/utils"
 
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"

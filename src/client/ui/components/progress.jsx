@@ -17,11 +17,11 @@ import PropTypes from "prop-types"
 import classNames from "classnames"
 import {
     func,
+    rgba,
     string,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
 import { makeStyles } from "@material-ui/styles"
-import { rgba } from "../../../lib/utils"
 
 import IconSettings from "@material-ui/icons/Settings"
 import LinearProgress from "@material-ui/core/LinearProgress"

@@ -20,6 +20,7 @@ import {
     array,
     func,
     math,
+    rgba,
     string,
 } from "@xcmats/js-toolbox"
 import { connect } from "react-redux"
@@ -32,7 +33,6 @@ import { action } from "../redux"
 import { genMnemonic } from "@stellar-fox/redshift"
 import { makeStyles } from "@material-ui/styles"
 import { fade } from "@material-ui/core/styles/colorManipulator"
-import { rgba } from "../../../lib/utils"
 import { GENERATE_ADDRESS } from "../../../lib/messages"
 
 import Avatar from "@material-ui/core/Avatar"

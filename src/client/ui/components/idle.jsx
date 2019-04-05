@@ -13,9 +13,11 @@
 import React, { memo } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
-import { string } from "@xcmats/js-toolbox"
+import {
+    rgba,
+    string,
+} from "@xcmats/js-toolbox"
 import { makeStyles } from "@material-ui/styles"
-import { rgba } from "../../../lib/utils"
 
 import IconMood from "@material-ui/icons/Mood"
 import Paper from "@material-ui/core/Paper"
