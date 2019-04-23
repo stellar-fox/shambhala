@@ -220,8 +220,11 @@ const store = {
                 // ensure shambhala is opened
                 await store.fn.open()
 
-                // send message with appropriate payload
-                store.ctx.messageHandler.postMessage(msg, payload)
+                // send message with an appropriate payload
+                // and the authorization token
+                store.ctx.messageHandler.postMessage(msg, {
+                    ...payload, AUTH_TOKEN: store.ctx.token,
+                })
 
                 // make message receiving process cancellable
                 let { promise, cancel } = async.cancellable(
@@ -337,7 +340,7 @@ export class Shambhala {
         // take care of options - token can be replaced for a live instance
         if (args.length === 2) {
             if (opts.token) { store.ctx.token = opts.token }
-            else { store.ctx.token = null }
+            else { store.ctx.token = string.empty() }
         }
 
     }
