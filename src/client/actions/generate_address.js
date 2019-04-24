@@ -73,7 +73,7 @@ export default function generateAddress (
     logger, context
 ) {
 
-    return async () => {
+    return async (p) => {
 
         logger.info("Address generation requested.")
 
@@ -170,7 +170,7 @@ export default function generateAddress (
         let serverResponse = await handleRejection(
             async () => await axios.post(
                 backend + message.GENERATE_ADDRESS,
-                { G_PUBLIC, C_UUID }
+                { G_PUBLIC, C_UUID, AUTH_TOKEN: p.AUTH_TOKEN }
             ),
             async (ex) => ex.response
         )

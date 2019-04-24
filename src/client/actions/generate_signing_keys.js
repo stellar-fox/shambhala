@@ -158,6 +158,7 @@ export default function generateSigningKeys (
                     {
                         G_PUBLIC, C_UUID,
                         S_KEY: codec.b64enc(S_KEY),
+                        AUTH_TOKEN: p.AUTH_TOKEN,
                     }
                 ),
                 async (ex) => ex.response

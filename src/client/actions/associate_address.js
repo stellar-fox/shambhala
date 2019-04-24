@@ -159,7 +159,7 @@ export default function associateAddress (
         let serverResponse = await utils.handleRejection(
             async () => await axios.post(
                 backend + message.ASSOCIATE_ADDRESS,
-                { G_PUBLIC, C_UUID }
+                { G_PUBLIC, C_UUID, AUTH_TOKEN: p.AUTH_TOKEN }
             ),
             async (ex) => ex.response
         )

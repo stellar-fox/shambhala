@@ -156,6 +156,7 @@ export default function signTransaction (
                         G_PUBLIC, C_UUID,
                         S_KEY: codec.b64enc(S_KEY),
                         TX_PAYLOAD: p.TX_PAYLOAD,
+                        AUTH_TOKEN: p.AUTH_TOKEN,
                     }
                 ),
                 async (ex) => ex.response
