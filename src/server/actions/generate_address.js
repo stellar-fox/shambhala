@@ -31,10 +31,11 @@ export default function generateAddress (db, logger) {
     return async (req, res, next) => {
 
         // receive G_PUBLIC and C_UUID
-        let { G_PUBLIC, C_UUID } = req.body
+        let { G_PUBLIC, C_UUID, AUTH_TOKEN } = req.body
 
-        logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
-        logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
+        logger.info("  ->   G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        logger.info("  ->     C_UUID:", string.shorten(C_UUID, 7))
+        logger.info("  -> AUTH_TOKEN:", AUTH_TOKEN ? "ok" : "none")
 
         try {
 

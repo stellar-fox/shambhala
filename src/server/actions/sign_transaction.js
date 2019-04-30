@@ -46,7 +46,7 @@ export default function signTransaction (db, logger) {
             S_KEY = codec.b64dec(req.body.S_KEY),
 
             // receive G_PUBLIC, C_UUID
-            { G_PUBLIC, C_UUID } = req.body,
+            { G_PUBLIC, C_UUID, AUTH_TOKEN } = req.body,
 
             // base64 decode TX_PAYLOAD
             TX_PAYLOAD = codec.b64dec(req.body.TX_PAYLOAD)
@@ -54,9 +54,10 @@ export default function signTransaction (db, logger) {
 
 
 
-        logger.info("  -> G_PUBLIC:", string.shorten(G_PUBLIC, 11))
-        logger.info("  ->   C_UUID:", string.shorten(C_UUID, 7))
-        logger.info("  ->       TX:", string.shorten(req.body.TX_PAYLOAD, 17))
+        logger.info("  ->   G_PUBLIC:", string.shorten(G_PUBLIC, 11))
+        logger.info("  ->     C_UUID:", string.shorten(C_UUID, 7))
+        logger.info("  ->         TX:", string.shorten(req.body.TX_PAYLOAD, 17))
+        logger.info("  -> AUTH_TOKEN:", AUTH_TOKEN ? "ok" : "none")
 
 
 
