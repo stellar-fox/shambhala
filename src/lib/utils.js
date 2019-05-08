@@ -17,7 +17,6 @@ import {
     math,
     string,
     struct,
-    type,
     utils,
 } from "@xcmats/js-toolbox"
 
@@ -134,21 +133,3 @@ export const miniHash = (sha256) => func.flow(
     (arr) => Uint8Array.from(arr),
     codec.bytesToHex
 )
-
-
-
-
-/**
- * Run "main" function in browser on "load" event.
- *
- * @function run
- * @param {Function} main
- */
-export const run = (main) => {
-    if (
-        type.isObject(window)  &&
-        type.isFunction(window.addEventListener)
-    ) {
-        window.addEventListener("load", main)
-    }
-}

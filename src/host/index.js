@@ -20,7 +20,6 @@ import {
     consoleWrapper,
     drawEmojis,
     mDef,
-    run,
 } from "../lib/utils"
 
 import "./index.css"
@@ -87,7 +86,7 @@ const devEnvLibs = async () => ({
 
 
 // gentle start
-run(async () => {
+utils.run(async () => {
 
     const
         // local memory, volatile context/store

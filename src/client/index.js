@@ -27,7 +27,6 @@ import {
     mDef,
     miniHash,
     fuzz,
-    run,
 } from "../lib/utils"
 import {
     devOriginWhitelist,
@@ -115,7 +114,7 @@ const devEnvLibs = async () => ({
 
 
 // gentle start
-run(async () => {
+utils.run(async () => {
 
     const
         // console logger
