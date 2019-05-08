@@ -322,7 +322,7 @@ export function shambhalaTesting (
     // if `destination` doesn't exists it'll be created
     that.buildTransferTransaction = async (
         source, destination, amount,
-        memoText = "https://bit.ly/shambhalasrc"
+        memoText = "https://bit.ly/shambhalasrc", fee = 100
     ) => {
 
         logger.info(
@@ -351,7 +351,7 @@ export function shambhalaTesting (
                 () => null
             ),
 
-            tx = func.pipe(new TransactionBuilder(sourceAccount))(
+            tx = func.pipe(new TransactionBuilder(sourceAccount, { fee }))(
 
                 // first ...
                 destinationAccount ?
