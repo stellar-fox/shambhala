@@ -29,6 +29,11 @@ module.exports = {
     target: "web",
 
 
+    node: {
+        fs: "empty",
+    },
+
+
     entry: {
         "client": path.resolve(
             appDirectory, "src/client/index.js"

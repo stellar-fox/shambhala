@@ -23,6 +23,11 @@ module.exports = {
     target: "web",
 
 
+    node: {
+        fs: "empty",
+    },
+
+
     entry: {
         "shambhala.client": path.resolve(
             appDirectory, "src/lib/shambhala.client.js"

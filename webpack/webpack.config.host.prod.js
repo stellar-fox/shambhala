@@ -29,6 +29,11 @@ module.exports = {
     target: "web",
 
 
+    node: {
+        fs: "empty",
+    },
+
+
     entry: {
         "host": path.resolve(
             appDirectory, "src/host/index.js"
