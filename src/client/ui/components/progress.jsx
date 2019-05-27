@@ -47,8 +47,8 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $icon": {
             display: "block",
@@ -56,12 +56,12 @@ const useStyles = makeStyles((t) => ({
             fontSize: 64,
             color: t.palette.custom.rallyBrightGreen,
             filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             animation: "right-spin infinite 2s linear",
         },
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
         },
 
         "& $progressPane": {
@@ -72,7 +72,7 @@ const useStyles = makeStyles((t) => ({
         },
 
         "& $bottomBar": {
-            marginTop: t.spacing.unit,
+            marginTop: t.spacing(1),
             color: t.palette.custom.dirty,
         },
     },

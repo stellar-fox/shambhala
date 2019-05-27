@@ -62,8 +62,8 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $icon": {
             display: "block",
@@ -71,11 +71,11 @@ const useStyles = makeStyles((t) => ({
             fontSize: 64,
             color: t.palette.custom.rallyBrightGreen,
             filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
         },
 
         "& $headingStrecher": {
-            marginBottom: 2 * t.spacing.unit,
+            marginBottom: t.spacing(2),
         },
 
         "& $txInspector": {
@@ -85,7 +85,7 @@ const useStyles = makeStyles((t) => ({
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             fontFamily: "Roboto Condensed",
             textAlign: "center",
             wordBreak: "break-all",
@@ -100,7 +100,7 @@ const useStyles = makeStyles((t) => ({
             ].join(", "),
             backgroundColor: t.palette.custom.darkGunmetal,
             borderRadius: t.shape.borderRadius,
-            padding: t.spacing.unit,
+            padding: t.spacing(1),
         },
 
         "& $inputs": {
@@ -109,9 +109,9 @@ const useStyles = makeStyles((t) => ({
             "& $pinField": {
                 marginLeft: "auto",
                 marginRight: "auto",
-                marginTop: t.spacing.unit,
-                marginBottom: t.spacing.unit,
-                width: 30 * t.spacing.unit,
+                marginTop: t.spacing(1),
+                marginBottom: t.spacing(1),
+                width: t.spacing(30),
             },
         },
 
@@ -119,8 +119,8 @@ const useStyles = makeStyles((t) => ({
             display: "flex",
             "& $button": {
                 flexGrow: 1,
-                marginLeft: 2 * t.spacing.unit,
-                marginRight: 2 * t.spacing.unit,
+                marginLeft: t.spacing(2),
+                marginRight: t.spacing(2),
                 "&$disabled": { backgroundColor: "transparent !important" },
                 "&$yes": {
                     backgroundColor: fade(

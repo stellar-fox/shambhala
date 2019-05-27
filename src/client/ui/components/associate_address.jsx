@@ -47,14 +47,14 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             "& $heading": {
                 margin: "0 auto",
-                marginBottom: 2 * t.spacing.unit,
+                marginBottom: t.spacing(2),
                 color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
@@ -68,7 +68,7 @@ const useStyles = makeStyles((t) => ({
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             fontFamily: "Roboto Condensed",
             textAlign: "center",
             wordBreak: "break-all",
@@ -83,15 +83,15 @@ const useStyles = makeStyles((t) => ({
             ].join(", "),
             backgroundColor: t.palette.custom.darkGunmetal,
             borderRadius: t.shape.borderRadius,
-            padding: t.spacing.unit,
+            padding: t.spacing(1),
         },
 
         "& $buttonBar": {
             display: "flex",
             "& $button": {
                 flexGrow: 1,
-                marginLeft: 2 * t.spacing.unit,
-                marginRight: 2 * t.spacing.unit,
+                marginLeft: t.spacing(2),
+                marginRight: t.spacing(2),
                 "&$disabled": { backgroundColor: "transparent !important" },
                 "&$yes": {
                     backgroundColor: fade(

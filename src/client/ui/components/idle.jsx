@@ -35,8 +35,8 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $icon": {
             display: "block",
@@ -44,11 +44,11 @@ const useStyles = makeStyles((t) => ({
             fontSize: 64,
             color: t.palette.custom.rallyBrightGreen,
             filter: `drop-shadow(0px 0px 5px ${rgba(0, 0, 0, 0.5)})`,
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
         },
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             minHeight: 80,
             display: "flex",
             direction: "column",

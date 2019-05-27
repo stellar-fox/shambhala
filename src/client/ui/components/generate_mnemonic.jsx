@@ -54,14 +54,14 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             "& $heading": {
                 margin: "0 auto",
-                marginBottom: t.spacing.unit,
+                marginBottom: t.spacing(1),
                 color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
@@ -73,7 +73,7 @@ const useStyles = makeStyles((t) => ({
             flexWrap: "wrap",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             overflowX: "hidden",
             overflowY: "auto",
             borderRadius: t.shape.borderRadius,
@@ -84,8 +84,8 @@ const useStyles = makeStyles((t) => ({
             ].join(", "),
             backgroundColor: t.palette.custom.darkGunmetal,
             "& $chipScroll": {
-                paddingTop: t.spacing.unit,
-                paddingBottom: t.spacing.unit,
+                paddingTop: t.spacing(1),
+                paddingBottom: t.spacing(1),
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: "center",
@@ -93,24 +93,24 @@ const useStyles = makeStyles((t) => ({
                 "& $chipFrame": {
                     display: "inline-block",
                     padding: 2,
-                    margin: 0.5 * t.spacing.unit,
-                    "& $chip": { height: 3 * t.spacing.unit },
+                    margin: t.spacing(0.5),
+                    "& $chip": { height: t.spacing(3) },
                 },
             },
         },
 
         "& $fabBar": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             textAlign: "center",
         },
 
         "& $buttonBar": {
             display: "flex",
-            marginTop: t.spacing.unit,
+            marginTop: t.spacing(1),
             "& $button": {
                 flexGrow: 1,
-                marginLeft: 2 * t.spacing.unit,
-                marginRight: 2 * t.spacing.unit,
+                marginLeft: t.spacing(2),
+                marginRight: t.spacing(2),
                 "&$disabled": { backgroundColor: "transparent !important" },
                 "&$yes": {
                     backgroundColor: fade(
@@ -147,7 +147,7 @@ const useStyles = makeStyles((t) => ({
     chipFrame: {},
     chip: {},
     fabBar: {},
-    buttonIcon: { marginRight: t.spacing.unit },
+    buttonIcon: { marginRight: t.spacing(1) },
     buttonBar: {},
     button: {},
     disabled: {},

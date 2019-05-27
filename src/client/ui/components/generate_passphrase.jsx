@@ -53,15 +53,15 @@ const useStyles = makeStyles((t) => ({
         alignItems: "stretch",
         justifyContent: "space-evenly",
         ...t.mixins.gutters(),
-        paddingTop: t.spacing.unit * 3,
-        paddingBottom: t.spacing.unit * 3,
+        paddingTop: t.spacing(3),
+        paddingBottom: t.spacing(3),
 
         "& $headingStrecher": {
-            marginBottom: t.spacing.unit,
+            marginBottom: t.spacing(1),
             minHeight: 80,
             "& $heading": {
                 margin: "0 auto",
-                marginBottom: t.spacing.unit,
+                marginBottom: t.spacing(1),
                 color: t.palette.custom.rallyBrightGreen,
                 display: "block",
                 textShadow: `0px 0px 7px ${rgba(0, 0, 0, 0.5)}`,
@@ -72,18 +72,18 @@ const useStyles = makeStyles((t) => ({
             display: "flex",
             flexWrap: "wrap",
             "& $textField": {
-                margin: t.spacing.unit,
+                margin: t.spacing(1),
                 width: "100%",
             },
         },
 
         "& $buttonBar": {
             display: "flex",
-            marginTop: t.spacing.unit,
+            marginTop: t.spacing(1),
             "& $button": {
                 flexGrow: 1,
-                marginLeft: 2 * t.spacing.unit,
-                marginRight: 2 * t.spacing.unit,
+                marginLeft: t.spacing(2),
+                marginRight: t.spacing(2),
                 "&$disabled": { backgroundColor: "transparent !important" },
                 "&$yes": {
                     backgroundColor: fade(

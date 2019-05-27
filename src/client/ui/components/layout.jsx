@@ -55,7 +55,7 @@ const
     noFooter = 380,
     maxMainHeight = 638,
 
-    footerHeight = theme.typography.fontSize + 3 * theme.spacing.unit,
+    footerHeight = theme.typography.fontSize + theme.spacing(3),
 
     useStyles = makeStyles((t) => ({
 
@@ -69,8 +69,8 @@ const
                 [`@media (max-height: ${noHeader}px)`]: { display: "none" },
                 "& $appBarCenterPane": {
                     flexGrow: 1,
-                    paddingLeft: t.spacing.unit * 2,
-                    paddingRight: t.spacing.unit * 2,
+                    paddingLeft: t.spacing(2),
+                    paddingRight: t.spacing(2),
                 },
             },
 
@@ -79,13 +79,13 @@ const
                 display: "flex",
                 justifyContent: "center",
                 "& $slide": {
-                    marginTop: t.spacing.unit,
-                    marginBotom: t.spacing.unit,
+                    marginTop: t.spacing(1),
+                    marginBotom: t.spacing(1),
                     marginLeft: "auto",
                     marginRight: "auto",
                     minWidth: 240,
                     maxWidth: 500,
-                    padding: t.spacing.unit,
+                    padding: t.spacing(1),
                 },
             },
 
@@ -96,7 +96,7 @@ const
                     `0px 0px 4px 0px ${rgba(0, 0, 0, 0.5)}`,
                     `0px 0px 12px 0px ${rgba(0, 0, 0, 0.4)}`,
                 ].join(", "),
-                padding: 0.5 * t.spacing.unit,
+                padding: t.spacing(0.5),
                 "& $text": {
                     color: rgba(255, 255, 255, 0.25),
                     textAlign: "center",
@@ -121,7 +121,7 @@ const
             transform: "translateX(-50%)",
         },
         statusSnackContent: {
-            marginBottom: 2 * t.spacing.unit,
+            marginBottom: t.spacing(2),
             minWidth: 288,
             borderRadius: t.shape.borderRadius,
         },
@@ -140,7 +140,7 @@ const
         statusSnackIcon: {
             fontSize: 20,
             opacity: 0.9,
-            marginRight: t.spacing.unit,
+            marginRight: t.spacing(1),
         },
 
     }))
@@ -180,8 +180,8 @@ const Layout = ({
             ),
             maxMainHeight
         ),
-        slideHeight = () => mainHeight() - 2 * theme.spacing.unit,
-        slideContentHeight = () => slideHeight() - 2 * theme.spacing.unit,
+        slideHeight = () => mainHeight() - theme.spacing(2),
+        slideContentHeight = () => slideHeight() - theme.spacing(2),
         slide = (Content, key) =>
             <Typography
                 key={key}
@@ -246,7 +246,7 @@ const Layout = ({
                 <Grid item component="main" className={css.main}>
                     <SwipeableViews
                         containerStyle={{
-                            width: screenWidth - 2 * theme.spacing.unit,
+                            width: screenWidth - theme.spacing(2),
                             height: mainHeight(),
                         }}
                         disabled={true}

@@ -29,19 +29,19 @@ const useStyles = makeStyles((t) => ({
 
     layout: {
         position: "absolute",
-        width: t.spacing.unit * 32,
-        height: t.spacing.unit * 16,
+        width: t.spacing(32),
+        height: t.spacing(16),
         left: "50%",
         top: "50%",
-        marginLeft: -1 * t.spacing.unit * 16,
-        marginTop: -1 * t.spacing.unit * 8,
+        marginLeft: -1 * t.spacing(16),
+        marginTop: -1 * t.spacing(8),
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
     },
 
-    rect: { padding: 2 * t.spacing.unit },
+    rect: { padding: t.spacing(2) },
 
     infoMessage: {
         textAlign: "center",
