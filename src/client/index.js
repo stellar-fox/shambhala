@@ -20,7 +20,6 @@ import {
     utils,
 } from "@xcmats/js-toolbox"
 import forage from "localforage"
-import { install as newMuiStylesApi } from "@material-ui/styles"
 import {
     consoleAugmenter,
     consoleWrapper,
@@ -146,12 +145,6 @@ utils.run(async () => {
 
 
 
-
-    // Switch from default material-ui style implementation to the newest one.
-    // Temporary call enabling hooks api - has to be invoked before
-    // any of the material-ui component is imported
-    // https://material-ui.com/css-in-js/basics/#migration-for-material-ui-core-users
-    newMuiStylesApi()
 
     // load and run User Interface
     const
