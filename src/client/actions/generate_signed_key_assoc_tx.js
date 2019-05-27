@@ -135,7 +135,8 @@ export default function generateSignedKeyAssocTx (
         try {
 
             transaction = new TransactionBuilder(
-                new Account(G_PUBLIC, p.sequence)
+                new Account(G_PUBLIC, p.sequence),
+                { fee: 100 }
             )
                 .addMemo(new Memo(MemoHash, func.pipe(
                     "shambhala genesis transaction - key association"

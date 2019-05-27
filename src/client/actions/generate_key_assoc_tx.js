@@ -123,7 +123,8 @@ export default function generateKeyAssocTX (
         try {
 
             transaction = new TransactionBuilder(
-                new Account(G_PUBLIC, p.sequence)
+                new Account(G_PUBLIC, p.sequence),
+                { fee: 100 }
             )
                 .addMemo(new Memo(MemoHash, func.pipe(
                     "shambhala key association transaction"
