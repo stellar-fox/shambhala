@@ -11,13 +11,13 @@
     ],
     "dependencies": {
         "@babel/runtime": "^7.4.5",
-        "@material-ui/core": "^4.0.0",
-        "@material-ui/icons": "^4.0.0",
-        "@material-ui/styles": "^4.0.0",
+        "@material-ui/core": "^4.0.2",
+        "@material-ui/icons": "^4.0.1",
+        "@material-ui/styles": "^4.0.2",
         "@stellar-fox/cryptops": "^1.0.4",
         "@stellar-fox/redshift": "^1.0.2",
         "@xcmats/js-toolbox": "^0.8.2",
-        "axios": "^0.18.0",
+        "axios": "^0.19.0",
         "chalk": "^2.4.2",
         "classnames": "^2.2.6",
         "express": "^4.17.1",
@@ -92,7 +92,7 @@
         "style-loader": "^0.23.1",
         "webpack": "^4.32.2",
         "webpack-cli": "^3.3.2",
-        "webpack-dev-server": "^3.4.1",
+        "webpack-dev-server": "^3.5.1",
         "webpack-node-externals": "^1.7.2"
     },
     "engines": {
