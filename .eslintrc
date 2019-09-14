@@ -49,6 +49,7 @@
         "no-unused-vars": ["warn", {"args": "all", "argsIgnorePattern": "^_"}],
         "object-curly-newline": "off",
         "quotes": ["error", "double"],
+        "require-atomic-updates": "off",
         "semi": ["error", "never"],
         "space-before-function-paren": ["error", "always"],
         "strict": "off",
