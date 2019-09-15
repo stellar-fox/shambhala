@@ -392,6 +392,52 @@ export function shambhalaTesting (
 
 
 
+    // build transaction setting inflation destination
+    that.setInflationDestination = async (
+        source, destination, fee = 100
+    ) => {
+
+        logger.info(
+            `Building "SetInflationDestination" transaction:${string.nl()}`,
+            "[",
+            string.quote(string.shorten(source, 11)),
+            "->",
+            string.quote(string.shorten(destination, 11)),
+            "]"
+        )
+
+        let
+            // try loading `sourceAccount`
+            // if it doesn't exist - let the exception propagate out
+            // as nothing can be done in such case
+            sourceAccount = await context.server.loadAccount(source),
+
+            tx = func.pipe(new TransactionBuilder(sourceAccount, { fee }))(
+
+                // set transaction destination
+                (tb) => tb.addOperation(Operation.setOptions({
+                    inflationDest: destination,
+                })),
+
+                // ... with some time bounds ...
+                (tb) => tb.setTimeout(10 * timeUnit.second),
+
+                // ... and finally build the transaction
+                (tb) => tb.build(),
+
+            )
+
+        context.tx = tx
+
+        logger.info("Transaction built.")
+
+        return tx
+
+    }
+
+
+
+
     // sign the transaction `tx` on behalf of an `accountId`
     // https://bit.ly/shambhalasigning
     that.sign = async (accountId = context.G_PUBLIC, tx = context.tx) => {
