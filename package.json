@@ -14,7 +14,7 @@
         "@material-ui/core": "^4.4.2",
         "@material-ui/icons": "^4.4.1",
         "@material-ui/styles": "^4.4.1",
-        "@stellar-fox/cryptops": "^1.0.4",
+        "@stellar-fox/cryptops": "^1.0.6",
         "@stellar-fox/redshift": "^1.0.2",
         "@xcmats/js-toolbox": "^0.8.2",
         "axios": "^0.19.0",
@@ -90,8 +90,8 @@
         "rimraf": "^3.0.0",
         "style-loader": "^1.0.0",
         "webpack": "^4.40.2",
-        "webpack-cli": "^3.3.8",
-        "webpack-dev-server": "^3.8.0",
+        "webpack-cli": "^3.3.9",
+        "webpack-dev-server": "^3.8.1",
         "webpack-node-externals": "^1.7.2"
     },
     "engines": {
